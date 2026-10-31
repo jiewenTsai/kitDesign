@@ -161,3 +161,20 @@ test_that("the header serves the SVG logo and favicon through a dependency", {
   expect_match(svg, "^<svg ")
   expect_match(kit_logo_uri("h512", "logo"), "^data:image/png;base64,")
 })
+
+test_that("kit_theme() stops with a clear message when bslib is older than 0.11.0", {
+  real <- utils::packageVersion
+  local_mocked_bindings(
+    packageVersion = function(pkg, ...) {
+      if (identical(pkg, "bslib")) package_version("0.10.0") else real(pkg, ...)
+    },
+    .package = "utils"
+  )
+  expect_error(kit_theme(), "bslib 版本太舊（0.10.0），這個 app 需要 0.11.0 以上。", fixed = TRUE)
+  expect_error(kit_theme(), "install.packages(\"bslib\")", fixed = TRUE)
+})
+
+test_that("kitDesign itself requires bslib 0.11.0 or later", {
+  imports <- utils::packageDescription("kitDesign")$Imports
+  expect_match(imports, "bslib (>= 0.11.0)", fixed = TRUE)
+})

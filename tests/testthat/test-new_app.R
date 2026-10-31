@@ -13,6 +13,10 @@ test_that("kit_new_app() scaffolds a package that loads and passes its own test"
   expect_equal(unname(desc[1, "Package"]), "kitDemo")
   expect_match(desc[1, "Imports"], paste0("kitDesign (>= ", ver, ")"), fixed = TRUE)
   expect_match(desc[1, "Remotes"], paste0("jiewenTsai/kitDesign@v", ver), fixed = TRUE)
+  readme <- readLines(file.path(dir, "README.md"), encoding = "UTF-8")
+  # 安裝的說明會一起升級太舊的套件（例如 bslib）
+  expect_true(any(grepl("pak::pkg_install(\"<GitHub 帳號>/kitDemo\")", readme, fixed = TRUE)))
+  expect_true(any(grepl("upgrade = \"always\"", readme, fixed = TRUE)))
   gi <- readLines(file.path(dir, ".gitignore"))
   expect_true("tests/testthat/_problems/" %in% gi)
   expect_true("testthat-problems.rds" %in% gi)

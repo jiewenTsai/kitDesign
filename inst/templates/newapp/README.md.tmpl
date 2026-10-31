@@ -2,14 +2,27 @@
 
 {{title}}（{{subtitle}}）：用 [kitDesign](https://github.com/jiewenTsai/kitDesign) 做的 KIT Shiny app。
 
+## 安裝
+
+用 pak 安裝：它會一起把太舊的套件升級到需要的版本（例如 bslib 要 0.11.0 以上，
+太舊時 app 一開就停下來）。`<GitHub 帳號>` 換成放這個 app 的帳號。
+
+```r
+# install.packages("pak")
+pak::pkg_install("<GitHub 帳號>/{{package}}")
+
+# 或用 remotes（一定要 upgrade = "always"，太舊的套件才會升級）
+remotes::install_github("<GitHub 帳號>/{{package}}", upgrade = "always")
+```
+
 ## 執行
 
 ```r
 # 本機（在這個資料夾）
 shiny::runApp()
 
-# 或安裝成套件
-remotes::install_local()
+# 或安裝這個資料夾成套件（一樣升級太舊的套件）
+remotes::install_local(upgrade = "always")
 {{package}}::run_app()
 ```
 

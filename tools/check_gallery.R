@@ -3,7 +3,8 @@
 # 用法（在套件根目錄）：
 #   LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R [截圖資料夾] [port]
 # 截圖資料夾預設是暫存資料夾。任何一頁 document.documentElement.scrollWidth 不等於視窗寬時，
-# 結束代碼是 1（CI 或發布前用）。
+# 結束代碼是 1（CI 或發布前用）。危險按鈕不是鮭魚色（#ff9b8f）、墨色字，或停用的危險按鈕
+# 是鮭魚色時，結束代碼也是 1。
 # 需要：chromote（和它用的 Chrome）、processx。先把這個資料夾的原始碼裝到暫存的 library，
 # 所以檢查的是現在的程式碼，不是之前裝好的版本。
 
@@ -52,6 +53,7 @@ js <- function(b, code) b$Runtime$evaluate(code, awaitPromise = TRUE, returnByVa
 tabs <- c("page", "status", "steps", "checklist", "flow", "code", "chart")
 sizes <- list(list(w = 1280, h = 900, mobile = FALSE), list(w = 390, h = 844, mobile = TRUE))
 rows <- list()
+colors <- list()
 for (sz in sizes) {
   b <- chromote::ChromoteSession$new(width = sz$w, height = sz$h, mobile = sz$mobile)
   b$Page$navigate(url)
@@ -66,6 +68,16 @@ for (sz in sizes) {
       Sys.sleep(1.5)
       js(b, "document.getElementById('gate-run').click(); true")
       Sys.sleep(2.5)
+    }
+    if (tab == "status") {
+      # 危險按鈕是鮭魚色（#ff9b8f）、墨色字；停用的危險按鈕照停用的樣子
+      bg <- function(id) js(b, sprintf("getComputedStyle(document.getElementById('%s')).backgroundColor", id))
+      fg <- js(b, "getComputedStyle(document.getElementById('demo_danger')).color")
+      colors[[length(colors) + 1]] <- data.frame(
+        width = sz$w, danger = bg("demo_danger"), danger_text = fg, disabled = bg("demo_danger_off"),
+        ok = bg("demo_danger") == "rgb(255, 155, 143)" && fg == "rgb(20, 20, 20)" &&
+          bg("demo_danger_off") == "rgb(232, 228, 216)"
+      )
     }
     if (tab == "steps") {
       js(b, "document.getElementById('cards-ok1').click(); true")
@@ -86,7 +98,13 @@ for (sz in sizes) {
 }
 res <- do.call(rbind, rows)
 print(res, row.names = FALSE)
+cols <- do.call(rbind, colors)
+print(cols, row.names = FALSE)
 cat("screenshots:", normalizePath(out), "\n")
+if (!all(cols$ok)) {
+  cat("FAILED: the danger button is not salmon with ink text (or the disabled one is salmon)\n")
+  return(1L)
+}
 if (!all(res$ok)) {
   cat("FAILED: the page scrolls sideways (scrollWidth != viewport width)\n")
   return(1L)

@@ -20,6 +20,9 @@
 #' bslib::theme_bootswatch(theme)
 #' @export
 kit_theme <- function() {
+  # Bootswatch Brite 從 bslib 0.11.0 起才有：太舊時先停下來，說怎麼修
+  # 原文：bslib 版本太舊（ | ），這個 app 需要 0.11.0 以上。請在 R 執行 install.packages(\"bslib\")，再重新開啟。
+  if (utils::packageVersion("bslib") < "0.11.0") stop("bslib \u7248\u672c\u592a\u820a\uff08", utils::packageVersion("bslib"), "\uff09\uff0c\u9019\u500b app \u9700\u8981 0.11.0 \u4ee5\u4e0a\u3002\u8acb\u5728 R \u57f7\u884c install.packages(\"bslib\")\uff0c\u518d\u91cd\u65b0\u958b\u555f\u3002", call. = FALSE)
   # 未指定 wght 時只提供 400，需列出 CSS 用到的字重
   kit_font <- bslib::font_collection(
     bslib::font_google(

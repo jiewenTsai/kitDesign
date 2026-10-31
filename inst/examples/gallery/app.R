@@ -16,7 +16,7 @@ library(kitDesign)
 groups <- list(
   kit_navgroup("頁面", c(page = "頁面骨架", status = "狀態框與按鈕")),
   kit_navgroup("步驟", c(steps = "步驟卡", checklist = "檢查清單", flow = "流程分頁")),
-  kit_navgroup("參考", c(code = "程式碼與表格", chart = "圖的顏色"), tools = TRUE)
+  kit_navgroup("參考", c(code = "程式碼與表格", chart = "圖"), tools = TRUE)
 )
 
 # 例子用的資料
@@ -111,7 +111,9 @@ status_ui <- tagList(
     kit_button("demo_primary", "開始校準", "primary"),
     actionButton("demo_default", "對，下一步"),
     kit_button("demo_secondary", "下載 CSV"),
+    # 危險按鈕：鮭魚色底、墨色字（停用時照停用的樣子）
     kit_button("demo_danger", "這一回合不做", "danger"),
+    kit_button("demo_danger_off", "移除", "danger", disabled = TRUE),
     kit_button("demo_disabled", "執行轉換", "primary", disabled = TRUE)
   ),
   kit_ready_line("至少要 2 個波次的檔案，目前只有 1 個",
@@ -229,8 +231,21 @@ code_ui <- tagList(
   )
 )
 
+# plotly 是 Suggests：沒有裝時，圖的位置寫一句怎麼裝
+has_plotly <- requireNamespace("plotly", quietly = TRUE)
+chart_output <- function(id, height) {
+  if (has_plotly) {
+    plotly::plotlyOutput(id, height = height)
+  } else {
+    kit_callout("這個例子要 plotly 套件：install.packages(\"plotly\")", warn = TRUE)
+  }
+}
+
 chart_ui <- tagList(
-  kit_tab_guide("圖的類別色用 Okabe–Ito，依序取色。", c("看顏色", "看例圖"), "一張例圖。"),
+  kit_tab_guide(
+    "圖的類別色用 Okabe–Ito，依序取色；plotly 圖最後交給 kit_plotly_style()，和 app 看起來是一套。",
+    c("看顏色", "看兩張例圖（線圖、熱圖）"), "兩張套好 KIT 樣子的 plotly 圖。"
+  ),
   h4("類別色"),
   tags$div(
     class = "kit-inline",
@@ -248,8 +263,11 @@ chart_ui <- tagList(
     )
   ),
   h4("各世代的分數中位數"),
-  plotOutput("chart", height = "280px"),
-  tags$p(class = "kit-hint", "每一條線是一個世代；灰色虛線是參考線。")
+  chart_output("chart_line", "360px"),
+  tags$p(class = "kit-hint", "每一條線是一個世代；灰色虛線是參考線。"),
+  h4("每個波次的題目通過比例"),
+  chart_output("chart_heat", "340px"),
+  tags$p(class = "kit-hint", "顏色越深，通過的人越多；白色是沒有施測（或沒有人通過）。")
 )
 
 ver <- kit_app_description("kitDesign")
@@ -266,7 +284,7 @@ ui <- kit_page(
     tabPanel("檢查清單", value = "checklist", checklist_ui),
     tabPanel("流程分頁", value = "flow", flow_ui),
     tabPanel("程式碼與表格", value = "code", code_ui),
-    tabPanel("圖的顏色", value = "chart", chart_ui),
+    tabPanel("圖", value = "chart", chart_ui),
     groups = groups, selected = "page"
   )
 )
@@ -368,16 +386,37 @@ server <- function(input, output, session) {
 
   # 程式碼與表格、圖 ----
   output$preview <- renderTable(kit_preview_table(waves, n = 10), striped = TRUE, spacing = "s", na = "")
-  output$chart <- renderPlot({
-    cols <- kit_chart_colors(2)
-    op <- par(mar = c(4, 4, 1, 1), family = "sans")
-    on.exit(par(op))
-    plot(NULL, xlim = c(3, 12), ylim = c(5, 18), xlab = "Wave (months)", ylab = "Median score")
-    abline(h = 12, col = kit_chart_neutral(), lty = 2, lwd = 2)
-    lines(c(3, 6, 12), c(8, 11, 15), col = cols[1], lwd = 3, type = "b", pch = 19)
-    lines(c(3, 6, 12), c(7, 10, 13), col = cols[2], lwd = 3, type = "b", pch = 17)
-    legend("topleft", c("M03", "M36"), col = cols, lwd = 3, pch = c(19, 17), bty = "n")
-  })
+  # plotly 圖：kit_plotly_style() 換字型、軸線、底色、圖例、色階、工具列
+  if (has_plotly) {
+    output$chart_line <- plotly::renderPlotly({
+      d <- data.frame(wave_m = c(3, 6, 12, 36, 48, 36, 48, 84, 96),
+                      median = c(8, 11, 15, 22, 26, 21, 25, 31, 34),
+                      cohort = c(rep("M03", 5), rep("M36", 4)))
+      p <- plotly::plot_ly(d, x = ~wave_m, y = ~median, split = ~cohort,
+                           type = "scatter", mode = "lines+markers")
+      p <- plotly::add_lines(p, x = c(3, 96), y = c(20, 20), split = NULL, name = "參考線",
+                             line = list(color = kit_chart_neutral(), dash = "dash"),
+                             inherit = FALSE)
+      p <- plotly::layout(p, title = "各世代每個波次的分數中位數",
+                          xaxis = list(title = "波次（月）"), yaxis = list(title = "分數中位數"))
+      kit_plotly_style(p, filename = "kit-gallery-line")
+    })
+    output$chart_heat <- plotly::renderPlotly({
+      items <- sprintf("lana%02d", 1:8)
+      waves <- c("3", "6", "12", "36", "48")
+      z <- rbind(c(0.10, 0.05, 0.02, NA, NA, NA, NA, NA),
+                 c(0.45, 0.30, 0.12, 0.05, NA, NA, NA, NA),
+                 c(0.85, 0.70, 0.45, 0.30, 0.10, NA, NA, NA),
+                 c(NA, NA, NA, 0.95, 0.80, 0.55, 0.35, 0.20),
+                 c(NA, NA, NA, 0.98, 0.92, 0.75, 0.60, 0.40))
+      p <- plotly::plot_ly(x = items, y = waves, z = z, type = "heatmap", zmin = 0, zmax = 1,
+                           colorbar = list(title = "通過比例"))
+      p <- plotly::layout(p, title = "每個波次的題目，顏色是通過比例",
+                          xaxis = list(title = "題目", type = "category"),
+                          yaxis = list(title = "波次（月）", type = "category"))
+      kit_plotly_style(p, filename = "kit-gallery-heatmap")
+    })
+  }
 }
 
 shinyApp(ui, server)

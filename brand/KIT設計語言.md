@@ -69,7 +69,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 停用的框 `border-disabled`
 - **強調文字**：「還差：…」用 `text-todo`；檢查清單的 ! 用 `text-decide`；清單裡的單一問題用 `text-stop`。
 - **標誌色**（`logo-bean`、`logo-leaf`）只用在標誌與插圖，不進介面。
-- **圖**：類別色用色盲友善的 Okabe–Ito，依序取 `chart-blue`、`chart-orange`、`chart-green`、`chart-purple`、`chart-sky`、`chart-vermillion`。參考線、帶子用 `chart-neutral`。
+- **圖**：類別色用色盲友善的 Okabe–Ito，依序取 `chart-blue`、`chart-orange`、`chart-green`、`chart-purple`、`chart-sky`、`chart-vermillion`。參考線、帶子用 `chart-neutral`；連續的值用 `chart-sequential`。
 
 ### 字型
 
@@ -207,7 +207,10 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 - **小按鈕**（`kind = "secondary"`，`btn-sm btn-outline-secondary`）：
   - 白底、`bw-line` 框、沒有陰影、0.85rem、字重 500，高度 ≥ 36px。
   - 用在下載、全選、範例檔、上移下移、複製。
-- **危險按鈕**（`kind = "danger"`）：`nb-salmon` 底。用在刪除、移除、這一回合不做。
+- **危險按鈕**（`kind = "danger"`，`btn-sm btn-danger`）：
+  - `nb-salmon` 底、`nb-ink` 字、`bw-line` 框，大小和小按鈕一樣；滑過、按下時還是 `nb-salmon`。
+  - 停用時照停用的樣子（`bg-disabled` 底），不是鮭魚色。
+  - 用在刪除、移除、這一回合不做。
 - **停用**：`bg-disabled` 底、`text-hint` 字、`border-disabled` 框、沒有陰影，不用 opacity。停用的主要按鈕上面一定有「還差：…」（見 ReadyLine）。
 - **規則**：
   - 會離開這一頁的按鈕或連結，文字後面加「→」。
@@ -290,20 +293,52 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 
 ### 圖（Chart）
 
-圖放在白色卡片裡，一張圖只回答一個問題；類別色用 Okabe–Ito，依序取色。
+圖放在白色卡片裡，一張圖只回答一個問題；類別色用 Okabe–Ito，依序取色。plotly 圖最後一定交給
+`kit_plotly_style()`，和 app 的其他部分看起來是一套。
 
-- **R**：kitsUI 的 `kit_chart.R`：`KIT_CHART_COLORS`、`KIT_CHART_NEUTRAL`、`kit_chart_categorical()`（替 kits 畫好的 plotly 圖換色）。
-- **長相**：
-  - `nb-card` 底、`bw-frame` 框、`shadow-card`。
-  - 圖內標籤用英文（plotly）；圖下面一行 `hint` 中文，說明怎麼讀。
+- **R**：
+  - 顏色：`kit_chart_colors()`（類別色）、`kit_chart_neutral()`（中性色）、`kit_chart_sequential()`（連續數值的色階）。
+  - 樣子：`kit_plotly_style(p)`（plotly 是 Suggests，app 自己要 `Imports: plotly`）；下載的單一 HTML 檔要 app 的字型：
+    `kit_plotly_fonts(p)`（`kit_plotly_style()` 預設已經附上）。
+  - kitsUI 的 `kit_chart.R`：`kit_chart_categorical()`（替 kits 畫好的圖換類別色）、`kit_chart_role()`（角色色）、
+    `kit_chart_zh()`（標題、軸、圖例換中文）。
+- **和 kits 一起用的順序**：kits 的 `plot()` → kitsUI 換色（`kit_chart_categorical()`、`kit_chart_role()`）→
+  kitsUI 換中文（`kit_chart_zh()`）→ `kit_plotly_style()`。
+  - 換色和 `kit_plotly_style()` 的順序可以對調：它不動 kits 或 kitsUI 指定的顏色。
+  - 換中文要在前面：`kit_plotly_style()` 把標題加上 `<b>`，之後 `kit_chart_zh()` 就認不得英文標題。
+  - 畫面上和下載的 HTML 用同一個 reactive（套一次），兩邊一樣。
+
+  ```r
+  p <- plot(x$item, type = "category", items = shown)          # kits
+  p <- kit_chart_zh(kit_chart_categorical(p))                   # kitsUI
+  kitDesign::kit_plotly_style(p, filename = "item_category")    # 最後
+  ```
+- **長相**（`kit_plotly_style()` 做的事）：
+  - 卡片：`nb-card` 底、`bw-frame` 框、`shadow-card`（CSS 的 `.js-plotly-plot`）；圖本身白底，下載的 PNG 也是白底。
+  - 字：全部圓體（`sans`）、`nb-ink`；內文 15px，圖例與滑過的說明框 14px，刻度 13px、`text-hint`。
+  - 標題：靠左、粗體、約 `h5`（18px）；圖寬放不下時在瀏覽器端換行。kits 的小標（`<sup>`）留在下一行。
+  - 軸（每一條，包括並排的小圖）：軸線 `nb-ink` 1.5px、只畫左邊與下面（不畫四邊的框）、刻度朝外、
+    格線 `line-soft`、零線 `line`。只有一張圖時拿掉 kits 的外框；並排的小圖（類別機率曲線、Wright map）
+    外框換成 `line` 淡線，小圖之間還分得開。
+  - 滑過的說明框：白底、`nb-ink` 框、圓體。
+  - 圖例：沒有框；超過 4 項，或最長的一項超過 20 欄（中文字算 2 欄），放在圖的下面、橫排、靠左；
+    其他放右邊。圖寬小於 600px（手機）時一律放到下面。`legend = "keep"` 不動位置。
+  - 色階：熱圖類換成 `kit_chart_sequential()`（白 → `bg-new` → `nb-green`，值越大越深）；
+    `colorscale = FALSE` 保留原來的色階。色條的字、外框照上面的字級與顏色。
+  - 工具列：沒有 plotly 的標誌；只有「下載成 PNG」、放大、縮小、回到原來的範圍；繁體中文。
+  - 邊界：上下左右一樣小；軸、圖例、色條放不下時自動加寬，軸標題與圖例離卡片的邊至少 16px，不會切到字。
+  - 不改：資料、軸的範圍與刻度、指定的顏色、點的形狀、線的粗細與虛線、hover 與圖例的文字、圖的高度。
 - **配色**：
   - 世代、量尺、分數依序取 `chart-blue`、`chart-orange`、`chart-green`、`chart-purple`、`chart-sky`、`chart-vermillion`。
+    plotly 自己給的預設色換成同一個位置的 Okabe–Ito。
   - 參考線、帶子、沒有判斷的點用 `chart-neutral`。
+  - 連續的值（通過比例等）用 `chart-sequential`。
 - **規則**：
   - 圖上方的標題就寫它回答的問題。
+  - 圖內標籤可以是英文（kits 的原文）或換好的中文；圖下面一行 `hint` 中文，說明怎麼讀。
   - 圖和下面的說明之間至少留 1.2rem，說明不能壓到 x 軸。
-  - 下載這張圖用小按鈕。
-- **不要**：用 plotly 的預設色；在一張圖裡回答兩個問題。
+  - 下載這張圖用小按鈕（HTML 用 `htmlwidgets::saveWidget()`；工具列另外可以存 PNG）。
+- **不要**：用 plotly 的預設色或預設的工具列；在 app 裡另外改 plotly 的字型與軸線；在一張圖裡回答兩個問題。
 
 ### 細節列、進階設定、設定摘要（Details）
 
@@ -547,7 +582,7 @@ ui <- kit_page(
 | 狀態框（StatusBox） | 值物件 `kit_status()`、`kit_done_status()`、`kit_error_status()`、`kit_stale_status()`（直接放進頁面）；低階畫法 `kit_status_ui()`；通知 `kit_notify()`；白話錯誤 `kit_abort()` |
 | 提示框（Callout） | `kit_callout(..., warn = )`；雲端版橫幅 `kit_cloud_banner()` |
 | 資料表（DataTable） | `kit_static_table()`、`kit_preview_table()`、`kit_rows_note()`、`kit_table_scroll()`、`kit_num()`、`kit_dims()` |
-| 圖（Chart） | `kit_chart_colors()`、`kit_chart_neutral()` |
+| 圖（Chart） | `kit_plotly_style()`（plotly 圖的樣子）、`kit_plotly_fonts()`；顏色 `kit_chart_colors()`、`kit_chart_neutral()`、`kit_chart_sequential()` |
 | 細節列（Details） | `kit_details_row()`、`kit_detail()`、`kit_advanced()`、`kit_settings_line()` |
 | 用 R 怎麼做（CodePanel） | 模組 `kit_code_panel_ui()`／`kit_code_panel_server()`；值物件 `kit_code(code, label)`；換行 `kit_code_wrap()`、行寬 `kit_code_cols()`；低階 `kit_code_panel()`、`kit_render_code_panel()`、`kit_code_blocks()` |
 | 步驟卡（StepCard） | 模組 `kit_stepcards_ui()`／`kit_stepcards_server(id, titles, summaries, checks)`；低階 `kit_step_card()`、`kit_step_head()`、`kit_step_body()` |
@@ -623,6 +658,7 @@ ui <- kit_page(
 | `chart-sky` | `#56b4e9` | 圖的類別色第 5 個。 |
 | `chart-vermillion` | `#d55e00` | 圖的類別色第 6 個；超過 6 類從頭再取。 |
 | `chart-neutral` | `#7f7f7f` | 圖裡不分類別的中性色：參考線、帶子、沒有判斷的點。 |
+| `chart-sequential` | `#ffffff` → `#e8f0a0` → `#006835` | 連續數值的色階（熱圖、色條）：白 → 淡萊姆（`bg-new`，在 0.2）→ KIT 綠（`nb-green`），中間在 Lab 空間內插。`kit_chart_sequential()`。 |
 
 ### 字級（基準 17px）
 

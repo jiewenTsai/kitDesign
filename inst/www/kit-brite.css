@@ -311,6 +311,17 @@ body { font-size: 1rem; line-height: 1.65; }
   box-shadow: none;
   background: #f1eee4;
 }
+/* 危險按鈕（kit_button(kind = "danger") = btn-sm btn-danger）：鮭魚色底、墨色字。
+   要寫在小按鈕的規則後面，不然 .btn-sm 的白底會蓋掉；滑過、按下時還是鮭魚色。停用時照停用的樣子。 */
+.btn-danger:not(:disabled):not(.disabled),
+.btn-sm.btn-danger:not(:disabled):not(.disabled),
+.btn-danger:not(:disabled):not(.disabled):hover,
+.btn-danger:not(:disabled):not(.disabled):focus-visible,
+.btn-danger:not(:disabled):not(.disabled):active {
+  background: var(--nb-salmon);
+  color: var(--nb-ink);
+  border-color: var(--nb-ink);
+}
 /* 下載是這一頁的主角時（例如作答檔）：和主要按鈕一樣 */
 .kit-download.btn-primary {
   font-size: 1.1rem; font-weight: 700; padding: 0.55rem 1.4rem; border-width: 2px;

@@ -6,7 +6,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 
 - 主題：Bootswatch Brite（bslib 0.11.0 以上）＋ KIT 的顏色、圓體 Chiron GoRound TC、等寬 JetBrains Mono。
 - 樣式：克制的 neo-brutalism（2px 黑框、硬陰影、平塗色塊配黑字），內文 17px、內容最寬 1140px。
-- 元件：頁首、步驟分頁、頁面說明、按鈕、狀態框、提示框、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表。
+- 元件：頁首、步驟分頁、頁面說明、按鈕、狀態框、提示框、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表、圖（plotly 的樣子）。
 - server 端的小工具：停用主要按鈕並寫還差什麼、執行完捲到狀態框、分頁打 ✓、通知、千分位、白話錯誤。
 
 ## 安裝
@@ -16,7 +16,11 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-只依賴 shiny、bslib（>= 0.11.0）、htmltools。
+只依賴 shiny、bslib（>= 0.11.0）、htmltools。用 `kit_plotly_style()` 時另外要 plotly。
+
+bslib 太舊（0.11.0 以前沒有 Brite 主題）時 `kit_theme()` 會停下來，說要裝新版。
+安裝 app 時用 `pak::pkg_install("<帳號>/<app>")` 或
+`remotes::install_github("<帳號>/<app>", upgrade = "always")`，太舊的套件會一起升級。
 
 ## 快速開始
 
@@ -65,6 +69,14 @@ shinyApp(ui, server)
 ```
 
 一步一步的說明：`vignette("kitDesign")`。看所有元件：`kitDesign::kit_gallery()`。
+
+plotly 圖（例如 kits 的 `plot()`）最後交給 `kit_plotly_style()`：
+
+```r
+p <- plot(item, type = "category")      # kits 畫的 plotly 圖
+p <- kit_chart_zh(kit_chart_categorical(p))   # kitsUI：換色、換中文（要在前面）
+kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖例、工具列
+```
 
 ## 元件一覽
 
@@ -138,6 +150,9 @@ shinyApp(ui, server)
 | `kit_static_table()`、`kit_preview_table()`、`kit_table_scroll()` | 資料表、預覽表、左右捲的框 |
 | `kit_rows_note()`、`kit_dims()`、`kit_num()` | 「共 3,418 列 × 25 欄，以下前 10 列。」、千分位 |
 | `kit_chart_colors()`、`kit_chart_neutral()` | 圖的類別色（Okabe–Ito）與中性色 |
+| `kit_chart_sequential()` | 連續數值的色階（白 → 淡萊姆 → KIT 綠），熱圖用 |
+| `kit_plotly_style()` | plotly 圖套上 KIT 的樣子：字型、軸線、格線、白底、靠左的粗體標題、圖例、色階、滑過的說明框、精簡的工具列（plotly 是 Suggests） |
+| `kit_plotly_fonts()` | plotly 圖附上 app 的字型（下載的單一 HTML 檔用；`kit_plotly_style()` 預設已經附上） |
 
 ### server 端
 
@@ -160,7 +175,7 @@ shinyApp(ui, server)
 - 語意化版本：patch＝修正、畫面和函式不變；minor＝新元件或選項；major＝改名、拿掉、看得到的設計改變。
   發布步驟與檢查清單：[`brand/版本與發布.md`](brand/版本與發布.md)；每一版的改變：[`NEWS.md`](NEWS.md)。
 - app 固定用某一版：`Remotes: jiewenTsai/kitDesign@vX.Y.Z`、`Imports: kitDesign (>= X.Y.Z)`。
-- 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.1.0」。
+- 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.2.0」。
 - kitJoin、kitsUI 換成 kitDesign 時的名稱對照：[`brand/遷移對照.md`](brand/遷移對照.md)。
 
 ## 開發
@@ -168,8 +183,8 @@ shinyApp(ui, server)
 - R 程式碼只能用 ASCII（`R CMD check` 的規定）。字串直接寫中文，改完在套件根目錄跑
   `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`：中文換成 `\uXXXX`，上面加一行「# 原文：…」註解。
 - 樣式在 `inst/www/`：`kit-base.css` → `kit-brite.css` → `kit-design.css`（順序不能換）；小程式在 `inst/www/kit.js`。
-- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.1.0.tar.gz`；
-  畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲）。
+- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.2.0.tar.gz`；
+  畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）。
 - GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）。
 
 ## 授權

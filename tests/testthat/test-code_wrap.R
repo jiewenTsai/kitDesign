@@ -57,3 +57,33 @@ test_that("斷不開的長字串維持原樣；parse 不了的程式碼不動", 
   broken <- paste0("x <- c(1, 2, ", strrep("3, ", 30))
   expect_identical(kit_code_wrap(broken), broken)
 })
+
+test_that("括號在前一行打開時，這一行的逗號也能換行，續行同樣縮排", {
+  code <- paste(
+    "long_1 <- data_1 |>",
+    "  mutate(",
+    "    cohort = NA_character_, subj_id = as_id(w1_id), wave_m = as.numeric(w1_mon),",
+    "    visit_id = paste(cohort, subj_id, sep = \"_\")",
+    "  )",
+    sep = "\n"
+  )
+  out <- kit_code_wrap(code)
+  lines <- strsplit(out, "\n")[[1]]
+  expect_true(all(kit_code_cols(lines) <= 70))
+  expect_true(any(lines == "    cohort = NA_character_, subj_id = as_id(w1_id),"))
+  expect_true(any(lines == "    wave_m = as.numeric(w1_mon),"))
+  expect_identical(
+    lapply(parse(text = out, keep.source = FALSE), deparse),
+    lapply(parse(text = code, keep.source = FALSE), deparse)
+  )
+})
+
+test_that("註解換行時標點不放在行首，也不超過寬度", {
+  note <- paste0(
+    "# 題目表：「kits 作答檔」第 3 步下載的 kits_item_settings.csv（item_id、",
+    "include、domain）"
+  )
+  lines <- strsplit(kit_code_wrap(note), "\n")[[1]]
+  expect_true(all(kit_code_cols(lines) <= 70))
+  expect_false(any(grepl("^# [，。、：；）]", lines)))
+})

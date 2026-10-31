@@ -2,21 +2,22 @@
 % Please edit documentation in R/setup.R
 \name{kit_logo_file}
 \alias{kit_logo_file}
-\title{標誌檔的網址（頁面上用）}
+\title{URL of a logo file (for use on the page)}
 \usage{
 kit_logo_file(file = "kit-logo.svg")
 }
 \arguments{
-\item{file}{\verb{inst/logo/} 裡的檔名：\code{"kit-logo.svg"}（完整標誌）、\code{"kit-mark.svg"}（豆子）、
-或 PNG（\code{"kit-mark-64.png"}、\code{"kit-logo-h512.png"}…）。}
+\item{file}{A file name in \verb{inst/logo/}: \code{"kit-logo.svg"} (full logo), \code{"kit-mark.svg"} (the
+bean), or a PNG (\code{"kit-mark-64.png"}, \code{"kit-logo-h512.png"}…).}
 }
 \value{
-相對網址，例如 \code{"kitDesign-logo-0.1.0/kit-logo.svg"}。
+A relative URL, e.g. \code{"kitDesign-logo-0.1.0/kit-logo.svg"}.
 }
 \description{
-頁首的向量標誌與分頁圖示都用它；網址由 \code{\link[=kit_logo_dependency]{kit_logo_dependency()}} 提供
-（頁面要有這個 dependency：\code{\link[=kit_header]{kit_header()}} 已經附上了）。
-要嵌進頁面、不另外取檔時，用 \code{\link[=kit_logo_uri]{kit_logo_uri()}}（PNG 的 data URI）。
+Used for both the header's vector logo and the tab icon; the URL is served by
+\code{\link[=kit_logo_dependency]{kit_logo_dependency()}} (the page must include this dependency: \code{\link[=kit_header]{kit_header()}} already attaches
+it). To embed the logo in the page without a separate file, use \code{\link[=kit_logo_uri]{kit_logo_uri()}} (a PNG data
+URI).
 }
 \examples{
 kit_logo_file("kit-logo.svg")

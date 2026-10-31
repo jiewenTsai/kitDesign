@@ -2,20 +2,21 @@
 % Please edit documentation in R/cloud.R
 \name{kit_cloud_banner}
 \alias{kit_cloud_banner}
-\title{雲端版的提醒橫幅（頁首下面一行）}
+\title{Cloud version reminder banner (one line below the header)}
 \usage{
 kit_cloud_banner(...)
 }
 \arguments{
-\item{...}{橫幅的內容。}
+\item{...}{The banner content.}
 }
 \value{
-\verb{<div class="alert alert-warning kit-cloud-banner" role="alert">}。
+\verb{<div class="alert alert-warning kit-cloud-banner" role="alert">}.
 }
 \description{
-黃色的一行，提醒使用者資料會傳到雲端。文字由 app 自己寫（各 app 的伺服器位置、
-使用須知不同）。
+A yellow line reminding users that their data go to the cloud. The app writes the text itself
+(each app's server location and usage notes differ).
 }
 \examples{
 kit_cloud_banner("此為雲端版：上傳的資料會傳送至雲端伺服器。含個資的資料請改用本機版。")
+# "This is the cloud version: uploaded data are sent to a cloud server. For data with personal information, use the local version."
 }

@@ -2,21 +2,21 @@
 % Please edit documentation in R/server.R
 \name{kit_open_details}
 \alias{kit_open_details}
-\title{打開一個收合區塊（例如套用預設後打開進階設定）}
+\title{Open a collapsible section (for example, open the advanced settings after applying a preset)}
 \usage{
 kit_open_details(id, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
-\item{id}{\verb{<details>} 的 id（模組內的 id，會自動加上 namespace），例如
-\code{\link[=kit_advanced]{kit_advanced()}} 的 \code{id}。}
+\item{id}{The id of the \verb{<details>} (the id inside the module; the namespace is added
+automatically), for example the \code{id} of \code{\link[=kit_advanced]{kit_advanced()}}.}
 
-\item{session}{預設是目前的 session。}
+\item{session}{Defaults to the current session.}
 }
 \value{
-不可見的完整 id；沒有 session 時是 \code{NULL}。
+The full id, invisibly; \code{NULL} when there is no session.
 }
 \description{
-打開一個收合區塊（例如套用預設後打開進階設定）
+Open a collapsible section (for example, open the advanced settings after applying a preset)
 }
 \examples{
 if (interactive()) kit_open_details("advanced")

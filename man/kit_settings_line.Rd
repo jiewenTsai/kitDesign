@@ -2,21 +2,23 @@
 % Please edit documentation in R/details.R
 \name{kit_settings_line}
 \alias{kit_settings_line}
-\title{設定摘要：主要按鈕或結果上面一行小字}
+\title{Settings summary: a line of small text above the primary button or the result}
 \usage{
 kit_settings_line(parts, prefix = "本次：")
 }
 \arguments{
-\item{parts}{各段文字（空字串、\code{NA} 與 \code{NULL} 略過），用「 · 」接起來；
-也可以是已經寫好的一整句（kitsUI 的 \code{ui_settings_line(text)}，這時用 \code{prefix = NULL}）。}
+\item{parts}{The parts of the text (empty strings, \code{NA}, and \code{NULL} are skipped), joined with
+" · "; can also be a complete sentence written beforehand (kitsUI's \code{ui_settings_line(text)};
+in that case use \code{prefix = NULL}).}
 
-\item{prefix}{前面的字，預設「本次：」；\code{NULL} 不加。}
+\item{prefix}{The text in front, default "本次：" ("This run:"); \code{NULL} adds nothing.}
 }
 \value{
-\verb{<p class="kit-settings-line">}；沒有任何一段時是 \code{NULL}。
+\verb{<p class="kit-settings-line">}; \code{NULL} when there are no parts.
 }
 \description{
-例如「本次：5 個檔案 · ID：各檔各自 · 全勤樣本」。
+For example "本次：5 個檔案 · ID：各檔各自 · 全勤樣本" ("This run: 5 files · ID: per file ·
+complete-attendance sample").
 }
 \examples{
 kit_settings_line(c("5 個檔案", "ID：各檔各自", "全勤樣本"))

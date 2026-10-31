@@ -1,4 +1,4 @@
-# 中文網站（/zh/）。英文網站（預設，在根目錄）的設定在 pkgdown/en/_pkgdown.yml；
+# 中文網站（/zh/），函式說明用 pkgdown/zh/man/。英文網站（預設，在根目錄）的設定在 pkgdown/en/_pkgdown.yml；
 # 兩個一起建：source("pkgdown/build_site.R")
 url: https://jiewentsai.github.io/kitDesign/zh/
 lang: zh-TW

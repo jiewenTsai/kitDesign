@@ -2,20 +2,21 @@
 % Please edit documentation in R/tables.R
 \name{kit_dims}
 \alias{kit_dims}
-\title{維度描述：「5 列 × 7 欄」}
+\title{Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns")}
 \usage{
 kit_dims(nrow, ncol, preview_cols = NULL)
 }
 \arguments{
-\item{nrow, ncol}{列數、欄數。}
+\item{nrow, ncol}{Number of rows and columns.}
 
-\item{preview_cols}{畫面上只預覽前幾欄時給它（比欄數少時補一句「以下只預覽前 N 欄」）。}
+\item{preview_cols}{Give this when the screen previews only the first few columns (if fewer
+than the column count, adds "以下只預覽前 N 欄" ("previewing only the first N columns below")).}
 }
 \value{
-字串。
+A string.
 }
 \description{
-維度描述：「5 列 × 7 欄」
+Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns")
 }
 \examples{
 kit_dims(3418, 25)

@@ -3,51 +3,56 @@
 \name{kit_step_tabs_ui}
 \alias{kit_step_tabs_ui}
 \alias{kit_step_tabs_server}
-\title{步驟分頁模組（NavTabs）}
+\title{Step tabs module}
 \usage{
 kit_step_tabs_ui(id, ..., groups = NULL, selected = NULL, aside = NULL)
 
 kit_step_tabs_server(id, states = NULL, tips = NULL)
 }
 \arguments{
-\item{id}{模組的 id。}
+\item{id}{The module id.}
 
-\item{...}{\code{shiny::tabPanel()}（\code{value} 要寫）。}
+\item{...}{\code{shiny::tabPanel()}s (\code{value} is required).}
 
-\item{groups}{分組（\code{\link[=kit_navgroup]{kit_navgroup()}} 的 list）；\code{NULL} 是有順序的流程。}
+\item{groups}{Groups (a list of \code{\link[=kit_navgroup]{kit_navgroup()}}); \code{NULL} means an ordered flow.}
 
-\item{selected}{一開始的分頁（value）。}
+\item{selected}{The tab selected at the start (value).}
 
-\item{aside}{流程分頁裡不是流程一步的分頁（value）。}
+\item{aside}{Tabs in a flow that are not a step of the flow (value).}
 
-\item{states}{reactive（或函式）：每個分頁的狀態，具名字串向量或 list。值是
-\code{\link[=kit_status]{kit_status()}} 的狀態（\code{"success"}、\code{"warning"} 打 ✓；\code{"stale"} 拿掉 ✓），
-或直接寫 \code{"done"}、\code{"locked"}、\code{"ready"}。沒有列出的分頁不改。\code{NULL} 時不送狀態。}
+\item{states}{A reactive (or function): the state of each tab, a named character vector or list.
+Values are \code{\link[=kit_status]{kit_status()}} states (\code{"success"} and \code{"warning"} add a ✓; \code{"stale"} removes the
+✓), or directly \code{"done"}, \code{"locked"}, \code{"ready"}. Tabs not listed are left unchanged. With
+\code{NULL}, no states are sent.}
 
-\item{tips}{還不能做時滑過的說明：具名字串向量（或傳回它的 reactive），或一句話給全部。}
+\item{tips}{The hover text for tabs not yet available: a named character vector (or a reactive
+that returns one), or one sentence for all.}
 }
 \value{
-\code{kit_step_tabs_ui()}：分頁列與分頁。
+\code{kit_step_tabs_ui()}: the tab bar and the tabs.
 
-\code{kit_step_tabs_server()}：list，
+\code{kit_step_tabs_server()}: a list,
 \itemize{
-\item \code{selected}：reactive，現在的分頁（value）；
-\item \code{select(value)}：換到某個分頁；
-\item \code{states}：reactive，送到瀏覽器的狀態（\code{\link[=kit_tab_states]{kit_tab_states()}} 的結果）。
+\item \code{selected}: a reactive, the current tab (value);
+\item \code{select(value)}: switches to a tab;
+\item \code{states}: a reactive, the states sent to the browser (the result of \code{\link[=kit_tab_states]{kit_tab_states()}}).
 }
 }
 \description{
-兩種樣子，同一套狀態（做完 ✓、還不能做灰色＋原因、要重新執行 ✓ 拿掉）：
+Two looks, one set of states (done ✓; not yet available gray plus the reason; run again removes
+the ✓):
 }
 \details{
 \itemize{
-\item 有順序的流程（kitsUI）：不給 \code{groups}，\code{...} 的 \code{tabPanel()} 名稱用圈數字；
-\code{aside} 的分頁（例如「使用手冊」）虛線、放最右邊。
-\item 分組、不編號（kitJoin）：給 \code{groups}（\code{\link[=kit_navgroup]{kit_navgroup()}} 的 list）；分頁列是
-\code{\link[=kit_navgroups]{kit_navgroups()}}，真的分頁是藏起來的 \code{tabsetPanel()}。
+\item Ordered flow (kitsUI): do not pass \code{groups}; the \code{tabPanel()} names in \code{...} use circled
+numbers; \code{aside} tabs (for example "使用手冊", "User manual") are dashed and placed at the far
+right.
+\item Grouped, unnumbered (kitJoin): pass \code{groups} (a list of \code{\link[=kit_navgroup]{kit_navgroup()}}); the tab bar is
+\code{\link[=kit_navgroups]{kit_navgroups()}}, and the real tabs are a hidden \code{tabsetPanel()}.
 }
 
-分頁的 input 是 \code{input[["<id>-tabs"]]}；server 回傳的 \code{selected()} 是同一個值。
+The tabs' input is \code{input[["<id>-tabs"]]}; the \code{selected()} returned by the server is the same
+value.
 }
 \examples{
 if (interactive()) {
@@ -67,5 +72,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_flow_tabs]{kit_flow_tabs()}}、\code{\link[=kit_navgroups]{kit_navgroups()}}、\code{\link[=kit_tab_states]{kit_tab_states()}}（低階）
+\code{\link[=kit_flow_tabs]{kit_flow_tabs()}}, \code{\link[=kit_navgroups]{kit_navgroups()}}, \code{\link[=kit_tab_states]{kit_tab_states()}} (low-level)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotly.R
 \name{kit_plotly_style}
 \alias{kit_plotly_style}
-\title{plotly 圖套上 KIT 的樣子（Chart）}
+\title{Give a plotly chart the KIT look (chart)}
 \usage{
 kit_plotly_style(
   p,
@@ -15,68 +15,83 @@ kit_plotly_style(
 )
 }
 \arguments{
-\item{p}{plotly 圖（\code{plotly::plot_ly()}、kits 的 \code{plot()}；\code{plotly::plotly_build()} 過的也可以）。}
+\item{p}{A plotly chart (\code{plotly::plot_ly()}, kits' \code{plot()}; one already passed through
+\code{plotly::plotly_build()} also works).}
 
-\item{legend}{圖例放哪裡：
+\item{legend}{Where the legend goes:
 \itemize{
-\item \code{"auto"}（預設）：超過 4 項，或最長的一項超過 20 欄（中文字算 2 欄）時放在圖的下面、橫排、
-靠左；其他放在右邊。圖寬小於 600px（手機）時也放到下面，變寬時回到右邊（瀏覽器端判斷）。
-\item \code{"bottom"}：一律在下面；\code{"right"}：一律在右邊。
-\item \code{"keep"}：不動圖例的位置（只換字型）。
+\item \code{"auto"} (default): with more than 4 entries, or when the longest entry is wider than 20
+columns (a Chinese character counts as 2), the legend goes below the chart, horizontal,
+left-aligned; otherwise on the right. When the chart is narrower than 600px (phones) it also
+moves below, and returns to the right when the chart gets wider (decided in the browser).
+\item \code{"bottom"}: always below; \code{"right"}: always on the right.
+\item \code{"keep"}: leave the legend position alone (only change the font).
 }}
 
-\item{colorscale}{\code{TRUE}（預設）時熱圖類換成 \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}；\code{FALSE} 時保留原來的色階。}
+\item{colorscale}{When \code{TRUE} (default), heatmap-type traces switch to \code{\link[=kit_chart_sequential]{kit_chart_sequential()}};
+when \code{FALSE}, the original color scale is kept.}
 
-\item{fonts}{\code{TRUE}（預設）時附上 Google Fonts 的圓體（\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}），
-下載的單一 HTML 檔也是 app 的字型。}
+\item{fonts}{When \code{TRUE} (default), attaches the rounded typeface from Google Fonts
+(\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}), so a downloaded single HTML file also uses the app's typeface.}
 
-\item{filename}{工具列「下載成 PNG」的檔名（不含副檔名）。}
+\item{filename}{The file name (without extension) for the toolbar's "download as PNG".}
 
-\item{font_size}{內文字級（px）；其他字級跟著它算。}
+\item{font_size}{Body text size (px); the other sizes are derived from it.}
 
-\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）：熱圖的色階從它來（\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}）。
-預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。字、軸線、底色維持設計語言的墨色與白色。}
+\item{brand}{The brand (\code{\link[=kit_brand]{kit_brand()}}): the heatmap color scale comes from it
+(\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}). Defaults to \code{\link[=kit_current_brand]{kit_current_brand()}} (KIT when not set). Text, axis
+lines, and background keep the design language's ink and white.}
 }
 \value{
-plotly 圖（\code{plotly_build()} 過的）。
+A plotly chart (passed through \code{plotly_build()}).
 }
 \description{
-讓 plotly 圖和 app 的其他部分看起來是一套：字型、字級、顏色都用 KIT 的設計變數。
-只改樣子，不改資料（點、線、軸的範圍、刻度的位置、hover 的文字都不動）。
+Makes plotly charts look like part of the same app: typeface, text sizes, and colors all use
+KIT's design variables. Only the look changes, not the data (points, lines, axis ranges, tick
+positions, and hover text stay the same).
 }
 \details{
-改的地方：
+What changes:
 \itemize{
-\item \strong{字型}：全部用 app 的圓體 \verb{"Chiron GoRound TC", sans-serif}；字是 \code{nb-ink}（#141414），
-刻度是 \code{text-hint}（#5a5a5a）。字級：內文 \code{font_size}（預設 15px）、圖例與滑過的說明框小 1px、
-刻度小 2px、標題約 \code{h5}（\code{font_size} 的 1.2 倍）。
-\item \strong{標題}：靠左、粗體。圖寬放不下時在瀏覽器端換行（在中文字或空白之間斷開）。
-\item \strong{每一條軸}（\code{xaxis}、\code{xaxis2}…、\code{yaxis}…，包括 Wright map 這類並排的小圖）：
-軸線 \code{nb-ink} 1.5px、格線 \code{line-soft}（#e3ded2）、零線 \code{line}（#d9d4c5）、
-刻度朝外；不畫四邊的框（\code{mirror = FALSE}，並拿掉 kits 畫在每個小圖外面的黑框；
-KIT 設計語言：框裡面不再有框）。軸的標題與刻度放不下時自動加寬邊界（\code{automargin}）。
-\item \strong{底色}：白（圖放在白色卡片裡）；下載的 PNG 也是白底。
-\item \strong{顏色}：\code{colorway} 是 Okabe–Ito（\code{\link[=kit_chart_colors]{kit_chart_colors()}}）。plotly 自己給的預設色換成
-Okabe–Ito 同一個位置的顏色；\strong{kits 或 kitsUI 指定的顏色不動}（kitsUI 的角色色、
-類別換色都保留）。
-\item \strong{色階}（\code{colorscale = TRUE}）：熱圖類（heatmap、contour、histogram2d）換成
-\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}（極淡萊姆 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
-\item \strong{滑過的說明框}：白底、\code{nb-ink} 框、app 的字型。
-\item \strong{圖例}：app 的字型、沒有框。位置見 \code{legend}。
-\item \strong{工具列}：沒有 plotly 的標誌；只留「下載成 PNG」（白底、2 倍解析度）、放大、縮小、
-回到原來的範圍；介面文字是繁體中文（\code{zh-TW}）。
-\item \strong{邊界}：上下左右一樣小，軸、圖例、色條放不下時 plotly 自動加寬；不會切到字。
+\item \strong{Typeface}: everything uses the app's rounded typeface \verb{"Chiron GoRound TC", sans-serif};
+text is \code{nb-ink} (#141414), ticks are \code{text-hint} (#5a5a5a). Sizes: body \code{font_size} (default
+15px), legend and hover box 1px smaller, ticks 2px smaller, title about \code{h5} (1.2 times
+\code{font_size}).
+\item \strong{Title}: left-aligned, bold. When the chart is too narrow, it wraps in the browser (breaking
+between Chinese characters or at spaces).
+\item \strong{Every axis} (\code{xaxis}, \code{xaxis2}…, \code{yaxis}…, including side-by-side small charts such as a
+Wright map): axis line \code{nb-ink} 1.5px, grid lines \code{line-soft} (#e3ded2), zero line \code{line}
+(#d9d4c5), ticks outside; no frame on four sides (\code{mirror = FALSE}, and the black frame kits
+draws around each small chart is removed; KIT design language: no frames inside frames). When
+axis titles and ticks do not fit, the margins widen automatically (\code{automargin}).
+\item \strong{Background}: white (the chart sits in a white card); downloaded PNGs also have a white
+background.
+\item \strong{Colors}: \code{colorway} is Okabe–Ito (\code{\link[=kit_chart_colors]{kit_chart_colors()}}). plotly's own default colors are
+replaced with the Okabe–Ito color in the same position; \strong{colors set by kits or kitsUI stay
+unchanged} (kitsUI's role colors and category recoloring are kept).
+\item \strong{Color scale} (\code{colorscale = TRUE}): heatmap-type traces (heatmap, contour, histogram2d)
+switch to \code{\link[=kit_chart_sequential]{kit_chart_sequential()}} (very light lime → light lime → KIT green); the color bar's
+text and outline always get the new look.
+\item \strong{Hover box}: white background, \code{nb-ink} border, the app's typeface.
+\item \strong{Legend}: the app's typeface, no border. For position, see \code{legend}.
+\item \strong{Toolbar}: no plotly logo; only "download as PNG" (white background, 2x resolution), zoom
+in, zoom out, and reset to the original range remain; interface text is Traditional Chinese
+(\code{zh-TW}).
+\item \strong{Margins}: equally small on all sides; plotly widens them automatically when axes, legend,
+or color bar do not fit, so no text is cut off.
 }
 
-不改的地方：資料、軸的範圍與刻度、trace 的顏色（plotly 的預設色以外）、點的形狀、線的
-粗細與虛線、透明度、hover 的文字、圖例的文字、標題與軸標題的文字（只加粗體）、
-圖的高度與寬度、\code{shapes}（kits 的小圖外框以外，例如適配度圖的灰色帶）。
+What does not change: data, axis ranges and ticks, trace colors (other than plotly's default
+colors), marker shapes, line widths and dashes, opacity, hover text, legend text, the text of
+titles and axis titles (only bold is added), chart height and width, and \code{shapes} (other than
+kits' small-chart frames; for example, the gray band in fit plots).
 
-\strong{和 kits、kitsUI 一起用時的順序}：kits 的 \code{plot()} → kitsUI 換色
-（\code{kit_chart_categorical()}、\code{kit_chart_role()}）→ kitsUI 換中文（\code{kit_chart_zh()}）→
-\code{kit_plotly_style()}。換色和這個函式的順序可以對調（這裡不動指定的顏色），但\strong{換中文要在前面}：
-這裡把標題加上 \verb{<b>}，之後 \code{kit_chart_zh()} 就認不得原來的英文標題了。
-同一張圖套兩次和套一次一樣。
+\strong{Order when used with kits and kitsUI}: kits' \code{plot()} → kitsUI recoloring
+(\code{kit_chart_categorical()}, \code{kit_chart_role()}) → kitsUI Chinese labels (\code{kit_chart_zh()}) →
+\code{kit_plotly_style()}. Recoloring and this function can be swapped (this function does not touch
+set colors), but \strong{Chinese labels must come first}: this function wraps the title in \verb{<b>},
+after which \code{kit_chart_zh()} no longer recognizes the original English title.
+Applying it twice to the same chart is the same as applying it once.
 }
 \examples{
 if (requireNamespace("plotly", quietly = TRUE)) {
@@ -89,5 +104,5 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 }
 }
 \seealso{
-\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}、\code{\link[=kit_chart_colors]{kit_chart_colors()}}、\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
+\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}, \code{\link[=kit_chart_colors]{kit_chart_colors()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
 }

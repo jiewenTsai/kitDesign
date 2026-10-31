@@ -2,7 +2,7 @@
 % Please edit documentation in R/download.R
 \name{kit_download_button}
 \alias{kit_download_button}
-\title{下載按鈕（DownloadButton）}
+\title{Download button}
 \usage{
 kit_download_button(
   session,
@@ -15,48 +15,54 @@ kit_download_button(
 )
 }
 \arguments{
-\item{session}{模組的 session（id 會自動加上 namespace）。}
+\item{session}{The module's session (the namespace is added to the id automatically).}
 
-\item{id}{按鈕 id（不含 namespace）。}
+\item{id}{The button id (without namespace).}
 
-\item{label}{按鈕的字，例如「下載 CSV」。}
+\item{label}{The button text, e.g. "下載 CSV" ("Download CSV").}
 
-\item{filename}{下載檔名（字串；可以有中文與空白）。}
+\item{filename}{The download file name (a string; may contain Chinese and spaces).}
 
-\item{content}{\verb{function(file)}：把檔案寫到 \code{file}。}
+\item{content}{\verb{function(file)}: writes the file to \code{file}.}
 
-\item{class}{另外加的 class，例如 \code{kit_btn_class("secondary")}、\code{"btn-primary"}。}
+\item{class}{An extra class, e.g. \code{kit_btn_class("secondary")}, \code{"btn-primary"}.}
 
-\item{app}{app 的名稱：log 訊息用它；檔名全是中文時，舊瀏覽器用的 ASCII 備用名是它的小寫
-（「第一波.csv」→「kitjoin.csv」）。預設是 \code{getOption("kitDesign.app", "kit")}：
-app 在 \code{.onLoad()} 設定一次。}
+\item{app}{The app name: used in log messages; when the file name is all Chinese, the ASCII
+fallback name for old browsers is its lowercase form ("第一波.csv" → "kitjoin.csv").
+Defaults to \code{getOption("kitDesign.app", "kit")}: the app sets it once in \code{.onLoad()}.}
 }
 \value{
-\verb{<a class="btn btn-default kit-download" download="檔名">}。
+\verb{<a class="btn btn-default kit-download" download="檔名">} (\code{download} holds the file
+name).
 }
 \description{
-外觀和 \code{\link[shiny:downloadButton]{shiny::downloadButton()}} 一樣，但中文檔名在每個瀏覽器都存得對：網址最後一段、
-\code{Content-Disposition} 標頭（\code{filename} 與 \verb{filename*}）、\verb{<a download>} 都是同一個檔名。
-放在 \code{renderUI()} 裡：重畫時重新註冊，網址跟著換，不會拿到舊檔。
+Looks the same as \code{\link[shiny:downloadButton]{shiny::downloadButton()}}, but Chinese file names save correctly in every
+browser: the last part of the URL, the \code{Content-Disposition} header (\code{filename} and
+\verb{filename*}), and \verb{<a download>} all carry the same file name.
+Put it inside \code{renderUI()}: it is registered again on each redraw, the URL changes with it, and
+you never get a stale file.
 }
 \details{
-檔案在按下載時才寫（\code{content(file)}，可以讀 reactive）。寫檔出錯時：錯誤寫進 log
-（「\if{html}{\out{<app>}} 下載失敗（檔名）：…」）、這個 session 跳出紅色通知（不會自己消失）、
-回應 500 與同一句話。\code{\link[=kit_abort]{kit_abort()}} 的訊息照原文給使用者看，其他錯誤不給內部訊息。
+The file is written only when the user clicks download (\code{content(file)}, which can read
+reactives). If writing fails: the error goes to the log ("\if{html}{\out{<app>}} 下載失敗（檔名）：…", "\if{html}{\out{<app>}}
+download failed (file name): …"), this session shows a red notification (which does not
+disappear on its own), and the response is 500 with the same sentence. Messages from
+\code{\link[=kit_abort]{kit_abort()}} are shown to the user as written; other errors do not expose internal messages.
 
-\code{Content-Type} 照副檔名：\code{.csv}、\code{.zip}、\code{.html} 用各自的 MIME；其他（\code{.sav}、\code{.csv.gz}）
-都是 \code{application/octet-stream}，照 MIME 補副檔名的瀏覽器才不會多加一個副檔名。
+\code{Content-Type} follows the extension: \code{.csv}, \code{.zip}, and \code{.html} get their own MIME types;
+everything else (\code{.sav}, \code{.csv.gz}) is \code{application/octet-stream}, so browsers that add an
+extension based on MIME type don't add an extra one.
 }
 \examples{
 if (interactive()) {
   server <- function(input, output, session) {
     output$dl_ui <- shiny::renderUI(kit_download_button(
-      session, "dl", "下載 CSV", "第一波 資料.csv",
+      session, "dl", "下載 CSV", "第一波 資料.csv",   # "Download CSV", "Wave 1 data.csv"
       function(file) utils::write.csv(mtcars, file)
     ))
   }
 }
 }
 \seealso{
-\code{\link[=kit_test_download]{kit_test_download()}}（測試用）
+\code{\link[=kit_test_download]{kit_test_download()}} (for tests)
 }

@@ -2,25 +2,26 @@
 % Please edit documentation in R/status.R
 \name{kit_notify}
 \alias{kit_notify}
-\title{顯示通知（Shiny 的 showNotification）}
+\title{Show a notification (Shiny's showNotification)}
 \usage{
 kit_notify(st, session = shiny::getDefaultReactiveDomain(), duration = NULL)
 }
 \arguments{
-\item{st}{\code{\link[=kit_status]{kit_status()}} 物件，或一個字串（一般通知）。}
+\item{st}{A \code{\link[=kit_status]{kit_status()}} object, or a string (a plain notification).}
 
-\item{session}{Shiny session（預設是目前的 session）。}
+\item{session}{The Shiny session (defaults to the current session).}
 
-\item{duration}{顯示幾秒；\code{NULL} 時照上面的預設。}
+\item{duration}{How many seconds to show it; when \code{NULL}, the defaults above apply.}
 }
 \value{
-通知的 id（不可見）；\code{"idle"} 或沒有 session 時是 \code{NULL}。
+The notification id (invisible); \code{NULL} for \code{"idle"} or when there is no session.
 }
 \description{
-【停下來】用紅色、顯示 10 秒；其他用一般樣式、顯示 6 秒。
+【停下來】 (stopped) is red and shows for 10 seconds; everything else uses the regular style and
+shows for 6 seconds.
 }
 \examples{
 if (interactive()) {
-  kit_notify(kit_done_status("串接完成。"))
+  kit_notify(kit_done_status("串接完成。"))  # "Join done."
 }
 }

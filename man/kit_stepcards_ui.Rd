@@ -3,7 +3,7 @@
 \name{kit_stepcards_ui}
 \alias{kit_stepcards_ui}
 \alias{kit_stepcards_server}
-\title{步驟卡模組（StepCard）}
+\title{Step card module}
 \usage{
 kit_stepcards_ui(id, ..., next_label = "對，下一步")
 
@@ -16,40 +16,44 @@ kit_stepcards_server(
 )
 }
 \arguments{
-\item{id}{模組的 id。}
+\item{id}{The module id.}
 
-\item{...}{每一步的內容（一步一個 tag 或 \code{tagList()}，依順序）。}
+\item{...}{The content of each step (one tag or \code{tagList()} per step, in order).}
 
-\item{next_label}{每一步最下面的按鈕字。}
+\item{next_label}{The button text at the bottom of each step.}
 
-\item{titles}{每一步的標題（字串向量，長度＝步數）。}
+\item{titles}{The title of each step (character vector, length = number of steps).}
 
-\item{summaries}{每一步做完時的摘要：list，一步一個（字串、函式或 reactive；\code{NULL} 不顯示）。}
+\item{summaries}{The summary shown when each step is done: a list, one per step (a string,
+function, or reactive; \code{NULL} shows nothing).}
 
-\item{checks}{按「對，下一步」前的檢查：list，一步一個函式，傳回還差的事（字串向量；
-長度 0 = 可以往下）。還差時這一步不算做完，按鈕上面列出「還差：…」（\code{\link[=kit_problems]{kit_problems()}}）。}
+\item{checks}{Checks before "對，下一步" ("Yes, next step") is pressed: a list, one function per
+step, returning what is still needed (character vector; length 0 = can move on). While
+something is still needed, the step is not done, and "還差：…" ("Still needed: …") is listed
+above the button (\code{\link[=kit_problems]{kit_problems()}}).}
 
-\item{start}{一開始打開第幾步。}
+\item{start}{Which step is open at the start.}
 }
 \value{
-\code{kit_stepcards_ui()}：\code{tagList()}，裡面是一張張 \code{\link[=kit_step_card]{kit_step_card()}}。
+\code{kit_stepcards_ui()}: a \code{tagList()} of \code{\link[=kit_step_card]{kit_step_card()}}s.
 
-\code{kit_stepcards_server()}：list，
+\code{kit_stepcards_server()}: a list,
 \itemize{
-\item \code{current}：reactive，現在打開第幾步（都做完時是 0）；
-\item \code{done}：reactive，每一步做完了沒有（logical 向量）；
-\item \code{open(k)}：打開第 k 步（例如資料改了，要回第 1 步）；
-\item \code{reset()}：全部回到還沒做，打開第 1 步。
+\item \code{current}: a reactive, which step is open now (0 when all are done);
+\item \code{done}: a reactive, whether each step is done (logical vector);
+\item \code{open(k)}: opens step k (for example, back to step 1 when the data change);
+\item \code{reset()}: marks all steps as not done and opens step 1.
 }
 }
 \description{
-一頁裡有好幾步、而且有先後時用：一次只打開一步，做完的收成一行（✓、摘要、「改」），
-還不能做的是灰的。每一步最下面是「對，下一步」（一般按鈕）；按了以後這一步做完、
-打開下一個還沒做完的步驟。做完的按「改」回去。
+Use when a page has several steps that must be done in order: only one step is open at a time;
+finished steps collapse to one line (✓, summary, "改" ("Edit")), and steps not yet available are
+gray. Each step ends with "對，下一步" ("Yes, next step") (a regular button); pressing it marks
+the step done and opens the next unfinished step. Press "改" on a finished step to go back.
 }
 \details{
-\code{kit_stepcards_ui()} 放每一步的內容（依順序）；\code{kit_stepcards_server()} 給每一步的標題、
-做完時的摘要、按「對，下一步」前的檢查。
+\code{kit_stepcards_ui()} holds the content of each step (in order); \code{kit_stepcards_server()} gives
+each step's title, its summary when done, and the check before "對，下一步" is pressed.
 }
 \examples{
 if (interactive()) {
@@ -70,5 +74,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_step_card]{kit_step_card()}}、\code{\link[=kit_step_head]{kit_step_head()}}（低階）
+\code{\link[=kit_step_card]{kit_step_card()}}, \code{\link[=kit_step_head]{kit_step_head()}} (low-level)
 }

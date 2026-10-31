@@ -3,7 +3,7 @@
 \name{kit_code_panel_ui}
 \alias{kit_code_panel_ui}
 \alias{kit_code_panel_server}
-\title{「用 R 怎麼做」模組（CodePanel）}
+\title{"How to do it in R" module (code panel)}
 \usage{
 kit_code_panel_ui(id, title = "用 R 怎麼做", open = FALSE)
 
@@ -16,25 +16,28 @@ kit_code_panel_server(
 )
 }
 \arguments{
-\item{id}{模組的 id。}
+\item{id}{The module id.}
 
-\item{title}{收合標題。}
+\item{title}{The collapsible title.}
 
-\item{open}{一開始要不要打開。}
+\item{open}{Whether it starts open.}
 
-\item{code}{傳回程式碼的函式或 reactive：一個字串、\code{\link[=kit_code]{kit_code()}}，或它們的具名 list
-（見 \code{\link[=kit_code_blocks]{kit_code_blocks()}} 的 \code{snips}）。}
+\item{code}{A function or reactive returning the code: a string, a \code{\link[=kit_code]{kit_code()}}, or a named list
+of them (see \code{snips} in \code{\link[=kit_code_blocks]{kit_code_blocks()}}).}
 
-\item{note, width, empty}{見 \code{\link[=kit_render_code_panel]{kit_render_code_panel()}}。}
+\item{note, width, empty}{See \code{\link[=kit_render_code_panel]{kit_render_code_panel()}}.}
 }
 \value{
-\code{kit_code_panel_ui()}：\verb{<details class="kit-detail">}，放在 \code{\link[=kit_details_row]{kit_details_row()}} 的最後。
+\code{kit_code_panel_ui()}: \verb{<details class="kit-detail">}, placed last in
+\code{\link[=kit_details_row]{kit_details_row()}}.
 
-\code{kit_code_panel_server()}：reactive，現在的程式碼（\code{\link[=kit_code]{kit_code()}} 的 list；還沒有時是 \code{NULL}）。
+\code{kit_code_panel_server()}: a reactive with the current code (a list of \code{\link[=kit_code]{kit_code()}}; \code{NULL}
+when there is none yet).
 }
 \description{
-細節列裡的一個收合區塊；打開時才算程式碼（收起來時 Shiny 不畫裡面的 output），
-畫成一個或幾個 \code{\link[=kit_code]{kit_code()}}（每行最多 70 欄、附「複製」）。
+A collapsible block in the details row; the code is computed only when it is opened (Shiny does
+not render outputs inside a collapsed block), and rendered as one or more \code{\link[=kit_code]{kit_code()}} (at most
+70 columns per line, with "Copy").
 }
 \examples{
 if (interactive()) {
@@ -46,5 +49,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_code_panel]{kit_code_panel()}}、\code{\link[=kit_render_code_panel]{kit_render_code_panel()}}（低階）
+\code{\link[=kit_code_panel]{kit_code_panel()}}, \code{\link[=kit_render_code_panel]{kit_render_code_panel()}} (low-level)
 }

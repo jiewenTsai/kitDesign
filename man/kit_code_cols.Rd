@@ -2,23 +2,23 @@
 % Please edit documentation in R/code_wrap.R
 \name{kit_code_cols}
 \alias{kit_code_cols}
-\title{每行的顯示寬度（中日韓字、全形字算 2 欄）}
+\title{Display width of each line (CJK and full-width characters count as 2 columns)}
 \usage{
 kit_code_cols(x)
 }
 \arguments{
-\item{x}{字串向量（一個元素一行）。}
+\item{x}{A character vector (one element per line).}
 }
 \value{
-整數向量：每一行幾欄。
+An integer vector: the number of columns in each line.
 }
 \description{
-KIT 的程式碼範例與說明一行最多約 70 欄：英文字母、數字、符號算 1 欄，
-中文字（與其他全形字）算 2 欄。
+KIT code examples and notes are at most about 70 columns per line: Latin letters, digits, and
+symbols count as 1 column, Chinese characters (and other full-width characters) count as 2.
 }
 \examples{
 kit_code_cols(c("abc", "讀 CSV", ""))
-# 哪幾行超過 70 欄
+# Which lines are wider than 70 columns
 lines <- c("x <- 1", strrep("中", 36))
 which(kit_code_cols(lines) > 70)
 }

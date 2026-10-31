@@ -1,17 +1,18 @@
 # 細節列、進階設定、設定摘要（Details）
 
-#' 進階設定：預設收起
+#' Advanced settings: collapsed by default
 #'
-#' 設定區裡不常改的選項（文字欄比對、ID 型別轉換、反向題規則、分隔符號…）。
-#' 一行小字標題；打開後左邊一條淡線，和其他設定分開（不加框）。
+#' Options in a settings area that are rarely changed (text column matching, ID type conversion,
+#' reverse-scored item rules, separators…). A one-line small-print title; when opened, a faint
+#' line on the left sets it apart from the other settings (no box).
 #'
-#' @param ... 裡面的設定。
-#' @param title 收合標題（可以是 tag，例如後面接現在的設定）。
-#' @param open 一開始要不要打開。
-#' @param id `<details>` 的 id（給 [kit_open_details()] 打開用）。
-#' @return `<details class="kit-advanced">`。
+#' @param ... The settings inside.
+#' @param title The collapsible title (can be a tag, e.g. followed by the current settings).
+#' @param open Whether it starts open.
+#' @param id The id of the `<details>` (used by [kit_open_details()] to open it).
+#' @return `<details class="kit-advanced">`.
 #' @examples
-#' kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))
+#' kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))  # "Trim spaces before matching"
 #' @export
 # 原文：進階設定
 kit_advanced <- function(..., title = "\u9032\u968e\u8a2d\u5b9a", open = FALSE, id = NULL) {
@@ -22,33 +23,37 @@ kit_advanced <- function(..., title = "\u9032\u968e\u8a2d\u5b9a", open = FALSE, 
   )
 }
 
-#' 一排細節（Details）
+#' Details row
 #'
-#' 結果下面一排收起來的小字標題（▸ 預覽　▸ 這一回合的紀錄　▸ 用 R 怎麼做）；
-#' 打開的那一個佔一整行，內容不加框。「用 R 怎麼做」永遠放在最後一個。
+#' A row of collapsed small-print titles below the result (▸ 預覽 ▸ 這一回合的紀錄 ▸ 用 R 怎麼做;
+#' "Preview", "Log for this round", "How to do it in R"). The one that is open takes a full line,
+#' and its content has no box. "用 R 怎麼做" ("How to do it in R") always goes last.
 #'
-#' @param ... [kit_detail()]（或 [kit_code_panel()]）。
-#' @return `<div class="kit-details">`。
+#' @param ... [kit_detail()] (or [kit_code_panel()]).
+#' @return `<div class="kit-details">`.
 #' @examples
 #' kit_details_row(
 #'   kit_detail("預覽", "前 10 列"),
 #'   kit_detail("這一回合的紀錄", "沒有提醒。")
 #' )
+#' # "Preview" / "First 10 rows"; "Log for this round" / "No notes."
 #' @export
 kit_details_row <- function(...) {
   shiny::tags$div(class = "kit-details", ...)
 }
 
-#' 一個細節：預設收起，標題一行小字
+#' One detail: collapsed by default, a one-line small-print title
 #'
-#' 收起來的 output 要打開才算出來：`kit.js` 會在打開時通知 Shiny 重新檢查。
+#' Outputs inside a collapsed detail are computed only when it is opened: `kit.js` tells Shiny to
+#' check again when it opens.
 #'
-#' @param title 標題（名詞：「題目參數」「這一回合的紀錄」）。
-#' @param ... 內容。
-#' @param open 一開始要不要打開。
-#' @return `<details class="kit-detail">`。
+#' @param title The title (a noun: "題目參數" ("Item parameters"), "這一回合的紀錄" ("Log for this
+#'   round")).
+#' @param ... The content.
+#' @param open Whether it starts open.
+#' @return `<details class="kit-detail">`.
 #' @examples
-#' kit_detail("預覽", shiny::tags$p("前 10 列"))
+#' kit_detail("預覽", shiny::tags$p("前 10 列"))  # "Preview", "First 10 rows"
 #' @export
 kit_detail <- function(title, ..., open = FALSE) {
   shiny::tags$details(
@@ -58,14 +63,16 @@ kit_detail <- function(title, ..., open = FALSE) {
   )
 }
 
-#' 設定摘要：主要按鈕或結果上面一行小字
+#' Settings summary: a line of small text above the primary button or the result
 #'
-#' 例如「本次：5 個檔案 · ID：各檔各自 · 全勤樣本」。
+#' For example "本次：5 個檔案 · ID：各檔各自 · 全勤樣本" ("This run: 5 files · ID: per file ·
+#' complete-attendance sample").
 #'
-#' @param parts 各段文字（空字串、`NA` 與 `NULL` 略過），用「 · 」接起來；
-#'   也可以是已經寫好的一整句（kitsUI 的 `ui_settings_line(text)`，這時用 `prefix = NULL`）。
-#' @param prefix 前面的字，預設「本次：」；`NULL` 不加。
-#' @return `<p class="kit-settings-line">`；沒有任何一段時是 `NULL`。
+#' @param parts The parts of the text (empty strings, `NA`, and `NULL` are skipped), joined with
+#'   " · "; can also be a complete sentence written beforehand (kitsUI's `ui_settings_line(text)`;
+#'   in that case use `prefix = NULL`).
+#' @param prefix The text in front, default "本次：" ("This run:"); `NULL` adds nothing.
+#' @return `<p class="kit-settings-line">`; `NULL` when there are no parts.
 #' @examples
 #' kit_settings_line(c("5 個檔案", "ID：各檔各自", "全勤樣本"))
 #' kit_settings_line("本回合 R1：M03、M36 · 參照世代 M03", prefix = NULL)

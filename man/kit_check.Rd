@@ -5,7 +5,7 @@
 \alias{as.tags.kit_check}
 \alias{format.kit_check}
 \alias{print.kit_check}
-\title{檢查清單的一列（Checklist）}
+\title{One checklist row}
 \usage{
 kit_check(state = c("todo", "ok", "note"), title, why = "", actions = NULL)
 
@@ -16,36 +16,40 @@ kit_check(state = c("todo", "ok", "note"), title, why = "", actions = NULL)
 \method{print}{kit_check}(x, ...)
 }
 \arguments{
-\item{state}{\code{"todo"}、\code{"ok"} 或 \code{"note"}。}
+\item{state}{\code{"todo"}, \code{"ok"}, or \code{"note"}.}
 
-\item{title}{一句話（字串）。}
+\item{title}{One sentence (a string).}
 
-\item{why}{下面的小字（為什麼）；\code{""} 或長度 0 不顯示。（kitJoin 的 \code{kitsdata_check()} 叫 \code{text}）}
+\item{why}{The small print below (why); \code{""} or length 0 shows nothing. (kitJoin's
+\code{kitsdata_check()} calls it \code{text}.)}
 
-\item{actions}{決定的按鈕（tag 或 tag 的 list）；放在說明下面。}
+\item{actions}{Buttons for the decision (a tag or list of tags); placed below the explanation.}
 
-\item{x}{\code{kit_check} 物件。}
+\item{x}{A \code{kit_check} object.}
 
-\item{...}{不用。}
+\item{...}{Not used.}
 }
 \value{
-\code{kit_check} 物件。
+A \code{kit_check} object.
 }
 \description{
-一個 S3 值物件（class \code{kit_check}）：建構時檢查內容；有 \code{\link[htmltools:as.tags]{htmltools::as.tags()}} 方法，
-直接放進頁面就畫成 \verb{<li class="kit-check">}。通常放進 \code{\link[=kit_checklist]{kit_checklist()}}。
+An S3 value object (class \code{kit_check}): its content is checked when it is built; it has an
+\code{\link[htmltools:as.tags]{htmltools::as.tags()}} method, so putting it straight into a page renders \verb{<li class="kit-check">}.
+Usually placed inside \code{\link[=kit_checklist]{kit_checklist()}}.
 }
 \details{
-左邊一個記號，前面有看不見的文字（螢幕閱讀器會念）：
+A mark on the left, preceded by hidden text (read by screen readers):
 \itemize{
-\item \code{"todo"}：\strong{!} 要決定（「要決定：」）。粗體一句話，下面一行小字說為什麼，再下面是決定的按鈕。
-\item \code{"ok"}：\strong{✓} 沒問題，或已經決定（「沒問題：」）。字重 500。
-\item \code{"note"}：\strong{i} 提醒，不用決定（「提醒：」）。
+\item \code{"todo"}: \strong{!} needs a decision ("要決定：", "To decide:"). One bold sentence, a line of small
+print below saying why, and the decision buttons below that.
+\item \code{"ok"}: \strong{✓} fine, or already decided ("沒問題：", "OK:"). Font weight 500.
+\item \code{"note"}: \strong{i} a reminder, no decision needed ("提醒：", "Note:").
 }
 
-建議的選項放第一個，按鈕上寫「（建議）」。
+Put the recommended option first and write "（建議）" ("(recommended)") on its button.
 }
 \examples{
 kit_check("todo", "有 3 題的分數從 1 開始", "kits 要的分數是 0、1、2…。")
-htmltools::as.tags(kit_check("ok", "45 題的分數都是整數"))
+# "3 items have scores starting at 1" / "kits needs scores 0, 1, 2…"
+htmltools::as.tags(kit_check("ok", "45 題的分數都是整數"))  # "All 45 items have integer scores"
 }

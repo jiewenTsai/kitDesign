@@ -4,25 +4,26 @@
 # 以 Bootswatch Brite 為底（bslib 0.11.0 起才有），套 KIT 的顏色與 neo-brutalism 樣式
 # （inst/www/kit-brite.css；原本是 kitJoin 與 kitsUI 各一份的 kit_css_brite()）。
 
-#' KIT 的 bslib 主題
+#' KIT's bslib theme
 #'
-#' 以 Bootswatch Brite 為底（bslib 0.11.0 起才有），換成 KIT 的顏色；全文用圓體
-#' Chiron GoRound TC，程式碼用 JetBrains Mono。兩種字型都由瀏覽器向 Google Fonts
-#' 按需下載（`local = FALSE`）：CJK 字型切成上百個 unicode-range 片段，
-#' 避免伺服器啟動時抓下全部字檔。
+#' Based on Bootswatch Brite (available from bslib 0.11.0), with KIT's colors; all text uses the
+#' rounded typeface Chiron GoRound TC, code uses JetBrains Mono. Both typefaces are downloaded by
+#' the browser from Google Fonts on demand (`local = FALSE`): CJK typefaces are split into hundreds
+#' of unicode-range pieces, so the server does not fetch every font file at startup.
 #'
-#' 通常不用自己呼叫：[kit_page()] 已經用了它。
+#' You usually do not need to call it yourself: [kit_page()] already uses it.
 #'
-#' 顏色從品牌來（[kit_brand()]）：`primary`、`success`、`navbar-bg`、`link-color` 是品牌的
-#' `primary`，`link-hover-color` 是 `primary_hover`，`body-bg` 是 `page`，`border-color` 是 `ink`。
-#' `info`、`warning`、`danger`、`secondary` 是 Bootstrap 自己用的深色，不跟著品牌換
-#' （提示框、狀態框的底色在 CSS 的 `--nb-*` 變數裡，跟著品牌換）。
-#' 不讀 brand.yml（`bslib::bs_theme(brand = FALSE)`）：工作目錄或上層有 `_brand.yml`
-#' （例如 `brand/_brand.yml`）時，主題也不會跟著變。
+#' Colors come from the brand ([kit_brand()]): `primary`, `success`, `navbar-bg`, and `link-color`
+#' are the brand's `primary`; `link-hover-color` is `primary_hover`; `body-bg` is `page`;
+#' `border-color` is `ink`. `info`, `warning`, `danger`, and `secondary` are Bootstrap's own dark
+#' colors and do not change with the brand (the background colors of callouts and status boxes are
+#' in the CSS `--nb-*` variables, which do change with the brand).
+#' brand.yml is not read (`bslib::bs_theme(brand = FALSE)`): when the working directory or a parent
+#' has a `_brand.yml` (for example `brand/_brand.yml`), the theme does not change.
 #'
-#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
-#' @return [bslib::bs_theme()] 物件。
-#' @seealso [kit_page()]、[use_kit()]、[kit_brand()]
+#' @param brand The brand ([kit_brand()]); defaults to [kit_current_brand()] (KIT when not set).
+#' @return A [bslib::bs_theme()] object.
+#' @seealso [kit_page()], [use_kit()], [kit_brand()]
 #' @examples
 #' theme <- kit_theme()
 #' bslib::theme_bootswatch(theme)
@@ -74,19 +75,22 @@ kit_theme <- function(brand = kit_current_brand()) {
   )
 }
 
-#' KIT 的樣式與瀏覽器端小程式（htmltools 的 dependency）
+#' KIT styles and browser-side scripts (an htmltools dependency)
 #'
-#' 放進頁面任何地方都可以（htmltools 會把它搬到 `<head>`）。裡面有：
+#' Can go anywhere in the page (htmltools moves it into `<head>`). It contains:
 #'
-#' - `kit-base.css`：頁首、說明框、提示框等基本樣式（原本的 `kit_css()`、`kit_css_guide()`）。
-#' - `kit-brite.css`：KIT 的 neo-brutalism 樣式（原本的 `kit_css_brite()`）。
-#' - `kit-design.css`：kitDesign 新加的少數規則（頁首排版、流程分頁的虛線分頁、程式碼框的寬度）。
-#' - `kit.js`：收合區塊、分頁列、分頁狀態、捲到結果、離開前提醒、「複製」按鈕。
+#' - `kit-base.css`: basic styles for the header, guide boxes, callouts, and so on (formerly
+#'   `kit_css()`, `kit_css_guide()`).
+#' - `kit-brite.css`: KIT's neo-brutalism styles (formerly `kit_css_brite()`).
+#' - `kit-design.css`: the few rules kitDesign adds (header layout, dashed tabs in flow tabs, code
+#'   box width).
+#' - `kit.js`: collapsible sections, tab bars, tab states, scrolling to results, the reminder before
+#'   leaving, and the "複製" ("Copy") button.
 #'
-#' 用 [kit_page()] 時已經加好了；自己用 `bslib::page_*()` 組頁面時才需要放
-#' `use_kit()`，並把 `theme = kit_theme()` 傳給頁面。
+#' [kit_page()] already adds it; you only need to add `use_kit()` when you build the page yourself
+#' with `bslib::page_*()`, and pass `theme = kit_theme()` to the page.
 #'
-#' @return [htmltools::htmlDependency()] 物件。
+#' @return An [htmltools::htmlDependency()] object.
 #' @examples
 #' use_kit()
 #' @export
@@ -102,36 +106,42 @@ use_kit <- function() {
   )
 }
 
-#' kitDesign 自己的版本（htmlDependency 用）
+#' kitDesign's own version (for htmlDependency)
 #' @noRd
 kit_pkg_version <- function() {
   as.character(utils::packageVersion("kitDesign"))
 }
 
-#' KIT 的頁面：主題、樣式、頁首，一次設定好
+#' A KIT page: theme, styles, and header set up in one call
 #'
-#' 包住 `bslib::page_fluid(lang = "zh-Hant-TW", theme = kit_theme(), use_kit(), kit_header(...), ...)`。
-#' 頁首下面接著放分頁列（[kit_navgroups()] 或 [kit_flow_tabs()]）與各分頁的內容。
+#' Wraps
+#' `bslib::page_fluid(lang = "zh-Hant-TW", theme = kit_theme(), use_kit(), kit_header(...), ...)`.
+#' Below the header, put the tab bar ([kit_navgroups()] or [kit_flow_tabs()]) and the content of
+#' each tab.
 #'
-#' @param title 工具名稱（頁首的 h1，也是瀏覽器分頁的標題），例如「KIT 資料串接工具」。
-#' @param subtitle 副標（粗體），例如資料庫名稱「臺灣幼兒發展調查資料庫」。
-#' @param ... 頁面的內容。
-#' @param tagline 接在副標後面的一句（例如「跨波次資料處理」）；`NULL` 不顯示。
-#' @param version,date 頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
-#'   `kit_app_description("kitJoin")`。
-#' @param package app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
-#'   回報問題時一看就知道是哪個 app 的哪一版。`NULL`（預設）不寫，和以前一樣。
-#' @param logo 頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：`TRUE`（標誌檔由
-#'   htmlDependency 提供，Shiny 裡用）、`"inline"`（標誌直接寫進頁面，給沒有 Shiny 的
-#'   單一 HTML 檔，例如使用手冊）、`FALSE`。
-#' @param brand 品牌：標誌、分頁圖示、顏色（[kit_brand()]）。預設是 [kit_current_brand()]：
-#'   沒有設定 `options(kitDesign.brand = )` 時是 KIT。
-#' @param meta_extra 版本行後面再接的字（例如「kits 0.25.0」）。
-#' @param show_kitdesign 版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
-#'   回報問題時兩個版本都看得到。
-#' @param window_title 瀏覽器分頁的標題（預設和 `title` 一樣）。
-#' @return 一個完整的頁面（`bslib::page_fluid()`）。
-#' @seealso [kit_header()]、[kit_app_description()]
+#' @param title The tool name (the header's h1, also the browser tab title), for example
+#'   "KIT 資料串接工具" ("KIT data join tool").
+#' @param subtitle The subtitle (bold), for example the database name "臺灣幼兒發展調查資料庫" (the
+#'   KIT database).
+#' @param ... The page content.
+#' @param tagline A phrase after the subtitle (for example "跨波次資料處理", "cross-wave data
+#'   processing"); `NULL` shows nothing.
+#' @param version,date The version and date on the header's version line, usually read from the
+#'   app's own DESCRIPTION: `kit_app_description("kitJoin")`.
+#' @param package The app's package name, written at the start of the version line:
+#'   "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which
+#'   version. `NULL` (the default) writes no name, as before.
+#' @param logo Whether the header shows the brand logo (KIT's is the bean plus the KIT wordmark):
+#'   `TRUE` (the logo file comes from an htmlDependency; use in Shiny), `"inline"` (the logo is
+#'   written into the page, for single HTML files without Shiny, such as user manuals), or `FALSE`.
+#' @param brand The brand: logo, tab icon, and colors ([kit_brand()]). Defaults to
+#'   [kit_current_brand()]: KIT when `options(kitDesign.brand = )` is not set.
+#' @param meta_extra Text added after the version line (for example "kits 0.25.0").
+#' @param show_kitdesign Whether to add the kitDesign version after the version line
+#'   ("kitDesign 0.1.0"), so both versions are visible when someone reports a problem.
+#' @param window_title The browser tab title (defaults to `title`).
+#' @return A complete page (`bslib::page_fluid()`).
+#' @seealso [kit_header()], [kit_app_description()]
 #' @examples
 #' if (interactive()) {
 #'   ui <- kit_page(
@@ -160,22 +170,26 @@ kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL
   )
 }
 
-#' 讀取 app 的版本與日期（DESCRIPTION 的 Version、Date）
+#' Read the app's version and date (Version and Date in DESCRIPTION)
 #'
-#' 雲端版、本機 run.bat、套件的 `run_xxx()` 都以 DESCRIPTION 的 Version、Date 為準，
-#' 三者顯示一致（不看檔案修改時間：解壓、安裝、部署都會改變 mtime）。
+#' The cloud version, the local run.bat, and the package's `run_xxx()` all take Version and Date
+#' from DESCRIPTION, so all three show the same thing (file modification times are not used:
+#' unzipping, installing, and deploying all change the mtime).
 #'
-#' 找的順序：
-#' 1. `path` 有給：讀那個 DESCRIPTION 檔。
-#' 2. `package` 已經載入（`library()`、`run_xxx()`、`load_all()`）：讀載入的那一份。
-#' 3. 工作目錄的 `DESCRIPTION`，再往上一層、兩層找（測試時工作目錄在 `tests/testthat`）；
-#'    有給 `package` 時，只認 `Package:` 是它的那一份。雲端版與 run.bat 用 `runApp(資料夾)`，
-#'    套件沒有載入，讀的是這一份。
-#' 4. `package` 有安裝（但沒有載入）：讀安裝的那一份。放在最後，因為它可能是舊版。
+#' Search order:
+#' 1. `path` is given: read that DESCRIPTION file.
+#' 2. `package` is already loaded (`library()`, `run_xxx()`, `load_all()`): read the loaded copy.
+#' 3. `DESCRIPTION` in the working directory, then one and two levels up (in tests the working
+#'    directory is `tests/testthat`); when `package` is given, only a file whose `Package:` matches
+#'    counts. The cloud version and run.bat use `runApp(folder)`, the package is not loaded, and
+#'    this is the copy that gets read.
+#' 4. `package` is installed (but not loaded): read the installed copy. This comes last because it
+#'    may be an old version.
 #'
-#' @param package app 的套件名稱，例如 `"kitJoin"`；`NULL` 時只找 DESCRIPTION 檔。
-#' @param path DESCRIPTION 檔的路徑；`NULL` 時照上面的順序找。
-#' @return `list(version = , date = )`；找不到的是 `NA`。
+#' @param package The app's package name, e.g. `"kitJoin"`; when `NULL`, only DESCRIPTION files are
+#'   searched.
+#' @param path Path to a DESCRIPTION file; when `NULL`, searched in the order above.
+#' @return `list(version = , date = )`; anything not found is `NA`.
 #' @examples
 #' kit_app_description("kitDesign")
 #' @export
@@ -207,16 +221,17 @@ kit_app_description <- function(package = NULL, path = NULL) {
   none
 }
 
-#' 頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」
+#' The version line in the header, e.g. "kitJoin v0.6.0 · 2026-10-31"
 #'
-#' 版本行永遠在頁首，回報問題時用得到。
+#' The version line always sits in the header; it is needed when reporting problems.
 #'
-#' @param version 版本（前面自動加「v」）；`NULL` 或 `NA` 不顯示。
-#' @param date 日期；`NULL` 或 `NA` 不顯示。
-#' @param extra 後面再接的字（例如 `paste("kits", utils::packageVersion("kits"))`）。
-#' @param show_kitdesign 後面要不要接「kitDesign 0.1.0」（[kit_versions()]）。
-#' @param package app 的套件名稱，寫在版本前面（「kitJoin v0.6.0」）；`NULL` 不寫。
-#' @return `<div class="kit-app-meta">`；三樣都沒有時是 `NULL`。
+#' @param version The version ("v" is added in front); `NULL` or `NA` shows nothing.
+#' @param date The date; `NULL` or `NA` shows nothing.
+#' @param extra Text to append (e.g. `paste("kits", utils::packageVersion("kits"))`).
+#' @param show_kitdesign Whether to append "kitDesign 0.1.0" ([kit_versions()]).
+#' @param package The app's package name, written before the version ("kitJoin v0.6.0"); `NULL`
+#'   writes no name.
+#' @return `<div class="kit-app-meta">`; `NULL` when all three are missing.
 #' @examples
 #' kit_app_meta("0.5.0", "2026-10-31")
 #' kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin")
@@ -237,17 +252,18 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
   shiny::div(class = "kit-app-meta", paste(parts, collapse = " \u00b7 "))
 }
 
-#' KIT 頁首
+#' KIT header
 #'
-#' 萊姆色塊、黑框、頁首陰影；左邊完整標誌，右邊工具名稱、一行副標、一行版本。
-#' 一個 app 只有一個，放在最上面（[kit_page()] 已經放好了）。也會設定瀏覽器分頁的
-#' 圖示（KIT 是豆子標誌）。
+#' A lime color block, black border, header shadow; the full logo on the left, and on the right the
+#' tool name, one subtitle line, and one version line. One per app, at the very top ([kit_page()]
+#' already places it). It also sets the browser tab icon (the bean logo for KIT).
 #'
-#' 標誌、分頁圖示、顏色從品牌來（[kit_brand()]）。品牌的顏色和 KIT 不同時，頁首另外放一小段
-#' `<style>`，把不同的 `--nb-*` 變數換掉；KIT 的品牌不放，頁面和以前一樣。
+#' Logo, tab icon, and colors come from the brand ([kit_brand()]). When the brand's colors differ
+#' from KIT's, the header adds a short `<style>` that overrides the differing `--nb-*` variables;
+#' for the KIT brand nothing is added and the page is the same as before.
 #'
 #' @inheritParams kit_page
-#' @return `<div class="kit-header mb-4">`。
+#' @return `<div class="kit-header mb-4">`.
 #' @examples
 #' kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
 #'            version = "0.6.0", date = "2026-10-31", package = "kitJoin")
@@ -303,7 +319,7 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
   htmltools::attachDependencies(header, deps, append = TRUE)
 }
 
-#' 標誌檔寫成 data URI（kit_header(logo = "inline") 用）
+#' A logo file as a data URI (for kit_header(logo = "inline"))
 #' @noRd
 kit_logo_data <- function(file) {
   path <- system.file("logo", file, package = "kitDesign")
@@ -312,10 +328,10 @@ kit_logo_data <- function(file) {
   paste0("data:", type, ";base64,", kit_base64(readBin(path, "raw", n = file.size(path))))
 }
 
-#' 標誌檔（inst/logo/）的 htmlDependency：頁首的 SVG 與分頁圖示用網址取得
+#' htmlDependency for the logo files (inst/logo/): the header SVG and tab icon are fetched by URL
 #'
-#' @return [htmltools::htmlDependency()] 物件；檔案的網址是 `kitDesign-logo-<版本>/<檔名>`
-#'   （[kit_logo_file()]）。
+#' @return An [htmltools::htmlDependency()] object; file URLs are
+#'   `kitDesign-logo-<version>/<file name>` ([kit_logo_file()]).
 #' @examples
 #' kit_logo_dependency()$name
 #' @export
@@ -329,15 +345,16 @@ kit_logo_dependency <- function() {
   )
 }
 
-#' 標誌檔的網址（頁面上用）
+#' URL of a logo file (for use on the page)
 #'
-#' 頁首的向量標誌與分頁圖示都用它；網址由 [kit_logo_dependency()] 提供
-#' （頁面要有這個 dependency：[kit_header()] 已經附上了）。
-#' 要嵌進頁面、不另外取檔時，用 [kit_logo_uri()]（PNG 的 data URI）。
+#' Used for both the header's vector logo and the tab icon; the URL is served by
+#' [kit_logo_dependency()] (the page must include this dependency: [kit_header()] already attaches
+#' it). To embed the logo in the page without a separate file, use [kit_logo_uri()] (a PNG data
+#' URI).
 #'
-#' @param file `inst/logo/` 裡的檔名：`"kit-logo.svg"`（完整標誌）、`"kit-mark.svg"`（豆子）、
-#'   或 PNG（`"kit-mark-64.png"`、`"kit-logo-h512.png"`…）。
-#' @return 相對網址，例如 `"kitDesign-logo-0.1.0/kit-logo.svg"`。
+#' @param file A file name in `inst/logo/`: `"kit-logo.svg"` (full logo), `"kit-mark.svg"` (the
+#'   bean), or a PNG (`"kit-mark-64.png"`, `"kit-logo-h512.png"`…).
+#' @return A relative URL, e.g. `"kitDesign-logo-0.1.0/kit-logo.svg"`.
 #' @examples
 #' kit_logo_file("kit-logo.svg")
 #' @export
@@ -348,15 +365,16 @@ kit_logo_file <- function(file = "kit-logo.svg") {
   paste0("kitDesign-logo-", kit_pkg_version(), "/", file)
 }
 
-#' KIT 標誌（data URI）
+#' KIT logo (data URI)
 #'
-#' 直接放進頁面（不用另外設定靜態檔案的路徑）。標誌是透明底 PNG，在 `inst/logo/`。
+#' Goes straight into the page (no static file path to set up). The logos are transparent PNGs in
+#' `inst/logo/`.
 #'
-#' @param size 像素：豆子（`"mark"`）有 64、96、256、`"h512"`、`"h1024"`；完整標誌（`"logo"`，
-#'   豆子＋KIT 字樣）有 128、192、`"h512"`、`"h1024"`（高度）。頁首用的是向量標誌
-#'   （[kit_logo_file()]），這個函式給要嵌進頁面的 PNG。
-#' @param kind `"mark"` 只有豆子（瀏覽器分頁圖示）；`"logo"` 完整標誌（頁首）。
-#' @return `"data:image/png;base64,..."`；沒有這個大小時是 `""`。
+#' @param size Pixels: the bean (`"mark"`) comes in 64, 96, 256, `"h512"`, `"h1024"`; the full logo
+#'   (`"logo"`, bean plus KIT wordmark) comes in 128, 192, `"h512"`, `"h1024"` (height). The header
+#'   uses the vector logo ([kit_logo_file()]); this function gives a PNG to embed in the page.
+#' @param kind `"mark"` is the bean only (browser tab icon); `"logo"` is the full logo (header).
+#' @return `"data:image/png;base64,..."`; `""` when that size does not exist.
 #' @examples
 #' substr(kit_logo_uri(64), 1, 30)
 #' @export
@@ -368,13 +386,13 @@ kit_logo_uri <- function(size = 96, kind = c("mark", "logo")) {
   paste0("data:image/png;base64,", kit_base64(bytes))
 }
 
-#' 標誌檔的路徑（找不到時是 ""）
+#' Path to a logo file ("" when not found)
 #' @noRd
 kit_logo_path <- function(size, kind) {
   system.file("logo", paste0("kit-", kind, "-", size, ".png"), package = "kitDesign")
 }
 
-#' base64 編碼（只用 base R，不另外依賴 base64enc）
+#' base64 encoding (base R only, no dependency on base64enc)
 #' @noRd
 kit_base64 <- function(bytes) {
   if (length(bytes) == 0) return("")
@@ -390,15 +408,16 @@ kit_base64 <- function(bytes) {
   paste(chars, collapse = "")
 }
 
-#' KIT 品牌色常數（供自訂 CSS 或圖表使用）
+#' KIT brand color constants (for custom CSS or charts)
 #'
-#' 和 kitJoin、kitsUI 的 `kit_colors()` 相同的名稱。介面元件的顏色在 CSS 的 tokens 裡
-#' （`var(--nb-lime)` 等，見 `brand/KIT設計語言.md` 的附錄）。
-#' `primary`、`accent`、`subtitle` 從品牌來（[kit_brand()] 的 `primary`、`accent`、
-#' `accent_light`），`primary_light` 是 `primary` 調淡；其他是固定的中性色與舊的提示色。
+#' Same names as `kit_colors()` in kitJoin and kitsUI. Colors for UI components are in the CSS
+#' tokens (`var(--nb-lime)` etc.; see the appendix of `brand/en/design-language.md`).
+#' `primary`, `accent`, and `subtitle` come from the brand (`primary`, `accent`, and `accent_light`
+#' in [kit_brand()]); `primary_light` is a lighter `primary`; the rest are fixed neutrals and older
+#' alert colors.
 #'
-#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
-#' @return 具名 list。
+#' @param brand The brand ([kit_brand()]); defaults to [kit_current_brand()] (KIT when none is set).
+#' @return A named list.
 #' @examples
 #' kit_colors()$primary
 #' @export
@@ -422,18 +441,19 @@ kit_colors <- function(brand = kit_current_brand()) {
   )
 }
 
-#' x 為 NULL 時改用 y（R 4.4 起 base 也有，這裡為了支援較舊的 R）
+#' Use y when x is NULL (base R has this from R 4.4; defined here to support older R)
 #' @noRd
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-#' 版本：kitDesign 與 app 自己的
+#' Versions: kitDesign and the app's own
 #'
-#' 回報問題時，兩個版本都要寫。頁首的版本行可以接上 kitDesign 的版本：
-#' `kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.1.0」。
+#' When reporting a problem, include both versions. The header's version line can include the
+#' kitDesign version:
+#' `kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · 2026-10-31 · kitDesign 0.1.0".
 #'
-#' @param package app 的套件名稱（例如 `"kitJoin"`）；`NULL` 時只有 kitDesign。
-#'   版本讀法和 [kit_app_description()] 一樣。
-#' @return 具名字串向量，例如 `c(kitDesign = "0.1.0", kitJoin = "0.5.0")`。
+#' @param package The app's package name (for example `"kitJoin"`); with `NULL`, only kitDesign.
+#'   Versions are read the same way as [kit_app_description()].
+#' @return A named character vector, for example `c(kitDesign = "0.1.0", kitJoin = "0.5.0")`.
 #' @examples
 #' kit_versions()
 #' @export

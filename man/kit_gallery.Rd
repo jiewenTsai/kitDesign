@@ -2,22 +2,23 @@
 % Please edit documentation in R/kitDesign-package.R
 \name{kit_gallery}
 \alias{kit_gallery}
-\title{元件樣張 app}
+\title{Component gallery app}
 \usage{
 kit_gallery(..., brand = NULL)
 }
 \arguments{
-\item{...}{傳給 \code{\link[shiny:runApp]{shiny::runApp()}} 的參數（例如 \code{port = 7551}、\code{launch.browser = FALSE}）。}
+\item{...}{Arguments passed to \code{\link[shiny:runApp]{shiny::runApp()}} (e.g. \code{port = 7551}, \code{launch.browser = FALSE}).}
 
-\item{brand}{用哪個品牌看：\code{NULL}（預設）是現在的品牌（\code{\link[=kit_current_brand]{kit_current_brand()}}，通常是 KIT）；
-\code{"demo"} 是一個藍色系的示範品牌（看換品牌以後的樣子）；或一個 \code{\link[=kit_brand]{kit_brand()}}。}
+\item{brand}{Which brand to view: \code{NULL} (default) is the current brand (\code{\link[=kit_current_brand]{kit_current_brand()}},
+usually KIT); \code{"demo"} is a blue demo brand (to see how a different brand looks); or a
+\code{\link[=kit_brand]{kit_brand()}}.}
 }
 \value{
-\code{\link[shiny:runApp]{shiny::runApp()}} 的結果（app 關掉時）。
+The result of \code{\link[shiny:runApp]{shiny::runApp()}} (when the app closes).
 }
 \description{
-一個 app 裡放了每一個元件，內容是 KIT 的例子。
-原始碼在 \code{system.file("examples/gallery", package = "kitDesign")}。
+One app holding every component, filled with KIT examples.
+The source is in \code{system.file("examples/gallery", package = "kitDesign")}.
 }
 \examples{
 if (interactive()) kit_gallery()

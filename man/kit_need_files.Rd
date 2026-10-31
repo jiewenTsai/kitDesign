@@ -2,20 +2,20 @@
 % Please edit documentation in R/server.R
 \name{kit_need_files}
 \alias{kit_need_files}
-\title{「還差」：檔案不夠時的那一句}
+\title{"還差" ("Still needed"): the sentence shown when there are not enough files}
 \usage{
 kit_need_files(n_files, need = 2L)
 }
 \arguments{
-\item{n_files}{已經加入幾個檔案。}
+\item{n_files}{How many files have been added.}
 
-\item{need}{這一頁至少要幾個檔案。}
+\item{need}{The minimum number of files this page needs.}
 }
 \value{
-一句話；檔案夠了時是 \code{NULL}。
+One sentence; \code{NULL} when there are enough files.
 }
 \description{
-「還差」：檔案不夠時的那一句
+"還差" ("Still needed"): the sentence shown when there are not enough files
 }
 \examples{
 kit_need_files(1L, need = 2L)

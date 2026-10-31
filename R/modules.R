@@ -11,26 +11,27 @@
 
 # 步驟卡 -----------------------------------------------------------------------
 
-#' 步驟卡模組（StepCard）
+#' Step card module
 #'
-#' 一頁裡有好幾步、而且有先後時用：一次只打開一步，做完的收成一行（✓、摘要、「改」），
-#' 還不能做的是灰的。每一步最下面是「對，下一步」（一般按鈕）；按了以後這一步做完、
-#' 打開下一個還沒做完的步驟。做完的按「改」回去。
+#' Use when a page has several steps that must be done in order: only one step is open at a time;
+#' finished steps collapse to one line (✓, summary, "改" ("Edit")), and steps not yet available are
+#' gray. Each step ends with "對，下一步" ("Yes, next step") (a regular button); pressing it marks
+#' the step done and opens the next unfinished step. Press "改" on a finished step to go back.
 #'
-#' `kit_stepcards_ui()` 放每一步的內容（依順序）；`kit_stepcards_server()` 給每一步的標題、
-#' 做完時的摘要、按「對，下一步」前的檢查。
+#' `kit_stepcards_ui()` holds the content of each step (in order); `kit_stepcards_server()` gives
+#' each step's title, its summary when done, and the check before "對，下一步" is pressed.
 #'
-#' @param id 模組的 id。
-#' @param ... 每一步的內容（一步一個 tag 或 `tagList()`，依順序）。
-#' @param next_label 每一步最下面的按鈕字。
-#' @return `kit_stepcards_ui()`：`tagList()`，裡面是一張張 [kit_step_card()]。
+#' @param id The module id.
+#' @param ... The content of each step (one tag or `tagList()` per step, in order).
+#' @param next_label The button text at the bottom of each step.
+#' @return `kit_stepcards_ui()`: a `tagList()` of [kit_step_card()]s.
 #'
-#'   `kit_stepcards_server()`：list，
-#'   - `current`：reactive，現在打開第幾步（都做完時是 0）；
-#'   - `done`：reactive，每一步做完了沒有（logical 向量）；
-#'   - `open(k)`：打開第 k 步（例如資料改了，要回第 1 步）；
-#'   - `reset()`：全部回到還沒做，打開第 1 步。
-#' @seealso [kit_step_card()]、[kit_step_head()]（低階）
+#'   `kit_stepcards_server()`: a list,
+#'   - `current`: a reactive, which step is open now (0 when all are done);
+#'   - `done`: a reactive, whether each step is done (logical vector);
+#'   - `open(k)`: opens step k (for example, back to step 1 when the data change);
+#'   - `reset()`: marks all steps as not done and opens step 1.
+#' @seealso [kit_step_card()], [kit_step_head()] (low-level)
 #' @examples
 #' if (interactive()) {
 #'   ui <- kit_page("KIT 示範", NULL,
@@ -70,11 +71,14 @@ kit_stepcards_ui <- function(id, ..., next_label = "\u5c0d\uff0c\u4e0b\u4e00\u6b
 }
 
 #' @rdname kit_stepcards_ui
-#' @param titles 每一步的標題（字串向量，長度＝步數）。
-#' @param summaries 每一步做完時的摘要：list，一步一個（字串、函式或 reactive；`NULL` 不顯示）。
-#' @param checks 按「對，下一步」前的檢查：list，一步一個函式，傳回還差的事（字串向量；
-#'   長度 0 = 可以往下）。還差時這一步不算做完，按鈕上面列出「還差：…」（[kit_problems()]）。
-#' @param start 一開始打開第幾步。
+#' @param titles The title of each step (character vector, length = number of steps).
+#' @param summaries The summary shown when each step is done: a list, one per step (a string,
+#'   function, or reactive; `NULL` shows nothing).
+#' @param checks Checks before "對，下一步" ("Yes, next step") is pressed: a list, one function per
+#'   step, returning what is still needed (character vector; length 0 = can move on). While
+#'   something is still needed, the step is not done, and "還差：…" ("Still needed: …") is listed
+#'   above the button ([kit_problems()]).
+#' @param start Which step is open at the start.
 #' @export
 kit_stepcards_server <- function(id, titles, summaries = list(), checks = list(), start = 1L) {
   stopifnot(is.character(titles), length(titles) >= 1)
@@ -140,29 +144,32 @@ kit_stepcards_server <- function(id, titles, summaries = list(), checks = list()
 
 # 步驟分頁 ---------------------------------------------------------------------
 
-#' 步驟分頁模組（NavTabs）
+#' Step tabs module
 #'
-#' 兩種樣子，同一套狀態（做完 ✓、還不能做灰色＋原因、要重新執行 ✓ 拿掉）：
+#' Two looks, one set of states (done ✓; not yet available gray plus the reason; run again removes
+#' the ✓):
 #'
-#' - 有順序的流程（kitsUI）：不給 `groups`，`...` 的 `tabPanel()` 名稱用圈數字；
-#'   `aside` 的分頁（例如「使用手冊」）虛線、放最右邊。
-#' - 分組、不編號（kitJoin）：給 `groups`（[kit_navgroup()] 的 list）；分頁列是
-#'   [kit_navgroups()]，真的分頁是藏起來的 `tabsetPanel()`。
+#' - Ordered flow (kitsUI): do not pass `groups`; the `tabPanel()` names in `...` use circled
+#'   numbers; `aside` tabs (for example "使用手冊", "User manual") are dashed and placed at the far
+#'   right.
+#' - Grouped, unnumbered (kitJoin): pass `groups` (a list of [kit_navgroup()]); the tab bar is
+#'   [kit_navgroups()], and the real tabs are a hidden `tabsetPanel()`.
 #'
-#' 分頁的 input 是 `input[["<id>-tabs"]]`；server 回傳的 `selected()` 是同一個值。
+#' The tabs' input is `input[["<id>-tabs"]]`; the `selected()` returned by the server is the same
+#' value.
 #'
-#' @param id 模組的 id。
-#' @param ... `shiny::tabPanel()`（`value` 要寫）。
-#' @param groups 分組（[kit_navgroup()] 的 list）；`NULL` 是有順序的流程。
-#' @param selected 一開始的分頁（value）。
-#' @param aside 流程分頁裡不是流程一步的分頁（value）。
-#' @return `kit_step_tabs_ui()`：分頁列與分頁。
+#' @param id The module id.
+#' @param ... `shiny::tabPanel()`s (`value` is required).
+#' @param groups Groups (a list of [kit_navgroup()]); `NULL` means an ordered flow.
+#' @param selected The tab selected at the start (value).
+#' @param aside Tabs in a flow that are not a step of the flow (value).
+#' @return `kit_step_tabs_ui()`: the tab bar and the tabs.
 #'
-#'   `kit_step_tabs_server()`：list，
-#'   - `selected`：reactive，現在的分頁（value）；
-#'   - `select(value)`：換到某個分頁；
-#'   - `states`：reactive，送到瀏覽器的狀態（[kit_tab_states()] 的結果）。
-#' @seealso [kit_flow_tabs()]、[kit_navgroups()]、[kit_tab_states()]（低階）
+#'   `kit_step_tabs_server()`: a list,
+#'   - `selected`: a reactive, the current tab (value);
+#'   - `select(value)`: switches to a tab;
+#'   - `states`: a reactive, the states sent to the browser (the result of [kit_tab_states()]).
+#' @seealso [kit_flow_tabs()], [kit_navgroups()], [kit_tab_states()] (low-level)
 #' @examples
 #' if (interactive()) {
 #'   ui <- kit_page("KIT 示範", NULL,
@@ -194,10 +201,12 @@ kit_step_tabs_ui <- function(id, ..., groups = NULL, selected = NULL, aside = NU
 }
 
 #' @rdname kit_step_tabs_ui
-#' @param states reactive（或函式）：每個分頁的狀態，具名字串向量或 list。值是
-#'   [kit_status()] 的狀態（`"success"`、`"warning"` 打 ✓；`"stale"` 拿掉 ✓），
-#'   或直接寫 `"done"`、`"locked"`、`"ready"`。沒有列出的分頁不改。`NULL` 時不送狀態。
-#' @param tips 還不能做時滑過的說明：具名字串向量（或傳回它的 reactive），或一句話給全部。
+#' @param states A reactive (or function): the state of each tab, a named character vector or list.
+#'   Values are [kit_status()] states (`"success"` and `"warning"` add a ✓; `"stale"` removes the
+#'   ✓), or directly `"done"`, `"locked"`, `"ready"`. Tabs not listed are left unchanged. With
+#'   `NULL`, no states are sent.
+#' @param tips The hover text for tabs not yet available: a named character vector (or a reactive
+#'   that returns one), or one sentence for all.
 #' @export
 kit_step_tabs_server <- function(id, states = NULL, tips = NULL) {
   shiny::moduleServer(id, function(input, output, session) {
@@ -220,20 +229,21 @@ kit_step_tabs_server <- function(id, states = NULL, tips = NULL) {
 
 # 主要按鈕＋還差 ---------------------------------------------------------------
 
-#' 主要按鈕＋「還差：…」模組（ReadyLine）
+#' Primary button + "Still needed: …" module (ready line)
 #'
-#' 主要按鈕一開始就顯示（停用）；還差的事（`missing()`）是空的時才能按，
-#' 上面一行粗體「還差：…」，後面接一個去處理的連結。
-#' server 回傳的 reactive 只有在**沒有還差的事時**按下去才會變（伺服器端也擋，
-#' 不只靠按鈕停用），所以直接 `observeEvent(run(), …)` 就好。
+#' The primary button is shown (disabled) from the start; it can be pressed only when nothing is
+#' still needed (`missing()` is empty). Above it, a bold line says "還差：…" ("Still needed: …"),
+#' followed by a link to where to fix it. The reactive returned by the server changes only when the
+#' button is pressed **while nothing is still needed** (the server also blocks it, not just the
+#' disabled button), so a plain `observeEvent(run(), …)` is enough.
 #'
-#' @param id 模組的 id。
-#' @param label 主要按鈕的字（動詞開頭，例如「執行串接」）。
-#' @param ... 其他傳給 [kit_button()] 的參數。
-#' @return `kit_run_gate_ui()`：「還差」的位置與主要按鈕。
+#' @param id The module id.
+#' @param label The primary button's text (start with a verb, for example "執行串接", "Run join").
+#' @param ... Other arguments passed to [kit_button()].
+#' @return `kit_run_gate_ui()`: the slot for the "還差" line and the primary button.
 #'
-#'   `kit_run_gate_server()`：reactive，可以執行時按了幾次（一開始是 0）。
-#' @seealso [kit_ready_line()]、[kit_run_gate()]（低階）
+#'   `kit_run_gate_server()`: a reactive counting presses made while ready to run (0 at first).
+#' @seealso [kit_ready_line()], [kit_run_gate()] (low-level)
 #' @examples
 #' if (interactive()) {
 #'   ui <- kit_page("KIT 示範", NULL,
@@ -256,8 +266,8 @@ kit_run_gate_ui <- function(id, label, ...) {
 }
 
 #' @rdname kit_run_gate_ui
-#' @param missing reactive：還差的事（字串向量；長度 0 = 可以執行）。
-#' @param link 函式：跟在「還差」後面的連結（tag 或 `NULL`）。
+#' @param missing A reactive: what is still needed (character vector; length 0 = ready to run).
+#' @param link A function: the link after "還差" ("Still needed") (a tag or `NULL`).
 #' @export
 kit_run_gate_server <- function(id, missing, link = function() NULL) {
   shiny::moduleServer(id, function(input, output, session) {
@@ -274,18 +284,21 @@ kit_run_gate_server <- function(id, missing, link = function() NULL) {
 
 # 用 R 怎麼做 ------------------------------------------------------------------
 
-#' 「用 R 怎麼做」模組（CodePanel）
+#' "How to do it in R" module (code panel)
 #'
-#' 細節列裡的一個收合區塊；打開時才算程式碼（收起來時 Shiny 不畫裡面的 output），
-#' 畫成一個或幾個 [kit_code()]（每行最多 70 欄、附「複製」）。
+#' A collapsible block in the details row; the code is computed only when it is opened (Shiny does
+#' not render outputs inside a collapsed block), and rendered as one or more [kit_code()] (at most
+#' 70 columns per line, with "Copy").
 #'
-#' @param id 模組的 id。
-#' @param title 收合標題。
-#' @param open 一開始要不要打開。
-#' @return `kit_code_panel_ui()`：`<details class="kit-detail">`，放在 [kit_details_row()] 的最後。
+#' @param id The module id.
+#' @param title The collapsible title.
+#' @param open Whether it starts open.
+#' @return `kit_code_panel_ui()`: `<details class="kit-detail">`, placed last in
+#'   [kit_details_row()].
 #'
-#'   `kit_code_panel_server()`：reactive，現在的程式碼（[kit_code()] 的 list；還沒有時是 `NULL`）。
-#' @seealso [kit_code_panel()]、[kit_render_code_panel()]（低階）
+#'   `kit_code_panel_server()`: a reactive with the current code (a list of [kit_code()]; `NULL`
+#'   when there is none yet).
+#' @seealso [kit_code_panel()], [kit_render_code_panel()] (low-level)
 #' @examples
 #' if (interactive()) {
 #'   ui <- kit_page("KIT 示範", NULL, kit_details_row(kit_code_panel_ui("code")))
@@ -301,9 +314,9 @@ kit_code_panel_ui <- function(id, title = "\u7528 R \u600e\u9ebc\u505a", open = 
 }
 
 #' @rdname kit_code_panel_ui
-#' @param code 傳回程式碼的函式或 reactive：一個字串、[kit_code()]，或它們的具名 list
-#'   （見 [kit_code_blocks()] 的 `snips`）。
-#' @param note,width,empty 見 [kit_render_code_panel()]。
+#' @param code A function or reactive returning the code: a string, a [kit_code()], or a named list
+#'   of them (see `snips` in [kit_code_blocks()]).
+#' @param note,width,empty See [kit_render_code_panel()].
 #' @export
 kit_code_panel_server <- function(id, code, note = KIT_CODE_NOTE, width = KIT_CODE_WIDTH,
                                   empty = KIT_CODE_EMPTY) {

@@ -2,25 +2,28 @@
 % Please edit documentation in R/buttons.R
 \name{kit_callout}
 \alias{kit_callout}
-\title{提示框（Callout）}
+\title{Callout}
 \usage{
 kit_callout(..., warn = FALSE, class = NULL)
 }
 \arguments{
-\item{...}{框裡的內容。}
+\item{...}{The content of the box.}
 
-\item{warn}{\code{FALSE}：天藍的資訊；\code{TRUE}：黃色的注意。}
+\item{warn}{\code{FALSE}: sky-blue info; \code{TRUE}: yellow caution.}
 
-\item{class}{另外加的 class。}
+\item{class}{An extra class.}
 }
 \value{
-\verb{<div class="kit-callout">}（注意時再加 \code{kit-callout-warn}）。
+\verb{<div class="kit-callout">} (plus \code{kit-callout-warn} for caution).
 }
 \description{
-按下去之前就該知道的提醒，不是結果，所以沒有陰影。一個區塊最多一個；
-能寫進狀態框的，就不要另外開提示框；有按鈕時，按鈕放在框外面。
+A reminder the user should know before pressing a button. It is not a result, so it has no
+shadow. At most one per section; if it can go in the status box, don't add a separate callout;
+if there is a button, put the button outside the box.
 }
 \examples{
 kit_callout("外部連結不適用：這一回合只有一個世代，這不是錯誤。")
+# "External linking does not apply: this round has only one cohort. This is not an error."
 kit_callout("資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。", warn = TRUE)
+# "The data seem to contain missing-value codes; go to 'Missing values' first."
 }

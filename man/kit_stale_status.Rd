@@ -2,20 +2,21 @@
 % Please edit documentation in R/status.R
 \name{kit_stale_status}
 \alias{kit_stale_status}
-\title{檔案或設定變更後，舊結果失效（【要重新執行】）}
+\title{Old result no longer valid after files or settings change (【要重新執行】, "Run again")}
 \usage{
 kit_stale_status(run_label, message = NULL)
 }
 \arguments{
-\item{run_label}{主要按鈕的字，例如「執行串接」。}
+\item{run_label}{The primary button's text, for example "執行串接" ("Run join").}
 
-\item{message}{自己寫的一句話（預設是「檔案或設定改過了，舊的結果已清除：請再按一次「…」。」）。}
+\item{message}{Your own sentence (the default is "檔案或設定改過了，舊的結果已清除：請再按一次「…」。",
+"Files or settings changed and the old result was cleared: press '…' again.").}
 }
 \value{
-\code{kit_status} 物件。
+A \code{kit_status} object.
 }
 \description{
-檔案或設定變更後，舊結果失效（【要重新執行】）
+Old result no longer valid after files or settings change (【要重新執行】, "Run again")
 }
 \examples{
 kit_stale_status("執行串接")$message

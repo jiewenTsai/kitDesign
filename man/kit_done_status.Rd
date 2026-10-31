@@ -2,7 +2,8 @@
 % Please edit documentation in R/status.R
 \name{kit_done_status}
 \alias{kit_done_status}
-\title{執行完的狀態：有要注意的事時是【完成，但請注意】，否則是【完成】}
+\title{Status after a run: 【完成，但請注意】 (done, but take note) when something needs attention,
+otherwise 【完成】 (done)}
 \usage{
 kit_done_status(
   message,
@@ -12,21 +13,26 @@ kit_done_status(
 )
 }
 \arguments{
-\item{message}{第一行的結論（一句話，帶數字與單位）：一個字串或 tag。}
+\item{message}{The conclusion on the first line (one sentence, with numbers and units): a string or
+tag.}
 
-\item{warnings}{需要注意的事（字串向量，或字串與 tag 的 list）。排在最前面。}
+\item{warnings}{Things to watch out for (a character vector, or a list of strings and tags). Listed
+first.}
 
-\item{notes}{補充說明（灰色小字）。}
+\item{notes}{Additional notes (small gray text).}
 
-\item{points}{結果的重點（排在 \code{warnings} 後面；不會讓狀態變成「請注意」）。}
+\item{points}{Key results (listed after \code{warnings}; they do not turn the status into "請注意",
+"please note").}
 }
 \value{
-\code{kit_status} 物件。
+A \code{kit_status} object.
 }
 \description{
-異常一定要被看見：有 \code{warnings} 時，狀態就不能是單純的【完成】。
+Anything unusual must be seen: when there are \code{warnings}, the status cannot be a plain 【完成】
+(done).
 }
 \examples{
-kit_done_status("串接完成：3,389 人。")
+kit_done_status("串接完成：3,389 人。")  # "Join done: 3,389 children."
 kit_done_status("串接完成：3,389 人。", warnings = "有 12 人的 ID 重複，只留第一筆。")
+# warning: "12 children have duplicate IDs; only the first record is kept."
 }

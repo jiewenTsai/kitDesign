@@ -2,7 +2,7 @@
 % Please edit documentation in R/server.R
 \name{kit_run_gate}
 \alias{kit_run_gate}
-\title{主要按鈕還不能按時：停用它，上面一行寫還差什麼}
+\title{When the primary button cannot be pressed yet: disable it and show what is still needed above it}
 \usage{
 kit_run_gate(
   session,
@@ -14,28 +14,30 @@ kit_run_gate(
 )
 }
 \arguments{
-\item{session}{模組的 session。}
+\item{session}{The module's session.}
 
-\item{output}{模組的 output。}
+\item{output}{The module's output.}
 
-\item{missing}{reactive：還差的事（字串；長度 0 = 可以執行）。}
+\item{missing}{A reactive: what is still needed (character; length 0 = ready to run).}
 
-\item{link}{function()：跟在「還差」後面的連結（tag 或 \code{NULL}）。}
+\item{link}{function(): the link after "還差" ("Still needed") (a tag or \code{NULL}).}
 
-\item{button_id}{主要按鈕的 id（模組內的 id，不加 \code{ns()}）。}
+\item{button_id}{The primary button's id (the id inside the module, without \code{ns()}).}
 
-\item{output_id}{放「還差」的 \code{uiOutput()} id（模組內的 id）。}
+\item{output_id}{The \code{uiOutput()} id for the "還差" line (the id inside the module).}
 }
 \value{
-不可見的 \code{NULL}；在 server 裡呼叫。
+\code{NULL}, invisibly; call it inside the server.
 }
 \description{
-頁面上放 \code{shiny::uiOutput(ns("ready"))}，緊接著
-\code{kit_button(ns("run"), ..., "primary", disabled = TRUE)}（一開始停用；伺服器算好以後才打開）。
-主要按鈕一開始就顯示，讓人知道這一頁最後要按什麼。
+Put \code{shiny::uiOutput(ns("ready"))} on the page, directly followed by
+\code{kit_button(ns("run"), ..., "primary", disabled = TRUE)} (disabled at first; enabled once the
+server has checked). The primary button is shown from the start, so people know what they will
+press at the end of this page.
 }
 \details{
-按鈕的 \code{observeEvent()} 裡仍要自己檢查一次：停用只是畫面上的，不能當成唯一的防線。
+Still check again inside the button's \code{observeEvent()}: disabling is only on screen and must not
+be the only safeguard.
 }
 \examples{
 if (interactive()) {

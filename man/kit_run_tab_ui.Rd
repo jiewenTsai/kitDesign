@@ -3,7 +3,7 @@
 \name{kit_run_tab_ui}
 \alias{kit_run_tab_ui}
 \alias{kit_run_tab_server}
-\title{執行分頁（RunTab）}
+\title{Run tab}
 \usage{
 kit_run_tab_ui(
   id,
@@ -40,85 +40,108 @@ kit_run_tab_server(
 )
 }
 \arguments{
-\item{id}{分頁（模組）的 id。}
+\item{id}{The tab (module) id.}
 
-\item{run_label}{主要按鈕的字（動詞開頭，例如「執行串接」）。}
+\item{run_label}{The primary button's text (start with a verb, for example "執行串接",
+"Run join").}
 
-\item{guide}{最上面的「這一頁做什麼」（\code{\link[=kit_tab_guide]{kit_tab_guide()}}）。}
+\item{guide}{The "what this page does" at the top (\code{\link[=kit_tab_guide]{kit_tab_guide()}}).}
 
-\item{...}{分頁自己的設定（輸入元件、提示），放在設定摘要上面。}
+\item{...}{The tab's own settings (inputs, hints), placed above the settings summary.}
 
-\item{gate}{\code{TRUE}：主要按鈕一開始停用，上面是「還差」；\code{FALSE}：一直能按（沒有 \code{ready}）。}
+\item{gate}{\code{TRUE}: the primary button starts disabled, with the "還差" ("Still needed") line
+above it; \code{FALSE}: always clickable (no \code{ready}).}
 
-\item{result, downloads, next_step}{狀態框下面的重點、下載區、最下面的下一步：\code{TRUE} 是
-\code{uiOutput()}（id 是 \code{result}、\code{downloads}、\code{next_step}），也可以直接給 tag；\code{FALSE} 不放。}
+\item{result, downloads, next_step}{The key results below the status box, the download area, and
+the next step at the very bottom: \code{TRUE} is a \code{uiOutput()} (ids \code{result}, \code{downloads},
+\code{next_step}); you can also pass a tag directly; \code{FALSE} leaves it out.}
 
-\item{details}{細節列：\code{TRUE} 放 \code{uiOutput("result_details")}（結果的預覽與核對）；
-\code{details} 與 \code{code} 都是 \code{FALSE} 時沒有細節列。}
+\item{details}{Details row: \code{TRUE} adds \code{uiOutput("result_details")} (preview and checks of the
+result); when both \code{details} and \code{code} are \code{FALSE}, there is no details row.}
 
-\item{code}{UI（\code{kit_run_tab_ui()}）：\code{TRUE} 放「用 R 怎麼做」（\code{\link[=kit_code_panel]{kit_code_panel()}}，output \code{code}）。
-server（\code{kit_run_tab_server()}）：傳回程式碼的函式（\code{\link[=kit_render_code_panel]{kit_render_code_panel()}} 的 \code{code}）；
-\code{NULL} 時分頁自己畫。}
+\item{code}{UI (\code{kit_run_tab_ui()}): \code{TRUE} adds "用 R 怎麼做" ("How to do it in R")
+(\code{\link[=kit_code_panel]{kit_code_panel()}}, output \code{code}).
+Server (\code{kit_run_tab_server()}): a function that returns the code (the \code{code} of
+\code{\link[=kit_render_code_panel]{kit_render_code_panel()}}); with \code{NULL}, the tab renders it itself.}
 
-\item{input, output, session}{分頁的 \code{moduleServer()} 的 input、output、session。}
+\item{input, output, session}{The input, output, and session of the tab's \code{moduleServer()}.}
 
-\item{run}{執行的函式：傳回結果（任何物件），或一個 \code{\link[=kit_status]{kit_status()}}（沒有結果，例如有問題要先處理）。
-要停下來時 \code{\link[=kit_abort]{kit_abort()}}（白話的原因）。}
+\item{run}{The function that runs: returns the result (any object), or a \code{\link[=kit_status]{kit_status()}} (no
+result; for example, a problem must be handled first).
+To stop, call \code{\link[=kit_abort]{kit_abort()}} (with a plain-language reason).}
 
-\item{done}{\verb{function(result)}：執行完的狀態（\code{\link[=kit_done_status]{kit_done_status()}}）；結果在呼叫前已經存好。}
+\item{done}{\verb{function(result)}: the status after running (\code{\link[=kit_done_status]{kit_done_status()}}); the result is
+already saved before it is called.}
 
-\item{ready}{reactive：還差的事（字串向量；長度 0 = 可以執行）；\code{NULL} 時沒有「還差」（\code{gate = FALSE}）。}
+\item{ready}{A reactive: what is still needed (character vector; length 0 = ready to run); with
+\code{NULL}, there is no "還差" line (\code{gate = FALSE}).}
 
-\item{ready_link}{函式：跟在「還差」後面的連結（tag 或 \code{NULL}）。}
+\item{ready_link}{A function: the link after "還差" (a tag or \code{NULL}).}
 
-\item{settings}{函式：設定摘要的幾段（字串向量；\code{NULL} 時不顯示）；\code{NULL} 時沒有設定摘要。}
+\item{settings}{A function: the parts of the settings summary (character vector; \code{NULL} shows
+nothing); with \code{NULL}, there is no settings summary.}
 
-\item{stale_on}{函式：改了會讓結果過期的東西（例如 \code{list(input$method, data())}）；
-\code{NULL} 時分頁自己處理（用回傳的 \code{result}、\code{status}）。}
+\item{stale_on}{A function: things whose change makes the result out of date (for example
+\code{list(input$method, data())}); with \code{NULL}, the tab handles this itself (using the returned
+\code{result} and \code{status}).}
 
-\item{progress}{進度條的訊息（「正在串接資料…」）；\code{NULL} 時沒有進度條。}
+\item{progress}{The progress bar message ("正在串接資料…", "Joining data…"); with \code{NULL},
+there is no progress bar.}
 
-\item{error}{\verb{function(e)}：出錯時的狀態；預設 \code{kit_error_status(e, run_label)}。}
+\item{error}{\verb{function(e)}: the status on error; defaults to \code{kit_error_status(e, run_label)}.}
 
-\item{guard}{函式：執行前的檢查，傳回 \code{\link[=kit_status]{kit_status()}} 時不執行（狀態框與通知，不捲動）；\code{NULL} 不檢查。}
+\item{guard}{A function: a check before running; when it returns a \code{\link[=kit_status]{kit_status()}}, nothing runs
+(status box and notification, no scrolling); \code{NULL} skips the check.}
 
-\item{confirm}{要使用者確認的錯誤：具名 list，名字是 condition 的 class，值是 \verb{function(e)}，
-跳出確認視窗、傳回狀態（不通知、不捲動，視窗就是回應）。確認以後用回傳的 \code{run(...)} 再執行。}
+\item{confirm}{Errors the user must confirm: a named list; names are condition classes, values
+are \verb{function(e)}. It opens a confirmation dialog and returns a status (no notification, no
+scrolling; the dialog is the response). After confirming, run again with the returned
+\code{run(...)}.}
 
-\item{result_ui}{\verb{function(result)}：狀態框下面的重點（output \code{result}）；\code{NULL} 時分頁自己畫。}
+\item{result_ui}{\verb{function(result)}: the key results below the status box (output \code{result});
+with \code{NULL}, the tab renders it itself.}
 
-\item{details_ui}{\verb{function(result)}：細節列的第一格（output \code{result_details}，例如
-\code{\link[=kit_detail]{kit_detail()}}「結果預覽」）；\code{NULL} 時分頁自己畫。}
+\item{details_ui}{\verb{function(result)}: the first cell of the details row (output
+\code{result_details}, for example \code{\link[=kit_detail]{kit_detail()}} "結果預覽", "Result preview"); with \code{NULL}, the
+tab renders it itself.}
 
-\item{code_note}{「用 R 怎麼做」最上面的一行說明。}
+\item{code_note}{The one-line note at the top of "用 R 怎麼做".}
 }
 \value{
-\code{kit_run_tab_ui()}：\code{tagList()}。
+\code{kit_run_tab_ui()}: a \code{tagList()}.
 
-\code{kit_run_tab_server()}：list，
+\code{kit_run_tab_server()}: a list,
 \itemize{
-\item \code{result}：\code{reactiveVal}，這一次的結果（還沒有、或過期了是 \code{NULL}）；
-\item \code{status}：\code{reactiveVal}，狀態框的 \code{\link[=kit_status]{kit_status()}}；
-\item \code{state}：reactive，狀態框的狀態（步驟分頁打 ✓ 用，\code{\link[=kit_tab_states]{kit_tab_states()}}）；
-\item \code{run(...)}：照按主要按鈕一樣執行一次（\code{...} 給 \code{run()}，例如確認視窗的「仍要執行」）。
+\item \code{result}: a \code{reactiveVal}, the result of this run (\code{NULL} when there is none yet or it is
+out of date);
+\item \code{status}: a \code{reactiveVal}, the status box's \code{\link[=kit_status]{kit_status()}};
+\item \code{state}: a reactive, the status box's state (used for the ✓ on step tabs,
+\code{\link[=kit_tab_states]{kit_tab_states()}});
+\item \code{run(...)}: runs once, just like pressing the primary button (\code{...} goes to \code{run()}; for
+example "仍要執行", "Run anyway", in a confirmation dialog).
 }
 }
 \description{
-一頁一個主要按鈕的分頁骨架。\code{kit_run_tab_ui()} 照頁面骨架排好固定的部分，分頁自己的設定放在
-\code{...}；\code{kit_run_tab_server()} 在分頁的 \code{moduleServer()} 裡呼叫，做好狀態流：
+Page skeleton for a tab with one primary button. \code{kit_run_tab_ui()} lays out the fixed parts
+following the page skeleton; the tab's own settings go in \code{...}. \code{kit_run_tab_server()} is
+called inside the tab's \code{moduleServer()} and handles the status flow:
 }
 \details{
 \itemize{
-\item 主要按鈕：還差的事（\code{ready()}）不是空的時停用，上面一行「還差：…」（\code{\link[=kit_run_gate]{kit_run_gate()}}）。
-\item 設定摘要：\code{settings()} 的幾段接成一行（\code{\link[=kit_settings_line]{kit_settings_line()}}）。
-\item 按主要按鈕：清掉舊結果 → \code{guard()} → 進度條裡 \code{run()} → 結果存起來、\code{done(result)} 是狀態；
-出錯時 \code{error(e)} 是狀態 → 狀態框、通知（\code{\link[=kit_notify]{kit_notify()}}）、捲到狀態框（\code{\link[=kit_scroll_to]{kit_scroll_to()}}）。
-\item 改了設定或資料（\code{stale_on()} 變了）而且有結果時：結果清掉，狀態是【要重新執行】。
-\item 結果的重點、細節列的第一格、用 R 怎麼做：有結果時才畫。
+\item Primary button: disabled while something is still needed (\code{ready()} is not empty), with a
+"還差：…" ("Still needed: …") line above it (\code{\link[=kit_run_gate]{kit_run_gate()}}).
+\item Settings summary: the parts of \code{settings()} joined into one line (\code{\link[=kit_settings_line]{kit_settings_line()}}).
+\item Pressing the primary button: clear the old result → \code{guard()} → \code{run()} inside a progress bar
+→ save the result, \code{done(result)} is the status; on error, \code{error(e)} is the status → status
+box, notification (\code{\link[=kit_notify]{kit_notify()}}), scroll to the status box (\code{\link[=kit_scroll_to]{kit_scroll_to()}}).
+\item When settings or data change (\code{stale_on()} changes) and there is a result: the result is
+cleared and the status is 【要重新執行】 ("Run again").
+\item Key results, the first cell of the details row, and "How to do it in R": rendered only when
+there is a result.
 }
 
-固定的 output id（不加 namespace）：\code{settings_line}、\code{ready}、\code{run}（按鈕）、\code{status}、
-\code{result}、\code{downloads}、\code{result_details}、\code{code}、\code{next_step}。
+Fixed output ids (without namespace): \code{settings_line}, \code{ready}, \code{run} (the button), \code{status},
+\code{result}, \code{downloads}, \code{result_details}, \code{code}, \code{next_step}.
 }
 \examples{
 if (interactive()) {
@@ -140,7 +163,7 @@ if (interactive()) {
         progress = "正在疊加資料…",
         run = function() data.frame(wave = seq_len(input$n)),
         done = function(res) kit_done_status(paste0("疊加完成：", nrow(res), " 列。")),
-        details = function(res) kit_detail("結果預覽", kit_static_table(res)),
+        details_ui = function(res) kit_detail("結果預覽", kit_static_table(res)),
         code = function() "stacked <- dplyr::bind_rows(t1, t2, .id = \"wave\")"
       )
       list(state = tab$state)
@@ -151,5 +174,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_run_gate]{kit_run_gate()}}、\code{\link[=kit_status]{kit_status()}}、\code{\link[=kit_code_panel]{kit_code_panel()}}
+\code{\link[=kit_run_gate]{kit_run_gate()}}, \code{\link[=kit_status]{kit_status()}}, \code{\link[=kit_code_panel]{kit_code_panel()}}
 }

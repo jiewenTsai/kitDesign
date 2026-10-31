@@ -2,26 +2,27 @@
 % Please edit documentation in R/details.R
 \name{kit_advanced}
 \alias{kit_advanced}
-\title{進階設定：預設收起}
+\title{Advanced settings: collapsed by default}
 \usage{
 kit_advanced(..., title = "進階設定", open = FALSE, id = NULL)
 }
 \arguments{
-\item{...}{裡面的設定。}
+\item{...}{The settings inside.}
 
-\item{title}{收合標題（可以是 tag，例如後面接現在的設定）。}
+\item{title}{The collapsible title (can be a tag, e.g. followed by the current settings).}
 
-\item{open}{一開始要不要打開。}
+\item{open}{Whether it starts open.}
 
-\item{id}{\verb{<details>} 的 id（給 \code{\link[=kit_open_details]{kit_open_details()}} 打開用）。}
+\item{id}{The id of the \verb{<details>} (used by \code{\link[=kit_open_details]{kit_open_details()}} to open it).}
 }
 \value{
-\verb{<details class="kit-advanced">}。
+\verb{<details class="kit-advanced">}.
 }
 \description{
-設定區裡不常改的選項（文字欄比對、ID 型別轉換、反向題規則、分隔符號…）。
-一行小字標題；打開後左邊一條淡線，和其他設定分開（不加框）。
+Options in a settings area that are rarely changed (text column matching, ID type conversion,
+reverse-scored item rules, separators…). A one-line small-print title; when opened, a faint
+line on the left sets it apart from the other settings (no box).
 }
 \examples{
-kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))
+kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))  # "Trim spaces before matching"
 }

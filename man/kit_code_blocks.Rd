@@ -2,25 +2,28 @@
 % Please edit documentation in R/code.R
 \name{kit_code_blocks}
 \alias{kit_code_blocks}
-\title{「用 R 怎麼做」的內容：說明＋一個或幾個版本的程式碼（附「複製」）}
+\title{Content of "How to do it in R": a note plus code in one or more versions (with "Copy")}
 \usage{
 kit_code_blocks(snips, note = KIT_CODE_NOTE, width = KIT_CODE_WIDTH)
 }
 \arguments{
-\item{snips}{程式碼：一個字串、\code{\link[=kit_code]{kit_code()}} 物件，或它們的具名 list／字串向量
-（名字是版本名稱）。kitJoin 的 \code{list(tidy = , base = )} 會寫成「tidyverse 版」「base R 版」；
-\code{NULL} 的版本略過（例如 \code{base = NULL} 時只有 tidyverse 版）。沒有名字時版本名稱是「R」。}
+\item{snips}{The code: a string, a \code{\link[=kit_code]{kit_code()}} object, or a named list / character vector of
+them (names are version names). kitJoin's \code{list(tidy = , base = )} is labeled "tidyverse 版"
+("tidyverse version") and "base R 版" ("base R version"); \code{NULL} versions are skipped (e.g.
+with \code{base = NULL} there is only the tidyverse version). Without names the version name is
+"R".}
 
-\item{note}{最上面的一行說明；\code{NULL} 不顯示。}
+\item{note}{A one-line note at the top; \code{NULL} shows nothing.}
 
-\item{width}{一行最多幾欄；\code{NULL} 不換行、不檢查。}
+\item{width}{Maximum columns per line; \code{NULL} means no wrapping and no check.}
 }
 \value{
-\code{\link[htmltools:tagList]{htmltools::tagList()}}。
+\code{\link[htmltools:tagList]{htmltools::tagList()}}.
 }
 \description{
-每個版本是一個 \code{\link[=kit_code]{kit_code()}}：一行「版本名稱（粗體）＋複製」與下面的程式碼框；
-兩個版本時上下排。程式碼每行最多 70 欄（\code{\link[=kit_code_wrap]{kit_code_wrap()}}）；一律關掉連字。
+Each version is a \code{\link[=kit_code]{kit_code()}}: a line with "version name (bold) + Copy" and the code box below
+it; two versions are stacked vertically. Code lines are at most 70 columns (\code{\link[=kit_code_wrap]{kit_code_wrap()}});
+ligatures are always turned off.
 }
 \examples{
 kit_code_blocks(list(

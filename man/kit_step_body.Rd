@@ -2,18 +2,20 @@
 % Please edit documentation in R/steps.R
 \name{kit_step_body}
 \alias{kit_step_body}
-\title{步驟卡的內容}
+\title{Step card content}
 \usage{
 kit_step_body(...)
 }
 \arguments{
-\item{...}{這一步的內容；最後通常是「對，下一步」（\code{shiny::actionButton()}，一般按鈕）。}
+\item{...}{The content of this step; usually ends with "對，下一步" ("Yes, next step")
+(\code{shiny::actionButton()}, a regular button).}
 }
 \value{
-\verb{<div class="kit-stepbody">}。
+\verb{<div class="kit-stepbody">}.
 }
 \description{
-卡片裡的表不加外框、淡表頭（CSS 會處理）；手機上不縮排。
+Tables inside the card have no outer border and a light header (CSS handles this); no indent on
+phones.
 }
 \examples{
 kit_step_body(shiny::p("說明"), shiny::actionButton("ok1", "對，下一步"))

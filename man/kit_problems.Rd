@@ -2,23 +2,24 @@
 % Please edit documentation in R/steps.R
 \name{kit_problems}
 \alias{kit_problems}
-\title{表格或清單裡的問題（深橘紅的字）}
+\title{Problems in a table or list (dark orange-red text)}
 \usage{
 kit_problems(..., head = NULL, bullets = TRUE)
 }
 \arguments{
-\item{...}{每個問題一個字串（或 tag）。}
+\item{...}{One string (or tag) per problem.}
 
-\item{head}{前面的粗體字，例如「還差：」；\code{NULL} 不顯示。}
+\item{head}{Bold text in front, for example "還差：" ("Still needed:"); \code{NULL} shows nothing.}
 
-\item{bullets}{\code{TRUE}（預設）每個問題一個項目符號；\code{FALSE} 一行一個、不加符號
-（例如每一行已經是完整的句子，或前面自己有編號）。}
+\item{bullets}{\code{TRUE} (default): one bullet per problem; \code{FALSE}: one per line, without bullets
+(for example when each line is already a full sentence, or already has its own numbering).}
 }
 \value{
-\verb{<div class="kit-problems">}；沒有問題時是 \code{NULL}。
+\verb{<div class="kit-problems">}; \code{NULL} when there are no problems.
 }
 \description{
-步驟卡裡「還差：…」或「這幾欄有問題」這類單一問題的清單。
+A list of individual problems inside a step card, such as "還差：…" ("Still needed: …") or
+"這幾欄有問題" ("these columns have problems").
 }
 \examples{
 kit_problems("第 2 列沒有選世代", "第 4 列的波次不是數字", head = "還差：")

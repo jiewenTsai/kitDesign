@@ -2,21 +2,21 @@
 % Please edit documentation in R/tabs.R
 \name{kit_send_tab_states}
 \alias{kit_send_tab_states}
-\title{把分頁狀態送到瀏覽器}
+\title{Send tab states to the browser}
 \usage{
 kit_send_tab_states(states, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
-\item{states}{\code{\link[=kit_tab_states]{kit_tab_states()}} 的結果。}
+\item{states}{The result of \code{\link[=kit_tab_states]{kit_tab_states()}}.}
 
-\item{session}{預設是目前的 session。}
+\item{session}{Defaults to the current session.}
 }
 \value{
-不可見的 \code{states}。
+\code{states}, invisibly.
 }
 \description{
-兩種分頁列都適用：分組分頁列（\code{\link[=kit_navgroups]{kit_navgroups()}}，\code{data-tabset} 是 \code{tabset}）與
-流程分頁（\code{\link[=kit_flow_tabs]{kit_flow_tabs()}}，\code{id} 是 \code{tabset}）。
+Works with both kinds of tab bar: grouped tab bars (\code{\link[=kit_navgroups]{kit_navgroups()}}, \code{data-tabset} is \code{tabset})
+and flow tabs (\code{\link[=kit_flow_tabs]{kit_flow_tabs()}}, \code{id} is \code{tabset}).
 }
 \examples{
 if (interactive()) kit_send_tab_states(kit_tab_states(list(upload = "success")))

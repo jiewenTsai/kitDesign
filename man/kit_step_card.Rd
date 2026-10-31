@@ -2,27 +2,31 @@
 % Please edit documentation in R/steps.R
 \name{kit_step_card}
 \alias{kit_step_card}
-\title{步驟卡（StepCard）}
+\title{Step card}
 \usage{
 kit_step_card(head, ..., title_id = NULL)
 }
 \arguments{
-\item{head}{標頭：\code{\link[=kit_step_head]{kit_step_head()}} 或放它的 \code{uiOutput()}。}
+\item{head}{The header: \code{\link[=kit_step_head]{kit_step_head()}}, or the \code{uiOutput()} that holds it.}
 
-\item{...}{卡片的內容（\code{\link[=kit_step_body]{kit_step_body()}}）。}
+\item{...}{The card content (\code{\link[=kit_step_body]{kit_step_body()}}).}
 
-\item{title_id}{標頭標題的 id（\code{\link[=kit_step_head]{kit_step_head()}} 的 \code{title_id}），給螢幕閱讀器當卡片名稱。}
+\item{title_id}{The id of the header title (the \code{title_id} of \code{\link[=kit_step_head]{kit_step_head()}}), used by screen
+readers as the card name.}
 }
 \value{
-\verb{<section class="kit-stepcard">}。
+\verb{<section class="kit-stepcard">}.
 }
 \description{
-一張卡片：上面是 \code{\link[=kit_step_head]{kit_step_head()}}（通常由 server 依狀態畫，放 \code{uiOutput()}），
-下面是這一步的內容（\code{\link[=kit_step_body]{kit_step_body()}}，通常包在 \code{conditionalPanel()} 裡，只有現在這一步打開）。
-卡片的框和陰影跟著標頭的狀態：現在這一步有框和陰影；做完和還不能做的沒有陰影、框是灰的。
+One card: on top is \code{\link[=kit_step_head]{kit_step_head()}} (usually rendered by the server based on the state, in a
+\code{uiOutput()}), below is the content of this step (\code{\link[=kit_step_body]{kit_step_body()}}, usually wrapped in
+\code{conditionalPanel()} so only the current step is open). The card's border and shadow follow the
+header's state: the current step has a border and shadow; finished steps and steps not yet
+available have no shadow and a gray border.
 }
 \details{
-不想自己管哪一步打開時，用模組 \code{\link[=kit_stepcards_ui]{kit_stepcards_ui()}} / \code{\link[=kit_stepcards_server]{kit_stepcards_server()}}。
+If you do not want to manage which step is open yourself, use the module \code{\link[=kit_stepcards_ui]{kit_stepcards_ui()}} /
+\code{\link[=kit_stepcards_server]{kit_stepcards_server()}}.
 }
 \examples{
 kit_step_card(

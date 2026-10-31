@@ -2,7 +2,7 @@
 % Please edit documentation in R/steps.R
 \name{kit_step_head}
 \alias{kit_step_head}
-\title{步驟卡的標頭}
+\title{Step card header}
 \usage{
 kit_step_head(
   k,
@@ -14,33 +14,36 @@ kit_step_head(
 )
 }
 \arguments{
-\item{k}{第幾步。}
+\item{k}{The step number.}
 
-\item{title}{這一步的標題。}
+\item{title}{The title of this step.}
 
-\item{state}{\code{"current"}、\code{"done"} 或 \code{"locked"}。}
+\item{state}{\code{"current"}, \code{"done"}, or \code{"locked"}.}
 
-\item{summary}{做完時的一句摘要（例如「5 個檔案 · 世代 TDCYP · 2009、2011（年）」）。
-現在這一步不顯示；還不能做時一律是「先完成第 N−1 步」。}
+\item{summary}{A one-sentence summary shown when done (for example "5 個檔案 · 世代 TDCYP ·
+2009、2011（年）", "5 files · cohort TDCYP · 2009, 2011 (year)"). Not shown for the current step;
+a step not yet available always shows "先完成第 N−1 步" ("Finish step N−1 first").}
 
-\item{edit_id}{做完時「改」的 \code{actionLink()} id；\code{NULL} 不顯示「改」。}
+\item{edit_id}{The \code{actionLink()} id for "改" ("Edit") when done; \code{NULL} hides "改".}
 
-\item{title_id}{標題的 id（給 \code{\link[=kit_step_card]{kit_step_card()}} 的 \code{title_id}）。}
+\item{title_id}{The id of the title (pass it to the \code{title_id} of \code{\link[=kit_step_card]{kit_step_card()}}).}
 }
 \value{
-\verb{<div class="kit-stephead is-current">} 等。
+\verb{<div class="kit-stephead is-current">} or similar.
 }
 \description{
-三種狀態：
+Three states:
 }
 \details{
 \itemize{
-\item \code{"current"}：現在這一步，萊姆色的圓形編號，\code{aria-current="step"}。
-\item \code{"done"}：做完的，圓形 ✓（薄荷綠），後面一句摘要，最右邊「改」（有給 \code{edit_id} 時）。
-\item \code{"locked"}：還不能做的，灰色，寫「先完成第 N−1 步」。
+\item \code{"current"}: the current step, a lime round number, \code{aria-current="step"}.
+\item \code{"done"}: finished, a round ✓ (mint green), followed by a one-sentence summary, with "改"
+("Edit") at the far right (when \code{edit_id} is given).
+\item \code{"locked"}: not yet available, gray, showing "先完成第 N−1 步" ("Finish step N−1 first").
 }
 
-編號旁邊有給螢幕閱讀器的文字：「第 N 步，現在這一步：」。
+Next to the number there is text for screen readers: "第 N 步，現在這一步：" ("Step N, current
+step:").
 }
 \examples{
 kit_step_head(1, "每個檔案是哪個世代、哪個波次", "done",

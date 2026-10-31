@@ -2,36 +2,37 @@
 % Please edit documentation in R/setup.R
 \name{kit_theme}
 \alias{kit_theme}
-\title{KIT 的 bslib 主題}
+\title{KIT's bslib theme}
 \usage{
 kit_theme(brand = kit_current_brand())
 }
 \arguments{
-\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）；預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。}
+\item{brand}{The brand (\code{\link[=kit_brand]{kit_brand()}}); defaults to \code{\link[=kit_current_brand]{kit_current_brand()}} (KIT when not set).}
 }
 \value{
-\code{\link[bslib:bs_theme]{bslib::bs_theme()}} 物件。
+A \code{\link[bslib:bs_theme]{bslib::bs_theme()}} object.
 }
 \description{
-以 Bootswatch Brite 為底（bslib 0.11.0 起才有），換成 KIT 的顏色；全文用圓體
-Chiron GoRound TC，程式碼用 JetBrains Mono。兩種字型都由瀏覽器向 Google Fonts
-按需下載（\code{local = FALSE}）：CJK 字型切成上百個 unicode-range 片段，
-避免伺服器啟動時抓下全部字檔。
+Based on Bootswatch Brite (available from bslib 0.11.0), with KIT's colors; all text uses the
+rounded typeface Chiron GoRound TC, code uses JetBrains Mono. Both typefaces are downloaded by
+the browser from Google Fonts on demand (\code{local = FALSE}): CJK typefaces are split into hundreds
+of unicode-range pieces, so the server does not fetch every font file at startup.
 }
 \details{
-通常不用自己呼叫：\code{\link[=kit_page]{kit_page()}} 已經用了它。
+You usually do not need to call it yourself: \code{\link[=kit_page]{kit_page()}} already uses it.
 
-顏色從品牌來（\code{\link[=kit_brand]{kit_brand()}}）：\code{primary}、\code{success}、\code{navbar-bg}、\code{link-color} 是品牌的
-\code{primary}，\code{link-hover-color} 是 \code{primary_hover}，\code{body-bg} 是 \code{page}，\code{border-color} 是 \code{ink}。
-\code{info}、\code{warning}、\code{danger}、\code{secondary} 是 Bootstrap 自己用的深色，不跟著品牌換
-（提示框、狀態框的底色在 CSS 的 \verb{--nb-*} 變數裡，跟著品牌換）。
-不讀 brand.yml（\code{bslib::bs_theme(brand = FALSE)}）：工作目錄或上層有 \verb{_brand.yml}
-（例如 \verb{brand/_brand.yml}）時，主題也不會跟著變。
+Colors come from the brand (\code{\link[=kit_brand]{kit_brand()}}): \code{primary}, \code{success}, \code{navbar-bg}, and \code{link-color}
+are the brand's \code{primary}; \code{link-hover-color} is \code{primary_hover}; \code{body-bg} is \code{page};
+\code{border-color} is \code{ink}. \code{info}, \code{warning}, \code{danger}, and \code{secondary} are Bootstrap's own dark
+colors and do not change with the brand (the background colors of callouts and status boxes are
+in the CSS \verb{--nb-*} variables, which do change with the brand).
+brand.yml is not read (\code{bslib::bs_theme(brand = FALSE)}): when the working directory or a parent
+has a \verb{_brand.yml} (for example \verb{brand/_brand.yml}), the theme does not change.
 }
 \examples{
 theme <- kit_theme()
 bslib::theme_bootswatch(theme)
 }
 \seealso{
-\code{\link[=kit_page]{kit_page()}}、\code{\link[=use_kit]{use_kit()}}、\code{\link[=kit_brand]{kit_brand()}}
+\code{\link[=kit_page]{kit_page()}}, \code{\link[=use_kit]{use_kit()}}, \code{\link[=kit_brand]{kit_brand()}}
 }

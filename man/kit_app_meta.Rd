@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{kit_app_meta}
 \alias{kit_app_meta}
-\title{頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」}
+\title{The version line in the header, e.g. "kitJoin v0.6.0 · 2026-10-31"}
 \usage{
 kit_app_meta(
   version = NULL,
@@ -13,21 +13,22 @@ kit_app_meta(
 )
 }
 \arguments{
-\item{version}{版本（前面自動加「v」）；\code{NULL} 或 \code{NA} 不顯示。}
+\item{version}{The version ("v" is added in front); \code{NULL} or \code{NA} shows nothing.}
 
-\item{date}{日期；\code{NULL} 或 \code{NA} 不顯示。}
+\item{date}{The date; \code{NULL} or \code{NA} shows nothing.}
 
-\item{extra}{後面再接的字（例如 \code{paste("kits", utils::packageVersion("kits"))}）。}
+\item{extra}{Text to append (e.g. \code{paste("kits", utils::packageVersion("kits"))}).}
 
-\item{show_kitdesign}{後面要不要接「kitDesign 0.1.0」（\code{\link[=kit_versions]{kit_versions()}}）。}
+\item{show_kitdesign}{Whether to append "kitDesign 0.1.0" (\code{\link[=kit_versions]{kit_versions()}}).}
 
-\item{package}{app 的套件名稱，寫在版本前面（「kitJoin v0.6.0」）；\code{NULL} 不寫。}
+\item{package}{The app's package name, written before the version ("kitJoin v0.6.0"); \code{NULL}
+writes no name.}
 }
 \value{
-\verb{<div class="kit-app-meta">}；三樣都沒有時是 \code{NULL}。
+\verb{<div class="kit-app-meta">}; \code{NULL} when all three are missing.
 }
 \description{
-版本行永遠在頁首，回報問題時用得到。
+The version line always sits in the header; it is needed when reporting problems.
 }
 \examples{
 kit_app_meta("0.5.0", "2026-10-31")

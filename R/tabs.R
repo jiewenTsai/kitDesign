@@ -9,14 +9,17 @@
 # 兩種都用同一套狀態：做完打 ✓、還不能做灰色（滑過時說明要先做什麼）、要重新執行時 ✓ 拿掉。
 # 伺服器算好每個分頁的狀態（kit_tab_states()），用 kit-tab-states 訊息送到瀏覽器（kit.js）。
 
-#' 分頁列的一組（給 [kit_navgroups()]）
+#' One group in the tab bar (for [kit_navgroups()])
 #'
-#' @param label 組標籤（灰色小字），例如「準備」「做出資料（選一個）」「其他工具」。
-#' @param tabs 具名字串向量：名字是分頁的 value（`tabPanel(value = )`），值是分頁名稱。
-#' @param tools `TRUE` 時是獨立的小工具：虛線框、沒有陰影。
-#' @return list（`class = "kit_navgroup"`）。
+#' @param label The group label (small gray text), e.g. "準備" ("Prepare"), "做出資料（選一個）"
+#'   ("Make the data (pick one)"), "其他工具" ("Other tools").
+#' @param tabs A named character vector: names are tab values (`tabPanel(value = )`), values are tab
+#'   names.
+#' @param tools When `TRUE`, these are standalone tools: dashed border, no shadow.
+#' @return A list (`class = "kit_navgroup"`).
 #' @examples
 #' kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理"))
+#' # "Prepare": "File upload", "Missing values"
 #' @export
 kit_navgroup <- function(label, tabs, tools = FALSE) {
   stopifnot(is.character(tabs), !is.null(names(tabs)), all(nzchar(names(tabs))))
@@ -24,25 +27,28 @@ kit_navgroup <- function(label, tabs, tools = FALSE) {
             class = "kit_navgroup")
 }
 
-#' 分組的分頁列（不編號；kitJoin 的樣子）
+#' Grouped tab bar (unnumbered; the kitJoin style)
 #'
-#' 分頁分成幾組，每組上面一行灰色小字。按下去時由 `kit.js` 切換藏起來的
-#' `tabsetPanel(id = tabset, type = "hidden")`；切換以後（包括 `updateTabsetPanel()`）
-#' 再把目前的分頁標成 active。做完打 ✓、還不能用變灰也加在這些連結上
-#' （[kit_send_tab_states()]）。≤ 768px 時一排左右滑。
+#' Tabs are split into groups, each with a line of small gray text above it. On click, `kit.js`
+#' switches the hidden `tabsetPanel(id = tabset, type = "hidden")`; after a switch (including
+#' `updateTabsetPanel()`) it marks the current tab as active. The ✓ for done tabs and the gray for
+#' tabs not yet usable are also applied to these links ([kit_send_tab_states()]). At ≤ 768px the bar
+#' becomes one row that scrolls sideways.
 #'
-#' @param groups [kit_navgroup()] 的 list。
-#' @param tabset 對應的 `tabsetPanel()` 的 id。
-#' @param selected 一開始的分頁（value）；預設是第一個。
-#' @return `<nav class="kit-navgroups">`。
+#' @param groups A list of [kit_navgroup()].
+#' @param tabset The id of the matching `tabsetPanel()`.
+#' @param selected The tab to start on (value); defaults to the first.
+#' @return `<nav class="kit-navgroups">`.
 #' @examples
 #' groups <- list(
 #'   kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理")),
 #'   kit_navgroup("做出資料（選一個）", c(join = "橫向資料串接", stack = "直向波次疊加")),
 #'   kit_navgroup("其他工具", c(convert = "檔案格式轉換"), tools = TRUE)
 #' )
+#' # Groups: "Prepare" (File upload, Missing values), "Make the data (pick one)"
+#' # (Wide join, Long stack of waves), "Other tools" (File format conversion)
 #' kit_navgroups(groups, "tabs")
-#' # 頁面上接著放：
+#' # Then on the page:
 #' # shiny::tabsetPanel(id = "tabs", type = "hidden",
 #' #   shiny::tabPanel("檔案上傳", value = "upload", ...), ...)
 #' @export
@@ -75,17 +81,18 @@ kit_navgroups <- function(groups, tabset = "tabs", selected = NULL) {
   )
 }
 
-#' 有順序的流程分頁（kitsUI 的樣子）
+#' Ordered workflow tabs (the kitsUI style)
 #'
-#' 一般的 `shiny::tabsetPanel()`，分頁名稱用圈數字（① 資料、② 題目校準…）。
-#' 不是流程一步的分頁（例如「使用手冊」）寫在 `aside`：虛線框、沒有陰影、推到最右邊。
-#' 做完打 ✓（分頁裡多一個 `.kit-tab-mark`）、還不能做灰色（[kit_send_tab_states()]）。
+#' A regular `shiny::tabsetPanel()` with circled numbers in the tab names (① 資料, ② 題目校準…;
+#' "Data", "Item calibration"). Tabs that are not a workflow step (e.g. "使用手冊", "User manual") go
+#' in `aside`: dashed border, no shadow, pushed to the far right. Done tabs get a ✓ (an extra
+#' `.kit-tab-mark` in the tab); tabs that can't be used yet are gray ([kit_send_tab_states()]).
 #'
-#' @param ... `shiny::tabPanel()`。
-#' @param id tabsetPanel 的 id（`input[[id]]` 是目前的分頁）。
-#' @param selected 一開始的分頁（value）。
-#' @param aside 不是流程一步的分頁的 value（字串向量）。
-#' @return `<div class="kit-flow-tabs">`，裡面是 `tabsetPanel()`。
+#' @param ... `shiny::tabPanel()`.
+#' @param id The tabsetPanel id (`input[[id]]` is the current tab).
+#' @param selected The tab to start on (value).
+#' @param aside Values of tabs that are not a workflow step (a character vector).
+#' @return `<div class="kit-flow-tabs">` containing a `tabsetPanel()`.
 #' @examples
 #' kit_flow_tabs(
 #'   shiny::tabPanel("① 資料", value = "data"),
@@ -114,23 +121,25 @@ KIT_TAB_TIPS <- c(
   locked = "\u9084\u4e0d\u80fd\u7528\uff1a\u5148\u5b8c\u6210\u524d\u9762\u7684\u6b65\u9a5f"
 )
 
-#' 每個分頁的狀態
+#' State of each tab
 #'
-#' 從每個分頁狀態框的狀態（[kit_status()] 的 `state`）算出分頁的樣子：
+#' Works out how each tab looks from the state of its status box (the `state` of [kit_status()]):
 #'
-#' - `"locked"`（灰色）：寫在 `locked` 裡的分頁。滑過時的說明是 `locked_tips`。
-#' - `"done"`（打 ✓）：狀態是 `"success"` 或 `"warning"`（或直接寫 `"done"`）。
-#' - `"stale"`（✓ 拿掉）：狀態是 `"stale"`。
-#' - `"ready"`：其他（`"idle"`、`"error"`、`"ready"`）。
+#' - `"locked"` (gray): tabs listed in `locked`. The hover text is `locked_tips`.
+#' - `"done"` (with ✓): the state is `"success"` or `"warning"` (or directly `"done"`).
+#' - `"stale"` (✓ removed): the state is `"stale"`.
+#' - `"ready"`: anything else (`"idle"`, `"error"`, `"ready"`).
 #'
-#' 結果交給 [kit_send_tab_states()]（或 [kit_watch_tab_states()]）送到瀏覽器。
+#' Pass the result to [kit_send_tab_states()] (or [kit_watch_tab_states()]) to send it to the
+#' browser.
 #'
-#' @param status 具名 list 或字串向量：名字是分頁的 value，值是狀態。
-#'   沒有列出的分頁不改。
-#' @param locked 還不能用的分頁：value 的字串向量，或具名 logical。
-#' @param locked_tips 還不能用時滑過的說明：一個字串（全部一樣），或以 value 命名的字串向量。
-#' @param tabset 分頁的 id（`tabsetPanel(id = )`）。
-#' @return list，一個分頁一個 `list(tabset, value, state, tip)`。
+#' @param status A named list or character vector: names are tab values, values are states.
+#'   Tabs not listed are left unchanged.
+#' @param locked Tabs that cannot be used yet: a character vector of values, or a named logical.
+#' @param locked_tips The hover text for tabs that cannot be used yet: one string (the same for all),
+#'   or a character vector named by value.
+#' @param tabset The tabset id (`tabsetPanel(id = )`).
+#' @return A list with one `list(tabset, value, state, tip)` per tab.
 #' @examples
 #' kit_tab_states(
 #'   list(upload = "success", missing = "stale", join = "idle"),
@@ -168,14 +177,14 @@ kit_tab_states <- function(status, locked = character(0), locked_tips = NULL, ta
   })
 }
 
-#' 把分頁狀態送到瀏覽器
+#' Send tab states to the browser
 #'
-#' 兩種分頁列都適用：分組分頁列（[kit_navgroups()]，`data-tabset` 是 `tabset`）與
-#' 流程分頁（[kit_flow_tabs()]，`id` 是 `tabset`）。
+#' Works with both kinds of tab bar: grouped tab bars ([kit_navgroups()], `data-tabset` is `tabset`)
+#' and flow tabs ([kit_flow_tabs()], `id` is `tabset`).
 #'
-#' @param states [kit_tab_states()] 的結果。
-#' @param session 預設是目前的 session。
-#' @return 不可見的 `states`。
+#' @param states The result of [kit_tab_states()].
+#' @param session Defaults to the current session.
+#' @return `states`, invisibly.
 #' @examples
 #' if (interactive()) kit_send_tab_states(kit_tab_states(list(upload = "success")))
 #' @export
@@ -184,13 +193,13 @@ kit_send_tab_states <- function(states, session = shiny::getDefaultReactiveDomai
   invisible(states)
 }
 
-#' 分頁狀態一變就送到瀏覽器
+#' Send tab states to the browser whenever they change
 #'
-#' `kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))`。
+#' `kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))`.
 #'
-#' @param session Shiny session。
-#' @param states reactive：[kit_tab_states()] 的結果。
-#' @return `shiny::observe()` 的 observer（不可見）。
+#' @param session The Shiny session.
+#' @param states A reactive: the result of [kit_tab_states()].
+#' @return The `shiny::observe()` observer (invisibly).
 #' @examples
 #' if (interactive()) {
 #'   server <- function(input, output, session) {

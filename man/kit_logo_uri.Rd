@@ -2,22 +2,23 @@
 % Please edit documentation in R/setup.R
 \name{kit_logo_uri}
 \alias{kit_logo_uri}
-\title{KIT 標誌（data URI）}
+\title{KIT logo (data URI)}
 \usage{
 kit_logo_uri(size = 96, kind = c("mark", "logo"))
 }
 \arguments{
-\item{size}{像素：豆子（\code{"mark"}）有 64、96、256、\code{"h512"}、\code{"h1024"}；完整標誌（\code{"logo"}，
-豆子＋KIT 字樣）有 128、192、\code{"h512"}、\code{"h1024"}（高度）。頁首用的是向量標誌
-（\code{\link[=kit_logo_file]{kit_logo_file()}}），這個函式給要嵌進頁面的 PNG。}
+\item{size}{Pixels: the bean (\code{"mark"}) comes in 64, 96, 256, \code{"h512"}, \code{"h1024"}; the full logo
+(\code{"logo"}, bean plus KIT wordmark) comes in 128, 192, \code{"h512"}, \code{"h1024"} (height). The header
+uses the vector logo (\code{\link[=kit_logo_file]{kit_logo_file()}}); this function gives a PNG to embed in the page.}
 
-\item{kind}{\code{"mark"} 只有豆子（瀏覽器分頁圖示）；\code{"logo"} 完整標誌（頁首）。}
+\item{kind}{\code{"mark"} is the bean only (browser tab icon); \code{"logo"} is the full logo (header).}
 }
 \value{
-\code{"data:image/png;base64,..."}；沒有這個大小時是 \code{""}。
+\code{"data:image/png;base64,..."}; \code{""} when that size does not exist.
 }
 \description{
-直接放進頁面（不用另外設定靜態檔案的路徑）。標誌是透明底 PNG，在 \verb{inst/logo/}。
+Goes straight into the page (no static file path to set up). The logos are transparent PNGs in
+\verb{inst/logo/}.
 }
 \examples{
 substr(kit_logo_uri(64), 1, 30)

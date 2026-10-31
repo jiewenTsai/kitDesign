@@ -32,7 +32,7 @@ KIT_STATUS_MAX_POINTS <- 3L
 KIT_NOTIFY_SECONDS <- 6
 KIT_NOTIFY_ERROR_SECONDS <- 10
 
-#' 統一狀態名稱（kitsUI 的 done／warn／stop 換成 success／warning／error）
+#' Normalize a state name (kitsUI's done/warn/stop become success/warning/error)
 #' @noRd
 kit_state_name <- function(state) {
   if (is.null(state) || length(state) == 0) return("idle")
@@ -41,13 +41,13 @@ kit_state_name <- function(state) {
   state
 }
 
-#' 是不是 tag、tagList 或 HTML
+#' Is it a tag, tagList, or HTML?
 #' @noRd
 kit_is_tagish <- function(x) {
   inherits(x, c("shiny.tag", "shiny.tag.list", "html"))
 }
 
-#' 一串文字或 tag（條列、補充）：字串向量，或字串與 tag 的 list
+#' A set of texts or tags (points, notes): a character vector, or a list of strings and tags
 #' @noRd
 kit_check_items <- function(x, arg) {
   if (is.null(x) || length(x) == 0) return(character(0))
@@ -60,33 +60,38 @@ kit_check_items <- function(x, arg) {
   stop("`", arg, "` must be a character vector or a list of strings and tags.", call. = FALSE)
 }
 
-#' 狀態物件（StatusBox）
+#' Status object (status box)
 #'
-#' 一個動作的結果。這是一個 S3 值物件（class `kit_status`）：建構時檢查內容；
-#' 有 [htmltools::as.tags()] 方法，所以 `renderUI(st)` 或直接放進 `tagList()` 就會畫成狀態框
-#' （和 [kit_status_ui()] 一樣）。`print(st)` 印出文字版。
+#' The result of an action. This is an S3 value object (class `kit_status`): its content is checked
+#' when it is built. It has an [htmltools::as.tags()] method, so `renderUI(st)` or putting it straight
+#' into `tagList()` renders it as a status box (the same as [kit_status_ui()]). `print(st)` prints a
+#' text version.
 #'
-#' 四種狀態各有固定的標籤與顏色：
+#' Each of the four states has a fixed label and color:
 #'
-#' | state | 標籤 | 底色 |
+#' | state | Label | Background |
 #' |---|---|---|
-#' | `"success"` | 【完成】 | 薄荷綠 |
-#' | `"warning"` | 【完成，但請注意】 | 黃 |
-#' | `"error"` | 【停下來】 | 鮭紅 |
-#' | `"stale"` | 【要重新執行】 | 黃 |
+#' | `"success"` | 【完成】 ("Done") | mint green |
+#' | `"warning"` | 【完成，但請注意】 ("Done, but please note") | yellow |
+#' | `"error"` | 【停下來】 ("Stopped") | salmon |
+#' | `"stale"` | 【要重新執行】 ("Run again") | yellow |
 #'
-#' `"idle"`（還沒有執行）不顯示。也接受 kitsUI 的名字：`"done"`、`"warn"`、`"stop"`。
+#' `"idle"` (not run yet) is not shown. kitsUI's names are also accepted: `"done"`, `"warn"`, `"stop"`.
 #'
-#' @param state `"idle"`、`"success"`、`"warning"`、`"error"` 或 `"stale"`。
-#' @param message 第一行的結論（一句話，帶數字與單位）：一個字串或 tag。
-#' @param warnings 需要注意的事（字串向量，或字串與 tag 的 list）。排在最前面。
-#' @param notes 補充說明（灰色小字）。
-#' @param details 原始訊息（R 的錯誤原文；收起來）：一個字串或 `NULL`。
-#' @param action 怎麼辦的按鈕或連結（tag）；`NULL` 不顯示。
-#' @param points 結果的重點（排在 `warnings` 後面；不會讓狀態變成「請注意」）。
-#' @param details_title 原始訊息的收合標題（kitsUI 用「kits 的原文」）。
-#' @return `kit_status` 物件。
-#' @seealso [kit_status_ui()]、[kit_done_status()]、[kit_error_status()]、[kit_stale_status()]
+#' @param state `"idle"`, `"success"`, `"warning"`, `"error"`, or `"stale"`.
+#' @param message The conclusion on the first line (one sentence, with numbers and units): a string or
+#'   tag.
+#' @param warnings Things to watch out for (a character vector, or a list of strings and tags). Listed
+#'   first.
+#' @param notes Additional notes (small gray text).
+#' @param details The raw message (R's original error text; collapsed): a string or `NULL`.
+#' @param action A button or link for what to do (a tag); `NULL` shows nothing.
+#' @param points Key results (listed after `warnings`; they do not turn the status into "請注意",
+#'   "please note").
+#' @param details_title The collapsible title for the raw message (kitsUI uses "kits 的原文", "kits'
+#'   original text").
+#' @return A `kit_status` object.
+#' @seealso [kit_status_ui()], [kit_done_status()], [kit_error_status()], [kit_stale_status()]
 #' @examples
 #' st <- kit_status("success", "串接完成：結果共 3,389 列 × 2,058 欄。")
 #' st
@@ -128,15 +133,18 @@ kit_status <- function(state = "idle", message = "", warnings = character(0),
   )
 }
 
-#' 執行完的狀態：有要注意的事時是【完成，但請注意】，否則是【完成】
+#' Status after a run: 【完成，但請注意】 (done, but take note) when something needs attention,
+#' otherwise 【完成】 (done)
 #'
-#' 異常一定要被看見：有 `warnings` 時，狀態就不能是單純的【完成】。
+#' Anything unusual must be seen: when there are `warnings`, the status cannot be a plain 【完成】
+#' (done).
 #'
 #' @inheritParams kit_status
-#' @return `kit_status` 物件。
+#' @return A `kit_status` object.
 #' @examples
-#' kit_done_status("串接完成：3,389 人。")
+#' kit_done_status("串接完成：3,389 人。")  # "Join done: 3,389 children."
 #' kit_done_status("串接完成：3,389 人。", warnings = "有 12 人的 ID 重複，只留第一筆。")
+#' # warning: "12 children have duplicate IDs; only the first record is kept."
 #' @export
 kit_done_status <- function(message, warnings = character(0), notes = character(0),
                             points = character(0)) {
@@ -144,19 +152,19 @@ kit_done_status <- function(message, warnings = character(0), notes = character(
   kit_status(state, message, warnings = warnings, notes = notes, points = points)
 }
 
-#' 執行失敗的狀態（【停下來】）
+#' Status for a failed run (【停下來】, stopped)
 #'
-#' [kit_abort()] 的白話錯誤直接顯示；沒有預期到的錯誤寫「怎麼辦」，
-#' 原始訊息收在「原始訊息」裡。
+#' Plain-language errors from [kit_abort()] are shown directly; for unexpected errors it says what to
+#' do, and the original message is tucked inside "原始訊息" ("Original message").
 #'
-#' @param e 錯誤（condition）。
-#' @param action 動作名稱，例如「串接」。
-#' @param todo 怎麼辦的按鈕或連結（tag）；`NULL` 不顯示。
-#' @return `kit_status` 物件。
+#' @param e The error (a condition).
+#' @param action The action name, e.g. "串接" ("join").
+#' @param todo A button or link for what to do (a tag); `NULL` shows nothing.
+#' @return A `kit_status` object.
 #' @examples
 #' e <- tryCatch(stop("object 'x' not found"), error = identity)
 #' kit_error_status(e, "串接")
-#' u <- tryCatch(kit_abort("至少要 2 個波次的檔案。"), error = identity)
+#' u <- tryCatch(kit_abort("至少要 2 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
 #' kit_error_status(u, "串接")$message
 #' @export
 kit_error_status <- function(e, action, todo = NULL) {
@@ -178,11 +186,12 @@ kit_error_status <- function(e, action, todo = NULL) {
   )
 }
 
-#' 檔案或設定變更後，舊結果失效（【要重新執行】）
+#' Old result no longer valid after files or settings change (【要重新執行】, "Run again")
 #'
-#' @param run_label 主要按鈕的字，例如「執行串接」。
-#' @param message 自己寫的一句話（預設是「檔案或設定改過了，舊的結果已清除：請再按一次「…」。」）。
-#' @return `kit_status` 物件。
+#' @param run_label The primary button's text, for example "執行串接" ("Run join").
+#' @param message Your own sentence (the default is "檔案或設定改過了，舊的結果已清除：請再按一次「…」。",
+#'   "Files or settings changed and the old result was cleared: press '…' again.").
+#' @return A `kit_status` object.
 #' @examples
 #' kit_stale_status("執行串接")$message
 #' @export
@@ -194,19 +203,22 @@ kit_stale_status <- function(run_label, message = NULL) {
   )
 }
 
-#' 狀態框（StatusBox）
+#' Status box
 #'
-#' 把 [kit_status()] 畫成狀態框：第一行是標籤＋一句結論；接著最多 3 點
-#' （要注意的事在前、結果的重點在後），其他收在「還有 N 點」；怎麼辦的按鈕；
-#' 補充小字；收起來的原始訊息。執行完用 [kit_scroll_to()] 把它捲到畫面上方。
+#' Renders a [kit_status()] as a status box: the first line is the label plus a one-sentence
+#' conclusion; then up to 3 points (things to watch out for first, key results after), the rest
+#' collapsed under "還有 N 點" ("N more points"); a button for what to do; small additional notes; the
+#' collapsed raw message. After running, use [kit_scroll_to()] to scroll it to the top of the screen.
 #'
-#' `kit_status` 物件直接放進頁面也可以（[htmltools::as.tags()] 方法就是這個函式）；
-#' 要多放東西或改點數時才需要呼叫它。
+#' A `kit_status` object can also go straight into the page (its [htmltools::as.tags()] method is this
+#' function); you only need to call this function to add more content or change the number of points.
 #'
-#' @param st [kit_status()] 物件（舊的 app 的同樣欄位的 list 也可以）；`NULL` 或 `"idle"` 時不顯示。
-#' @param ... 其他放在框裡最後的內容（kitsUI 的 `ui_status(...)`）。
-#' @param max_points 直接列出幾點（預設 3）。
-#' @return `<div class="alert alert-success kit-status" role="alert">` 等；不顯示時是 `NULL`。
+#' @param st A [kit_status()] object (a list with the same fields, from older apps, also works); `NULL`
+#'   or `"idle"` shows nothing.
+#' @param ... Other content placed last inside the box (kitsUI's `ui_status(...)`).
+#' @param max_points How many points to list directly (default 3).
+#' @return `<div class="alert alert-success kit-status" role="alert">` or similar; `NULL` when nothing
+#'   is shown.
 #' @examples
 #' kit_status_ui(kit_done_status(
 #'   "串接完成：結果共 3,389 列 × 2,058 欄。",
@@ -265,14 +277,14 @@ kit_status_ui <- function(st, ..., max_points = KIT_STATUS_MAX_POINTS) {
 }
 
 #' @rdname kit_status
-#' @param x `kit_status` 物件。
-#' @param ... 給 [kit_status_ui()] 的其他內容（as.tags）；format、print 不用。
+#' @param x A `kit_status` object.
+#' @param ... Other content for [kit_status_ui()] (as.tags); not used by format and print.
 #' @exportS3Method htmltools::as.tags
 as.tags.kit_status <- function(x, ...) {
   kit_status_ui(x, ...) %||% htmltools::tagList()
 }
 
-#' 文字版的一段文字（tag 轉成純文字）
+#' Text version of a piece of content (a tag becomes plain text)
 #' @noRd
 kit_plain <- function(x) {
   if (kit_is_tagish(x)) return(gsub("\\s+", " ", trimws(gsub("<[^>]+>", " ", as.character(x)))))
@@ -300,17 +312,18 @@ print.kit_status <- function(x, ...) {
   invisible(x)
 }
 
-#' 顯示通知（Shiny 的 showNotification）
+#' Show a notification (Shiny's showNotification)
 #'
-#' 【停下來】用紅色、顯示 10 秒；其他用一般樣式、顯示 6 秒。
+#' 【停下來】 (stopped) is red and shows for 10 seconds; everything else uses the regular style and
+#' shows for 6 seconds.
 #'
-#' @param st [kit_status()] 物件，或一個字串（一般通知）。
-#' @param session Shiny session（預設是目前的 session）。
-#' @param duration 顯示幾秒；`NULL` 時照上面的預設。
-#' @return 通知的 id（不可見）；`"idle"` 或沒有 session 時是 `NULL`。
+#' @param st A [kit_status()] object, or a string (a plain notification).
+#' @param session The Shiny session (defaults to the current session).
+#' @param duration How many seconds to show it; when `NULL`, the defaults above apply.
+#' @return The notification id (invisible); `NULL` for `"idle"` or when there is no session.
 #' @examples
 #' if (interactive()) {
-#'   kit_notify(kit_done_status("串接完成。"))
+#'   kit_notify(kit_done_status("串接完成。"))  # "Join done."
 #' }
 #' @export
 kit_notify <- function(st, session = shiny::getDefaultReactiveDomain(), duration = NULL) {
@@ -326,18 +339,20 @@ kit_notify <- function(st, session = shiny::getDefaultReactiveDomain(), duration
   ))
 }
 
-#' 給使用者看的錯誤
+#' An error meant for the user
 #'
-#' 訊息要是白話中文、說明原因與怎麼修；[kit_error_status()] 會原文顯示在狀態框，
-#' 不加技術細節。其他沒有預期到的錯誤則包成「…時發生沒有預期到的問題」，
-#' 原始訊息收起來。
+#' The message should be plain-language Chinese that says what went wrong and how to fix it;
+#' [kit_error_status()] shows it as written in the status box, with no technical details. Any other,
+#' unexpected error is wrapped as "…時發生沒有預期到的問題" ("an unexpected problem occurred while …"),
+#' with the original message tucked away.
 #'
-#' @param ... 訊息（用 `paste0()` 接起來）。
-#' @param class 另外加的 condition class（呼叫端可以另外處理，例如跳出確認視窗）。
-#' @param data 附在 condition 上的其他欄位（具名 list）。
-#' @return 不會回傳：丟出 `kit_user_error` 錯誤。
+#' @param ... The message (joined with `paste0()`).
+#' @param class An extra condition class (the caller can handle it separately, e.g. to show a
+#'   confirmation dialog).
+#' @param data Other fields to attach to the condition (a named list).
+#' @return Does not return: throws a `kit_user_error` error.
 #' @examples
-#' e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)
+#' e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
 #' class(e)
 #' conditionMessage(e)
 #' @export
@@ -348,10 +363,10 @@ kit_abort <- function(..., class = NULL, data = list()) {
   ))
 }
 
-#' 是不是 [kit_abort()] 丟出的錯誤
+#' Was the error thrown by [kit_abort()]?
 #'
-#' @param e 錯誤（condition）。
-#' @return `TRUE` 或 `FALSE`。
+#' @param e The error (a condition).
+#' @return `TRUE` or `FALSE`.
 #' @examples
 #' kit_is_user_error(tryCatch(kit_abort("x"), error = identity))
 #' @export

@@ -9,35 +9,41 @@
 #   3. <a download="檔名">
 # kitJoin 與 kitsUI 原本各有一份（R/download.R），kitDesign 0.4.0 起放在這裡。
 
-#' 下載按鈕（DownloadButton）
+#' Download button
 #'
-#' 外觀和 [shiny::downloadButton()] 一樣，但中文檔名在每個瀏覽器都存得對：網址最後一段、
-#' `Content-Disposition` 標頭（`filename` 與 `filename*`）、`<a download>` 都是同一個檔名。
-#' 放在 `renderUI()` 裡：重畫時重新註冊，網址跟著換，不會拿到舊檔。
+#' Looks the same as [shiny::downloadButton()], but Chinese file names save correctly in every
+#' browser: the last part of the URL, the `Content-Disposition` header (`filename` and
+#' `filename*`), and `<a download>` all carry the same file name.
+#' Put it inside `renderUI()`: it is registered again on each redraw, the URL changes with it, and
+#' you never get a stale file.
 #'
-#' 檔案在按下載時才寫（`content(file)`，可以讀 reactive）。寫檔出錯時：錯誤寫進 log
-#' （「<app> 下載失敗（檔名）：…」）、這個 session 跳出紅色通知（不會自己消失）、
-#' 回應 500 與同一句話。[kit_abort()] 的訊息照原文給使用者看，其他錯誤不給內部訊息。
+#' The file is written only when the user clicks download (`content(file)`, which can read
+#' reactives). If writing fails: the error goes to the log ("<app> 下載失敗（檔名）：…", "<app>
+#' download failed (file name): …"), this session shows a red notification (which does not
+#' disappear on its own), and the response is 500 with the same sentence. Messages from
+#' [kit_abort()] are shown to the user as written; other errors do not expose internal messages.
 #'
-#' `Content-Type` 照副檔名：`.csv`、`.zip`、`.html` 用各自的 MIME；其他（`.sav`、`.csv.gz`）
-#' 都是 `application/octet-stream`，照 MIME 補副檔名的瀏覽器才不會多加一個副檔名。
+#' `Content-Type` follows the extension: `.csv`, `.zip`, and `.html` get their own MIME types;
+#' everything else (`.sav`, `.csv.gz`) is `application/octet-stream`, so browsers that add an
+#' extension based on MIME type don't add an extra one.
 #'
-#' @param session 模組的 session（id 會自動加上 namespace）。
-#' @param id 按鈕 id（不含 namespace）。
-#' @param label 按鈕的字，例如「下載 CSV」。
-#' @param filename 下載檔名（字串；可以有中文與空白）。
-#' @param content `function(file)`：把檔案寫到 `file`。
-#' @param class 另外加的 class，例如 `kit_btn_class("secondary")`、`"btn-primary"`。
-#' @param app app 的名稱：log 訊息用它；檔名全是中文時，舊瀏覽器用的 ASCII 備用名是它的小寫
-#'   （「第一波.csv」→「kitjoin.csv」）。預設是 `getOption("kitDesign.app", "kit")`：
-#'   app 在 `.onLoad()` 設定一次。
-#' @return `<a class="btn btn-default kit-download" download="檔名">`。
-#' @seealso [kit_test_download()]（測試用）
+#' @param session The module's session (the namespace is added to the id automatically).
+#' @param id The button id (without namespace).
+#' @param label The button text, e.g. "下載 CSV" ("Download CSV").
+#' @param filename The download file name (a string; may contain Chinese and spaces).
+#' @param content `function(file)`: writes the file to `file`.
+#' @param class An extra class, e.g. `kit_btn_class("secondary")`, `"btn-primary"`.
+#' @param app The app name: used in log messages; when the file name is all Chinese, the ASCII
+#'   fallback name for old browsers is its lowercase form ("第一波.csv" → "kitjoin.csv").
+#'   Defaults to `getOption("kitDesign.app", "kit")`: the app sets it once in `.onLoad()`.
+#' @return `<a class="btn btn-default kit-download" download="檔名">` (`download` holds the file
+#'   name).
+#' @seealso [kit_test_download()] (for tests)
 #' @examples
 #' if (interactive()) {
 #'   server <- function(input, output, session) {
 #'     output$dl_ui <- shiny::renderUI(kit_download_button(
-#'       session, "dl", "下載 CSV", "第一波 資料.csv",
+#'       session, "dl", "下載 CSV", "第一波 資料.csv",   # "Download CSV", "Wave 1 data.csv"
 #'       function(file) utils::write.csv(mtcars, file)
 #'     ))
 #'   }
@@ -57,18 +63,21 @@ kit_download_button <- function(session, id, label, filename, content, class = N
   )
 }
 
-#' 測試裡按下載按鈕
+#' Press a download button in tests
 #'
-#' [shiny::testServer()] 的假 session 不會真的註冊下載（`registerDataObj()` 什麼都不做），
-#' [kit_download_button()] 改把它存在 `session$userData`；這個函式從那裡拿出來，照瀏覽器
-#' 按下載時一樣寫檔、回應。
+#' The mock session of [shiny::testServer()] does not really register downloads
+#' (`registerDataObj()` does nothing), so [kit_download_button()] stores the download in
+#' `session$userData` instead; this function takes it from there and writes the file and responds
+#' the same way as when a browser presses download.
 #'
-#' @param session `testServer()` 的 `session`。
-#' @param id 按鈕 id：模組裡用不含 namespace 的 id（`"dl"`），app 層用完整的 id
-#'   （`"stack-download_csv"`）。
-#' @param write `FALSE` 時不寫檔、不回應，只看註冊時的檔名（例如畫圖很慢的下載）。
-#' @return [shiny::httpResponse()]（`status`、`content_type`、`headers`、`content$file`），
-#'   多一個欄位 `filename`：註冊時的檔名。`write = FALSE` 時只有 `list(filename = )`。
+#' @param session The `session` of `testServer()`.
+#' @param id The button id: inside a module, the id without namespace (`"dl"`); at the app level,
+#'   the full id (`"stack-download_csv"`).
+#' @param write When `FALSE`, no file is written and no response is made; only the file name
+#'   registered is checked (for example, downloads that are slow to draw a chart).
+#' @return [shiny::httpResponse()] (`status`, `content_type`, `headers`, `content$file`), with one
+#'   more field `filename`: the file name registered. With `write = FALSE`, only
+#'   `list(filename = )`.
 #' @examples
 #' session <- shiny::MockShinySession$new()
 #' b <- kit_download_button(session, "dl", "下載", "a.csv", function(file) writeLines("x", file))

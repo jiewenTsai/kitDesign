@@ -2,29 +2,32 @@
 % Please edit documentation in R/plotly.R
 \name{kit_chart_sequential}
 \alias{kit_chart_sequential}
-\title{連續數值的色階（Chart）}
+\title{Color scale for continuous values (chart)}
 \usage{
 kit_chart_sequential(brand = kit_current_brand())
 }
 \arguments{
-\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）；預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。}
+\item{brand}{The brand (\code{\link[=kit_brand]{kit_brand()}}); defaults to \code{\link[=kit_current_brand]{kit_current_brand()}} (KIT when none is set).}
 }
 \value{
-plotly 的 colorscale：\code{list(list(0, "#F3F7D3"), ..., list(1, "#006835"))}。
+A plotly colorscale: \code{list(list(0, "#F3F7D3"), ..., list(1, "#006835"))}.
 }
 \description{
-極淡萊姆 → 淡萊姆（\code{bg-new}）→ KIT 綠（\code{nb-green}）：值越大越深。用在熱圖、色條
-（例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。\code{\link[=kit_plotly_style]{kit_plotly_style()}} 預設把熱圖換成這個色階。
+Very light lime → light lime (\code{bg-new}) → KIT green (\code{nb-green}): larger values are darker. For
+heatmaps and color bars (e.g. pass rates in a response design plot). The minimum is not white,
+so 0 looks different from an empty cell with no data (white background). \code{\link[=kit_plotly_style]{kit_plotly_style()}}
+switches heatmaps to this scale by default.
 }
 \details{
-色階從品牌來（\code{\link[=kit_brand]{kit_brand()}}）：0 是 \code{accent_light} 再和白色混合的極淡色，0.2 是
-\code{accent_light}，0.2 到 1 在 Lab 空間從 \code{accent_light} 內插到 \code{primary}。KIT 的品牌
-就是上面的值。類別色（\code{\link[=kit_chart_colors]{kit_chart_colors()}}，Okabe–Ito）不跟著品牌換：它們是色盲友善的。
+The scale comes from the brand (\code{\link[=kit_brand]{kit_brand()}}): 0 is a very light color made by mixing
+\code{accent_light} with white, 0.2 is \code{accent_light}, and 0.2 to 1 interpolates in Lab space from
+\code{accent_light} to \code{primary}. For the KIT brand these are the values above. Categorical colors
+(\code{\link[=kit_chart_colors]{kit_chart_colors()}}, Okabe–Ito) do not change with the brand: they are colorblind-friendly.
 }
 \examples{
 kit_chart_sequential()
 kit_chart_sequential(kit_brand("Demo", colors = list(accent = "#9cc0ff", primary = "#1f4fa3")))
 }
 \seealso{
-\code{\link[=kit_plotly_style]{kit_plotly_style()}}、\code{\link[=kit_chart_colors]{kit_chart_colors()}}
+\code{\link[=kit_plotly_style]{kit_plotly_style()}}, \code{\link[=kit_chart_colors]{kit_chart_colors()}}
 }

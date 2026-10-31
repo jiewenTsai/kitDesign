@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{kit_page}
 \alias{kit_page}
-\title{KIT 的頁面：主題、樣式、頁首，一次設定好}
+\title{A KIT page: theme, styles, and header set up in one call}
 \usage{
 kit_page(
   title,
@@ -20,40 +20,46 @@ kit_page(
 )
 }
 \arguments{
-\item{title}{工具名稱（頁首的 h1，也是瀏覽器分頁的標題），例如「KIT 資料串接工具」。}
+\item{title}{The tool name (the header's h1, also the browser tab title), for example
+"KIT 資料串接工具" ("KIT data join tool").}
 
-\item{subtitle}{副標（粗體），例如資料庫名稱「臺灣幼兒發展調查資料庫」。}
+\item{subtitle}{The subtitle (bold), for example the database name "臺灣幼兒發展調查資料庫" (the
+KIT database).}
 
-\item{...}{頁面的內容。}
+\item{...}{The page content.}
 
-\item{tagline}{接在副標後面的一句（例如「跨波次資料處理」）；\code{NULL} 不顯示。}
+\item{tagline}{A phrase after the subtitle (for example "跨波次資料處理", "cross-wave data
+processing"); \code{NULL} shows nothing.}
 
-\item{version, date}{頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
-\code{kit_app_description("kitJoin")}。}
+\item{version, date}{The version and date on the header's version line, usually read from the
+app's own DESCRIPTION: \code{kit_app_description("kitJoin")}.}
 
-\item{logo}{頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：\code{TRUE}（標誌檔由
-htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的
-單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
+\item{logo}{Whether the header shows the brand logo (KIT's is the bean plus the KIT wordmark):
+\code{TRUE} (the logo file comes from an htmlDependency; use in Shiny), \code{"inline"} (the logo is
+written into the page, for single HTML files without Shiny, such as user manuals), or \code{FALSE}.}
 
-\item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
+\item{meta_extra}{Text added after the version line (for example "kits 0.25.0").}
 
-\item{window_title}{瀏覽器分頁的標題（預設和 \code{title} 一樣）。}
+\item{window_title}{The browser tab title (defaults to \code{title}).}
 
-\item{show_kitdesign}{版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
-回報問題時兩個版本都看得到。}
+\item{show_kitdesign}{Whether to add the kitDesign version after the version line
+("kitDesign 0.1.0"), so both versions are visible when someone reports a problem.}
 
-\item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
-沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}
+\item{brand}{The brand: logo, tab icon, and colors (\code{\link[=kit_brand]{kit_brand()}}). Defaults to
+\code{\link[=kit_current_brand]{kit_current_brand()}}: KIT when \code{options(kitDesign.brand = )} is not set.}
 
-\item{package}{app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
-回報問題時一看就知道是哪個 app 的哪一版。\code{NULL}（預設）不寫，和以前一樣。}
+\item{package}{The app's package name, written at the start of the version line:
+"kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which
+version. \code{NULL} (the default) writes no name, as before.}
 }
 \value{
-一個完整的頁面（\code{bslib::page_fluid()}）。
+A complete page (\code{bslib::page_fluid()}).
 }
 \description{
-包住 \code{bslib::page_fluid(lang = "zh-Hant-TW", theme = kit_theme(), use_kit(), kit_header(...), ...)}。
-頁首下面接著放分頁列（\code{\link[=kit_navgroups]{kit_navgroups()}} 或 \code{\link[=kit_flow_tabs]{kit_flow_tabs()}}）與各分頁的內容。
+Wraps
+\code{bslib::page_fluid(lang = "zh-Hant-TW", theme = kit_theme(), use_kit(), kit_header(...), ...)}.
+Below the header, put the tab bar (\code{\link[=kit_navgroups]{kit_navgroups()}} or \code{\link[=kit_flow_tabs]{kit_flow_tabs()}}) and the content of
+each tab.
 }
 \examples{
 if (interactive()) {
@@ -66,5 +72,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_header]{kit_header()}}、\code{\link[=kit_app_description]{kit_app_description()}}
+\code{\link[=kit_header]{kit_header()}}, \code{\link[=kit_app_description]{kit_app_description()}}
 }

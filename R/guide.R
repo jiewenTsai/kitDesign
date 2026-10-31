@@ -1,20 +1,24 @@
 # 頁面說明（這一頁做什麼）與圖解
 
-#' 頁面說明：這一頁做什麼（PageGuide）
+#' Page guide: what this page does
 #'
-#' 每個分頁最上面的一行說明，預設收起：只看到「這一頁做什麼：」一句，旁邊「看步驟 ▸」；
-#' 打開才看到步驟、會得到什麼、補充與技術說明。沒有框、小字、灰色，下面一條淡線。
+#' A one-line guide at the top of each tab, collapsed by default: only the sentence "這一頁做什麼："
+#' ("What this page does:") is visible, with "看步驟 ▸" ("See steps ▸") next to it; opening it
+#' shows the steps, what you get, additional notes, and technical notes. No border, small gray
+#' text, a light line below.
 #'
-#' @param goal 一句話，不超過 30 字。
-#' @param steps 操作步驟：[kit_steps()]（3–6 點），或一個字串向量（自動變成 [kit_steps()]）。
-#' @param output 會得到什麼。
-#' @param technical 技術說明（給想了解原理的人，再收一層）；`NULL` 不顯示。
-#' @param note 補充（灰色小字）；`NULL` 不顯示。
-#' @param diagram 圖解（[kit_diagram()]）：放在說明框外面、緊接在後面，收起時也看得到；
-#'   `NULL` 不顯示。
-#' @return 沒有圖解時是 `<details class="kit-guide kit-guide-page">`；有圖解時外面再包一層
-#'   `<div class="kit-guide kit-guide-wrap">`。
-#' @seealso [kit_steps()]、[kit_diagram()]
+#' @param goal One sentence, no more than 30 characters.
+#' @param steps The steps to follow: [kit_steps()] (3–6 points), or a character vector (turned
+#'   into [kit_steps()] automatically).
+#' @param output What you get.
+#' @param technical Technical notes (for people who want to know how it works; collapsed one more
+#'   level); `NULL` shows nothing.
+#' @param note Additional notes (small gray text); `NULL` shows nothing.
+#' @param diagram A diagram ([kit_diagram()]): placed outside the guide box, right after it, and
+#'   visible even when the guide is collapsed; `NULL` shows nothing.
+#' @return Without a diagram, `<details class="kit-guide kit-guide-page">`; with a diagram, it is
+#'   wrapped in `<div class="kit-guide kit-guide-wrap">`.
+#' @seealso [kit_steps()], [kit_diagram()]
 #' @examples
 #' kit_tab_guide(
 #'   goal = "把多個波次的檔案依 ID 接成一張寬資料。",
@@ -53,12 +57,13 @@ kit_tab_guide <- function(goal, steps, output, technical = NULL, note = NULL, di
   shiny::tags$div(class = "kit-guide kit-guide-wrap", guide, diagram)
 }
 
-#' 編號的步驟清單（放在 [kit_tab_guide()] 的 `steps`）
+#' Numbered list of steps (for the `steps` of [kit_tab_guide()])
 #'
-#' 注意：這是說明框裡的 `<ol>`，不是步驟卡；步驟卡是 [kit_step_card()]。
+#' Note: this is the `<ol>` inside the guide box, not a step card; step cards are
+#' [kit_step_card()].
 #'
-#' @param ... 每一步一個字串（或字串向量）。
-#' @return `<ol class="kit-steps">`。
+#' @param ... One string (or character vector) per step.
+#' @return `<ol class="kit-steps">`.
 #' @examples
 #' kit_steps("選檔案", "選 ID 欄", "按「執行串接」")
 #' @export
@@ -66,19 +71,22 @@ kit_steps <- function(...) {
   shiny::tags$ol(class = "kit-steps", lapply(c(...), shiny::tags$li))
 }
 
-#' 圖解用的小表格（2–3 欄、2–4 列）
+#' Small table for diagrams (2–3 columns, 2–4 rows)
 #'
-#' 配角：不加框、表格跟著內容寬、1px 細線、淡色表頭（不是大資料表的黑表頭）；
-#' 值用等寬字。新加的欄淡萊姆底，欄名後面加「（新）」，不只靠顏色；
-#' 空的格子寫灰色的「（空）」。
+#' A supporting element: no box, table as wide as its content, 1px thin lines, a light header (not
+#' the black header of large data tables); values in a monospace font. New columns get a light
+#' lime background and "（新）" ("(new)") after the name, so it does not rely on color alone;
+#' empty cells show a gray "（空）" ("(empty)").
 #'
-#' @param df data.frame（值會轉成文字）；`NA` 或 `""` 顯示成「（空）」。
-#' @param title 表名，放在 `<caption>`（例如「第 1 波（t1）」「結果」）。
-#' @param added 這一步新加的欄名（例如 `wave`）。
-#' @param row_header 第 1 欄是列標題（`<th scope="row">`）。
-#' @return `<table class="kit-dg-table">`。
+#' @param df A data.frame (values are converted to text); `NA` or `""` shows as "（空）"
+#'   ("(empty)").
+#' @param title The table name, placed in `<caption>` (e.g. "第 1 波（t1）" ("Wave 1 (t1)"),
+#'   "結果" ("Result")).
+#' @param added Names of columns added in this step (e.g. `wave`).
+#' @param row_header Whether column 1 holds row headers (`<th scope="row">`).
+#' @return `<table class="kit-dg-table">`.
 #' @examples
-#' kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")
+#' kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")  # "Wave 1 (t1)"
 #' @export
 kit_dg_table <- function(df, title, added = NULL, row_header = FALSE) {
   df <- as.data.frame(df, stringsAsFactors = FALSE, check.names = FALSE)
@@ -108,16 +116,18 @@ kit_dg_table <- function(df, title, added = NULL, row_header = FALSE) {
   )
 }
 
-#' 圖解：處理前的小表 → 處理後的小表，下面一行白話說明（Diagram）
+#' Diagram: small table before → small table after, with a plain-language line below
 #'
-#' 放進 [kit_tab_guide()] 的 `diagram`。窄螢幕（≤ 576px）時「前」在上、箭頭朝下、「後」在下。
-#' 每張小表 2–3 列，用一般的名稱（id、score、wave），不用某個資料庫的欄名。
+#' Goes in the `diagram` of [kit_tab_guide()]. On narrow screens (≤ 576px) "before" is on top, the
+#' arrow points down, and "after" is below.
+#' Each small table has 2–3 rows and uses generic names (id, score, wave), not column names from a
+#' particular database.
 #'
-#' @param before 處理前的小表：一個 [kit_dg_table()] 或它們的 list（並排）。
-#' @param after 處理後的小表：一個 [kit_dg_table()]。
-#' @param caption 一行白話說明（`<figcaption>`）。
-#' @param arrow 中間的箭頭。
-#' @return `<figure class="kit-diagram">`。
+#' @param before The small table(s) before: one [kit_dg_table()] or a list of them (side by side).
+#' @param after The small table after: one [kit_dg_table()].
+#' @param caption One plain-language line (`<figcaption>`).
+#' @param arrow The arrow in the middle.
+#' @return `<figure class="kit-diagram">`.
 #' @examples
 #' kit_diagram(
 #'   list(kit_dg_table(data.frame(id = 1:2, t1 = c(3, 5)), "第 1 波"),
@@ -125,6 +135,8 @@ kit_dg_table <- function(df, title, added = NULL, row_header = FALSE) {
 #'   kit_dg_table(data.frame(id = 1:3, t1 = c(3, 5, NA), t2 = c(4, NA, 6)), "結果"),
 #'   "依 id 接起來：沒有出席的那一波是空的。"
 #' )
+#' # "Wave 1", "Wave 2", "Result";
+#' # caption: "Joined by id: a wave the child missed is empty."
 #' @export
 # 原文：→
 kit_diagram <- function(before, after, caption, arrow = "\u2192") {

@@ -2,20 +2,20 @@
 % Please edit documentation in R/tabs.R
 \name{kit_watch_tab_states}
 \alias{kit_watch_tab_states}
-\title{分頁狀態一變就送到瀏覽器}
+\title{Send tab states to the browser whenever they change}
 \usage{
 kit_watch_tab_states(session, states)
 }
 \arguments{
-\item{session}{Shiny session。}
+\item{session}{The Shiny session.}
 
-\item{states}{reactive：\code{\link[=kit_tab_states]{kit_tab_states()}} 的結果。}
+\item{states}{A reactive: the result of \code{\link[=kit_tab_states]{kit_tab_states()}}.}
 }
 \value{
-\code{shiny::observe()} 的 observer（不可見）。
+The \code{shiny::observe()} observer (invisibly).
 }
 \description{
-\code{kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))}。
+\code{kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))}.
 }
 \examples{
 if (interactive()) {

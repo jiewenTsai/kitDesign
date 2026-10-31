@@ -2,26 +2,28 @@
 % Please edit documentation in R/plotly.R
 \name{kit_plotly_fonts}
 \alias{kit_plotly_fonts}
-\title{plotly 圖附上 app 的字型（下載的 HTML 用）}
+\title{Attach the app's typeface to a plotly chart (for downloaded HTML)}
 \usage{
 kit_plotly_fonts(p)
 }
 \arguments{
-\item{p}{plotly 圖（或其他 htmlwidget）。}
+\item{p}{A plotly chart (or another htmlwidget).}
 }
 \value{
-同一張圖，多一個 htmlDependency（\code{kit-plotly-fonts}）。
+The same chart, with one more htmlDependency (\code{kit-plotly-fonts}).
 }
 \description{
-在 plotly 圖上附一個 htmlDependency：向 Google Fonts 拿圓體 Chiron GoRound TC
-（字重 400、700）。Shiny 的頁面已經有這個字型（\code{\link[=kit_theme]{kit_theme()}}），所以這主要是給
-\code{htmlwidgets::saveWidget()} 存成的單一 HTML 檔用：打開時也是 app 的字型；沒有網路時退回
-系統的 sans-serif。
+Attaches an htmlDependency to a plotly chart that loads the rounded typeface Chiron GoRound TC
+from Google Fonts (weights 400 and 700). Shiny pages already have this typeface (\code{\link[=kit_theme]{kit_theme()}}),
+so this is mainly for single HTML files saved with \code{htmlwidgets::saveWidget()}: they also open
+in the app's typeface; without a network connection they fall back to the system sans-serif.
 }
 \details{
-\verb{<link>} 帶 \code{data-external="1"}：\code{saveWidget(selfcontained = TRUE)} 用 pandoc 打包時不把
-字型檔塞進 HTML（中文字型切成上百個檔，塞進去檔案會很大）。
-\code{\link[=kit_plotly_style]{kit_plotly_style()}} 預設（\code{fonts = TRUE}）已經呼叫它；同一張圖附兩次和附一次一樣。
+The \verb{<link>} carries \code{data-external="1"}: when \code{saveWidget(selfcontained = TRUE)} bundles the
+file with pandoc, the font files are not embedded in the HTML (a Chinese typeface is split into
+hundreds of files, so embedding them would make the file very large).
+\code{\link[=kit_plotly_style]{kit_plotly_style()}} already calls it by default (\code{fonts = TRUE}); attaching it twice to the
+same chart is the same as attaching it once.
 }
 \examples{
 if (requireNamespace("plotly", quietly = TRUE)) {

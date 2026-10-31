@@ -5,7 +5,7 @@
 \alias{as.tags.kit_checklist}
 \alias{format.kit_checklist}
 \alias{print.kit_checklist}
-\title{檢查清單（Checklist）}
+\title{Checklist}
 \usage{
 kit_checklist(...)
 
@@ -16,17 +16,17 @@ kit_checklist(...)
 \method{print}{kit_checklist}(x, ...)
 }
 \arguments{
-\item{...}{\code{\link[=kit_check]{kit_check()}}，或它們的 list（\code{NULL} 略過）。}
+\item{...}{\code{\link[=kit_check]{kit_check()}} items, or a list of them (\code{NULL} is skipped).}
 
-\item{x}{\code{kit_checklist} 物件。}
+\item{x}{A \code{kit_checklist} object.}
 }
 \value{
-\code{kit_checklist} 物件。
+A \code{kit_checklist} object.
 }
 \description{
-把「要決定的事」和「已經沒問題的事」列在一起，放在轉換或執行之前。
-一個 S3 值物件（class \code{kit_checklist}，\code{\link[=kit_check]{kit_check()}} 的 list）：直接放進頁面就畫成
-\verb{<ul class="kit-checklist">}，一列一件事，列之間一條最淡的線。
+Lists "things to decide" together with "things already fine", placed before a conversion or run.
+An S3 value object (class \code{kit_checklist}, a list of \code{\link[=kit_check]{kit_check()}}): put it straight into a page and
+it renders as \verb{<ul class="kit-checklist">}, one item per row, with the faintest line between rows.
 }
 \examples{
 cl <- kit_checklist(
@@ -35,6 +35,9 @@ cl <- kit_checklist(
   kit_check("ok", "沒有疑似遺漏值代碼"),
   kit_check("note", "有 2 題沒有人作答，不會放進作答檔")
 )
+# todo: "3 items have scores starting at 1" / "kits needs scores 0, 1, 2…" / button "Subtract 1 from all (recommended)"
+# ok:   "No suspected missing-value codes"
+# note: "2 items have no responses and will not go into the response file"
 cl
 htmltools::as.tags(cl)
 }

@@ -2,20 +2,21 @@
 % Please edit documentation in R/cloud.R
 \name{kit_is_cloud}
 \alias{kit_is_cloud}
-\title{是不是雲端版}
+\title{Is this the cloud version?}
 \usage{
 kit_is_cloud()
 }
 \value{
-\code{TRUE} 或 \code{FALSE}。
+\code{TRUE} or \code{FALSE}.
 }
 \description{
-先看環境變數 \code{KIT_DEPLOY}（\code{"cloud"} 或 \code{"local"}，在 Connect Cloud 設定）；
-沒有設定時，Posit Connect 預設的 \code{R_CONFIG_ACTIVE = "rsconnect"} 就算雲端版。
+Checks the environment variable \code{KIT_DEPLOY} first (\code{"cloud"} or \code{"local"}, set in Connect Cloud);
+if it is not set, Posit Connect's default \code{R_CONFIG_ACTIVE = "rsconnect"} counts as the cloud
+version.
 }
 \examples{
 kit_is_cloud()
 }
 \seealso{
-\code{\link[=kit_cloud_banner]{kit_cloud_banner()}}、\code{\link[=kit_cloud_footer]{kit_cloud_footer()}}
+\code{\link[=kit_cloud_banner]{kit_cloud_banner()}}, \code{\link[=kit_cloud_footer]{kit_cloud_footer()}}
 }

@@ -2,23 +2,26 @@
 % Please edit documentation in R/tabs.R
 \name{kit_navgroup}
 \alias{kit_navgroup}
-\title{分頁列的一組（給 \code{\link[=kit_navgroups]{kit_navgroups()}}）}
+\title{One group in the tab bar (for \code{\link[=kit_navgroups]{kit_navgroups()}})}
 \usage{
 kit_navgroup(label, tabs, tools = FALSE)
 }
 \arguments{
-\item{label}{組標籤（灰色小字），例如「準備」「做出資料（選一個）」「其他工具」。}
+\item{label}{The group label (small gray text), e.g. "準備" ("Prepare"), "做出資料（選一個）"
+("Make the data (pick one)"), "其他工具" ("Other tools").}
 
-\item{tabs}{具名字串向量：名字是分頁的 value（\code{tabPanel(value = )}），值是分頁名稱。}
+\item{tabs}{A named character vector: names are tab values (\code{tabPanel(value = )}), values are tab
+names.}
 
-\item{tools}{\code{TRUE} 時是獨立的小工具：虛線框、沒有陰影。}
+\item{tools}{When \code{TRUE}, these are standalone tools: dashed border, no shadow.}
 }
 \value{
-list（\code{class = "kit_navgroup"}）。
+A list (\code{class = "kit_navgroup"}).
 }
 \description{
-分頁列的一組（給 \code{\link[=kit_navgroups]{kit_navgroups()}}）
+One group in the tab bar (for \code{\link[=kit_navgroups]{kit_navgroups()}})
 }
 \examples{
 kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理"))
+# "Prepare": "File upload", "Missing values"
 }

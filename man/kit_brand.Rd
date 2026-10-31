@@ -2,7 +2,7 @@
 % Please edit documentation in R/brand.R
 \name{kit_brand}
 \alias{kit_brand}
-\title{品牌：標誌與顏色}
+\title{Brand: logo and colors}
 \usage{
 kit_brand(
   name = "KIT",
@@ -13,62 +13,68 @@ kit_brand(
 )
 }
 \arguments{
-\item{name}{品牌名稱，例如 \code{"KIT"}、\code{"示範實驗室"}。}
+\item{name}{The brand name, e.g. \code{"KIT"}, \code{"示範實驗室"} ("Demo Lab").}
 
-\item{logo}{頁首標誌的檔案路徑（SVG 或 PNG）；\code{NULL} 見上面；\code{FALSE} 不放標誌。}
+\item{logo}{Path to the header logo file (SVG or PNG); for \code{NULL} see above; \code{FALSE} shows no logo.}
 
-\item{mark}{瀏覽器分頁圖示的檔案路徑（SVG 或 PNG，方形）；\code{NULL} 時用 \code{logo}。}
+\item{mark}{Path to the browser tab icon file (SVG or PNG, square); when \code{NULL}, \code{logo} is used.}
 
-\item{logo_alt}{標誌的替代文字；\code{NULL} 時是「KIT 標誌」（KIT）或「\if{html}{\out{<name>}} 標誌」。}
+\item{logo_alt}{Alt text for the logo; when \code{NULL}, "KIT 標誌" ("KIT logo") for KIT, or
+"\if{html}{\out{<name>}} 標誌" ("\if{html}{\out{<name>}} logo").}
 
-\item{colors}{要換的顏色：具名 list 或具名字串向量，名稱見上表，值是 \code{"#RRGGBB"}
-或 R 認得的顏色名稱。不認得的名稱會停下來，列出可以用的名稱。}
+\item{colors}{Colors to replace: a named list or named character vector; names are in the table
+above, values are \code{"#RRGGBB"} or color names R knows. An unknown name stops with an error listing
+the names you can use.}
 }
 \value{
-\code{kit_brand} 物件（list：\code{name}、\code{logo_alt}、\code{colors}（11 個 \verb{#rrggbb}）、標誌檔）。
+A \code{kit_brand} object (a list: \code{name}, \code{logo_alt}, \code{colors} (11 \verb{#rrggbb} values), and the
+logo files).
 }
 \description{
-kitDesign 預設是 KIT 的樣子。別的計畫或研究室要用 kitDesign 時，用 \code{kit_brand()}
-換掉標誌與顏色；字型、框、陰影、元件的樣子照設計語言不變。
-不給任何參數時就是 KIT（\code{kit_brand()}），畫出來的頁面和以前一模一樣。
+kitDesign looks like KIT by default. When another project or lab uses kitDesign, \code{kit_brand()}
+swaps the logo and colors; typeface, borders, shadows, and how components look follow the design
+language and stay the same. With no arguments it is KIT (\code{kit_brand()}), and pages look exactly as
+before.
 }
 \details{
-品牌交給 \code{\link[=kit_page]{kit_page()}}（\verb{brand =}），或在 app 開始時設定一次：
-\code{options(kitDesign.brand = kit_brand(...))}，之後 \code{\link[=kit_page]{kit_page()}}、\code{\link[=kit_header]{kit_header()}}、
-\code{\link[=kit_theme]{kit_theme()}}、\code{\link[=kit_colors]{kit_colors()}}、\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}、\code{\link[=kit_plotly_style]{kit_plotly_style()}}
-都用它（\code{\link[=kit_current_brand]{kit_current_brand()}}）。
+Pass the brand to \code{\link[=kit_page]{kit_page()}} (\verb{brand =}), or set it once when the app starts:
+\code{options(kitDesign.brand = kit_brand(...))}. After that \code{\link[=kit_page]{kit_page()}}, \code{\link[=kit_header]{kit_header()}},
+\code{\link[=kit_theme]{kit_theme()}}, \code{\link[=kit_colors]{kit_colors()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}, and \code{\link[=kit_plotly_style]{kit_plotly_style()}}
+all use it (\code{\link[=kit_current_brand]{kit_current_brand()}}).
 
-\strong{顏色}（\code{colors}）用設計語言的名稱，沒有給的照 KIT：\tabular{llll}{
-   名稱 \tab CSS 變數 \tab KIT \tab 用在 \cr
-   \code{ink} \tab \code{--nb-ink} \tab \verb{#141414} \tab 文字、框、陰影 \cr
-   \code{page} \tab \code{--nb-page} \tab \verb{#faf7f0} \tab 整頁背景 \cr
-   \code{card} \tab \code{--nb-card} \tab \verb{#ffffff} \tab 卡片、輸入框、表格 \cr
-   \code{accent} \tab \code{--nb-lime} \tab \verb{#c6d033} \tab 主角色塊：頁首、主要按鈕、目前的分頁 \cr
-   \code{accent_light} \tab \code{--nb-bg-new} \tab \verb{#e8f0a0} \tab 淡的主角色：圖解裡新加的欄、色階的淡端 \cr
-   \code{primary} \tab \code{--nb-green} \tab \verb{#006835} \tab 連結、勾選框、進度條、色階的深端 \cr
-   \code{primary_hover} \tab \code{--nb-green-hover} \tab \verb{#004d27} \tab 連結滑過 \cr
-   \code{success} \tab \code{--nb-mint} \tab \verb{#b9f0a8} \tab 【完成】 \cr
-   \code{warning} \tab \code{--nb-yellow} \tab \verb{#ffde59} \tab 【完成，但請注意】 \cr
-   \code{danger} \tab \code{--nb-salmon} \tab \verb{#ff9b8f} \tab 【停下來】、危險按鈕 \cr
-   \code{info} \tab \code{--nb-sky} \tab \verb{#a8dcff} \tab 資訊提示框 \cr
+\strong{Colors} (\code{colors}) use the design-language names; anything not given follows KIT:\tabular{llll}{
+   Name \tab CSS variable \tab KIT \tab Used for \cr
+   \code{ink} \tab \code{--nb-ink} \tab \verb{#141414} \tab text, borders, shadows \cr
+   \code{page} \tab \code{--nb-page} \tab \verb{#faf7f0} \tab page background \cr
+   \code{card} \tab \code{--nb-card} \tab \verb{#ffffff} \tab cards, inputs, tables \cr
+   \code{accent} \tab \code{--nb-lime} \tab \verb{#c6d033} \tab main color block: header, primary button, current tab \cr
+   \code{accent_light} \tab \code{--nb-bg-new} \tab \verb{#e8f0a0} \tab light main color: new columns in diagrams, light end of the color scale \cr
+   \code{primary} \tab \code{--nb-green} \tab \verb{#006835} \tab links, checkboxes, progress bars, dark end of the color scale \cr
+   \code{primary_hover} \tab \code{--nb-green-hover} \tab \verb{#004d27} \tab link hover \cr
+   \code{success} \tab \code{--nb-mint} \tab \verb{#b9f0a8} \tab 【完成】 (done) \cr
+   \code{warning} \tab \code{--nb-yellow} \tab \verb{#ffde59} \tab 【完成，但請注意】 (done, but take note) \cr
+   \code{danger} \tab \code{--nb-salmon} \tab \verb{#ff9b8f} \tab 【停下來】 (stopped), danger button \cr
+   \code{info} \tab \code{--nb-sky} \tab \verb{#a8dcff} \tab info callout \cr
 }
 
 
-只給 \code{accent} 時，\code{accent_light} 由它算出來（和白色混合）；只給 \code{primary} 時，
-\code{primary_hover} 由它算出來（加深）。色塊上的字一律是 \code{ink}：選 \code{accent} 與四個狀態色時，
-確認 \code{ink} 在上面的對比至少 4.5:1；\code{primary} 是文字色，在 \code{page} 上也要 4.5:1。
+If only \code{accent} is given, \code{accent_light} is derived from it (mixed with white); if only \code{primary}
+is given, \code{primary_hover} is derived from it (darkened). Text on color blocks is always \code{ink}: when
+choosing \code{accent} and the four status colors, check that \code{ink} on them has at least 4.5:1 contrast;
+\code{primary} is a text color and also needs 4.5:1 on \code{page}.
 
-\strong{標誌}：\code{logo} 是頁首的完整標誌，\code{mark} 是瀏覽器分頁的小圖示（方形；沒有給時用
-\code{logo}）。都是 SVG 或 PNG 檔的路徑；檔案在建立品牌時讀進來，所以之後換工作目錄也沒關係。
-在 Shiny 裡由一個只有這兩個檔的 htmlDependency 提供（不會公開檔案所在的資料夾）；
-\code{kit_header(logo = "inline")} 時寫成 data URI。
-\code{name = "KIT"} 而且沒有給 \code{logo} 時用 KIT 的標誌；其他名稱沒有給 \code{logo} 時，頁首不放標誌。
-\code{logo = FALSE} 一律不放標誌。
+\strong{Logo}: \code{logo} is the full header logo, \code{mark} is the small browser tab icon (square; when not
+given, \code{logo} is used). Both are paths to SVG or PNG files; the files are read when the brand is
+created, so changing the working directory later does not matter.
+In Shiny they are served by an htmlDependency containing only these two files (the folder they live
+in is not exposed); with \code{kit_header(logo = "inline")} they are written as a data URI.
+With \code{name = "KIT"} and no \code{logo}, the KIT logo is used; with any other name and no \code{logo}, the
+header has no logo. \code{logo = FALSE} never shows a logo.
 }
 \examples{
 kit_brand()
 
-# 別的研究室：藍色系、自己的標誌
+# Another lab: blue colors, its own logo
 demo <- kit_brand(
   "示範實驗室",
   logo = system.file("examples", "brand", "demo-logo.svg", package = "kitDesign"),
@@ -77,10 +83,10 @@ demo <- kit_brand(
 )
 demo
 if (interactive()) {
-  options(kitDesign.brand = demo)   # 整個 app 用這個品牌
+  options(kitDesign.brand = demo)   # use this brand for the whole app
   kit_gallery()
 }
 }
 \seealso{
-\code{\link[=kit_current_brand]{kit_current_brand()}}、\code{\link[=kit_page]{kit_page()}}、\code{\link[=kit_theme]{kit_theme()}}、\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
+\code{\link[=kit_current_brand]{kit_current_brand()}}, \code{\link[=kit_page]{kit_page()}}, \code{\link[=kit_theme]{kit_theme()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
 }

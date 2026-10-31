@@ -2,39 +2,43 @@
 % Please edit documentation in R/buttons.R
 \name{kit_button}
 \alias{kit_button}
-\title{按鈕（Button）}
+\title{Button}
 \usage{
 kit_button(id, label, kind = "secondary", ..., class = NULL)
 }
 \arguments{
-\item{id}{按鈕的 input id。}
+\item{id}{The button's input id.}
 
-\item{label}{按鈕上的字。}
+\item{label}{The text on the button.}
 
-\item{kind}{\code{"primary"}、\code{"secondary"} 或 \code{"danger"}。}
+\item{kind}{\code{"primary"}, \code{"secondary"}, or \code{"danger"}.}
 
-\item{...}{其他傳給 \code{\link[shiny:actionButton]{shiny::actionButton()}} 的參數（例如 \code{disabled = TRUE}、\code{icon}）。}
+\item{...}{Other arguments passed to \code{\link[shiny:actionButton]{shiny::actionButton()}} (e.g. \code{disabled = TRUE}, \code{icon}).}
 
-\item{class}{另外加的 class。}
+\item{class}{An extra class.}
 }
 \value{
-\verb{<button class="btn ...">}。
+\verb{<button class="btn ...">}.
 }
 \description{
-一個 \code{\link[shiny:actionButton]{shiny::actionButton()}}，class 照按鈕的種類：
+A \code{\link[shiny:actionButton]{shiny::actionButton()}} with a class set by the button kind:
 }
 \details{
 \itemize{
-\item \code{"primary"}：主要按鈕，萊姆底、大字、卡片陰影。一頁一個，加上最下面的「下一步」。
-\item \code{"secondary"}：小按鈕，白底、細框、沒有陰影。用在下載、全選、範例檔、上移下移、複製。
-\item \code{"danger"}：危險按鈕，鮭紅底。用在刪除、移除、這一回合不做。
+\item \code{"primary"}: primary button, lime background, large text, card shadow. One per page, plus the
+"下一步" ("Next step") at the bottom.
+\item \code{"secondary"}: secondary button, white background, thin border, no shadow. For download,
+select all, example files, move up/down, copy.
+\item \code{"danger"}: danger button, salmon background. For delete, remove, skip this round.
 }
 
-一般按鈕（白底、黑框、小陰影，例如「對，下一步」）直接用 \code{shiny::actionButton()}。
-文字用動詞開頭，說清楚按下去會發生什麼；會離開這一頁的，文字後面加「→」。
+For a regular button (white background, black border, small shadow, e.g. "對，下一步" ("Yes,
+next step")) use \code{shiny::actionButton()} directly.
+Start the text with a verb and say clearly what pressing it does; if it leaves the page, add
+"→" after the text.
 }
 \examples{
-kit_button("run", "執行串接", "primary")
-kit_button("all", "全選")
-kit_button("drop", "這一回合不做", "danger")
+kit_button("run", "執行串接", "primary")       # "Run join"
+kit_button("all", "全選")                     # "Select all"
+kit_button("drop", "這一回合不做", "danger")  # "Skip this round"
 }

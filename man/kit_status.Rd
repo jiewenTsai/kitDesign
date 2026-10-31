@@ -5,7 +5,7 @@
 \alias{as.tags.kit_status}
 \alias{format.kit_status}
 \alias{print.kit_status}
-\title{狀態物件（StatusBox）}
+\title{Status object (status box)}
 \usage{
 kit_status(
   state = "idle",
@@ -25,45 +25,50 @@ kit_status(
 \method{print}{kit_status}(x, ...)
 }
 \arguments{
-\item{state}{\code{"idle"}、\code{"success"}、\code{"warning"}、\code{"error"} 或 \code{"stale"}。}
+\item{state}{\code{"idle"}, \code{"success"}, \code{"warning"}, \code{"error"}, or \code{"stale"}.}
 
-\item{message}{第一行的結論（一句話，帶數字與單位）：一個字串或 tag。}
+\item{message}{The conclusion on the first line (one sentence, with numbers and units): a string or
+tag.}
 
-\item{warnings}{需要注意的事（字串向量，或字串與 tag 的 list）。排在最前面。}
+\item{warnings}{Things to watch out for (a character vector, or a list of strings and tags). Listed
+first.}
 
-\item{notes}{補充說明（灰色小字）。}
+\item{notes}{Additional notes (small gray text).}
 
-\item{details}{原始訊息（R 的錯誤原文；收起來）：一個字串或 \code{NULL}。}
+\item{details}{The raw message (R's original error text; collapsed): a string or \code{NULL}.}
 
-\item{action}{怎麼辦的按鈕或連結（tag）；\code{NULL} 不顯示。}
+\item{action}{A button or link for what to do (a tag); \code{NULL} shows nothing.}
 
-\item{points}{結果的重點（排在 \code{warnings} 後面；不會讓狀態變成「請注意」）。}
+\item{points}{Key results (listed after \code{warnings}; they do not turn the status into "請注意",
+"please note").}
 
-\item{details_title}{原始訊息的收合標題（kitsUI 用「kits 的原文」）。}
+\item{details_title}{The collapsible title for the raw message (kitsUI uses "kits 的原文", "kits'
+original text").}
 
-\item{x}{\code{kit_status} 物件。}
+\item{x}{A \code{kit_status} object.}
 
-\item{...}{給 \code{\link[=kit_status_ui]{kit_status_ui()}} 的其他內容（as.tags）；format、print 不用。}
+\item{...}{Other content for \code{\link[=kit_status_ui]{kit_status_ui()}} (as.tags); not used by format and print.}
 }
 \value{
-\code{kit_status} 物件。
+A \code{kit_status} object.
 }
 \description{
-一個動作的結果。這是一個 S3 值物件（class \code{kit_status}）：建構時檢查內容；
-有 \code{\link[htmltools:as.tags]{htmltools::as.tags()}} 方法，所以 \code{renderUI(st)} 或直接放進 \code{tagList()} 就會畫成狀態框
-（和 \code{\link[=kit_status_ui]{kit_status_ui()}} 一樣）。\code{print(st)} 印出文字版。
+The result of an action. This is an S3 value object (class \code{kit_status}): its content is checked
+when it is built. It has an \code{\link[htmltools:as.tags]{htmltools::as.tags()}} method, so \code{renderUI(st)} or putting it straight
+into \code{tagList()} renders it as a status box (the same as \code{\link[=kit_status_ui]{kit_status_ui()}}). \code{print(st)} prints a
+text version.
 }
 \details{
-四種狀態各有固定的標籤與顏色：\tabular{lll}{
-   state \tab 標籤 \tab 底色 \cr
-   \code{"success"} \tab 【完成】 \tab 薄荷綠 \cr
-   \code{"warning"} \tab 【完成，但請注意】 \tab 黃 \cr
-   \code{"error"} \tab 【停下來】 \tab 鮭紅 \cr
-   \code{"stale"} \tab 【要重新執行】 \tab 黃 \cr
+Each of the four states has a fixed label and color:\tabular{lll}{
+   state \tab Label \tab Background \cr
+   \code{"success"} \tab 【完成】 ("Done") \tab mint green \cr
+   \code{"warning"} \tab 【完成，但請注意】 ("Done, but please note") \tab yellow \cr
+   \code{"error"} \tab 【停下來】 ("Stopped") \tab salmon \cr
+   \code{"stale"} \tab 【要重新執行】 ("Run again") \tab yellow \cr
 }
 
 
-\code{"idle"}（還沒有執行）不顯示。也接受 kitsUI 的名字：\code{"done"}、\code{"warn"}、\code{"stop"}。
+\code{"idle"} (not run yet) is not shown. kitsUI's names are also accepted: \code{"done"}, \code{"warn"}, \code{"stop"}.
 }
 \examples{
 st <- kit_status("success", "串接完成：結果共 3,389 列 × 2,058 欄。")
@@ -71,5 +76,5 @@ st
 htmltools::as.tags(st)
 }
 \seealso{
-\code{\link[=kit_status_ui]{kit_status_ui()}}、\code{\link[=kit_done_status]{kit_done_status()}}、\code{\link[=kit_error_status]{kit_error_status()}}、\code{\link[=kit_stale_status]{kit_stale_status()}}
+\code{\link[=kit_status_ui]{kit_status_ui()}}, \code{\link[=kit_done_status]{kit_done_status()}}, \code{\link[=kit_error_status]{kit_error_status()}}, \code{\link[=kit_stale_status]{kit_stale_status()}}
 }

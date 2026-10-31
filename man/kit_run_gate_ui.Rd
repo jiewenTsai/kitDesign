@@ -3,33 +3,34 @@
 \name{kit_run_gate_ui}
 \alias{kit_run_gate_ui}
 \alias{kit_run_gate_server}
-\title{主要按鈕＋「還差：…」模組（ReadyLine）}
+\title{Primary button + "Still needed: …" module (ready line)}
 \usage{
 kit_run_gate_ui(id, label, ...)
 
 kit_run_gate_server(id, missing, link = function() NULL)
 }
 \arguments{
-\item{id}{模組的 id。}
+\item{id}{The module id.}
 
-\item{label}{主要按鈕的字（動詞開頭，例如「執行串接」）。}
+\item{label}{The primary button's text (start with a verb, for example "執行串接", "Run join").}
 
-\item{...}{其他傳給 \code{\link[=kit_button]{kit_button()}} 的參數。}
+\item{...}{Other arguments passed to \code{\link[=kit_button]{kit_button()}}.}
 
-\item{missing}{reactive：還差的事（字串向量；長度 0 = 可以執行）。}
+\item{missing}{A reactive: what is still needed (character vector; length 0 = ready to run).}
 
-\item{link}{函式：跟在「還差」後面的連結（tag 或 \code{NULL}）。}
+\item{link}{A function: the link after "還差" ("Still needed") (a tag or \code{NULL}).}
 }
 \value{
-\code{kit_run_gate_ui()}：「還差」的位置與主要按鈕。
+\code{kit_run_gate_ui()}: the slot for the "還差" line and the primary button.
 
-\code{kit_run_gate_server()}：reactive，可以執行時按了幾次（一開始是 0）。
+\code{kit_run_gate_server()}: a reactive counting presses made while ready to run (0 at first).
 }
 \description{
-主要按鈕一開始就顯示（停用）；還差的事（\code{missing()}）是空的時才能按，
-上面一行粗體「還差：…」，後面接一個去處理的連結。
-server 回傳的 reactive 只有在\strong{沒有還差的事時}按下去才會變（伺服器端也擋，
-不只靠按鈕停用），所以直接 \verb{observeEvent(run(), …)} 就好。
+The primary button is shown (disabled) from the start; it can be pressed only when nothing is
+still needed (\code{missing()} is empty). Above it, a bold line says "還差：…" ("Still needed: …"),
+followed by a link to where to fix it. The reactive returned by the server changes only when the
+button is pressed \strong{while nothing is still needed} (the server also blocks it, not just the
+disabled button), so a plain \verb{observeEvent(run(), …)} is enough.
 }
 \examples{
 if (interactive()) {
@@ -45,5 +46,5 @@ if (interactive()) {
 }
 }
 \seealso{
-\code{\link[=kit_ready_line]{kit_ready_line()}}、\code{\link[=kit_run_gate]{kit_run_gate()}}（低階）
+\code{\link[=kit_ready_line]{kit_ready_line()}}, \code{\link[=kit_run_gate]{kit_run_gate()}} (low-level)
 }

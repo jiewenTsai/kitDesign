@@ -2,25 +2,28 @@
 % Please edit documentation in R/server.R
 \name{kit_ready_line}
 \alias{kit_ready_line}
-\title{還差什麼（ReadyLine）}
+\title{Ready line ("what's still needed")}
 \usage{
 kit_ready_line(missing, link = NULL)
 }
 \arguments{
-\item{missing}{還差的事（字串向量；\code{NA} 與 \code{""} 略過）。}
+\item{missing}{What is still needed (character vector; \code{NA} and \code{""} are skipped).}
 
-\item{link}{跟在後面的連結（例如「到「檔案上傳」加入檔案 →」）；\code{NULL} 不顯示。}
+\item{link}{A link that follows (for example "到「檔案上傳」加入檔案 →", "Go to 'File upload'
+to add files →"); \code{NULL} shows nothing.}
 }
 \value{
-\verb{<p class="kit-ready todo">}；不差什麼時是 \code{NULL}。
+\verb{<p class="kit-ready todo">}; \code{NULL} when nothing is missing.
 }
 \description{
-主要按鈕還不能按時，按鈕上面一行粗體「還差：…」，後面接一個去處理的連結。
-「還差」寫具體的事和數字：「至少要 2 個波次的檔案，目前只有 1 個」。
+When the primary button cannot be pressed yet, a bold line above it says "還差：…" ("Still
+needed: …"), followed by a link to where to fix it.
+Write what is still needed as concrete tasks and numbers: "至少要 2 個波次的檔案，目前只有 1 個"
+("Need files from at least 2 waves; there is only 1 now").
 }
 \examples{
 kit_ready_line(c("至少要 2 個波次的檔案，目前只有 1 個", "選 ID 欄"))
 }
 \seealso{
-\code{\link[=kit_run_gate]{kit_run_gate()}}、\code{\link[=kit_need_files]{kit_need_files()}}
+\code{\link[=kit_run_gate]{kit_run_gate()}}, \code{\link[=kit_need_files]{kit_need_files()}}
 }

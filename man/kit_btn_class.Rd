@@ -2,19 +2,20 @@
 % Please edit documentation in R/buttons.R
 \name{kit_btn_class}
 \alias{kit_btn_class}
-\title{按鈕種類的 class}
+\title{Class for a button kind}
 \usage{
 kit_btn_class(kind = c("secondary", "primary", "danger"))
 }
 \arguments{
-\item{kind}{\code{"primary"}（主要按鈕）、\code{"secondary"}（小按鈕）或 \code{"danger"}（危險按鈕）。}
+\item{kind}{\code{"primary"} (primary button), \code{"secondary"} (secondary button), or \code{"danger"}
+(danger button).}
 }
 \value{
-class 字串，例如 \code{"btn-sm btn-outline-secondary"}。
+A class string, e.g. \code{"btn-sm btn-outline-secondary"}.
 }
 \description{
-自己畫按鈕（例如 \code{downloadButton()}、\verb{<a class="btn">}）時，用這裡的 class，
-和 \code{\link[=kit_button]{kit_button()}} 長得一樣。
+When you build a button yourself (e.g. \code{downloadButton()}, \verb{<a class="btn">}), use this class
+so it looks the same as \code{\link[=kit_button]{kit_button()}}.
 }
 \examples{
 kit_btn_class("secondary")

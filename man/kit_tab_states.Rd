@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabs.R
 \name{kit_tab_states}
 \alias{kit_tab_states}
-\title{每個分頁的狀態}
+\title{State of each tab}
 \usage{
 kit_tab_states(
   status,
@@ -12,30 +12,32 @@ kit_tab_states(
 )
 }
 \arguments{
-\item{status}{具名 list 或字串向量：名字是分頁的 value，值是狀態。
-沒有列出的分頁不改。}
+\item{status}{A named list or character vector: names are tab values, values are states.
+Tabs not listed are left unchanged.}
 
-\item{locked}{還不能用的分頁：value 的字串向量，或具名 logical。}
+\item{locked}{Tabs that cannot be used yet: a character vector of values, or a named logical.}
 
-\item{locked_tips}{還不能用時滑過的說明：一個字串（全部一樣），或以 value 命名的字串向量。}
+\item{locked_tips}{The hover text for tabs that cannot be used yet: one string (the same for all),
+or a character vector named by value.}
 
-\item{tabset}{分頁的 id（\code{tabsetPanel(id = )}）。}
+\item{tabset}{The tabset id (\code{tabsetPanel(id = )}).}
 }
 \value{
-list，一個分頁一個 \code{list(tabset, value, state, tip)}。
+A list with one \code{list(tabset, value, state, tip)} per tab.
 }
 \description{
-從每個分頁狀態框的狀態（\code{\link[=kit_status]{kit_status()}} 的 \code{state}）算出分頁的樣子：
+Works out how each tab looks from the state of its status box (the \code{state} of \code{\link[=kit_status]{kit_status()}}):
 }
 \details{
 \itemize{
-\item \code{"locked"}（灰色）：寫在 \code{locked} 裡的分頁。滑過時的說明是 \code{locked_tips}。
-\item \code{"done"}（打 ✓）：狀態是 \code{"success"} 或 \code{"warning"}（或直接寫 \code{"done"}）。
-\item \code{"stale"}（✓ 拿掉）：狀態是 \code{"stale"}。
-\item \code{"ready"}：其他（\code{"idle"}、\code{"error"}、\code{"ready"}）。
+\item \code{"locked"} (gray): tabs listed in \code{locked}. The hover text is \code{locked_tips}.
+\item \code{"done"} (with ✓): the state is \code{"success"} or \code{"warning"} (or directly \code{"done"}).
+\item \code{"stale"} (✓ removed): the state is \code{"stale"}.
+\item \code{"ready"}: anything else (\code{"idle"}, \code{"error"}, \code{"ready"}).
 }
 
-結果交給 \code{\link[=kit_send_tab_states]{kit_send_tab_states()}}（或 \code{\link[=kit_watch_tab_states]{kit_watch_tab_states()}}）送到瀏覽器。
+Pass the result to \code{\link[=kit_send_tab_states]{kit_send_tab_states()}} (or \code{\link[=kit_watch_tab_states]{kit_watch_tab_states()}}) to send it to the
+browser.
 }
 \examples{
 kit_tab_states(

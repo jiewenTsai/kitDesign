@@ -5,7 +5,7 @@
 \alias{as.tags.kit_code}
 \alias{format.kit_code}
 \alias{print.kit_code}
-\title{一個版本的程式碼（CodePanel）}
+\title{Code for one version (code panel)}
 \usage{
 kit_code(code, label = "R", width = KIT_CODE_WIDTH)
 
@@ -16,24 +16,27 @@ kit_code(code, label = "R", width = KIT_CODE_WIDTH)
 \method{print}{kit_code}(x, ...)
 }
 \arguments{
-\item{code}{程式碼（字串向量；一個元素一行，或含換行）。}
+\item{code}{The code (a character vector; one element per line, or containing newlines).}
 
-\item{label}{版本名稱，例如「tidyverse 版」「base R 版」「kits 版」。}
+\item{label}{The version name, e.g. "tidyverse 版" ("tidyverse version"), "base R 版" ("base R
+version"), "kits 版" ("kits version").}
 
-\item{width}{一行最多幾欄；\code{NULL} 不換行、不檢查。}
+\item{width}{Maximum columns per line; \code{NULL} means no wrapping and no check.}
 
-\item{x}{\code{kit_code} 物件。}
+\item{x}{A \code{kit_code} object.}
 
-\item{...}{不用。}
+\item{...}{Not used.}
 }
 \value{
-\code{kit_code} 物件。
+A \code{kit_code} object.
 }
 \description{
-一個 S3 值物件（class \code{kit_code}）：程式碼文字＋版本名稱。有 \code{\link[htmltools:as.tags]{htmltools::as.tags()}} 方法：
-直接放進頁面就畫成「版本名稱（粗體）＋複製」一行和下面的程式碼框，
-程式碼先用 \code{\link[=kit_code_wrap]{kit_code_wrap()}} 換行成每行最多 70 欄（中文字算 2 欄）。
-換行後還是有太長的行（例如斷不開的長字串）時發出 warning（不會停下來），在框裡左右捲。
+An S3 value object (class \code{kit_code}): code text plus a version name. It has an
+\code{\link[htmltools:as.tags]{htmltools::as.tags()}} method: put it straight into a page and it renders a line with "version
+name (bold) + Copy" and the code box below, with the code first wrapped by \code{\link[=kit_code_wrap]{kit_code_wrap()}} to
+at most 70 columns per line (Chinese characters count as 2).
+If a line is still too long after wrapping (e.g. a long string that cannot be broken), it gives
+a warning (it does not stop), and the box scrolls sideways.
 }
 \examples{
 x <- kit_code("joined <- dplyr::left_join(t1, t2, by = \"id\")", "tidyverse 版")
@@ -41,5 +44,5 @@ x
 htmltools::as.tags(x)
 }
 \seealso{
-\code{\link[=kit_code_blocks]{kit_code_blocks()}}、\code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}
+\code{\link[=kit_code_blocks]{kit_code_blocks()}}, \code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}
 }

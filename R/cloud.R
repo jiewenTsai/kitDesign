@@ -2,13 +2,14 @@
 #
 # 判斷與畫法在這裡；文字（伺服器在哪裡、使用須知的每一段）是各 app 自己的。
 
-#' 是不是雲端版
+#' Is this the cloud version?
 #'
-#' 先看環境變數 `KIT_DEPLOY`（`"cloud"` 或 `"local"`，在 Connect Cloud 設定）；
-#' 沒有設定時，Posit Connect 預設的 `R_CONFIG_ACTIVE = "rsconnect"` 就算雲端版。
+#' Checks the environment variable `KIT_DEPLOY` first (`"cloud"` or `"local"`, set in Connect Cloud);
+#' if it is not set, Posit Connect's default `R_CONFIG_ACTIVE = "rsconnect"` counts as the cloud
+#' version.
 #'
-#' @return `TRUE` 或 `FALSE`。
-#' @seealso [kit_cloud_banner()]、[kit_cloud_footer()]
+#' @return `TRUE` or `FALSE`.
+#' @seealso [kit_cloud_banner()], [kit_cloud_footer()]
 #' @examples
 #' kit_is_cloud()
 #' @export
@@ -18,34 +19,39 @@ kit_is_cloud <- function() {
   identical(Sys.getenv("R_CONFIG_ACTIVE"), "rsconnect")
 }
 
-#' 雲端版的提醒橫幅（頁首下面一行）
+#' Cloud version reminder banner (one line below the header)
 #'
-#' 黃色的一行，提醒使用者資料會傳到雲端。文字由 app 自己寫（各 app 的伺服器位置、
-#' 使用須知不同）。
+#' A yellow line reminding users that their data go to the cloud. The app writes the text itself
+#' (each app's server location and usage notes differ).
 #'
-#' @param ... 橫幅的內容。
-#' @return `<div class="alert alert-warning kit-cloud-banner" role="alert">`。
+#' @param ... The banner content.
+#' @return `<div class="alert alert-warning kit-cloud-banner" role="alert">`.
 #' @examples
 #' kit_cloud_banner("此為雲端版：上傳的資料會傳送至雲端伺服器。含個資的資料請改用本機版。")
+#' # "This is the cloud version: uploaded data are sent to a cloud server. For data with personal information, use the local version."
 #' @export
 kit_cloud_banner <- function(...) {
   shiny::tags$div(class = "alert alert-warning kit-cloud-banner", role = "alert", ...)
 }
 
-#' 雲端版使用須知（頁面最下面，灰色小字）
+#' Cloud version usage notes (bottom of the page, small gray text)
 #'
-#' 一個標題、幾段（粗體的段名接句號，後面是內文）、最後一行參考連結（開新分頁）。
-#' 段名接內文、內文串成一段，HTML 不會在中間插入空白。頁首的橫幅可以用
-#' `<a href="#kit-cloud-terms">` 連到這裡。
+#' A title, a few sections (bold section title followed by a period, then the body), and a final line
+#' of reference links (opening in new tabs). Section titles run into the body and body pieces are
+#' joined into one paragraph, with no spaces inserted by HTML. The header banner can link here with
+#' `<a href="#kit-cloud-terms">`.
 #'
-#' @param sections 每一段：具名 list 或字串向量，名字是段名（「一、資料傳輸與儲存」），
-#'   值是內文（字串向量，直接接起來）。
-#' @param links 參考連結：具名字串向量，名字是連結的字、值是網址；`NULL` 不放這一行。
-#' @param title 最上面的標題。
-#' @param id 頁尾的 id（橫幅的連結用）。
-#' @return `<footer id="kit-cloud-terms" class="kit-cloud-footer">`。
-#' @seealso [kit_cloud_banner()]、[kit_is_cloud()]
+#' @param sections The sections: a named list or character vector; names are section titles
+#'   ("一、資料傳輸與儲存", "1. Data transfer and storage"), values are the body text (a character
+#'   vector, joined directly).
+#' @param links Reference links: a named character vector, names are the link text and values are
+#'   URLs; `NULL` omits this line.
+#' @param title The title at the top.
+#' @param id The footer's id (used by the banner's link).
+#' @return `<footer id="kit-cloud-terms" class="kit-cloud-footer">`.
+#' @seealso [kit_cloud_banner()], [kit_is_cloud()]
 #' @examples
+#' # Sections: "1. Data transfer and storage", "2. Disclaimer"
 #' kit_cloud_footer(
 #'   sections = list(
 #'     "一、資料傳輸與儲存" = c("本雲端版部署於 Posit Connect Cloud。",

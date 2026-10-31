@@ -2,26 +2,27 @@
 % Please edit documentation in R/tabs.R
 \name{kit_flow_tabs}
 \alias{kit_flow_tabs}
-\title{有順序的流程分頁（kitsUI 的樣子）}
+\title{Ordered workflow tabs (the kitsUI style)}
 \usage{
 kit_flow_tabs(..., id = "tabs", selected = NULL, aside = NULL)
 }
 \arguments{
-\item{...}{\code{shiny::tabPanel()}。}
+\item{...}{\code{shiny::tabPanel()}.}
 
-\item{id}{tabsetPanel 的 id（\code{input[[id]]} 是目前的分頁）。}
+\item{id}{The tabsetPanel id (\code{input[[id]]} is the current tab).}
 
-\item{selected}{一開始的分頁（value）。}
+\item{selected}{The tab to start on (value).}
 
-\item{aside}{不是流程一步的分頁的 value（字串向量）。}
+\item{aside}{Values of tabs that are not a workflow step (a character vector).}
 }
 \value{
-\verb{<div class="kit-flow-tabs">}，裡面是 \code{tabsetPanel()}。
+\verb{<div class="kit-flow-tabs">} containing a \code{tabsetPanel()}.
 }
 \description{
-一般的 \code{shiny::tabsetPanel()}，分頁名稱用圈數字（① 資料、② 題目校準…）。
-不是流程一步的分頁（例如「使用手冊」）寫在 \code{aside}：虛線框、沒有陰影、推到最右邊。
-做完打 ✓（分頁裡多一個 \code{.kit-tab-mark}）、還不能做灰色（\code{\link[=kit_send_tab_states]{kit_send_tab_states()}}）。
+A regular \code{shiny::tabsetPanel()} with circled numbers in the tab names (① 資料, ② 題目校準…;
+"Data", "Item calibration"). Tabs that are not a workflow step (e.g. "使用手冊", "User manual") go
+in \code{aside}: dashed border, no shadow, pushed to the far right. Done tabs get a ✓ (an extra
+\code{.kit-tab-mark} in the tab); tabs that can't be used yet are gray (\code{\link[=kit_send_tab_states]{kit_send_tab_states()}}).
 }
 \examples{
 kit_flow_tabs(

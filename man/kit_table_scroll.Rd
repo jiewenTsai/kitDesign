@@ -2,20 +2,20 @@
 % Please edit documentation in R/tables.R
 \name{kit_table_scroll}
 \alias{kit_table_scroll}
-\title{寬的表放在這裡面：在自己的框裡左右捲，不撐破版面}
+\title{Put wide tables in here: they scroll sideways in their own box and do not break the layout}
 \usage{
 kit_table_scroll(..., tall = FALSE)
 }
 \arguments{
-\item{...}{表格（例如 \code{\link[=kit_static_table]{kit_static_table()}} 或 \code{shiny::tableOutput()}）。}
+\item{...}{Tables (for example \code{\link[=kit_static_table]{kit_static_table()}} or \code{shiny::tableOutput()}).}
 
-\item{tall}{長表時固定高度（約 26rem）、表頭固定在上面。}
+\item{tall}{For long tables: fixed height (about 26rem), with the header fixed at the top.}
 }
 \value{
-\verb{<div class="kit-table-scroll">}。
+\verb{<div class="kit-table-scroll">}.
 }
 \description{
-寬的表放在這裡面：在自己的框裡左右捲，不撐破版面
+Put wide tables in here: they scroll sideways in their own box and do not break the layout
 }
 \examples{
 kit_table_scroll(kit_static_table(data.frame(id = 1:3)))

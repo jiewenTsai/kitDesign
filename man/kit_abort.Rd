@@ -2,27 +2,29 @@
 % Please edit documentation in R/status.R
 \name{kit_abort}
 \alias{kit_abort}
-\title{給使用者看的錯誤}
+\title{An error meant for the user}
 \usage{
 kit_abort(..., class = NULL, data = list())
 }
 \arguments{
-\item{...}{訊息（用 \code{paste0()} 接起來）。}
+\item{...}{The message (joined with \code{paste0()}).}
 
-\item{class}{另外加的 condition class（呼叫端可以另外處理，例如跳出確認視窗）。}
+\item{class}{An extra condition class (the caller can handle it separately, e.g. to show a
+confirmation dialog).}
 
-\item{data}{附在 condition 上的其他欄位（具名 list）。}
+\item{data}{Other fields to attach to the condition (a named list).}
 }
 \value{
-不會回傳：丟出 \code{kit_user_error} 錯誤。
+Does not return: throws a \code{kit_user_error} error.
 }
 \description{
-訊息要是白話中文、說明原因與怎麼修；\code{\link[=kit_error_status]{kit_error_status()}} 會原文顯示在狀態框，
-不加技術細節。其他沒有預期到的錯誤則包成「…時發生沒有預期到的問題」，
-原始訊息收起來。
+The message should be plain-language Chinese that says what went wrong and how to fix it;
+\code{\link[=kit_error_status]{kit_error_status()}} shows it as written in the status box, with no technical details. Any other,
+unexpected error is wrapped as "…時發生沒有預期到的問題" ("an unexpected problem occurred while …"),
+with the original message tucked away.
 }
 \examples{
-e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)
+e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
 class(e)
 conditionMessage(e)
 }

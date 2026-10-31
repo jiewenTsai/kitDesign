@@ -2,7 +2,7 @@
 % Please edit documentation in R/code.R
 \name{kit_render_code_panel}
 \alias{kit_render_code_panel}
-\title{server 端：把程式碼畫進 \code{\link[=kit_code_panel]{kit_code_panel()}}}
+\title{Server side: render code into \code{\link[=kit_code_panel]{kit_code_panel()}}}
 \usage{
 kit_render_code_panel(
   code,
@@ -12,19 +12,20 @@ kit_render_code_panel(
 )
 }
 \arguments{
-\item{code}{傳回程式碼的函式或 reactive：\code{\link[=kit_code_blocks]{kit_code_blocks()}} 的 \code{snips}。}
+\item{code}{A function or reactive that returns the code: the \code{snips} of \code{\link[=kit_code_blocks]{kit_code_blocks()}}.}
 
-\item{note, width}{見 \code{\link[=kit_code_blocks]{kit_code_blocks()}}。}
+\item{note, width}{See \code{\link[=kit_code_blocks]{kit_code_blocks()}}.}
 
-\item{empty}{還沒有程式碼時的一行字。}
+\item{empty}{The one line shown while there is no code yet.}
 }
 \value{
-\code{\link[shiny:renderUI]{shiny::renderUI()}}。
+\code{\link[shiny:renderUI]{shiny::renderUI()}}.
 }
 \description{
-\code{output[["code"]] <- kit_render_code_panel(function() code_text())}。
-收起來時不算（Shiny 不畫看不見的 output；打開「用 R 怎麼做」時才算）。\code{code()} 停下來
-（\code{req()}）、出錯或是空的時，只有一行 \code{empty}。
+\code{output[["code"]] <- kit_render_code_panel(function() code_text())}.
+Nothing is computed while the panel is collapsed (Shiny does not render hidden outputs; it
+computes only when "用 R 怎麼做" ("How to do it in R") is opened). When \code{code()} stops
+(\code{req()}), fails, or is empty, only the \code{empty} line is shown.
 }
 \examples{
 if (interactive()) {

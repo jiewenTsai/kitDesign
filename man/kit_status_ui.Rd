@@ -2,28 +2,31 @@
 % Please edit documentation in R/status.R
 \name{kit_status_ui}
 \alias{kit_status_ui}
-\title{狀態框（StatusBox）}
+\title{Status box}
 \usage{
 kit_status_ui(st, ..., max_points = KIT_STATUS_MAX_POINTS)
 }
 \arguments{
-\item{st}{\code{\link[=kit_status]{kit_status()}} 物件（舊的 app 的同樣欄位的 list 也可以）；\code{NULL} 或 \code{"idle"} 時不顯示。}
+\item{st}{A \code{\link[=kit_status]{kit_status()}} object (a list with the same fields, from older apps, also works); \code{NULL}
+or \code{"idle"} shows nothing.}
 
-\item{...}{其他放在框裡最後的內容（kitsUI 的 \code{ui_status(...)}）。}
+\item{...}{Other content placed last inside the box (kitsUI's \code{ui_status(...)}).}
 
-\item{max_points}{直接列出幾點（預設 3）。}
+\item{max_points}{How many points to list directly (default 3).}
 }
 \value{
-\verb{<div class="alert alert-success kit-status" role="alert">} 等；不顯示時是 \code{NULL}。
+\verb{<div class="alert alert-success kit-status" role="alert">} or similar; \code{NULL} when nothing
+is shown.
 }
 \description{
-把 \code{\link[=kit_status]{kit_status()}} 畫成狀態框：第一行是標籤＋一句結論；接著最多 3 點
-（要注意的事在前、結果的重點在後），其他收在「還有 N 點」；怎麼辦的按鈕；
-補充小字；收起來的原始訊息。執行完用 \code{\link[=kit_scroll_to]{kit_scroll_to()}} 把它捲到畫面上方。
+Renders a \code{\link[=kit_status]{kit_status()}} as a status box: the first line is the label plus a one-sentence
+conclusion; then up to 3 points (things to watch out for first, key results after), the rest
+collapsed under "還有 N 點" ("N more points"); a button for what to do; small additional notes; the
+collapsed raw message. After running, use \code{\link[=kit_scroll_to]{kit_scroll_to()}} to scroll it to the top of the screen.
 }
 \details{
-\code{kit_status} 物件直接放進頁面也可以（\code{\link[htmltools:as.tags]{htmltools::as.tags()}} 方法就是這個函式）；
-要多放東西或改點數時才需要呼叫它。
+A \code{kit_status} object can also go straight into the page (its \code{\link[htmltools:as.tags]{htmltools::as.tags()}} method is this
+function); you only need to call this function to add more content or change the number of points.
 }
 \examples{
 kit_status_ui(kit_done_status(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/guide.R
 \name{kit_tab_guide}
 \alias{kit_tab_guide}
-\title{頁面說明：這一頁做什麼（PageGuide）}
+\title{Page guide: what this page does}
 \usage{
 kit_tab_guide(
   goal,
@@ -14,26 +14,30 @@ kit_tab_guide(
 )
 }
 \arguments{
-\item{goal}{一句話，不超過 30 字。}
+\item{goal}{One sentence, no more than 30 characters.}
 
-\item{steps}{操作步驟：\code{\link[=kit_steps]{kit_steps()}}（3–6 點），或一個字串向量（自動變成 \code{\link[=kit_steps]{kit_steps()}}）。}
+\item{steps}{The steps to follow: \code{\link[=kit_steps]{kit_steps()}} (3–6 points), or a character vector (turned
+into \code{\link[=kit_steps]{kit_steps()}} automatically).}
 
-\item{output}{會得到什麼。}
+\item{output}{What you get.}
 
-\item{technical}{技術說明（給想了解原理的人，再收一層）；\code{NULL} 不顯示。}
+\item{technical}{Technical notes (for people who want to know how it works; collapsed one more
+level); \code{NULL} shows nothing.}
 
-\item{note}{補充（灰色小字）；\code{NULL} 不顯示。}
+\item{note}{Additional notes (small gray text); \code{NULL} shows nothing.}
 
-\item{diagram}{圖解（\code{\link[=kit_diagram]{kit_diagram()}}）：放在說明框外面、緊接在後面，收起時也看得到；
-\code{NULL} 不顯示。}
+\item{diagram}{A diagram (\code{\link[=kit_diagram]{kit_diagram()}}): placed outside the guide box, right after it, and
+visible even when the guide is collapsed; \code{NULL} shows nothing.}
 }
 \value{
-沒有圖解時是 \verb{<details class="kit-guide kit-guide-page">}；有圖解時外面再包一層
-\verb{<div class="kit-guide kit-guide-wrap">}。
+Without a diagram, \verb{<details class="kit-guide kit-guide-page">}; with a diagram, it is
+wrapped in \verb{<div class="kit-guide kit-guide-wrap">}.
 }
 \description{
-每個分頁最上面的一行說明，預設收起：只看到「這一頁做什麼：」一句，旁邊「看步驟 ▸」；
-打開才看到步驟、會得到什麼、補充與技術說明。沒有框、小字、灰色，下面一條淡線。
+A one-line guide at the top of each tab, collapsed by default: only the sentence "這一頁做什麼："
+("What this page does:") is visible, with "看步驟 ▸" ("See steps ▸") next to it; opening it
+shows the steps, what you get, additional notes, and technical notes. No border, small gray
+text, a light line below.
 }
 \examples{
 kit_tab_guide(
@@ -43,5 +47,5 @@ kit_tab_guide(
 )
 }
 \seealso{
-\code{\link[=kit_steps]{kit_steps()}}、\code{\link[=kit_diagram]{kit_diagram()}}
+\code{\link[=kit_steps]{kit_steps()}}, \code{\link[=kit_diagram]{kit_diagram()}}
 }

@@ -2,15 +2,15 @@
 % Please edit documentation in R/tables.R
 \name{kit_chart_neutral}
 \alias{kit_chart_neutral}
-\title{圖裡不分類別的中性色}
+\title{Neutral color for non-categorical chart elements}
 \usage{
 kit_chart_neutral()
 }
 \value{
-\code{"#7F7F7F"}。
+\code{"#7F7F7F"}.
 }
 \description{
-參考線、帶子、沒有判斷的點。
+Reference lines, bands, and points with no judgment.
 }
 \examples{
 kit_chart_neutral()

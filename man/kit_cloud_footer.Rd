@@ -2,7 +2,7 @@
 % Please edit documentation in R/cloud.R
 \name{kit_cloud_footer}
 \alias{kit_cloud_footer}
-\title{雲端版使用須知（頁面最下面，灰色小字）}
+\title{Cloud version usage notes (bottom of the page, small gray text)}
 \usage{
 kit_cloud_footer(
   sections,
@@ -12,24 +12,28 @@ kit_cloud_footer(
 )
 }
 \arguments{
-\item{sections}{每一段：具名 list 或字串向量，名字是段名（「一、資料傳輸與儲存」），
-值是內文（字串向量，直接接起來）。}
+\item{sections}{The sections: a named list or character vector; names are section titles
+("一、資料傳輸與儲存", "1. Data transfer and storage"), values are the body text (a character
+vector, joined directly).}
 
-\item{links}{參考連結：具名字串向量，名字是連結的字、值是網址；\code{NULL} 不放這一行。}
+\item{links}{Reference links: a named character vector, names are the link text and values are
+URLs; \code{NULL} omits this line.}
 
-\item{title}{最上面的標題。}
+\item{title}{The title at the top.}
 
-\item{id}{頁尾的 id（橫幅的連結用）。}
+\item{id}{The footer's id (used by the banner's link).}
 }
 \value{
-\verb{<footer id="kit-cloud-terms" class="kit-cloud-footer">}。
+\verb{<footer id="kit-cloud-terms" class="kit-cloud-footer">}.
 }
 \description{
-一個標題、幾段（粗體的段名接句號，後面是內文）、最後一行參考連結（開新分頁）。
-段名接內文、內文串成一段，HTML 不會在中間插入空白。頁首的橫幅可以用
-\verb{<a href="#kit-cloud-terms">} 連到這裡。
+A title, a few sections (bold section title followed by a period, then the body), and a final line
+of reference links (opening in new tabs). Section titles run into the body and body pieces are
+joined into one paragraph, with no spaces inserted by HTML. The header banner can link here with
+\verb{<a href="#kit-cloud-terms">}.
 }
 \examples{
+# Sections: "1. Data transfer and storage", "2. Disclaimer"
 kit_cloud_footer(
   sections = list(
     "一、資料傳輸與儲存" = c("本雲端版部署於 Posit Connect Cloud。",
@@ -40,5 +44,5 @@ kit_cloud_footer(
 )
 }
 \seealso{
-\code{\link[=kit_cloud_banner]{kit_cloud_banner()}}、\code{\link[=kit_is_cloud]{kit_is_cloud()}}
+\code{\link[=kit_cloud_banner]{kit_cloud_banner()}}, \code{\link[=kit_is_cloud]{kit_is_cloud()}}
 }

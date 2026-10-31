@@ -2,25 +2,26 @@
 % Please edit documentation in R/tabs.R
 \name{kit_navgroups}
 \alias{kit_navgroups}
-\title{分組的分頁列（不編號；kitJoin 的樣子）}
+\title{Grouped tab bar (unnumbered; the kitJoin style)}
 \usage{
 kit_navgroups(groups, tabset = "tabs", selected = NULL)
 }
 \arguments{
-\item{groups}{\code{\link[=kit_navgroup]{kit_navgroup()}} 的 list。}
+\item{groups}{A list of \code{\link[=kit_navgroup]{kit_navgroup()}}.}
 
-\item{tabset}{對應的 \code{tabsetPanel()} 的 id。}
+\item{tabset}{The id of the matching \code{tabsetPanel()}.}
 
-\item{selected}{一開始的分頁（value）；預設是第一個。}
+\item{selected}{The tab to start on (value); defaults to the first.}
 }
 \value{
-\verb{<nav class="kit-navgroups">}。
+\verb{<nav class="kit-navgroups">}.
 }
 \description{
-分頁分成幾組，每組上面一行灰色小字。按下去時由 \code{kit.js} 切換藏起來的
-\code{tabsetPanel(id = tabset, type = "hidden")}；切換以後（包括 \code{updateTabsetPanel()}）
-再把目前的分頁標成 active。做完打 ✓、還不能用變灰也加在這些連結上
-（\code{\link[=kit_send_tab_states]{kit_send_tab_states()}}）。≤ 768px 時一排左右滑。
+Tabs are split into groups, each with a line of small gray text above it. On click, \code{kit.js}
+switches the hidden \code{tabsetPanel(id = tabset, type = "hidden")}; after a switch (including
+\code{updateTabsetPanel()}) it marks the current tab as active. The ✓ for done tabs and the gray for
+tabs not yet usable are also applied to these links (\code{\link[=kit_send_tab_states]{kit_send_tab_states()}}). At ≤ 768px the bar
+becomes one row that scrolls sideways.
 }
 \examples{
 groups <- list(
@@ -28,8 +29,10 @@ groups <- list(
   kit_navgroup("做出資料（選一個）", c(join = "橫向資料串接", stack = "直向波次疊加")),
   kit_navgroup("其他工具", c(convert = "檔案格式轉換"), tools = TRUE)
 )
+# Groups: "Prepare" (File upload, Missing values), "Make the data (pick one)"
+# (Wide join, Long stack of waves), "Other tools" (File format conversion)
 kit_navgroups(groups, "tabs")
-# 頁面上接著放：
+# Then on the page:
 # shiny::tabsetPanel(id = "tabs", type = "hidden",
 #   shiny::tabPanel("檔案上傳", value = "upload", ...), ...)
 }

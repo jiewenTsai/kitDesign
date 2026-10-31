@@ -2,20 +2,23 @@
 % Please edit documentation in R/tables.R
 \name{kit_rows_note}
 \alias{kit_rows_note}
-\title{長表的說明：「共 3,418 列 × 25 欄，以下前 10 列、前 20 欄。」}
+\title{Note for a long table: "共 3,418 列 × 25 欄，以下前 10 列、前 20 欄。" ("3,418 rows × 25 columns
+in total; first 10 rows and 20 columns below.")}
 \usage{
 kit_rows_note(nrow, ncol = NULL, shown_rows, shown_cols = NULL)
 }
 \arguments{
-\item{nrow, ncol}{全部的列數、欄數（\code{ncol = NULL} 時不提欄）。}
+\item{nrow, ncol}{Total number of rows and columns (with \code{ncol = NULL}, columns are not
+mentioned).}
 
-\item{shown_rows, shown_cols}{畫面上顯示幾列、幾欄（\code{shown_cols = NULL} 時不提欄）。}
+\item{shown_rows, shown_cols}{How many rows and columns are shown on screen (with
+\code{shown_cols = NULL}, columns are not mentioned).}
 }
 \value{
-字串。
+A string.
 }
 \description{
-放在表上面的一行 \code{kit-hint} 小字。
+One line of small \code{kit-hint} text placed above the table.
 }
 \examples{
 kit_rows_note(157, shown_rows = 20)

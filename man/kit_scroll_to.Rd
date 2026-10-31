@@ -2,27 +2,30 @@
 % Please edit documentation in R/server.R
 \name{kit_scroll_to}
 \alias{kit_scroll_to}
-\title{執行完把狀態框捲到畫面上方}
+\title{After running, scroll the status box to the top of the screen}
 \usage{
 kit_scroll_to(id, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
-\item{id}{模組裡的 output id（會自動加上模組的 namespace），例如 \code{"status"}。}
+\item{id}{The output id inside the module (the module's namespace is added automatically), for
+example \code{"status"}.}
 
-\item{session}{預設是目前的 session（模組裡呼叫就是模組的 session）。}
+\item{session}{Defaults to the current session (called inside a module, that is the module's
+session).}
 }
 \value{
-不可見的完整 id；沒有 session 時是 \code{NULL}。
+The full id, invisibly; \code{NULL} when there is no session.
 }
 \description{
-「先結果、後細節」：在主要按鈕的 \code{observeEvent()} 最後呼叫 \code{kit_scroll_to("status")}。
-等這一輪的 output 都送到瀏覽器以後（\code{session$onFlushed()}）才捲，狀態框已經畫好了。
-使用者設定「減少動態效果」時直接跳過去，不平滑捲動。
+"Results first, details after": call \code{kit_scroll_to("status")} at the end of the primary
+button's \code{observeEvent()}. It scrolls only after this round's outputs have all reached the
+browser (\code{session$onFlushed()}), so the status box is already rendered.
+When the user has set "reduce motion", it jumps there without smooth scrolling.
 }
 \examples{
 if (interactive()) {
   shiny::observeEvent(input$run, {
-    # …執行…
+    # …run…
     kit_scroll_to("status")
   })
 }

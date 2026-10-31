@@ -2,7 +2,7 @@
 % Please edit documentation in R/tables.R
 \name{kit_preview_table}
 \alias{kit_preview_table}
-\title{預覽表的資料（交給 \code{shiny::renderTable()}）}
+\title{Data for a preview table (pass to \code{shiny::renderTable()})}
 \usage{
 kit_preview_table(
   df,
@@ -12,21 +12,23 @@ kit_preview_table(
 )
 }
 \arguments{
-\item{df}{data.frame。}
+\item{df}{A data.frame.}
 
-\item{priority_cols}{一定要放進預覽的欄（例如 ID 欄），排在最前面。}
+\item{priority_cols}{Columns that must be in the preview (for example the ID column); they go
+first.}
 
-\item{n}{最多幾列。}
+\item{n}{Maximum number of rows.}
 
-\item{max_cols}{最多幾欄。}
+\item{max_cols}{Maximum number of columns.}
 }
 \value{
-data.frame（全部是文字欄）。
+A data.frame (all columns are text).
 }
 \description{
-欄位太多時只取前 \code{max_cols} 欄（優先保留 \code{priority_cols}），列只取前 \code{n} 列，
-每一欄轉成方便閱讀的文字（值標籤寫成「\verb{[值] 標籤}」、日期 yyyy-mm-dd）。
-上面配一行 \code{\link[=kit_rows_note]{kit_rows_note()}}。
+With too many columns, only the first \code{max_cols} columns are kept (\code{priority_cols} are kept
+first); only the first \code{n} rows are kept.
+Each column is converted to easy-to-read text (value labels as "\verb{[value] label}", dates as
+yyyy-mm-dd). Put a \code{\link[=kit_rows_note]{kit_rows_note()}} line above it.
 }
 \examples{
 df <- as.data.frame(matrix(1:60, nrow = 2))

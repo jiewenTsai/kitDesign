@@ -2,27 +2,27 @@
 % Please edit documentation in R/status.R
 \name{kit_error_status}
 \alias{kit_error_status}
-\title{執行失敗的狀態（【停下來】）}
+\title{Status for a failed run (【停下來】, stopped)}
 \usage{
 kit_error_status(e, action, todo = NULL)
 }
 \arguments{
-\item{e}{錯誤（condition）。}
+\item{e}{The error (a condition).}
 
-\item{action}{動作名稱，例如「串接」。}
+\item{action}{The action name, e.g. "串接" ("join").}
 
-\item{todo}{怎麼辦的按鈕或連結（tag）；\code{NULL} 不顯示。}
+\item{todo}{A button or link for what to do (a tag); \code{NULL} shows nothing.}
 }
 \value{
-\code{kit_status} 物件。
+A \code{kit_status} object.
 }
 \description{
-\code{\link[=kit_abort]{kit_abort()}} 的白話錯誤直接顯示；沒有預期到的錯誤寫「怎麼辦」，
-原始訊息收在「原始訊息」裡。
+Plain-language errors from \code{\link[=kit_abort]{kit_abort()}} are shown directly; for unexpected errors it says what to
+do, and the original message is tucked inside "原始訊息" ("Original message").
 }
 \examples{
 e <- tryCatch(stop("object 'x' not found"), error = identity)
 kit_error_status(e, "串接")
-u <- tryCatch(kit_abort("至少要 2 個波次的檔案。"), error = identity)
+u <- tryCatch(kit_abort("至少要 2 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
 kit_error_status(u, "串接")$message
 }

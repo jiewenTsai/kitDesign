@@ -2,18 +2,19 @@
 % Please edit documentation in R/guide.R
 \name{kit_steps}
 \alias{kit_steps}
-\title{編號的步驟清單（放在 \code{\link[=kit_tab_guide]{kit_tab_guide()}} 的 \code{steps}）}
+\title{Numbered list of steps (for the \code{steps} of \code{\link[=kit_tab_guide]{kit_tab_guide()}})}
 \usage{
 kit_steps(...)
 }
 \arguments{
-\item{...}{每一步一個字串（或字串向量）。}
+\item{...}{One string (or character vector) per step.}
 }
 \value{
-\verb{<ol class="kit-steps">}。
+\verb{<ol class="kit-steps">}.
 }
 \description{
-注意：這是說明框裡的 \verb{<ol>}，不是步驟卡；步驟卡是 \code{\link[=kit_step_card]{kit_step_card()}}。
+Note: this is the \verb{<ol>} inside the guide box, not a step card; step cards are
+\code{\link[=kit_step_card]{kit_step_card()}}.
 }
 \examples{
 kit_steps("選檔案", "選 ID 欄", "按「執行串接」")

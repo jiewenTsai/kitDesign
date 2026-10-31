@@ -2,31 +2,35 @@
 % Please edit documentation in R/setup.R
 \name{kit_app_description}
 \alias{kit_app_description}
-\title{讀取 app 的版本與日期（DESCRIPTION 的 Version、Date）}
+\title{Read the app's version and date (Version and Date in DESCRIPTION)}
 \usage{
 kit_app_description(package = NULL, path = NULL)
 }
 \arguments{
-\item{package}{app 的套件名稱，例如 \code{"kitJoin"}；\code{NULL} 時只找 DESCRIPTION 檔。}
+\item{package}{The app's package name, e.g. \code{"kitJoin"}; when \code{NULL}, only DESCRIPTION files are
+searched.}
 
-\item{path}{DESCRIPTION 檔的路徑；\code{NULL} 時照上面的順序找。}
+\item{path}{Path to a DESCRIPTION file; when \code{NULL}, searched in the order above.}
 }
 \value{
-\code{list(version = , date = )}；找不到的是 \code{NA}。
+\code{list(version = , date = )}; anything not found is \code{NA}.
 }
 \description{
-雲端版、本機 run.bat、套件的 \code{run_xxx()} 都以 DESCRIPTION 的 Version、Date 為準，
-三者顯示一致（不看檔案修改時間：解壓、安裝、部署都會改變 mtime）。
+The cloud version, the local run.bat, and the package's \code{run_xxx()} all take Version and Date
+from DESCRIPTION, so all three show the same thing (file modification times are not used:
+unzipping, installing, and deploying all change the mtime).
 }
 \details{
-找的順序：
+Search order:
 \enumerate{
-\item \code{path} 有給：讀那個 DESCRIPTION 檔。
-\item \code{package} 已經載入（\code{library()}、\code{run_xxx()}、\code{load_all()}）：讀載入的那一份。
-\item 工作目錄的 \code{DESCRIPTION}，再往上一層、兩層找（測試時工作目錄在 \code{tests/testthat}）；
-有給 \code{package} 時，只認 \verb{Package:} 是它的那一份。雲端版與 run.bat 用 \code{runApp(資料夾)}，
-套件沒有載入，讀的是這一份。
-\item \code{package} 有安裝（但沒有載入）：讀安裝的那一份。放在最後，因為它可能是舊版。
+\item \code{path} is given: read that DESCRIPTION file.
+\item \code{package} is already loaded (\code{library()}, \code{run_xxx()}, \code{load_all()}): read the loaded copy.
+\item \code{DESCRIPTION} in the working directory, then one and two levels up (in tests the working
+directory is \code{tests/testthat}); when \code{package} is given, only a file whose \verb{Package:} matches
+counts. The cloud version and run.bat use \code{runApp(folder)}, the package is not loaded, and
+this is the copy that gets read.
+\item \code{package} is installed (but not loaded): read the installed copy. This comes last because it
+may be an old version.
 }
 }
 \examples{

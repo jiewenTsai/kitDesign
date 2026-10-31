@@ -46,18 +46,21 @@ KIT_PLOTLY_NOT_XY <- c(
   "scatterpolar", "scatterpolargl", "barpolar", "scatterternary", "scattercarpet", "carpet"
 )
 
-#' 連續數值的色階（Chart）
+#' Color scale for continuous values (chart)
 #'
-#' 極淡萊姆 → 淡萊姆（`bg-new`）→ KIT 綠（`nb-green`）：值越大越深。用在熱圖、色條
-#' （例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。[kit_plotly_style()] 預設把熱圖換成這個色階。
+#' Very light lime → light lime (`bg-new`) → KIT green (`nb-green`): larger values are darker. For
+#' heatmaps and color bars (e.g. pass rates in a response design plot). The minimum is not white,
+#' so 0 looks different from an empty cell with no data (white background). [kit_plotly_style()]
+#' switches heatmaps to this scale by default.
 #'
-#' 色階從品牌來（[kit_brand()]）：0 是 `accent_light` 再和白色混合的極淡色，0.2 是
-#' `accent_light`，0.2 到 1 在 Lab 空間從 `accent_light` 內插到 `primary`。KIT 的品牌
-#' 就是上面的值。類別色（[kit_chart_colors()]，Okabe–Ito）不跟著品牌換：它們是色盲友善的。
+#' The scale comes from the brand ([kit_brand()]): 0 is a very light color made by mixing
+#' `accent_light` with white, 0.2 is `accent_light`, and 0.2 to 1 interpolates in Lab space from
+#' `accent_light` to `primary`. For the KIT brand these are the values above. Categorical colors
+#' ([kit_chart_colors()], Okabe–Ito) do not change with the brand: they are colorblind-friendly.
 #'
-#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
-#' @return plotly 的 colorscale：`list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`。
-#' @seealso [kit_plotly_style()]、[kit_chart_colors()]
+#' @param brand The brand ([kit_brand()]); defaults to [kit_current_brand()] (KIT when none is set).
+#' @return A plotly colorscale: `list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`.
+#' @seealso [kit_plotly_style()], [kit_chart_colors()]
 #' @examples
 #' kit_chart_sequential()
 #' kit_chart_sequential(kit_brand("Demo", colors = list(accent = "#9cc0ff", primary = "#1f4fa3")))
@@ -77,58 +80,73 @@ kit_chart_sequential <- function(brand = kit_current_brand()) {
   lapply(seq_along(stops), function(i) list(c(0, 0.2, 0.4, 0.6, 0.8, 1)[i], stops[[i]]))
 }
 
-#' plotly 圖套上 KIT 的樣子（Chart）
+#' Give a plotly chart the KIT look (chart)
 #'
-#' 讓 plotly 圖和 app 的其他部分看起來是一套：字型、字級、顏色都用 KIT 的設計變數。
-#' 只改樣子，不改資料（點、線、軸的範圍、刻度的位置、hover 的文字都不動）。
+#' Makes plotly charts look like part of the same app: typeface, text sizes, and colors all use
+#' KIT's design variables. Only the look changes, not the data (points, lines, axis ranges, tick
+#' positions, and hover text stay the same).
 #'
-#' 改的地方：
+#' What changes:
 #'
-#' - **字型**：全部用 app 的圓體 `"Chiron GoRound TC", sans-serif`；字是 `nb-ink`（#141414），
-#'   刻度是 `text-hint`（#5a5a5a）。字級：內文 `font_size`（預設 15px）、圖例與滑過的說明框小 1px、
-#'   刻度小 2px、標題約 `h5`（`font_size` 的 1.2 倍）。
-#' - **標題**：靠左、粗體。圖寬放不下時在瀏覽器端換行（在中文字或空白之間斷開）。
-#' - **每一條軸**（`xaxis`、`xaxis2`…、`yaxis`…，包括 Wright map 這類並排的小圖）：
-#'   軸線 `nb-ink` 1.5px、格線 `line-soft`（#e3ded2）、零線 `line`（#d9d4c5）、
-#'   刻度朝外；不畫四邊的框（`mirror = FALSE`，並拿掉 kits 畫在每個小圖外面的黑框；
-#'   KIT 設計語言：框裡面不再有框）。軸的標題與刻度放不下時自動加寬邊界（`automargin`）。
-#' - **底色**：白（圖放在白色卡片裡）；下載的 PNG 也是白底。
-#' - **顏色**：`colorway` 是 Okabe–Ito（[kit_chart_colors()]）。plotly 自己給的預設色換成
-#'   Okabe–Ito 同一個位置的顏色；**kits 或 kitsUI 指定的顏色不動**（kitsUI 的角色色、
-#'   類別換色都保留）。
-#' - **色階**（`colorscale = TRUE`）：熱圖類（heatmap、contour、histogram2d）換成
-#'   [kit_chart_sequential()]（極淡萊姆 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
-#' - **滑過的說明框**：白底、`nb-ink` 框、app 的字型。
-#' - **圖例**：app 的字型、沒有框。位置見 `legend`。
-#' - **工具列**：沒有 plotly 的標誌；只留「下載成 PNG」（白底、2 倍解析度）、放大、縮小、
-#'   回到原來的範圍；介面文字是繁體中文（`zh-TW`）。
-#' - **邊界**：上下左右一樣小，軸、圖例、色條放不下時 plotly 自動加寬；不會切到字。
+#' - **Typeface**: everything uses the app's rounded typeface `"Chiron GoRound TC", sans-serif`;
+#'   text is `nb-ink` (#141414), ticks are `text-hint` (#5a5a5a). Sizes: body `font_size` (default
+#'   15px), legend and hover box 1px smaller, ticks 2px smaller, title about `h5` (1.2 times
+#'   `font_size`).
+#' - **Title**: left-aligned, bold. When the chart is too narrow, it wraps in the browser (breaking
+#'   between Chinese characters or at spaces).
+#' - **Every axis** (`xaxis`, `xaxis2`…, `yaxis`…, including side-by-side small charts such as a
+#'   Wright map): axis line `nb-ink` 1.5px, grid lines `line-soft` (#e3ded2), zero line `line`
+#'   (#d9d4c5), ticks outside; no frame on four sides (`mirror = FALSE`, and the black frame kits
+#'   draws around each small chart is removed; KIT design language: no frames inside frames). When
+#'   axis titles and ticks do not fit, the margins widen automatically (`automargin`).
+#' - **Background**: white (the chart sits in a white card); downloaded PNGs also have a white
+#'   background.
+#' - **Colors**: `colorway` is Okabe–Ito ([kit_chart_colors()]). plotly's own default colors are
+#'   replaced with the Okabe–Ito color in the same position; **colors set by kits or kitsUI stay
+#'   unchanged** (kitsUI's role colors and category recoloring are kept).
+#' - **Color scale** (`colorscale = TRUE`): heatmap-type traces (heatmap, contour, histogram2d)
+#'   switch to [kit_chart_sequential()] (very light lime → light lime → KIT green); the color bar's
+#'   text and outline always get the new look.
+#' - **Hover box**: white background, `nb-ink` border, the app's typeface.
+#' - **Legend**: the app's typeface, no border. For position, see `legend`.
+#' - **Toolbar**: no plotly logo; only "download as PNG" (white background, 2x resolution), zoom
+#'   in, zoom out, and reset to the original range remain; interface text is Traditional Chinese
+#'   (`zh-TW`).
+#' - **Margins**: equally small on all sides; plotly widens them automatically when axes, legend,
+#'   or color bar do not fit, so no text is cut off.
 #'
-#' 不改的地方：資料、軸的範圍與刻度、trace 的顏色（plotly 的預設色以外）、點的形狀、線的
-#' 粗細與虛線、透明度、hover 的文字、圖例的文字、標題與軸標題的文字（只加粗體）、
-#' 圖的高度與寬度、`shapes`（kits 的小圖外框以外，例如適配度圖的灰色帶）。
+#' What does not change: data, axis ranges and ticks, trace colors (other than plotly's default
+#' colors), marker shapes, line widths and dashes, opacity, hover text, legend text, the text of
+#' titles and axis titles (only bold is added), chart height and width, and `shapes` (other than
+#' kits' small-chart frames; for example, the gray band in fit plots).
 #'
-#' **和 kits、kitsUI 一起用時的順序**：kits 的 `plot()` → kitsUI 換色
-#' （`kit_chart_categorical()`、`kit_chart_role()`）→ kitsUI 換中文（`kit_chart_zh()`）→
-#' `kit_plotly_style()`。換色和這個函式的順序可以對調（這裡不動指定的顏色），但**換中文要在前面**：
-#' 這裡把標題加上 `<b>`，之後 `kit_chart_zh()` 就認不得原來的英文標題了。
-#' 同一張圖套兩次和套一次一樣。
+#' **Order when used with kits and kitsUI**: kits' `plot()` → kitsUI recoloring
+#' (`kit_chart_categorical()`, `kit_chart_role()`) → kitsUI Chinese labels (`kit_chart_zh()`) →
+#' `kit_plotly_style()`. Recoloring and this function can be swapped (this function does not touch
+#' set colors), but **Chinese labels must come first**: this function wraps the title in `<b>`,
+#' after which `kit_chart_zh()` no longer recognizes the original English title.
+#' Applying it twice to the same chart is the same as applying it once.
 #'
-#' @param p plotly 圖（`plotly::plot_ly()`、kits 的 `plot()`；`plotly::plotly_build()` 過的也可以）。
-#' @param legend 圖例放哪裡：
-#'   - `"auto"`（預設）：超過 4 項，或最長的一項超過 20 欄（中文字算 2 欄）時放在圖的下面、橫排、
-#'     靠左；其他放在右邊。圖寬小於 600px（手機）時也放到下面，變寬時回到右邊（瀏覽器端判斷）。
-#'   - `"bottom"`：一律在下面；`"right"`：一律在右邊。
-#'   - `"keep"`：不動圖例的位置（只換字型）。
-#' @param colorscale `TRUE`（預設）時熱圖類換成 [kit_chart_sequential()]；`FALSE` 時保留原來的色階。
-#' @param fonts `TRUE`（預設）時附上 Google Fonts 的圓體（[kit_plotly_fonts()]），
-#'   下載的單一 HTML 檔也是 app 的字型。
-#' @param filename 工具列「下載成 PNG」的檔名（不含副檔名）。
-#' @param font_size 內文字級（px）；其他字級跟著它算。
-#' @param brand 品牌（[kit_brand()]）：熱圖的色階從它來（[kit_chart_sequential()]）。
-#'   預設是 [kit_current_brand()]（沒有設定時是 KIT）。字、軸線、底色維持設計語言的墨色與白色。
-#' @return plotly 圖（`plotly_build()` 過的）。
-#' @seealso [kit_plotly_fonts()]、[kit_chart_colors()]、[kit_chart_sequential()]
+#' @param p A plotly chart (`plotly::plot_ly()`, kits' `plot()`; one already passed through
+#'   `plotly::plotly_build()` also works).
+#' @param legend Where the legend goes:
+#'   - `"auto"` (default): with more than 4 entries, or when the longest entry is wider than 20
+#'     columns (a Chinese character counts as 2), the legend goes below the chart, horizontal,
+#'     left-aligned; otherwise on the right. When the chart is narrower than 600px (phones) it also
+#'     moves below, and returns to the right when the chart gets wider (decided in the browser).
+#'   - `"bottom"`: always below; `"right"`: always on the right.
+#'   - `"keep"`: leave the legend position alone (only change the font).
+#' @param colorscale When `TRUE` (default), heatmap-type traces switch to [kit_chart_sequential()];
+#'   when `FALSE`, the original color scale is kept.
+#' @param fonts When `TRUE` (default), attaches the rounded typeface from Google Fonts
+#'   ([kit_plotly_fonts()]), so a downloaded single HTML file also uses the app's typeface.
+#' @param filename The file name (without extension) for the toolbar's "download as PNG".
+#' @param font_size Body text size (px); the other sizes are derived from it.
+#' @param brand The brand ([kit_brand()]): the heatmap color scale comes from it
+#'   ([kit_chart_sequential()]). Defaults to [kit_current_brand()] (KIT when not set). Text, axis
+#'   lines, and background keep the design language's ink and white.
+#' @return A plotly chart (passed through `plotly_build()`).
+#' @seealso [kit_plotly_fonts()], [kit_chart_colors()], [kit_chart_sequential()]
 #' @examples
 #' if (requireNamespace("plotly", quietly = TRUE)) {
 #'   d <- data.frame(wave = rep(c(3, 6, 12), 2), score = c(8, 11, 15, 7, 10, 13),
@@ -258,19 +276,21 @@ kit_plotly_style <- function(p, legend = c("auto", "bottom", "right", "keep"),
   p
 }
 
-#' plotly 圖附上 app 的字型（下載的 HTML 用）
+#' Attach the app's typeface to a plotly chart (for downloaded HTML)
 #'
-#' 在 plotly 圖上附一個 htmlDependency：向 Google Fonts 拿圓體 Chiron GoRound TC
-#' （字重 400、700）。Shiny 的頁面已經有這個字型（[kit_theme()]），所以這主要是給
-#' `htmlwidgets::saveWidget()` 存成的單一 HTML 檔用：打開時也是 app 的字型；沒有網路時退回
-#' 系統的 sans-serif。
+#' Attaches an htmlDependency to a plotly chart that loads the rounded typeface Chiron GoRound TC
+#' from Google Fonts (weights 400 and 700). Shiny pages already have this typeface ([kit_theme()]),
+#' so this is mainly for single HTML files saved with `htmlwidgets::saveWidget()`: they also open
+#' in the app's typeface; without a network connection they fall back to the system sans-serif.
 #'
-#' `<link>` 帶 `data-external="1"`：`saveWidget(selfcontained = TRUE)` 用 pandoc 打包時不把
-#' 字型檔塞進 HTML（中文字型切成上百個檔，塞進去檔案會很大）。
-#' [kit_plotly_style()] 預設（`fonts = TRUE`）已經呼叫它；同一張圖附兩次和附一次一樣。
+#' The `<link>` carries `data-external="1"`: when `saveWidget(selfcontained = TRUE)` bundles the
+#' file with pandoc, the font files are not embedded in the HTML (a Chinese typeface is split into
+#' hundreds of files, so embedding them would make the file very large).
+#' [kit_plotly_style()] already calls it by default (`fonts = TRUE`); attaching it twice to the
+#' same chart is the same as attaching it once.
 #'
-#' @param p plotly 圖（或其他 htmlwidget）。
-#' @return 同一張圖，多一個 htmlDependency（`kit-plotly-fonts`）。
+#' @param p A plotly chart (or another htmlwidget).
+#' @return The same chart, with one more htmlDependency (`kit-plotly-fonts`).
 #' @seealso [kit_plotly_style()]
 #' @examples
 #' if (requireNamespace("plotly", quietly = TRUE)) {
@@ -302,11 +322,11 @@ kit_plotly_fonts <- function(p) {
 
 # 以下是內部的小工具 ----
 
-#' 有沒有裝某個套件（測試時可以換掉）
+#' Whether a package is installed (can be replaced in tests)
 #' @noRd
 kit_has_pkg <- function(pkg) requireNamespace(pkg, quietly = TRUE)
 
-#' 沒有 plotly 時停下來，說要裝什麼
+#' Stop when plotly is missing, and say what to install
 #' @noRd
 kit_need_plotly <- function(fun) {
   if (!kit_has_pkg("plotly")) {
@@ -317,20 +337,20 @@ kit_need_plotly <- function(fun) {
   invisible(TRUE)
 }
 
-#' 字級：內文、小（圖例、滑過的說明框、小圖的標題）、刻度、標題
+#' Text sizes: body, small (legend, hover box, small-chart titles), ticks, title
 #' @noRd
 kit_plotly_sizes <- function(font_size) {
   list(body = font_size, small = font_size - 1, tick = font_size - 2,
        title = round(font_size * 1.2))
 }
 
-#' plotly 的 font
+#' A plotly font
 #' @noRd
 kit_plotly_font <- function(size, color = KIT_PLOTLY_INK) {
   list(family = KIT_PLOTLY_FONT, size = size, color = color)
 }
 
-#' 一條軸的樣子（範圍、刻度位置、標題文字都不動）
+#' The look of one axis (range, tick positions, and title text stay the same)
 #' @noRd
 kit_axis_style <- function(ax, size) {
   ax <- ax %||% list()
@@ -349,7 +369,7 @@ kit_axis_style <- function(ax, size) {
   ax
 }
 
-#' trace 用到的軸（"x2" -> "xaxis2"）
+#' The axes a trace uses ("x2" -> "xaxis2")
 #' @noRd
 kit_trace_axes <- function(data) {
   xy <- Filter(function(tr) !isTRUE((tr$type %||% "scatter") %in% KIT_PLOTLY_NOT_XY), data)
@@ -357,18 +377,19 @@ kit_trace_axes <- function(data) {
   unique(sub("^([xy])", "\\1axis", as.character(ax)))
 }
 
-#' 每個 trace 都有 x、y 軸嗎（工具列要不要放大、縮小）
+#' Whether every trace has x and y axes (whether the toolbar gets zoom in and zoom out)
 #' @noRd
 kit_all_xy <- function(data) {
   types <- vapply(data, function(tr) as.character(tr$type %||% "scatter")[1], character(1))
   !any(types %in% KIT_PLOTLY_NOT_XY)
 }
 
-#' 一個值是不是這個數字
+#' Whether a value is this number
 #' @noRd
 kit_is_num <- function(x, value) is.numeric(x) && length(x) == 1 && isTRUE(x == value)
 
-#' kits 畫在每個小圖外面的框：rect、x 與 y 都是 0 到 1 的 domain、透明的底
+#' The frame kits draws around each small chart: a rect, x and y both domain 0 to 1, a
+#' transparent fill
 #' @noRd
 kit_is_panel_box <- function(s) {
   fill <- s$fillcolor %||% "rgba(0,0,0,0)"
@@ -378,8 +399,9 @@ kit_is_panel_box <- function(s) {
     gsub(" ", "", tolower(fill)) %in% c("rgba(0,0,0,0)", "transparent")
 }
 
-#' 圖上的字（annotations）：app 的字型；顏色、字級有指定的就不動。
-#' 小圖的標題（放在小圖上緣、yanchor = "bottom"）至少是刻度的字級
+#' Text on the chart (annotations): the app's typeface; colors and sizes that are set stay the same.
+#' Small-chart titles (at the top edge of a small chart, yanchor = "bottom") are at least the tick
+#' size
 #' @noRd
 kit_annotation_style <- function(a, size) {
   if (!is.list(a) || is.null(a$text)) return(a)
@@ -391,7 +413,8 @@ kit_annotation_style <- function(a, size) {
   a
 }
 
-#' 有沒有放在圖的上緣外面的 annotations（kits 的小圖標題）：標題下面要留一行
+#' Whether there are annotations above the top edge of the plot (kits' small-chart titles): leave a
+#' line below the title
 #' @noRd
 kit_has_top_annotations <- function(annotations) {
   any(vapply(annotations %||% list(), function(a) {
@@ -400,7 +423,7 @@ kit_has_top_annotations <- function(annotations) {
   }, logical(1)))
 }
 
-#' 色條的樣子：字、外框、刻度（標題的文字不動）
+#' The look of a color bar: text, outline, ticks (the title text stays the same)
 #' @noRd
 kit_colorbar_style <- function(cb, size) {
   cb <- cb %||% list()
@@ -419,7 +442,7 @@ kit_colorbar_style <- function(cb, size) {
   cb
 }
 
-#' 圖例的項目數與最長的寬度（中文字算 2 欄）
+#' The number of legend entries and the widest one (a Chinese character counts as 2 columns)
 #' @noRd
 kit_legend_info <- function(data) {
   shown <- Filter(function(tr) {
@@ -444,14 +467,15 @@ KIT_LEGEND_RIGHT <- list(
   y = 1, yanchor = "top", yref = "paper"
 )
 
-#' list(x = 0) -> list("legend.x" = 0)（Plotly.relayout 用）
+#' list(x = 0) -> list("legend.x" = 0) (for Plotly.relayout)
 #' @noRd
 kit_relayout_keys <- function(prefix, x) {
   stats::setNames(x, paste0(prefix, ".", names(x)))
 }
 
-#' 標題拆成第一行（純文字）與其他行（例如 kits 的 "<sup>…</sup>" 小標）
-#' @return NULL（沒有標題）或 list(main, rest)
+#' Split a title into the first line (plain text) and the other lines (e.g. kits' "<sup>…</sup>"
+#' subtitle)
+#' @return NULL (no title) or list(main, rest)
 #' @noRd
 kit_title_parts <- function(title) {
   text <- if (is.list(title)) title$text else title
@@ -462,13 +486,13 @@ kit_title_parts <- function(title) {
   list(main = main, rest = rest)
 }
 
-#' 標題的文字：第一行粗體
+#' The title text: the first line in bold
 #' @noRd
 kit_title_text <- function(main, rest = "") {
   paste0("<b>", main, "</b>", if (nzchar(rest)) paste0("<br>", rest))
 }
 
-#' 上邊界：fixed + line * lines（標題換行時瀏覽器端用同一個算法）
+#' Top margin: fixed + line * lines (the browser uses the same formula when the title wraps)
 #' @noRd
 kit_title_top <- function(title, size, band) {
   if (is.null(title)) return(list(fixed = 12 + band, line = 0, lines = 0, rest_lines = 0))
@@ -479,13 +503,14 @@ kit_title_top <- function(title, size, band) {
        line = line, lines = 1, rest_lines = rest_lines)
 }
 
-#' 標題的上方留白：plotly 把多行的標題往上移（每多一行約半行），這裡補回來
+#' Space above the title: plotly moves a multi-line title up (about half a line per extra line);
+#' this adds it back
 #' @noRd
 kit_title_pad <- function(top, main_lines) {
   KIT_TITLE_PAD + round((main_lines + top$rest_lines - 1) * top$line / 2)
 }
 
-#' 一個顏色字串（#RRGGBB、rgb()、rgba()）-> list(hex, alpha)；認不得時 NULL
+#' A color string (#RRGGBB, rgb(), rgba()) -> list(hex, alpha); NULL when not recognized
 #' @noRd
 kit_parse_color <- function(x) {
   x <- gsub(" ", "", x)
@@ -497,7 +522,7 @@ kit_parse_color <- function(x) {
        alpha = if (nzchar(m[6])) m[6] else NULL)
 }
 
-#' plotly 的預設色 -> Okabe–Ito 同一個位置的顏色（認不得的不動）
+#' plotly's default color -> the Okabe–Ito color in the same position (others stay the same)
 #' @noRd
 kit_swap_default_color <- function(x) {
   col <- kit_parse_color(x)
@@ -510,7 +535,8 @@ kit_swap_default_color <- function(x) {
   sprintf("rgba(%d,%d,%d,%s)", rgb[1], rgb[2], rgb[3], col$alpha)
 }
 
-#' trace 裡 plotly（R）自己給的顏色（class 是 "colorway"）換成 Okabe–Ito；指定的顏色不動
+#' Replace the colors plotly (R) itself gives a trace (class "colorway") with Okabe–Ito; set colors
+#' stay the same
 #' @noRd
 kit_recolor_defaults <- function(x) {
   if (is.character(x) && inherits(x, "colorway")) {
@@ -521,7 +547,8 @@ kit_recolor_defaults <- function(x) {
   x
 }
 
-#' 工具列：沒有標誌、只留下載 PNG（白底）與放大、縮小、回到原來的範圍；繁體中文
+#' Toolbar: no logo; only download PNG (white background), zoom in, zoom out, and reset to the
+#' original range; Traditional Chinese
 #' @noRd
 kit_plotly_config <- function(p, xy, filename) {
   has_locale <- any(vapply(p$dependencies, function(d) identical(d$name, "plotly-locale-zh-TW"),
@@ -629,7 +656,7 @@ KIT_PLOTLY_JS <- "function(el, x, d) {
   apply();
 }"
 
-#' 加上（或換掉）瀏覽器端的小程式；同一張圖套兩次只有一份
+#' Add (or replace) the browser-side script; applying it twice to the same chart leaves one copy
 #' @noRd
 kit_plotly_responsive <- function(p, data) {
   hooks <- p$jsHooks$render

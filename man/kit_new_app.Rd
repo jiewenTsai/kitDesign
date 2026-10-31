@@ -2,7 +2,7 @@
 % Please edit documentation in R/new_app.R
 \name{kit_new_app}
 \alias{kit_new_app}
-\title{開一個新的 KIT Shiny app}
+\title{Start a new KIT Shiny app}
 \usage{
 kit_new_app(
   path,
@@ -12,37 +12,42 @@ kit_new_app(
 )
 }
 \arguments{
-\item{path}{新的資料夾（最後一層是套件名稱，例如 \code{"~/kitScore"}）。}
+\item{path}{The new folder (the last part is the package name, e.g. \code{"~/kitScore"}).}
 
-\item{title}{工具名稱，例如「KIT 計分工具」。}
+\item{title}{The tool name, e.g. "KIT 計分工具" ("KIT scoring tool").}
 
-\item{subtitle}{副標，例如「臺灣幼兒發展調查資料庫」。}
+\item{subtitle}{The subtitle, e.g. "臺灣幼兒發展調查資料庫" (the KIT database).}
 
-\item{package}{套件名稱（預設是資料夾名稱）：英文字母開頭，只有英文字母、數字和點。}
+\item{package}{The package name (defaults to the folder name): starts with a letter and contains
+only letters, digits, and periods.}
 }
 \value{
-不可見的 \code{path}（完整路徑）。
+\code{path} (full path), invisibly.
 }
 \description{
-建立一個可以直接執行的 app 套件骨架，照 KIT 設計語言的頁面骨架寫好一個範例分頁：
+Creates a ready-to-run app package skeleton, with one example tab written to the KIT design
+language's page skeleton:
 }
 \details{
 \itemize{
-\item \code{DESCRIPTION}：\verb{Imports: kitDesign (>= 目前版本)}、\code{Remotes: jiewenTsai/kitDesign@v目前版本}。
-\item \code{app.R}：Posit Connect Cloud 的入口（primary file）。
-\item \code{R/app.R}：\code{\link[=kit_page]{kit_page()}}＋步驟分頁模組（\code{\link[=kit_step_tabs_ui]{kit_step_tabs_ui()}}）；\code{run_app()}。
-\item \code{R/page_calc.R}：範例分頁，用了主要按鈕＋還差（\code{\link[=kit_run_gate_ui]{kit_run_gate_ui()}}）、狀態框、結果表、
-用 R 怎麼做（\code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}）、下一步。
-\item \verb{tests/testthat/}：一個 \code{shiny::testServer()} 測試。
-\item \code{.gitignore}（含 \verb{tests/testthat/_problems/}、\code{testthat-problems.rds}）、\code{.Rbuildignore}、
-\code{README.md}、\code{LICENSE}。
+\item \code{DESCRIPTION}: \verb{Imports: kitDesign (>= current version)},
+\verb{Remotes: jiewenTsai/kitDesign@v<current version>}.
+\item \code{app.R}: the entry point for Posit Connect Cloud (primary file).
+\item \code{R/app.R}: \code{\link[=kit_page]{kit_page()}} plus the step tabs module (\code{\link[=kit_step_tabs_ui]{kit_step_tabs_ui()}}); \code{run_app()}.
+\item \code{R/page_calc.R}: an example tab using a primary button plus the ready line
+(\code{\link[=kit_run_gate_ui]{kit_run_gate_ui()}}), a status box, a result table, "How to do it in R"
+(\code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}), and next step.
+\item \verb{tests/testthat/}: one \code{shiny::testServer()} test.
+\item \code{.gitignore} (including \verb{tests/testthat/_problems/} and \code{testthat-problems.rds}),
+\code{.Rbuildignore}, \code{README.md}, \code{LICENSE}.
 }
 
-資料夾已經存在而且不是空的時候，什麼都不做、停下來（不會蓋掉任何檔案）。
+If the folder already exists and is not empty, it does nothing and stops (it never overwrites
+any file).
 }
 \examples{
 dir <- file.path(tempdir(), "kitDemo")
-kit_new_app(dir, "KIT 示範工具", "臺灣幼兒發展調查資料庫")
+kit_new_app(dir, "KIT 示範工具", "臺灣幼兒發展調查資料庫")  # "KIT demo tool", the KIT database
 list.files(dir, recursive = TRUE)
 unlink(dir, recursive = TRUE)
 }

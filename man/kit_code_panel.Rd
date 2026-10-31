@@ -2,23 +2,23 @@
 % Please edit documentation in R/code.R
 \name{kit_code_panel}
 \alias{kit_code_panel}
-\title{「用 R 怎麼做」的位置（CodePanel）}
+\title{Placeholder for "How to do it in R" (code panel)}
 \usage{
 kit_code_panel(output_id, title = "用 R 怎麼做", open = FALSE)
 }
 \arguments{
-\item{output_id}{放內容的 \code{uiOutput()} id（模組裡要加 \code{ns()}）。}
+\item{output_id}{The \code{uiOutput()} id that holds the content (wrap in \code{ns()} inside a module).}
 
-\item{title}{收合標題。}
+\item{title}{The collapsible title.}
 
-\item{open}{一開始要不要打開（預設收起）。}
+\item{open}{Whether it starts open (collapsed by default).}
 }
 \value{
-\verb{<details class="kit-detail">}。
+\verb{<details class="kit-detail">}.
 }
 \description{
-細節列（\code{\link[=kit_details_row]{kit_details_row()}}）裡的一個 \code{\link[=kit_detail]{kit_detail()}}，預設收起；內容由 server 用
-\code{\link[=kit_render_code_panel]{kit_render_code_panel()}} 填進 \code{output_id}。用模組時是 \code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}。
+A \code{\link[=kit_detail]{kit_detail()}} inside the details row (\code{\link[=kit_details_row]{kit_details_row()}}), collapsed by default; the server
+fills \code{output_id} with \code{\link[=kit_render_code_panel]{kit_render_code_panel()}}. With modules, use \code{\link[=kit_code_panel_ui]{kit_code_panel_ui()}}.
 }
 \examples{
 kit_details_row(kit_detail("預覽", "…"), kit_code_panel("code"))

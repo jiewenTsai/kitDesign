@@ -2,16 +2,16 @@
 % Please edit documentation in R/setup.R
 \name{kit_logo_dependency}
 \alias{kit_logo_dependency}
-\title{標誌檔（inst/logo/）的 htmlDependency：頁首的 SVG 與分頁圖示用網址取得}
+\title{htmlDependency for the logo files (inst/logo/): the header SVG and tab icon are fetched by URL}
 \usage{
 kit_logo_dependency()
 }
 \value{
-\code{\link[htmltools:htmlDependency]{htmltools::htmlDependency()}} 物件；檔案的網址是 \verb{kitDesign-logo-<版本>/<檔名>}
-（\code{\link[=kit_logo_file]{kit_logo_file()}}）。
+An \code{\link[htmltools:htmlDependency]{htmltools::htmlDependency()}} object; file URLs are
+\verb{kitDesign-logo-<version>/<file name>} (\code{\link[=kit_logo_file]{kit_logo_file()}}).
 }
 \description{
-標誌檔（inst/logo/）的 htmlDependency：頁首的 SVG 與分頁圖示用網址取得
+htmlDependency for the logo files (inst/logo/): the header SVG and tab icon are fetched by URL
 }
 \examples{
 kit_logo_dependency()$name

@@ -17,18 +17,21 @@ KIT_CODE_NOTE <- "\u4ee5\u4e0b\u7a0b\u5f0f\u78bc\u4f9d\u4f60\u76ee\u524d\u7684\u
 # 原文：先選資料，這裡才會有程式碼。
 KIT_CODE_EMPTY <- "\u5148\u9078\u8cc7\u6599\uff0c\u9019\u88e1\u624d\u6703\u6709\u7a0b\u5f0f\u78bc\u3002"
 
-#' 一個版本的程式碼（CodePanel）
+#' Code for one version (code panel)
 #'
-#' 一個 S3 值物件（class `kit_code`）：程式碼文字＋版本名稱。有 [htmltools::as.tags()] 方法：
-#' 直接放進頁面就畫成「版本名稱（粗體）＋複製」一行和下面的程式碼框，
-#' 程式碼先用 [kit_code_wrap()] 換行成每行最多 70 欄（中文字算 2 欄）。
-#' 換行後還是有太長的行（例如斷不開的長字串）時發出 warning（不會停下來），在框裡左右捲。
+#' An S3 value object (class `kit_code`): code text plus a version name. It has an
+#' [htmltools::as.tags()] method: put it straight into a page and it renders a line with "version
+#' name (bold) + Copy" and the code box below, with the code first wrapped by [kit_code_wrap()] to
+#' at most 70 columns per line (Chinese characters count as 2).
+#' If a line is still too long after wrapping (e.g. a long string that cannot be broken), it gives
+#' a warning (it does not stop), and the box scrolls sideways.
 #'
-#' @param code 程式碼（字串向量；一個元素一行，或含換行）。
-#' @param label 版本名稱，例如「tidyverse 版」「base R 版」「kits 版」。
-#' @param width 一行最多幾欄；`NULL` 不換行、不檢查。
-#' @return `kit_code` 物件。
-#' @seealso [kit_code_blocks()]、[kit_code_panel_ui()]
+#' @param code The code (a character vector; one element per line, or containing newlines).
+#' @param label The version name, e.g. "tidyverse 版" ("tidyverse version"), "base R 版" ("base R
+#'   version"), "kits 版" ("kits version").
+#' @param width Maximum columns per line; `NULL` means no wrapping and no check.
+#' @return A `kit_code` object.
+#' @seealso [kit_code_blocks()], [kit_code_panel_ui()]
 #' @examples
 #' x <- kit_code("joined <- dplyr::left_join(t1, t2, by = \"id\")", "tidyverse 版")
 #' x
@@ -48,8 +51,9 @@ kit_code <- function(code, label = "R", width = KIT_CODE_WIDTH) {
 # 已經提醒過的程式碼（同一段只提醒一次：畫面每次更新都會重畫）
 kit_code_warned <- new.env(parent = emptyenv())
 
-#' 換行以後的程式碼；還有太長的行時發出 warning
-#' 同一個 R session 裡，同一段程式碼只提醒一次；`options(kitDesign.warn_long_code = FALSE)` 不提醒。
+#' The code after wrapping; gives a warning when lines are still too long
+#' Within one R session, the same code warns only once; `options(kitDesign.warn_long_code = FALSE)`
+#' turns the warning off.
 #' @noRd
 kit_code_text <- function(x) {
   code <- sub("\\s+$", "", x$code)
@@ -70,8 +74,8 @@ kit_code_text <- function(x) {
 }
 
 #' @rdname kit_code
-#' @param x `kit_code` 物件。
-#' @param ... 不用。
+#' @param x A `kit_code` object.
+#' @param ... Not used.
 #' @exportS3Method htmltools::as.tags
 as.tags.kit_code <- function(x, ...) {
   shiny::tagList(
@@ -100,7 +104,7 @@ print.kit_code <- function(x, ...) {
   invisible(x)
 }
 
-#' 把程式碼整理成 kit_code 的 list
+#' Turn code into a list of kit_code objects
 #' @noRd
 kit_as_codes <- function(snips, width) {
   if (inherits(snips, "kit_code")) return(list(snips))
@@ -119,17 +123,20 @@ kit_as_codes <- function(snips, width) {
   out
 }
 
-#' 「用 R 怎麼做」的內容：說明＋一個或幾個版本的程式碼（附「複製」）
+#' Content of "How to do it in R": a note plus code in one or more versions (with "Copy")
 #'
-#' 每個版本是一個 [kit_code()]：一行「版本名稱（粗體）＋複製」與下面的程式碼框；
-#' 兩個版本時上下排。程式碼每行最多 70 欄（[kit_code_wrap()]）；一律關掉連字。
+#' Each version is a [kit_code()]: a line with "version name (bold) + Copy" and the code box below
+#' it; two versions are stacked vertically. Code lines are at most 70 columns ([kit_code_wrap()]);
+#' ligatures are always turned off.
 #'
-#' @param snips 程式碼：一個字串、[kit_code()] 物件，或它們的具名 list／字串向量
-#'   （名字是版本名稱）。kitJoin 的 `list(tidy = , base = )` 會寫成「tidyverse 版」「base R 版」；
-#'   `NULL` 的版本略過（例如 `base = NULL` 時只有 tidyverse 版）。沒有名字時版本名稱是「R」。
-#' @param note 最上面的一行說明；`NULL` 不顯示。
-#' @param width 一行最多幾欄；`NULL` 不換行、不檢查。
-#' @return [htmltools::tagList()]。
+#' @param snips The code: a string, a [kit_code()] object, or a named list / character vector of
+#'   them (names are version names). kitJoin's `list(tidy = , base = )` is labeled "tidyverse 版"
+#'   ("tidyverse version") and "base R 版" ("base R version"); `NULL` versions are skipped (e.g.
+#'   with `base = NULL` there is only the tidyverse version). Without names the version name is
+#'   "R".
+#' @param note A one-line note at the top; `NULL` shows nothing.
+#' @param width Maximum columns per line; `NULL` means no wrapping and no check.
+#' @return [htmltools::tagList()].
 #' @examples
 #' kit_code_blocks(list(
 #'   tidy = "joined <- dplyr::left_join(t1, t2, by = \"id\")",
@@ -145,15 +152,15 @@ kit_code_blocks <- function(snips, note = KIT_CODE_NOTE, width = KIT_CODE_WIDTH)
   )
 }
 
-#' 「用 R 怎麼做」的位置（CodePanel）
+#' Placeholder for "How to do it in R" (code panel)
 #'
-#' 細節列（[kit_details_row()]）裡的一個 [kit_detail()]，預設收起；內容由 server 用
-#' [kit_render_code_panel()] 填進 `output_id`。用模組時是 [kit_code_panel_ui()]。
+#' A [kit_detail()] inside the details row ([kit_details_row()]), collapsed by default; the server
+#' fills `output_id` with [kit_render_code_panel()]. With modules, use [kit_code_panel_ui()].
 #'
-#' @param output_id 放內容的 `uiOutput()` id（模組裡要加 `ns()`）。
-#' @param title 收合標題。
-#' @param open 一開始要不要打開（預設收起）。
-#' @return `<details class="kit-detail">`。
+#' @param output_id The `uiOutput()` id that holds the content (wrap in `ns()` inside a module).
+#' @param title The collapsible title.
+#' @param open Whether it starts open (collapsed by default).
+#' @return `<details class="kit-detail">`.
 #' @examples
 #' kit_details_row(kit_detail("預覽", "…"), kit_code_panel("code"))
 #' @export
@@ -162,16 +169,17 @@ kit_code_panel <- function(output_id, title = "\u7528 R \u600e\u9ebc\u505a", ope
   kit_detail(title, shiny::uiOutput(output_id), open = open)
 }
 
-#' server 端：把程式碼畫進 [kit_code_panel()]
+#' Server side: render code into [kit_code_panel()]
 #'
-#' `output[["code"]] <- kit_render_code_panel(function() code_text())`。
-#' 收起來時不算（Shiny 不畫看不見的 output；打開「用 R 怎麼做」時才算）。`code()` 停下來
-#' （`req()`）、出錯或是空的時，只有一行 `empty`。
+#' `output[["code"]] <- kit_render_code_panel(function() code_text())`.
+#' Nothing is computed while the panel is collapsed (Shiny does not render hidden outputs; it
+#' computes only when "用 R 怎麼做" ("How to do it in R") is opened). When `code()` stops
+#' (`req()`), fails, or is empty, only the `empty` line is shown.
 #'
-#' @param code 傳回程式碼的函式或 reactive：[kit_code_blocks()] 的 `snips`。
-#' @param note,width 見 [kit_code_blocks()]。
-#' @param empty 還沒有程式碼時的一行字。
-#' @return [shiny::renderUI()]。
+#' @param code A function or reactive that returns the code: the `snips` of [kit_code_blocks()].
+#' @param note,width See [kit_code_blocks()].
+#' @param empty The one line shown while there is no code yet.
+#' @return [shiny::renderUI()].
 #' @examples
 #' if (interactive()) {
 #'   server <- function(input, output, session) {

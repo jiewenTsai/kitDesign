@@ -2,20 +2,21 @@
 % Please edit documentation in R/setup.R
 \name{kit_versions}
 \alias{kit_versions}
-\title{版本：kitDesign 與 app 自己的}
+\title{Versions: kitDesign and the app's own}
 \usage{
 kit_versions(package = NULL)
 }
 \arguments{
-\item{package}{app 的套件名稱（例如 \code{"kitJoin"}）；\code{NULL} 時只有 kitDesign。
-版本讀法和 \code{\link[=kit_app_description]{kit_app_description()}} 一樣。}
+\item{package}{The app's package name (for example \code{"kitJoin"}); with \code{NULL}, only kitDesign.
+Versions are read the same way as \code{\link[=kit_app_description]{kit_app_description()}}.}
 }
 \value{
-具名字串向量，例如 \code{c(kitDesign = "0.1.0", kitJoin = "0.5.0")}。
+A named character vector, for example \code{c(kitDesign = "0.1.0", kitJoin = "0.5.0")}.
 }
 \description{
-回報問題時，兩個版本都要寫。頁首的版本行可以接上 kitDesign 的版本：
-\code{kit_page(..., show_kitdesign = TRUE)} →「v0.5.0 · 2026-10-31 · kitDesign 0.1.0」。
+When reporting a problem, include both versions. The header's version line can include the
+kitDesign version:
+\code{kit_page(..., show_kitdesign = TRUE)} → "v0.5.0 · 2026-10-31 · kitDesign 0.1.0".
 }
 \examples{
 kit_versions()

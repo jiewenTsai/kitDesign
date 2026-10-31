@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{kit_header}
 \alias{kit_header}
-\title{KIT 頁首}
+\title{KIT header}
 \usage{
 kit_header(
   title,
@@ -18,41 +18,46 @@ kit_header(
 )
 }
 \arguments{
-\item{title}{工具名稱（頁首的 h1，也是瀏覽器分頁的標題），例如「KIT 資料串接工具」。}
+\item{title}{The tool name (the header's h1, also the browser tab title), for example
+"KIT 資料串接工具" ("KIT data join tool").}
 
-\item{subtitle}{副標（粗體），例如資料庫名稱「臺灣幼兒發展調查資料庫」。}
+\item{subtitle}{The subtitle (bold), for example the database name "臺灣幼兒發展調查資料庫" (the
+KIT database).}
 
-\item{tagline}{接在副標後面的一句（例如「跨波次資料處理」）；\code{NULL} 不顯示。}
+\item{tagline}{A phrase after the subtitle (for example "跨波次資料處理", "cross-wave data
+processing"); \code{NULL} shows nothing.}
 
-\item{version, date}{頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
-\code{kit_app_description("kitJoin")}。}
+\item{version, date}{The version and date on the header's version line, usually read from the
+app's own DESCRIPTION: \code{kit_app_description("kitJoin")}.}
 
-\item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
+\item{meta_extra}{Text added after the version line (for example "kits 0.25.0").}
 
-\item{logo}{頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：\code{TRUE}（標誌檔由
-htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的
-單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
+\item{logo}{Whether the header shows the brand logo (KIT's is the bean plus the KIT wordmark):
+\code{TRUE} (the logo file comes from an htmlDependency; use in Shiny), \code{"inline"} (the logo is
+written into the page, for single HTML files without Shiny, such as user manuals), or \code{FALSE}.}
 
-\item{show_kitdesign}{版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
-回報問題時兩個版本都看得到。}
+\item{show_kitdesign}{Whether to add the kitDesign version after the version line
+("kitDesign 0.1.0"), so both versions are visible when someone reports a problem.}
 
-\item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
-沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}
+\item{brand}{The brand: logo, tab icon, and colors (\code{\link[=kit_brand]{kit_brand()}}). Defaults to
+\code{\link[=kit_current_brand]{kit_current_brand()}}: KIT when \code{options(kitDesign.brand = )} is not set.}
 
-\item{package}{app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
-回報問題時一看就知道是哪個 app 的哪一版。\code{NULL}（預設）不寫，和以前一樣。}
+\item{package}{The app's package name, written at the start of the version line:
+"kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which
+version. \code{NULL} (the default) writes no name, as before.}
 }
 \value{
-\verb{<div class="kit-header mb-4">}。
+\verb{<div class="kit-header mb-4">}.
 }
 \description{
-萊姆色塊、黑框、頁首陰影；左邊完整標誌，右邊工具名稱、一行副標、一行版本。
-一個 app 只有一個，放在最上面（\code{\link[=kit_page]{kit_page()}} 已經放好了）。也會設定瀏覽器分頁的
-圖示（KIT 是豆子標誌）。
+A lime color block, black border, header shadow; the full logo on the left, and on the right the
+tool name, one subtitle line, and one version line. One per app, at the very top (\code{\link[=kit_page]{kit_page()}}
+already places it). It also sets the browser tab icon (the bean logo for KIT).
 }
 \details{
-標誌、分頁圖示、顏色從品牌來（\code{\link[=kit_brand]{kit_brand()}}）。品牌的顏色和 KIT 不同時，頁首另外放一小段
-\verb{<style>}，把不同的 \verb{--nb-*} 變數換掉；KIT 的品牌不放，頁面和以前一樣。
+Logo, tab icon, and colors come from the brand (\code{\link[=kit_brand]{kit_brand()}}). When the brand's colors differ
+from KIT's, the header adds a short \verb{<style>} that overrides the differing \verb{--nb-*} variables;
+for the KIT brand nothing is added and the page is the same as before.
 }
 \examples{
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",

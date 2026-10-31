@@ -2,21 +2,22 @@
 % Please edit documentation in R/tables.R
 \name{kit_static_table}
 \alias{kit_static_table}
-\title{小表格（直接放在 renderUI() 裡，不用另開 output）}
+\title{Small table (put directly inside renderUI(); no separate output needed)}
 \usage{
 kit_static_table(df, class = "table table-sm table-striped")
 }
 \arguments{
-\item{df}{data.frame。}
+\item{df}{A data.frame.}
 
-\item{class}{表格的 class。}
+\item{class}{The table's class.}
 }
 \value{
-\verb{<table class="table table-sm table-striped">}。
+\verb{<table class="table table-sm table-striped">}.
 }
 \description{
-白底、黑表頭白字、斑馬紋、寬度跟著內容。整數欄自動加千分位（3389 → 3,389）。
-上面放一個 \code{h4} 標題與一行 \code{\link[=kit_rows_note]{kit_rows_note()}}。
+White background, black header with white text, zebra stripes, width fits the content. Integer
+columns get thousands separators automatically (3389 → 3,389).
+Put an \code{h4} title and a \code{\link[=kit_rows_note]{kit_rows_note()}} line above it.
 }
 \examples{
 kit_static_table(data.frame(世代 = c("M03", "M36"), 人數 = c(3389, 1250)))

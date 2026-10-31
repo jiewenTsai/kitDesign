@@ -2,17 +2,17 @@
 % Please edit documentation in R/brand.R
 \name{kit_current_brand}
 \alias{kit_current_brand}
-\title{現在的品牌：\code{options(kitDesign.brand = )}，沒有設定時是 KIT}
+\title{The current brand: \code{options(kitDesign.brand = )}, KIT when not set}
 \usage{
 kit_current_brand()
 }
 \value{
-\code{kit_brand} 物件。
+A \code{kit_brand} object.
 }
 \description{
-kitDesign 的函式（\code{\link[=kit_page]{kit_page()}}、\code{\link[=kit_header]{kit_header()}}、\code{\link[=kit_theme]{kit_theme()}}、\code{\link[=kit_colors]{kit_colors()}}、
-\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}、\code{\link[=kit_plotly_style]{kit_plotly_style()}}）的 \code{brand} 預設值。
-app 只要在開始時設定一次 \code{options(kitDesign.brand = kit_brand(...))}。
+The default \code{brand} for kitDesign functions (\code{\link[=kit_page]{kit_page()}}, \code{\link[=kit_header]{kit_header()}}, \code{\link[=kit_theme]{kit_theme()}},
+\code{\link[=kit_colors]{kit_colors()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}, \code{\link[=kit_plotly_style]{kit_plotly_style()}}).
+An app only needs to set \code{options(kitDesign.brand = kit_brand(...))} once at startup.
 }
 \examples{
 kit_current_brand()$name

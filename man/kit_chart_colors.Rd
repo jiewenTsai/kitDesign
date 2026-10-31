@@ -2,19 +2,21 @@
 % Please edit documentation in R/tables.R
 \name{kit_chart_colors}
 \alias{kit_chart_colors}
-\title{圖的類別色（Chart）}
+\title{Categorical chart colors}
 \usage{
 kit_chart_colors(n = NULL)
 }
 \arguments{
-\item{n}{\code{NULL} 時回傳全部 6 個（具名）；給數字時依序取 \code{n} 個（不具名）。}
+\item{n}{When \code{NULL}, returns all 6 (named); when a number, takes the first \code{n} in order
+(unnamed).}
 }
 \value{
-顏色字串向量。
+A character vector of colors.
 }
 \description{
-色盲友善的 Okabe–Ito，世代、量尺、分數依序取色：藍、橘、綠、紫紅、天藍、朱紅；
-超過 6 類從頭再取。參考線、帶子、沒有判斷的點用 \code{\link[=kit_chart_neutral]{kit_chart_neutral()}}。
+Colorblind-friendly Okabe–Ito. Cohorts, scales, and scores take colors in order: blue, orange,
+green, reddish purple, sky blue, vermillion; past 6 categories it starts over. For reference
+lines, bands, and points with no judgment, use \code{\link[=kit_chart_neutral]{kit_chart_neutral()}}.
 }
 \examples{
 kit_chart_colors()

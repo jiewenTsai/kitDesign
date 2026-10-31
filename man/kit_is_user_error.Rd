@@ -2,18 +2,18 @@
 % Please edit documentation in R/status.R
 \name{kit_is_user_error}
 \alias{kit_is_user_error}
-\title{是不是 \code{\link[=kit_abort]{kit_abort()}} 丟出的錯誤}
+\title{Was the error thrown by \code{\link[=kit_abort]{kit_abort()}}?}
 \usage{
 kit_is_user_error(e)
 }
 \arguments{
-\item{e}{錯誤（condition）。}
+\item{e}{The error (a condition).}
 }
 \value{
-\code{TRUE} 或 \code{FALSE}。
+\code{TRUE} or \code{FALSE}.
 }
 \description{
-是不是 \code{\link[=kit_abort]{kit_abort()}} 丟出的錯誤
+Was the error thrown by \code{\link[=kit_abort]{kit_abort()}}?
 }
 \examples{
 kit_is_user_error(tryCatch(kit_abort("x"), error = identity))

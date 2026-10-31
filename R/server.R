@@ -1,14 +1,17 @@
 # server 端的 UI 小工具：還差什麼、捲到結果、打開收合區塊、離開前提醒
 
-#' 還差什麼（ReadyLine）
+#' Ready line ("what's still needed")
 #'
-#' 主要按鈕還不能按時，按鈕上面一行粗體「還差：…」，後面接一個去處理的連結。
-#' 「還差」寫具體的事和數字：「至少要 2 個波次的檔案，目前只有 1 個」。
+#' When the primary button cannot be pressed yet, a bold line above it says "還差：…" ("Still
+#' needed: …"), followed by a link to where to fix it.
+#' Write what is still needed as concrete tasks and numbers: "至少要 2 個波次的檔案，目前只有 1 個"
+#' ("Need files from at least 2 waves; there is only 1 now").
 #'
-#' @param missing 還差的事（字串向量；`NA` 與 `""` 略過）。
-#' @param link 跟在後面的連結（例如「到「檔案上傳」加入檔案 →」）；`NULL` 不顯示。
-#' @return `<p class="kit-ready todo">`；不差什麼時是 `NULL`。
-#' @seealso [kit_run_gate()]、[kit_need_files()]
+#' @param missing What is still needed (character vector; `NA` and `""` are skipped).
+#' @param link A link that follows (for example "到「檔案上傳」加入檔案 →", "Go to 'File upload'
+#'   to add files →"); `NULL` shows nothing.
+#' @return `<p class="kit-ready todo">`; `NULL` when nothing is missing.
+#' @seealso [kit_run_gate()], [kit_need_files()]
 #' @examples
 #' kit_ready_line(c("至少要 2 個波次的檔案，目前只有 1 個", "選 ID 欄"))
 #' @export
@@ -23,21 +26,23 @@ kit_ready_line <- function(missing, link = NULL) {
   )
 }
 
-#' 主要按鈕還不能按時：停用它，上面一行寫還差什麼
+#' When the primary button cannot be pressed yet: disable it and show what is still needed above it
 #'
-#' 頁面上放 `shiny::uiOutput(ns("ready"))`，緊接著
-#' `kit_button(ns("run"), ..., "primary", disabled = TRUE)`（一開始停用；伺服器算好以後才打開）。
-#' 主要按鈕一開始就顯示，讓人知道這一頁最後要按什麼。
+#' Put `shiny::uiOutput(ns("ready"))` on the page, directly followed by
+#' `kit_button(ns("run"), ..., "primary", disabled = TRUE)` (disabled at first; enabled once the
+#' server has checked). The primary button is shown from the start, so people know what they will
+#' press at the end of this page.
 #'
-#' 按鈕的 `observeEvent()` 裡仍要自己檢查一次：停用只是畫面上的，不能當成唯一的防線。
+#' Still check again inside the button's `observeEvent()`: disabling is only on screen and must not
+#' be the only safeguard.
 #'
-#' @param session 模組的 session。
-#' @param output 模組的 output。
-#' @param missing reactive：還差的事（字串；長度 0 = 可以執行）。
-#' @param link function()：跟在「還差」後面的連結（tag 或 `NULL`）。
-#' @param button_id 主要按鈕的 id（模組內的 id，不加 `ns()`）。
-#' @param output_id 放「還差」的 `uiOutput()` id（模組內的 id）。
-#' @return 不可見的 `NULL`；在 server 裡呼叫。
+#' @param session The module's session.
+#' @param output The module's output.
+#' @param missing A reactive: what is still needed (character; length 0 = ready to run).
+#' @param link function(): the link after "還差" ("Still needed") (a tag or `NULL`).
+#' @param button_id The primary button's id (the id inside the module, without `ns()`).
+#' @param output_id The `uiOutput()` id for the "還差" line (the id inside the module).
+#' @return `NULL`, invisibly; call it inside the server.
 #' @examples
 #' if (interactive()) {
 #'   server <- function(input, output, session) {
@@ -57,11 +62,11 @@ kit_run_gate <- function(session, output, missing, link = function() NULL, butto
   invisible(NULL)
 }
 
-#' 「還差」：檔案不夠時的那一句
+#' "還差" ("Still needed"): the sentence shown when there are not enough files
 #'
-#' @param n_files 已經加入幾個檔案。
-#' @param need 這一頁至少要幾個檔案。
-#' @return 一句話；檔案夠了時是 `NULL`。
+#' @param n_files How many files have been added.
+#' @param need The minimum number of files this page needs.
+#' @return One sentence; `NULL` when there are enough files.
 #' @examples
 #' kit_need_files(1L, need = 2L)
 #' kit_need_files(0L, need = 1L)
@@ -76,19 +81,22 @@ kit_need_files <- function(n_files, need = 2L) {
          if (n_files == 0) "\u9084\u6c92\u6709" else paste0("\u53ea\u6709 ", n_files, " \u500b"))
 }
 
-#' 執行完把狀態框捲到畫面上方
+#' After running, scroll the status box to the top of the screen
 #'
-#' 「先結果、後細節」：在主要按鈕的 `observeEvent()` 最後呼叫 `kit_scroll_to("status")`。
-#' 等這一輪的 output 都送到瀏覽器以後（`session$onFlushed()`）才捲，狀態框已經畫好了。
-#' 使用者設定「減少動態效果」時直接跳過去，不平滑捲動。
+#' "Results first, details after": call `kit_scroll_to("status")` at the end of the primary
+#' button's `observeEvent()`. It scrolls only after this round's outputs have all reached the
+#' browser (`session$onFlushed()`), so the status box is already rendered.
+#' When the user has set "reduce motion", it jumps there without smooth scrolling.
 #'
-#' @param id 模組裡的 output id（會自動加上模組的 namespace），例如 `"status"`。
-#' @param session 預設是目前的 session（模組裡呼叫就是模組的 session）。
-#' @return 不可見的完整 id；沒有 session 時是 `NULL`。
+#' @param id The output id inside the module (the module's namespace is added automatically), for
+#'   example `"status"`.
+#' @param session Defaults to the current session (called inside a module, that is the module's
+#'   session).
+#' @return The full id, invisibly; `NULL` when there is no session.
 #' @examples
 #' if (interactive()) {
 #'   shiny::observeEvent(input$run, {
-#'     # …執行…
+#'     # …run…
 #'     kit_scroll_to("status")
 #'   })
 #' }
@@ -102,12 +110,12 @@ kit_scroll_to <- function(id, session = shiny::getDefaultReactiveDomain()) {
   invisible(full)
 }
 
-#' 打開一個收合區塊（例如套用預設後打開進階設定）
+#' Open a collapsible section (for example, open the advanced settings after applying a preset)
 #'
-#' @param id `<details>` 的 id（模組內的 id，會自動加上 namespace），例如
-#'   [kit_advanced()] 的 `id`。
-#' @param session 預設是目前的 session。
-#' @return 不可見的完整 id；沒有 session 時是 `NULL`。
+#' @param id The id of the `<details>` (the id inside the module; the namespace is added
+#'   automatically), for example the `id` of [kit_advanced()].
+#' @param session Defaults to the current session.
+#' @return The full id, invisibly; `NULL` when there is no session.
 #' @examples
 #' if (interactive()) kit_open_details("advanced")
 #' @export
@@ -118,14 +126,16 @@ kit_open_details <- function(id, session = shiny::getDefaultReactiveDomain()) {
   invisible(full)
 }
 
-#' 離開頁面前的提醒
+#' Reminder before leaving the page
 #'
-#' 有這一回合的結果時（例如校準過），關掉或重新整理分頁前，瀏覽器會先問一次。
-#' 在 server 裡依結果開關：`shiny::observe(kit_unload_guard(!is.null(result())))`。
+#' When there are results from this session (for example, after calibration), the browser asks once
+#' before the tab is closed or reloaded.
+#' Turn it on and off in the server based on the result:
+#' `shiny::observe(kit_unload_guard(!is.null(result())))`.
 #'
-#' @param on `TRUE` 開、`FALSE` 關。
-#' @param session 預設是目前的 session。
-#' @return 不可見的 `on`。
+#' @param on `TRUE` turns it on, `FALSE` turns it off.
+#' @param session Defaults to the current session.
+#' @return `on`, invisibly.
 #' @examples
 #' if (interactive()) kit_unload_guard(TRUE)
 #' @export

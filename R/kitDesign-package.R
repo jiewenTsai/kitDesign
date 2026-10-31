@@ -21,15 +21,16 @@
 #' @keywords internal
 "_PACKAGE"
 
-#' 元件樣張 app
+#' Component gallery app
 #'
-#' 一個 app 裡放了每一個元件，內容是 KIT 的例子。
-#' 原始碼在 `system.file("examples/gallery", package = "kitDesign")`。
+#' One app holding every component, filled with KIT examples.
+#' The source is in `system.file("examples/gallery", package = "kitDesign")`.
 #'
-#' @param ... 傳給 [shiny::runApp()] 的參數（例如 `port = 7551`、`launch.browser = FALSE`）。
-#' @param brand 用哪個品牌看：`NULL`（預設）是現在的品牌（[kit_current_brand()]，通常是 KIT）；
-#'   `"demo"` 是一個藍色系的示範品牌（看換品牌以後的樣子）；或一個 [kit_brand()]。
-#' @return [shiny::runApp()] 的結果（app 關掉時）。
+#' @param ... Arguments passed to [shiny::runApp()] (e.g. `port = 7551`, `launch.browser = FALSE`).
+#' @param brand Which brand to view: `NULL` (default) is the current brand ([kit_current_brand()],
+#'   usually KIT); `"demo"` is a blue demo brand (to see how a different brand looks); or a
+#'   [kit_brand()].
+#' @return The result of [shiny::runApp()] (when the app closes).
 #' @examples
 #' if (interactive()) kit_gallery()
 #' if (interactive()) kit_gallery(brand = "demo")

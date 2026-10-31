@@ -2,21 +2,22 @@
 % Please edit documentation in R/setup.R
 \name{kit_colors}
 \alias{kit_colors}
-\title{KIT 品牌色常數（供自訂 CSS 或圖表使用）}
+\title{KIT brand color constants (for custom CSS or charts)}
 \usage{
 kit_colors(brand = kit_current_brand())
 }
 \arguments{
-\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）；預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。}
+\item{brand}{The brand (\code{\link[=kit_brand]{kit_brand()}}); defaults to \code{\link[=kit_current_brand]{kit_current_brand()}} (KIT when none is set).}
 }
 \value{
-具名 list。
+A named list.
 }
 \description{
-和 kitJoin、kitsUI 的 \code{kit_colors()} 相同的名稱。介面元件的顏色在 CSS 的 tokens 裡
-（\code{var(--nb-lime)} 等，見 \code{brand/KIT設計語言.md} 的附錄）。
-\code{primary}、\code{accent}、\code{subtitle} 從品牌來（\code{\link[=kit_brand]{kit_brand()}} 的 \code{primary}、\code{accent}、
-\code{accent_light}），\code{primary_light} 是 \code{primary} 調淡；其他是固定的中性色與舊的提示色。
+Same names as \code{kit_colors()} in kitJoin and kitsUI. Colors for UI components are in the CSS
+tokens (\code{var(--nb-lime)} etc.; see the appendix of \code{brand/en/design-language.md}).
+\code{primary}, \code{accent}, and \code{subtitle} come from the brand (\code{primary}, \code{accent}, and \code{accent_light}
+in \code{\link[=kit_brand]{kit_brand()}}); \code{primary_light} is a lighter \code{primary}; the rest are fixed neutrals and older
+alert colors.
 }
 \examples{
 kit_colors()$primary

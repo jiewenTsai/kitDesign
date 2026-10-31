@@ -2,18 +2,19 @@
 % Please edit documentation in R/tables.R
 \name{kit_num}
 \alias{kit_num}
-\title{整數加千分位}
+\title{Integer with thousands separators}
 \usage{
 kit_num(x)
 }
 \arguments{
-\item{x}{數字（或可以轉成數字的字串）。}
+\item{x}{A number (or a string that can be converted to a number).}
 }
 \value{
-字串，例如 \code{"3,418"}。
+A string, for example \code{"3,418"}.
 }
 \description{
-KIT 設計語言：四位數以上加千分位，「3,389 人」。小數會四捨五入成整數。
+KIT design language: numbers with four or more digits get thousands separators, as in
+"3,389 人" ("3,389 people"). Decimals are rounded to integers.
 }
 \examples{
 kit_num(3418)

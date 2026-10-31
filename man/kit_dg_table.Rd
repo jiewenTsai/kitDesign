@@ -2,27 +2,30 @@
 % Please edit documentation in R/guide.R
 \name{kit_dg_table}
 \alias{kit_dg_table}
-\title{圖解用的小表格（2–3 欄、2–4 列）}
+\title{Small table for diagrams (2–3 columns, 2–4 rows)}
 \usage{
 kit_dg_table(df, title, added = NULL, row_header = FALSE)
 }
 \arguments{
-\item{df}{data.frame（值會轉成文字）；\code{NA} 或 \code{""} 顯示成「（空）」。}
+\item{df}{A data.frame (values are converted to text); \code{NA} or \code{""} shows as "（空）"
+("(empty)").}
 
-\item{title}{表名，放在 \verb{<caption>}（例如「第 1 波（t1）」「結果」）。}
+\item{title}{The table name, placed in \verb{<caption>} (e.g. "第 1 波（t1）" ("Wave 1 (t1)"),
+"結果" ("Result")).}
 
-\item{added}{這一步新加的欄名（例如 \code{wave}）。}
+\item{added}{Names of columns added in this step (e.g. \code{wave}).}
 
-\item{row_header}{第 1 欄是列標題（\verb{<th scope="row">}）。}
+\item{row_header}{Whether column 1 holds row headers (\verb{<th scope="row">}).}
 }
 \value{
-\verb{<table class="kit-dg-table">}。
+\verb{<table class="kit-dg-table">}.
 }
 \description{
-配角：不加框、表格跟著內容寬、1px 細線、淡色表頭（不是大資料表的黑表頭）；
-值用等寬字。新加的欄淡萊姆底，欄名後面加「（新）」，不只靠顏色；
-空的格子寫灰色的「（空）」。
+A supporting element: no box, table as wide as its content, 1px thin lines, a light header (not
+the black header of large data tables); values in a monospace font. New columns get a light
+lime background and "（新）" ("(new)") after the name, so it does not rely on color alone;
+empty cells show a gray "（空）" ("(empty)").
 }
 \examples{
-kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")
+kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")  # "Wave 1 (t1)"
 }

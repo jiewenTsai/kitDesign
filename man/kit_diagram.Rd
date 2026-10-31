@@ -2,25 +2,27 @@
 % Please edit documentation in R/guide.R
 \name{kit_diagram}
 \alias{kit_diagram}
-\title{圖解：處理前的小表 → 處理後的小表，下面一行白話說明（Diagram）}
+\title{Diagram: small table before → small table after, with a plain-language line below}
 \usage{
 kit_diagram(before, after, caption, arrow = "→")
 }
 \arguments{
-\item{before}{處理前的小表：一個 \code{\link[=kit_dg_table]{kit_dg_table()}} 或它們的 list（並排）。}
+\item{before}{The small table(s) before: one \code{\link[=kit_dg_table]{kit_dg_table()}} or a list of them (side by side).}
 
-\item{after}{處理後的小表：一個 \code{\link[=kit_dg_table]{kit_dg_table()}}。}
+\item{after}{The small table after: one \code{\link[=kit_dg_table]{kit_dg_table()}}.}
 
-\item{caption}{一行白話說明（\verb{<figcaption>}）。}
+\item{caption}{One plain-language line (\verb{<figcaption>}).}
 
-\item{arrow}{中間的箭頭。}
+\item{arrow}{The arrow in the middle.}
 }
 \value{
-\verb{<figure class="kit-diagram">}。
+\verb{<figure class="kit-diagram">}.
 }
 \description{
-放進 \code{\link[=kit_tab_guide]{kit_tab_guide()}} 的 \code{diagram}。窄螢幕（≤ 576px）時「前」在上、箭頭朝下、「後」在下。
-每張小表 2–3 列，用一般的名稱（id、score、wave），不用某個資料庫的欄名。
+Goes in the \code{diagram} of \code{\link[=kit_tab_guide]{kit_tab_guide()}}. On narrow screens (≤ 576px) "before" is on top, the
+arrow points down, and "after" is below.
+Each small table has 2–3 rows and uses generic names (id, score, wave), not column names from a
+particular database.
 }
 \examples{
 kit_diagram(
@@ -29,4 +31,6 @@ kit_diagram(
   kit_dg_table(data.frame(id = 1:3, t1 = c(3, 5, NA), t2 = c(4, NA, 6)), "結果"),
   "依 id 接起來：沒有出席的那一波是空的。"
 )
+# "Wave 1", "Wave 2", "Result";
+# caption: "Joined by id: a wave the child missed is empty."
 }

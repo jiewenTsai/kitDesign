@@ -9,7 +9,7 @@
 \alias{kit_truncate_bytes}
 \alias{kit_gz_path}
 \alias{kit_open_browser}
-\title{檔案的小工具：編碼、SPSS 變項名稱、壓縮檔路徑、開啟瀏覽器}
+\title{File helpers: encoding, SPSS variable names, compressed file paths, opening the browser}
 \usage{
 kit_fix_utf8_chr(x)
 
@@ -26,32 +26,39 @@ kit_gz_path(path)
 kit_open_browser(url)
 }
 \arguments{
-\item{x}{文字向量（\code{kit_fix_utf8_chr()}）或一個字串（\code{kit_truncate_bytes()}）。}
+\item{x}{A character vector (\code{kit_fix_utf8_chr()}) or a single string (\code{kit_truncate_bytes()}).}
 
-\item{df}{資料框。}
+\item{df}{A data frame.}
 
-\item{cols}{欄名。}
+\item{cols}{Column names.}
 
-\item{max_bytes}{最多幾個位元組。}
+\item{max_bytes}{Maximum number of bytes.}
 
-\item{path}{檔案路徑。}
+\item{path}{A file path.}
 
-\item{url}{網址。}
+\item{url}{A URL.}
 }
 \value{
-和輸入同類的物件；\code{kit_is_valid_utf8_df()} 是 \code{TRUE}／\code{FALSE}；\code{kit_open_browser()} 是 \code{NULL}。
+An object of the same kind as the input; \code{kit_is_valid_utf8_df()} gives \code{TRUE} / \code{FALSE};
+\code{kit_open_browser()} gives \code{NULL}.
 }
 \description{
 \itemize{
-\item \code{kit_fix_utf8_chr()}：文字轉成 UTF-8（轉不了的字換成 \verb{?}）；不是文字時原樣傳回。
-\item \code{kit_fix_utf8_df()}：資料框每個文字欄（與因子）轉成 UTF-8，保留 SAV 的變項標籤與數值標籤。
-\item \code{kit_is_valid_utf8_df()}：欄名與文字欄是不是都是合法的 UTF-8。
-\item \code{kit_sav_safe_names()}：轉成合法的 SPSS 變項名稱（以 \code{haven::write_sav()} 實測：只能有字母、
-數字與 \verb{_ . @ # $}；開頭是字母或 \code{@}；不以 \code{.} 結尾；不是保留字；最長 64 bytes；
-不分大小寫不重複，重複的第二個起加 \verb{_2}、\verb{_3}）。
-\item \code{kit_truncate_bytes()}：依 UTF-8 位元組數截斷，不切斷中文字。
-\item \code{kit_gz_path()}：readr 看副檔名決定要不要解壓縮；路徑不是 \code{.gz} 結尾時，複製成 \code{.gz} 結尾的暫存檔。
-\item \code{kit_open_browser()}：在預設瀏覽器開啟網址（Windows 上不受 RStudio 檢視器影響）。
+\item \code{kit_fix_utf8_chr()}: converts text to UTF-8 (characters that cannot be converted become \verb{?});
+returns non-text input as is.
+\item \code{kit_fix_utf8_df()}: converts every text column (and factor) of a data frame to UTF-8, keeping
+SAV variable labels and value labels.
+\item \code{kit_is_valid_utf8_df()}: whether the column names and text columns are all valid UTF-8.
+\item \code{kit_sav_safe_names()}: converts to valid SPSS variable names (tested against
+\code{haven::write_sav()}: only letters, digits, and \verb{_ . @ # $}; starts with a letter or \code{@}; does
+not end with \code{.}; not a reserved word; at most 64 bytes; unique ignoring case, with \verb{_2}, \verb{_3}
+added from the second duplicate on).
+\item \code{kit_truncate_bytes()}: truncates by UTF-8 byte count without cutting a Chinese character in
+half.
+\item \code{kit_gz_path()}: readr decides whether to decompress from the extension; if the path does not end
+in \code{.gz}, it copies the file to a temp file ending in \code{.gz}.
+\item \code{kit_open_browser()}: opens the URL in the default browser (on Windows, unaffected by the
+RStudio viewer).
 }
 }
 \examples{

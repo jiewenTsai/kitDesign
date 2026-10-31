@@ -1,4 +1,6 @@
-url: https://jiewentsai.github.io/kitDesign/
+# 中文網站（/zh/）。英文網站（預設，在根目錄）的設定在 pkgdown/en/_pkgdown.yml；
+# 兩個一起建：source("pkgdown/build_site.R")
+url: https://jiewentsai.github.io/kitDesign/zh/
 lang: zh-TW
 
 template:
@@ -39,7 +41,7 @@ home:
 navbar:
   structure:
     left: [intro, components, design, reference, news]
-    right: [search, github]
+    right: [lang, search, github]
   components:
     intro:
       text: 開始使用
@@ -53,6 +55,8 @@ navbar:
           href: articles/charts.html
         - text: 換成別的品牌
           href: articles/brand.html
+        - text: 在 Quarto 文件裡用
+          href: articles/quarto.html
     design:
       text: 設計語言
       menu:
@@ -66,6 +70,11 @@ navbar:
     news:
       text: 更新紀錄
       href: news/index.html
+    lang:
+      # pkgdown/extra.js 把它改成英文版的同一頁
+      text: English
+      href: ../index.html
+      aria-label: English version
     github:
       icon: fa-github
       text: GitHub
@@ -82,6 +91,7 @@ articles:
       - articles/components
       - articles/charts
       - articles/brand
+      - articles/quarto
   - title: 設計語言
     contents:
       - articles/design-language

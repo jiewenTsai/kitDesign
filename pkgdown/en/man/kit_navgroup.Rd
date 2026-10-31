@@ -1,0 +1,24 @@
+% English translation of man/kit_navgroup.Rd (roxygen2 output of R/tabs.R). Update by hand when the Chinese changes.
+\name{kit_navgroup}
+\alias{kit_navgroup}
+\title{One group in the tab bar (for \code{\link[=kit_navgroups]{kit_navgroups()}})}
+\usage{
+kit_navgroup(label, tabs, tools = FALSE)
+}
+\arguments{
+\item{label}{The group label (small gray text), e.g. "準備" ("Prepare"), "做出資料（選一個）" ("Make the data (pick one)"), "其他工具" ("Other tools").}
+
+\item{tabs}{A named character vector: names are tab values (\code{tabPanel(value = )}), values are tab names.}
+
+\item{tools}{When \code{TRUE}, these are standalone tools: dashed border, no shadow.}
+}
+\value{
+A list (\code{class = "kit_navgroup"}).
+}
+\description{
+One group in the tab bar (for \code{\link[=kit_navgroups]{kit_navgroups()}}).
+}
+\examples{
+kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理"))
+# "Prepare": "File upload", "Missing values"
+}

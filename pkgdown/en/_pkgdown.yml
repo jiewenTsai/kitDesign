@@ -1,0 +1,235 @@
+# English site (the default, at the site root). The Chinese site (/zh/) uses ../../_pkgdown.yml.
+# The files in pkgdown/en/ replace the Chinese ones in a temporary copy of the package when
+# the site is built; build both with source("pkgdown/build_site.R").
+url: https://jiewentsai.github.io/kitDesign/
+lang: en
+
+template:
+  bootstrap: 5
+  bootswatch: brite
+  bslib:
+    # Don't read brand/_brand.yml (bslib finds it on its own; its Google fonts would be downloaded into docs/)
+    brand: false
+    # KIT colors (appendix of brand/en/design-language.md)
+    primary: "#006835"
+    success: "#006835"
+    body-bg: "#faf7f0"
+    border-color: "#141414"
+    border-width: 2px
+    link-color: "#006835"
+    link-hover-color: "#004d27"
+    navbar-bg: "#c6d033"
+    navbar-light-color: "#141414"
+    navbar-light-hover-color: "#141414"
+    headings-font-weight: 700
+    # Fonts: the browser loads them from Google Fonts on demand (<link> in in_header). Not base_font,
+    # because pkgdown would download every Google font file into docs/ (the rounded typeface is split into hundreds)
+    font-family-base: "'Chiron GoRound TC', sans-serif"
+    headings-font-family: "'Chiron GoRound TC', sans-serif"
+    font-family-monospace: "'JetBrains Mono', 'Chiron GoRound TC', Menlo, Consolas, monospace"
+  includes:
+    in_header: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+
+home:
+  title: "kitDesign: the shared Shiny interface of the KIT research tools"
+  description: >
+    One setup function puts the theme, styles, logo and header in place; documented kit_*()
+    components build the page. Made for researchers aged 40–60: easy to read, safe to click,
+    results first.
+
+navbar:
+  structure:
+    left: [intro, components, design, reference, news]
+    right: [lang, search, github]
+  components:
+    intro:
+      text: Get started
+      href: articles/kitDesign.html
+    components:
+      text: Components
+      menu:
+        - text: All components
+          href: articles/components.html
+        - text: Charts
+          href: articles/charts.html
+        - text: Use another brand
+          href: articles/brand.html
+        - text: Use it in Quarto documents
+          href: articles/quarto.html
+    design:
+      text: Design language
+      menu:
+        - text: KIT design language
+          href: articles/design-language.html
+        - text: Versions and releases
+          href: articles/release.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    news:
+      text: Changelog
+      href: news/index.html
+    lang:
+      # pkgdown/extra.js points it at the same page of the Chinese site
+      text: 中文
+      href: zh/index.html
+      aria-label: 中文版
+    github:
+      icon: fa-github
+      href: https://github.com/jiewenTsai/kitDesign
+      aria-label: GitHub
+
+articles:
+  - title: Get started
+    navbar: ~
+    contents:
+      - kitDesign
+  - title: Components
+    contents:
+      - articles/components
+      - articles/charts
+      - articles/brand
+      - articles/quarto
+  - title: Design language
+    contents:
+      - articles/design-language
+      - articles/release
+
+reference:
+  - title: Setup and page
+    desc: "Once per app: theme, styles, header, versions."
+    contents:
+      - kit_page
+      - kit_theme
+      - use_kit
+      - kit_header
+      - kit_app_meta
+      - kit_app_description
+      - kit_versions
+      - kit_logo_uri
+      - kit_logo_file
+      - kit_logo_dependency
+      - kit_colors
+      - kit_new_app
+      - kit_gallery
+  - title: Brand
+    desc: Switch to another project's logo and colors.
+    contents:
+      - kit_brand
+      - kit_current_brand
+  - title: Step tabs (NavTabs)
+    contents:
+      - kit_step_tabs_ui
+      - kit_navgroups
+      - kit_navgroup
+      - kit_flow_tabs
+      - kit_tab_states
+      - kit_watch_tab_states
+      - kit_send_tab_states
+  - title: Page guide (PageGuide)
+    contents:
+      - kit_tab_guide
+      - kit_steps
+  - title: Status box (StatusBox)
+    contents:
+      - kit_status
+      - kit_done_status
+      - kit_error_status
+      - kit_stale_status
+      - kit_status_ui
+      - kit_notify
+      - kit_abort
+      - kit_is_user_error
+  - title: Button
+    contents:
+      - kit_button
+      - kit_btn_class
+  - title: Download button (DownloadButton)
+    contents:
+      - kit_download_button
+      - kit_test_download
+  - title: File helpers
+    desc: Encoding, SPSS variable names, compressed file paths, opening the browser.
+    contents:
+      - kit_files
+  - title: Callout
+    contents:
+      - kit_callout
+      - kit_cloud_banner
+      - kit_cloud_footer
+      - kit_is_cloud
+  - title: Data table (DataTable)
+    contents:
+      - kit_static_table
+      - kit_preview_table
+      - kit_rows_note
+      - kit_table_scroll
+      - kit_num
+      - kit_dims
+  - title: Chart
+    contents:
+      - kit_plotly_style
+      - kit_plotly_fonts
+      - kit_chart_colors
+      - kit_chart_neutral
+      - kit_chart_sequential
+  - title: Details row (Details)
+    contents:
+      - kit_details_row
+      - kit_detail
+      - kit_advanced
+      - kit_settings_line
+  - title: How to do it in R (CodePanel)
+    contents:
+      - kit_code_panel_ui
+      - kit_code
+      - kit_code_wrap
+      - kit_code_cols
+      - kit_code_panel
+      - kit_render_code_panel
+      - kit_code_blocks
+  - title: Step card (StepCard)
+    contents:
+      - kit_stepcards_ui
+      - kit_step_card
+      - kit_step_head
+      - kit_step_body
+  - title: Checklist
+    contents:
+      - kit_checklist
+      - kit_check
+      - kit_problems
+  - title: What's still needed (ReadyLine)
+    contents:
+      - kit_run_gate_ui
+      - kit_ready_line
+      - kit_run_gate
+      - kit_need_files
+  - title: Next step (NextStep)
+    contents:
+      - kit_next_step
+      - kit_app_link
+  - title: Diagram
+    contents:
+      - kit_diagram
+      - kit_dg_table
+  - title: Run tab (RunTab)
+    desc: "The skeleton of a tab with one primary button: page order and status flow."
+    contents:
+      - kit_run_tab_ui
+  - title: Modules
+    desc: "Stateful components: `*_ui(id)` + `*_server(id)`, one line per page."
+    contents:
+      - kit_step_tabs_ui
+      - kit_stepcards_ui
+      - kit_run_gate_ui
+      - kit_code_panel_ui
+  - title: Page behavior
+    desc: Scroll to the result, open collapsed sections, warn before leaving.
+    contents:
+      - kit_scroll_to
+      - kit_open_details
+      - kit_unload_guard

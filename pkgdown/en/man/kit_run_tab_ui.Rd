@@ -1,0 +1,154 @@
+% English translation of man/kit_run_tab_ui.Rd (roxygen2 output of R/run_tab.R). Update by hand when the Chinese changes.
+\name{kit_run_tab_ui}
+\alias{kit_run_tab_ui}
+\alias{kit_run_tab_server}
+\title{Run tab}
+\usage{
+kit_run_tab_ui(
+  id,
+  run_label,
+  guide = NULL,
+  ...,
+  gate = TRUE,
+  result = FALSE,
+  downloads = TRUE,
+  details = TRUE,
+  code = TRUE,
+  next_step = FALSE
+)
+
+kit_run_tab_server(
+  input,
+  output,
+  session,
+  run_label,
+  run,
+  done = NULL,
+  ready = NULL,
+  ready_link = function() NULL,
+  settings = NULL,
+  stale_on = NULL,
+  progress = NULL,
+  error = function(e) kit_error_status(e, run_label),
+  guard = NULL,
+  confirm = list(),
+  result_ui = NULL,
+  details_ui = NULL,
+  code = NULL,
+  code_note = KIT_CODE_NOTE
+)
+}
+\arguments{
+\item{id}{The tab (module) id.}
+
+\item{run_label}{The primary button's text (start with a verb, for example "執行串接", "Run join").}
+
+\item{guide}{The "what this page does" at the top (\code{\link[=kit_tab_guide]{kit_tab_guide()}}).}
+
+\item{...}{The tab's own settings (inputs, hints), placed above the settings summary.}
+
+\item{gate}{\code{TRUE}: the primary button starts disabled, with the "還差" ("Still needed") line above it; \code{FALSE}: always clickable (no \code{ready}).}
+
+\item{result, downloads, next_step}{The key results below the status box, the download area, and the next step at the very bottom: \code{TRUE} is a
+\code{uiOutput()} (ids \code{result}, \code{downloads}, \code{next_step}); you can also pass a tag directly; \code{FALSE} leaves it out.}
+
+\item{details}{Details row: \code{TRUE} adds \code{uiOutput("result_details")} (preview and checks of the result);
+when both \code{details} and \code{code} are \code{FALSE}, there is no details row.}
+
+\item{code}{UI (\code{kit_run_tab_ui()}): \code{TRUE} adds "用 R 怎麼做" ("How to do it in R") (\code{\link[=kit_code_panel]{kit_code_panel()}}, output \code{code}).
+Server (\code{kit_run_tab_server()}): a function that returns the code (the \code{code} of \code{\link[=kit_render_code_panel]{kit_render_code_panel()}});
+with \code{NULL}, the tab renders it itself.}
+
+\item{input, output, session}{The input, output, and session of the tab's \code{moduleServer()}.}
+
+\item{run}{The function that runs: returns the result (any object), or a \code{\link[=kit_status]{kit_status()}} (no result; for example, a problem must be handled first).
+To stop, call \code{\link[=kit_abort]{kit_abort()}} (with a plain-language reason).}
+
+\item{done}{\verb{function(result)}: the status after running (\code{\link[=kit_done_status]{kit_done_status()}}); the result is already saved before it is called.}
+
+\item{ready}{A reactive: what is still needed (character vector; length 0 = ready to run); with \code{NULL}, there is no "還差" line (\code{gate = FALSE}).}
+
+\item{ready_link}{A function: the link after "還差" (a tag or \code{NULL}).}
+
+\item{settings}{A function: the parts of the settings summary (character vector; \code{NULL} shows nothing); with \code{NULL}, there is no settings summary.}
+
+\item{stale_on}{A function: things whose change makes the result out of date (for example \code{list(input$method, data())});
+with \code{NULL}, the tab handles this itself (using the returned \code{result} and \code{status}).}
+
+\item{progress}{The progress bar message ("正在串接資料…", "Joining data…"); with \code{NULL}, there is no progress bar.}
+
+\item{error}{\verb{function(e)}: the status on error; defaults to \code{kit_error_status(e, run_label)}.}
+
+\item{guard}{A function: a check before running; when it returns a \code{\link[=kit_status]{kit_status()}}, nothing runs (status box and notification, no scrolling); \code{NULL} skips the check.}
+
+\item{confirm}{Errors the user must confirm: a named list; names are condition classes, values are \verb{function(e)}.
+It opens a confirmation dialog and returns a status (no notification, no scrolling; the dialog is the response). After confirming, run again with the returned \code{run(...)}.}
+
+\item{result_ui}{\verb{function(result)}: the key results below the status box (output \code{result}); with \code{NULL}, the tab renders it itself.}
+
+\item{details_ui}{\verb{function(result)}: the first cell of the details row (output \code{result_details}, for example
+\code{\link[=kit_detail]{kit_detail()}} "結果預覽", "Result preview"); with \code{NULL}, the tab renders it itself.}
+
+\item{code_note}{The one-line note at the top of "用 R 怎麼做".}
+}
+\value{
+\code{kit_run_tab_ui()}: a \code{tagList()}.
+
+\code{kit_run_tab_server()}: a list,
+\itemize{
+\item \code{result}: a \code{reactiveVal}, the result of this run (\code{NULL} when there is none yet or it is out of date);
+\item \code{status}: a \code{reactiveVal}, the status box's \code{\link[=kit_status]{kit_status()}};
+\item \code{state}: a reactive, the status box's state (used for the ✓ on step tabs, \code{\link[=kit_tab_states]{kit_tab_states()}});
+\item \code{run(...)}: runs once, just like pressing the primary button (\code{...} goes to \code{run()}; for example "仍要執行", "Run anyway", in a confirmation dialog).
+}
+}
+\description{
+Page skeleton for a tab with one primary button. \code{kit_run_tab_ui()} lays out the fixed parts following the page skeleton; the tab's own settings go in
+\code{...}. \code{kit_run_tab_server()} is called inside the tab's \code{moduleServer()} and handles the status flow:
+}
+\details{
+\itemize{
+\item Primary button: disabled while something is still needed (\code{ready()} is not empty), with a "還差：…" ("Still needed: …") line above it (\code{\link[=kit_run_gate]{kit_run_gate()}}).
+\item Settings summary: the parts of \code{settings()} joined into one line (\code{\link[=kit_settings_line]{kit_settings_line()}}).
+\item Pressing the primary button: clear the old result → \code{guard()} → \code{run()} inside a progress bar → save the result, \code{done(result)} is the status;
+on error, \code{error(e)} is the status → status box, notification (\code{\link[=kit_notify]{kit_notify()}}), scroll to the status box (\code{\link[=kit_scroll_to]{kit_scroll_to()}}).
+\item When settings or data change (\code{stale_on()} changes) and there is a result: the result is cleared and the status is 【要重新執行】 ("Run again").
+\item Key results, the first cell of the details row, and "How to do it in R": rendered only when there is a result.
+}
+
+Fixed output ids (without namespace): \code{settings_line}, \code{ready}, \code{run} (the button), \code{status},
+\code{result}, \code{downloads}, \code{result_details}, \code{code}, \code{next_step}.
+}
+\examples{
+if (interactive()) {
+  mod_stack_ui <- function(id) {
+    kit_run_tab_ui(
+      id, "執行疊加",
+      guide = kit_tab_guide("把各波資料上下疊起來。", c("按「執行疊加」", "看狀態框與預覽"), "一張長格式的資料。"),
+      shiny::numericInput(shiny::NS(id, "n"), "幾個波次", 2),
+      downloads = FALSE
+    )
+  }
+  mod_stack_server <- function(id) {
+    shiny::moduleServer(id, function(input, output, session) {
+      tab <- kit_run_tab_server(
+        input, output, session, "執行疊加",
+        ready = shiny::reactive(if (input$n < 2) "至少 2 個波次"),
+        settings = function() paste0(input$n, " 個波次"),
+        stale_on = function() input$n,
+        progress = "正在疊加資料…",
+        run = function() data.frame(wave = seq_len(input$n)),
+        done = function(res) kit_done_status(paste0("疊加完成：", nrow(res), " 列。")),
+        details = function(res) kit_detail("結果預覽", kit_static_table(res)),
+        code = function() "stacked <- dplyr::bind_rows(t1, t2, .id = \"wave\")"
+      )
+      list(state = tab$state)
+    })
+  }
+  shiny::shinyApp(kit_page("KIT 示範", NULL, mod_stack_ui("stack")),
+                  function(input, output, session) mod_stack_server("stack"))
+}
+}
+\seealso{
+\code{\link[=kit_run_gate]{kit_run_gate()}}, \code{\link[=kit_status]{kit_status()}}, \code{\link[=kit_code_panel]{kit_code_panel()}}
+}

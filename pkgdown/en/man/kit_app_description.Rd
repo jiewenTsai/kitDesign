@@ -1,0 +1,34 @@
+% English translation of man/kit_app_description.Rd (roxygen2 output of R/setup.R). Update by hand when the Chinese changes.
+\name{kit_app_description}
+\alias{kit_app_description}
+\title{Read the app's version and date (Version and Date in DESCRIPTION)}
+\usage{
+kit_app_description(package = NULL, path = NULL)
+}
+\arguments{
+\item{package}{The app's package name, e.g. \code{"kitJoin"}; when \code{NULL}, only DESCRIPTION files are searched.}
+
+\item{path}{Path to a DESCRIPTION file; when \code{NULL}, searched in the order below.}
+}
+\value{
+\code{list(version = , date = )}; anything not found is \code{NA}.
+}
+\description{
+The cloud version, the local run.bat, and the package's \code{run_xxx()} all take Version and Date
+from DESCRIPTION, so all three show the same thing (file modification times are not used:
+unzipping, installing, and deploying all change the mtime).
+}
+\details{
+Search order:
+\enumerate{
+\item \code{path} is given: read that DESCRIPTION file.
+\item \code{package} is already loaded (\code{library()}, \code{run_xxx()}, \code{load_all()}): read the loaded copy.
+\item \code{DESCRIPTION} in the working directory, then one and two levels up (in tests the working directory is \code{tests/testthat});
+when \code{package} is given, only a file whose \verb{Package:} matches counts. The cloud version and run.bat use \code{runApp(folder)},
+the package is not loaded, and this is the copy that gets read.
+\item \code{package} is installed (but not loaded): read the installed copy. This comes last because it may be an old version.
+}
+}
+\examples{
+kit_app_description("kitDesign")
+}

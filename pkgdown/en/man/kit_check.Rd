@@ -1,0 +1,51 @@
+% English translation of man/kit_check.Rd (roxygen2 output of R/steps.R). Update by hand when the Chinese changes.
+\name{kit_check}
+\alias{kit_check}
+\alias{as.tags.kit_check}
+\alias{format.kit_check}
+\alias{print.kit_check}
+\title{One checklist row}
+\usage{
+kit_check(state = c("todo", "ok", "note"), title, why = "", actions = NULL)
+
+\method{as.tags}{kit_check}(x, ...)
+
+\method{format}{kit_check}(x, ...)
+
+\method{print}{kit_check}(x, ...)
+}
+\arguments{
+\item{state}{\code{"todo"}, \code{"ok"}, or \code{"note"}.}
+
+\item{title}{One sentence (a string).}
+
+\item{why}{The small print below (why); \code{""} or length 0 shows nothing. (kitJoin's \code{kitsdata_check()} calls it \code{text}.)}
+
+\item{actions}{Buttons for the decision (a tag or list of tags); placed below the explanation.}
+
+\item{x}{A \code{kit_check} object.}
+
+\item{...}{Not used.}
+}
+\value{
+A \code{kit_check} object.
+}
+\description{
+An S3 value object (class \code{kit_check}): its content is checked when it is built; it has an \code{\link[htmltools:as.tags]{htmltools::as.tags()}} method,
+so putting it straight into a page renders \verb{<li class="kit-check">}. Usually placed inside \code{\link[=kit_checklist]{kit_checklist()}}.
+}
+\details{
+A mark on the left, preceded by hidden text (read by screen readers):
+\itemize{
+\item \code{"todo"}: \strong{!} needs a decision ("要決定：", "To decide:"). One bold sentence, a line of small print below saying why, and the decision buttons below that.
+\item \code{"ok"}: \strong{✓} fine, or already decided ("沒問題：", "OK:"). Font weight 500.
+\item \code{"note"}: \strong{i} a reminder, no decision needed ("提醒：", "Note:").
+}
+
+Put the recommended option first and write "（建議）" ("(recommended)") on its button.
+}
+\examples{
+kit_check("todo", "有 3 題的分數從 1 開始", "kits 要的分數是 0、1、2…。")
+# "3 items have scores starting at 1" / "kits needs scores 0, 1, 2…"
+htmltools::as.tags(kit_check("ok", "45 題的分數都是整數"))  # "All 45 items have integer scores"
+}

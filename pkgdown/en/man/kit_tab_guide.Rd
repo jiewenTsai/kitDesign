@@ -1,0 +1,46 @@
+% English translation of man/kit_tab_guide.Rd (roxygen2 output of R/guide.R). Update by hand when the Chinese changes.
+\name{kit_tab_guide}
+\alias{kit_tab_guide}
+\title{Page guide: what this page does}
+\usage{
+kit_tab_guide(
+  goal,
+  steps,
+  output,
+  technical = NULL,
+  note = NULL,
+  diagram = NULL
+)
+}
+\arguments{
+\item{goal}{One sentence, no more than 30 characters.}
+
+\item{steps}{The steps to follow: \code{\link[=kit_steps]{kit_steps()}} (3–6 points), or a character vector (turned into \code{\link[=kit_steps]{kit_steps()}} automatically).}
+
+\item{output}{What you get.}
+
+\item{technical}{Technical notes (for people who want to know how it works; collapsed one more level); \code{NULL} shows nothing.}
+
+\item{note}{Additional notes (small gray text); \code{NULL} shows nothing.}
+
+\item{diagram}{A diagram (\code{\link[=kit_diagram]{kit_diagram()}}): placed outside the guide box, right after it, and visible even when the guide is collapsed;
+\code{NULL} shows nothing.}
+}
+\value{
+Without a diagram, \verb{<details class="kit-guide kit-guide-page">}; with a diagram, it is wrapped in
+\verb{<div class="kit-guide kit-guide-wrap">}.
+}
+\description{
+A one-line guide at the top of each tab, collapsed by default: only the sentence "這一頁做什麼：" ("What this page does:") is visible, with "看步驟 ▸" ("See steps ▸") next to it;
+opening it shows the steps, what you get, additional notes, and technical notes. No border, small gray text, a light line below.
+}
+\examples{
+kit_tab_guide(
+  goal = "把多個波次的檔案依 ID 接成一張寬資料。",
+  steps = kit_steps("選要串接的檔案", "選 ID 欄", "按「執行串接」"),
+  output = "一張寬資料，可以下載 CSV、SAV。"
+)
+}
+\seealso{
+\code{\link[=kit_steps]{kit_steps()}}, \code{\link[=kit_diagram]{kit_diagram()}}
+}

@@ -1,0 +1,21 @@
+---
+title: "Versions and releases"
+description: >
+  kitDesign's versioning rules, release steps, and how apps upgrade.
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+> This page is `brand/en/release.md` in kitDesign (the English translation of `brand/版本與發布.md`). For what changed in each version, see the [changelog](../news/index.html).
+
+```{r, results = "asis"}
+md <- readLines(file.path("..", "..", "brand", "en", "release.md"), encoding = "UTF-8")
+md <- md[-1]
+md <- md[!grepl("^English \\| \\[", md)]  # the language switch line: the site uses the navbar
+md <- gsub("](design-language.md)", "](design-language.html)", md, fixed = TRUE)
+md <- gsub("](migration.md)",
+           "](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md)", md, fixed = TRUE)
+cat(md, sep = "\n")
+```

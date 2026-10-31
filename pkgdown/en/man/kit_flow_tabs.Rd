@@ -1,0 +1,32 @@
+% English translation of man/kit_flow_tabs.Rd (roxygen2 output of R/tabs.R). Update by hand when the Chinese changes.
+\name{kit_flow_tabs}
+\alias{kit_flow_tabs}
+\title{Ordered workflow tabs (the kitsUI style)}
+\usage{
+kit_flow_tabs(..., id = "tabs", selected = NULL, aside = NULL)
+}
+\arguments{
+\item{...}{\code{shiny::tabPanel()}.}
+
+\item{id}{The tabsetPanel id (\code{input[[id]]} is the current tab).}
+
+\item{selected}{The tab to start on (value).}
+
+\item{aside}{Values of tabs that are not a workflow step (a character vector).}
+}
+\value{
+\verb{<div class="kit-flow-tabs">} containing a \code{tabsetPanel()}.
+}
+\description{
+A regular \code{shiny::tabsetPanel()} with circled numbers in the tab names (① 資料, ② 題目校準…; "Data", "Item calibration").
+Tabs that are not a workflow step (e.g. "使用手冊", "User manual") go in \code{aside}: dashed border, no shadow, pushed to the far right.
+Done tabs get a ✓ (an extra \code{.kit-tab-mark} in the tab); tabs that can't be used yet are gray (\code{\link[=kit_send_tab_states]{kit_send_tab_states()}}).
+}
+\examples{
+kit_flow_tabs(
+  shiny::tabPanel("① 資料", value = "data"),
+  shiny::tabPanel("② 題目校準", value = "items"),
+  shiny::tabPanel("使用手冊", value = "manual"),
+  id = "flow", aside = "manual"
+)
+}

@@ -1,0 +1,27 @@
+---
+title: "KIT design language"
+description: >
+  The design language shared by KIT research tools: who it is for, principles, colors and type, and the spec and tokens for every component.
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+> This page is `brand/en/design-language.md` in kitDesign (the English translation of `brand/KIT設計語言.md`, which is the source of truth). To see what the components look like, see [Components](components.html).
+
+```{r, results = "asis"}
+md <- readLines(file.path("..", "..", "brand", "en", "design-language.md"), encoding = "UTF-8")
+md <- md[-1]  # the title is already shown above
+md <- md[!grepl("^English \\| \\[", md)]  # the language switch line: the site uses the navbar
+gh <- "https://github.com/jiewenTsai/kitDesign/blob/main/brand/"
+logo_url <- "https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo"
+md <- gsub("](release.md)", "](release.html)", md, fixed = TRUE)
+md <- gsub("](migration.md)", paste0("](", gh, "en/migration.md)"), md, fixed = TRUE)
+md <- gsub("](../_brand.yml)", paste0("](", gh, "_brand.yml)"), md, fixed = TRUE)
+md <- gsub("](_brand.yml)", paste0("](", gh, "_brand.yml)"), md, fixed = TRUE)
+md <- gsub("](../logo/)", paste0("](", logo_url, ")"), md, fixed = TRUE)
+md <- gsub("](logo/)", paste0("](", logo_url, ")"), md, fixed = TRUE)
+# Lines like "# Install" in the document are comments inside code blocks, not headings: output them as is
+cat(md, sep = "\n")
+```

@@ -1,0 +1,23 @@
+% English translation of man/kit_detail.Rd (roxygen2 output of R/details.R). Update by hand when the Chinese changes.
+\name{kit_detail}
+\alias{kit_detail}
+\title{One detail: collapsed by default, a one-line small-print title}
+\usage{
+kit_detail(title, ..., open = FALSE)
+}
+\arguments{
+\item{title}{The title (a noun: "題目參數" ("Item parameters"), "這一回合的紀錄" ("Log for this round")).}
+
+\item{...}{The content.}
+
+\item{open}{Whether it starts open.}
+}
+\value{
+\verb{<details class="kit-detail">}.
+}
+\description{
+Outputs inside a collapsed detail are computed only when it is opened: \code{kit.js} tells Shiny to check again when it opens.
+}
+\examples{
+kit_detail("預覽", shiny::tags$p("前 10 列"))  # "Preview", "First 10 rows"
+}

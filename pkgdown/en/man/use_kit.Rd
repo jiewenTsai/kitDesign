@@ -1,0 +1,27 @@
+% English translation of man/use_kit.Rd (roxygen2 output of R/setup.R). Update by hand when the Chinese changes.
+\name{use_kit}
+\alias{use_kit}
+\title{KIT styles and browser-side scripts (an htmltools dependency)}
+\usage{
+use_kit()
+}
+\value{
+An \code{\link[htmltools:htmlDependency]{htmltools::htmlDependency()}} object.
+}
+\description{
+Can go anywhere in the page (htmltools moves it into \verb{<head>}). It contains:
+}
+\details{
+\itemize{
+\item \code{kit-base.css}: basic styles for the header, guide boxes, callouts, and so on (formerly \code{kit_css()}, \code{kit_css_guide()}).
+\item \code{kit-brite.css}: KIT's neo-brutalism styles (formerly \code{kit_css_brite()}).
+\item \code{kit-design.css}: the few rules kitDesign adds (header layout, dashed tabs in flow tabs, code box width).
+\item \code{kit.js}: collapsible sections, tab bars, tab states, scrolling to results, the reminder before leaving, and the "複製" ("Copy") button.
+}
+
+\code{\link[=kit_page]{kit_page()}} already adds it; you only need to add
+\code{use_kit()} when you build the page yourself with \verb{bslib::page_*()}, and pass \code{theme = kit_theme()} to the page.
+}
+\examples{
+use_kit()
+}

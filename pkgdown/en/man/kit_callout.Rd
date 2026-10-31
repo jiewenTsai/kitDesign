@@ -1,0 +1,28 @@
+% English translation of man/kit_callout.Rd (roxygen2 output of R/buttons.R). Update by hand when the Chinese changes.
+\name{kit_callout}
+\alias{kit_callout}
+\title{Callout}
+\usage{
+kit_callout(..., warn = FALSE, class = NULL)
+}
+\arguments{
+\item{...}{The content of the box.}
+
+\item{warn}{\code{FALSE}: sky-blue info; \code{TRUE}: yellow caution.}
+
+\item{class}{An extra class.}
+}
+\value{
+\verb{<div class="kit-callout">} (plus \code{kit-callout-warn} for caution).
+}
+\description{
+A reminder the user should know before pressing a button. It is not a result, so it has no shadow.
+At most one per section; if it can go in the status box, don't add a separate callout;
+if there is a button, put the button outside the box.
+}
+\examples{
+kit_callout("外部連結不適用：這一回合只有一個世代，這不是錯誤。")
+# "External linking does not apply: this round has only one cohort. This is not an error."
+kit_callout("資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。", warn = TRUE)
+# "The data seem to contain missing-value codes; go to 'Missing values' first."
+}

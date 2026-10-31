@@ -1,0 +1,45 @@
+% English translation of man/kit_run_gate.Rd (roxygen2 output of R/server.R). Update by hand when the Chinese changes.
+\name{kit_run_gate}
+\alias{kit_run_gate}
+\title{When the primary button cannot be pressed yet: disable it and show what is still needed above it}
+\usage{
+kit_run_gate(
+  session,
+  output,
+  missing,
+  link = function() NULL,
+  button_id = "run",
+  output_id = "ready"
+)
+}
+\arguments{
+\item{session}{The module's session.}
+
+\item{output}{The module's output.}
+
+\item{missing}{A reactive: what is still needed (character; length 0 = ready to run).}
+
+\item{link}{function(): the link after "還差" ("Still needed") (a tag or \code{NULL}).}
+
+\item{button_id}{The primary button's id (the id inside the module, without \code{ns()}).}
+
+\item{output_id}{The \code{uiOutput()} id for the "還差" line (the id inside the module).}
+}
+\value{
+\code{NULL}, invisibly; call it inside the server.
+}
+\description{
+Put \code{shiny::uiOutput(ns("ready"))} on the page, directly followed by
+\code{kit_button(ns("run"), ..., "primary", disabled = TRUE)} (disabled at first; enabled once the server has checked).
+The primary button is shown from the start, so people know what they will press at the end of this page.
+}
+\details{
+Still check again inside the button's \code{observeEvent()}: disabling is only on screen and must not be the only safeguard.
+}
+\examples{
+if (interactive()) {
+  server <- function(input, output, session) {
+    kit_run_gate(session, output, shiny::reactive(kit_need_files(1L, need = 2L)))
+  }
+}
+}

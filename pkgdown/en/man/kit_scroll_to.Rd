@@ -1,0 +1,28 @@
+% English translation of man/kit_scroll_to.Rd (roxygen2 output of R/server.R). Update by hand when the Chinese changes.
+\name{kit_scroll_to}
+\alias{kit_scroll_to}
+\title{After running, scroll the status box to the top of the screen}
+\usage{
+kit_scroll_to(id, session = shiny::getDefaultReactiveDomain())
+}
+\arguments{
+\item{id}{The output id inside the module (the module's namespace is added automatically), for example \code{"status"}.}
+
+\item{session}{Defaults to the current session (called inside a module, that is the module's session).}
+}
+\value{
+The full id, invisibly; \code{NULL} when there is no session.
+}
+\description{
+"Results first, details after": call \code{kit_scroll_to("status")} at the end of the primary button's \code{observeEvent()}.
+It scrolls only after this round's outputs have all reached the browser (\code{session$onFlushed()}), so the status box is already rendered.
+When the user has set "reduce motion", it jumps there without smooth scrolling.
+}
+\examples{
+if (interactive()) {
+  shiny::observeEvent(input$run, {
+    # …run…
+    kit_scroll_to("status")
+  })
+}
+}

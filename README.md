@@ -1,39 +1,42 @@
 # kitDesign
 
-KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的介面層：
-一個設定函式把主題、樣式、標誌、頁首放好，再用一組有說明的 `kit_*()` 元件組出頁面。
-每個元件都照「[KIT 設計語言](https://github.com/jiewenTsai/kitDesign/blob/main/brand/KIT設計語言.md)」做：看得清楚、按得放心、結果先說。
+English | [繁體中文](README.zh-TW.md)
 
-![kitDesign 的元件樣張：萊姆色的頁首、分組的步驟分頁、「這一頁做什麼」與圖解](man/figures/hero.jpg)
+The shared interface layer for KIT research tools (kitJoin, kitsUI, and future KIT Shiny apps):
+one setup function puts the theme, styles, logo, and header in place, and a set of documented `kit_*()` components builds the page.
+Every component follows the [KIT design language](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/design-language.md): easy to see, safe to click, results first.
 
-- 主題：Bootswatch Brite（bslib 0.11.0 以上）＋ KIT 的顏色、圓體 Chiron GoRound TC、等寬 JetBrains Mono。
-- 品牌：標誌與顏色不寫死。預設是 KIT；別的計畫用 `kit_brand()` 換成自己的標誌與配色。
-- 樣式：克制的 neo-brutalism（2px 黑框、硬陰影、平塗色塊配黑字），內文 17px、內容最寬 1140px。
-- 元件：頁首、步驟分頁、頁面說明、按鈕、下載按鈕、狀態框、提示框、雲端版的橫幅與使用須知、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表、圖（plotly 的樣子）。
-- server 端的小工具：停用主要按鈕並寫還差什麼、執行完捲到狀態框、分頁打 ✓、通知、千分位、白話錯誤。
+![Sample kitDesign components: a lime header, grouped step tabs, a "what this page does" guide, and a diagram](man/figures/hero.jpg)
 
-## 安裝
+- Theme: Bootswatch Brite (bslib 0.11.0 or later) + KIT colors, the rounded typeface Chiron GoRound TC, and the monospace JetBrains Mono.
+- Brand: the logo and colors are not hard-coded. The default is KIT; other projects use `kit_brand()` to switch to their own logo and color palette.
+- Style: restrained neo-brutalism (2px black borders, hard shadows, flat color blocks with black text), 17px body text, content at most 1140px wide.
+- Components: header, step tabs, page guide, buttons, download button, status box, callout, cloud-version banner and usage notes, details row, "How to do it in R", step cards, checklist, ready line ("what's still needed"), next step, diagram, data table, charts (plotly styling).
+- Server-side helpers: disable the primary button and say what's still needed, scroll to the status box after a run, mark tabs with ✓, notifications, thousands separators, plain-language errors.
+
+## Installation
 
 ```r
 # install.packages("remotes")
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-只依賴 shiny、bslib（>= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 `kit_plotly_style()` 時另外要 plotly。
+Depends only on shiny, bslib (>= 0.11.0), and htmltools (plus grDevices and utils, which ship with R). `kit_plotly_style()` also needs plotly.
 
-bslib 太舊（0.11.0 以前沒有 Brite 主題）時 `kit_theme()` 會停下來，說要裝新版。
-安裝 app 時用 `pak::pkg_install("<帳號>/<app>")` 或
-`remotes::install_github("<帳號>/<app>", upgrade = "always")`，太舊的套件會一起升級。
+If bslib is too old (the Brite theme does not exist before 0.11.0), `kit_theme()` stops and tells you to install a newer version.
+When installing an app, use `pak::pkg_install("<account>/<app>")` or
+`remotes::install_github("<account>/<app>", upgrade = "always")` so outdated packages are upgraded too.
 
-## 快速開始
+## Quick start
 
-最快：開一個新的 app 套件骨架（頁首、步驟分頁、一個照頁面骨架寫好的範例分頁、測試都有了）。
+Fastest: create a new app package skeleton (header, step tabs, one example tab laid out with the page skeleton, and tests are all included).
 
 ```r
 kitDesign::kit_new_app("~/kitScore", "KIT 計分工具", "臺灣幼兒發展調查資料庫")
+# "KIT Scoring Tool", "Kids in Taiwan: National Longitudinal Study of Child Development and Care"
 ```
 
-自己寫一頁：
+Writing a page yourself:
 
 ```r
 library(shiny)
@@ -43,26 +46,26 @@ ui <- kit_page(
   "KIT ×× 工具", "臺灣幼兒發展調查資料庫",
   version = "0.1.0", date = "2026-10-31", show_kitdesign = TRUE,
   kit_tab_guide(
-    goal = "把兩個波次的檔案依 ID 接成一張寬資料。",
-    steps = c("選 ID 欄", "按「執行串接」", "看狀態框與結果"),
-    output = "一張寬資料：一人一列。"
+    goal = "把兩個波次的檔案依 ID 接成一張寬資料。",  # "Join the files from two waves by ID into one wide table."
+    steps = c("選 ID 欄", "按「執行串接」", "看狀態框與結果"),  # "Pick the ID column", "Click 'Run join'", "Check the status box and results"
+    output = "一張寬資料：一人一列。"  # "One wide table: one row per person."
   ),
-  selectInput("id_col", "ID 欄", c("（還沒選）" = "", "subj_id")),
-  kit_run_gate_ui("gate", "執行串接"),     # 還差：…＋主要按鈕
+  selectInput("id_col", "ID 欄", c("（還沒選）" = "", "subj_id")),  # "ID column", "(not chosen yet)"
+  kit_run_gate_ui("gate", "執行串接"),     # "Still needed: ..." + primary button ("Run join")
   uiOutput("status"),
   kit_details_row(kit_code_panel_ui("code"))
 )
 
 server <- function(input, output, session) {
   run <- kit_run_gate_server("gate", reactive(
-    if (input$id_col == "") "選 ID 欄"
+    if (input$id_col == "") "選 ID 欄"  # "Pick the ID column"
   ))
   status <- reactiveVal(kit_status())
   observeEvent(run(), {
-    status(kit_done_status("串接完成：結果共 3,389 列。"))
-    kit_scroll_to("status")              # 執行完捲到狀態框
+    status(kit_done_status("串接完成：結果共 3,389 列。"))  # "Join complete: 3,389 rows in the result."
+    kit_scroll_to("status")              # scroll to the status box after the run
   }, ignoreInit = TRUE)
-  output$status <- renderUI(status())    # kit_status 物件直接畫
+  output$status <- renderUI(status())    # a kit_status object renders directly
   kit_code_panel_server("code", function() list(
     tidy = "joined <- dplyr::left_join(t1, t2, by = \"subj_id\")"
   ))
@@ -71,159 +74,159 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-一步一步的說明：`vignette("kitDesign")`。看所有元件：`kitDesign::kit_gallery()`，
-或網站上的[元件一覽](https://jiewentsai.github.io/kitDesign/articles/components.html)。
+Step-by-step guide: `vignette("kitDesign")`. To see every component: `kitDesign::kit_gallery()`,
+or the [component overview](https://jiewentsai.github.io/kitDesign/articles/components.html) on the website.
 
-plotly 圖（例如 kits 的 `plot()`）最後交給 `kit_plotly_style()`：
+Pass plotly charts (for example from kits' `plot()`) to `kit_plotly_style()` last:
 
 ```r
-p <- plot(item, type = "category")      # kits 畫的 plotly 圖
-p <- kit_chart_zh(kit_chart_categorical(p))   # kitsUI：換色、換中文（要在前面）
-kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖例、工具列
+p <- plot(item, type = "category")      # plotly chart drawn by kits
+p <- kit_chart_zh(kit_chart_categorical(p))   # kitsUI: recolor, switch to Chinese (must come first)
+kit_plotly_style(p)                     # last: KIT fonts, axis lines, legend, toolbar
 ```
 
-## 換成別的品牌
+## Switching to another brand
 
-不是 KIT 的計畫也可以用：換標誌與顏色，其他（字型、框、陰影、元件）照設計語言。
-在 app 開始時設定一次，所有函式都用它：
+Projects other than KIT can use it too: swap the logo and colors; everything else (fonts, borders, shadows, components) follows the design language.
+Set it once at app startup and every function uses it:
 
 ```r
 options(kitDesign.brand = kit_brand(
-  "示範實驗室",
-  logo = "logo.svg",                     # 頁首的標誌（SVG 或 PNG）
-  mark = "mark.svg",                     # 瀏覽器分頁的小圖示（方形；沒有給時用 logo）
+  "示範實驗室",                          # "Demo Lab"
+  logo = "logo.svg",                     # logo in the header (SVG or PNG)
+  mark = "mark.svg",                     # small browser-tab icon (square; uses logo if not given)
   colors = list(accent = "#9cc0ff", primary = "#1f4fa3", page = "#f5f7fa")
 ))
 ```
 
-或只給一頁：`kit_page(..., brand = kit_brand(...))`。顏色的名稱（`ink`、`page`、`card`、
-`accent`、`accent_light`、`primary`、`primary_hover`、`success`、`warning`、`danger`、`info`）
-和 CSS 變數（`--nb-*`）的對照見 `?kit_brand`。沒有給的照 KIT；`kit_brand()` 不給參數就是 KIT。
-看換了以後的樣子：`kit_gallery(brand = "demo")`。
+Or for a single page only: `kit_page(..., brand = kit_brand(...))`. For the color names (`ink`, `page`, `card`,
+`accent`, `accent_light`, `primary`, `primary_hover`, `success`, `warning`, `danger`, `info`)
+and how they map to CSS variables (`--nb-*`), see `?kit_brand`. Anything not given follows KIT; `kit_brand()` with no arguments is KIT.
+To see what the switch looks like: `kit_gallery(brand = "demo")`.
 
-## 元件一覽
+## Component overview
 
-### 設定
+### Setup
 
-| 函式 | 做什麼 |
+| Function | What it does |
 |---|---|
-| `kit_page()` | 整頁：`bslib::page_fluid(lang = "zh-Hant-TW")`＋主題＋樣式＋頁首 |
-| `kit_theme()` | bslib 主題（Bootswatch Brite＋KIT 顏色與字型） |
-| `use_kit()` | 樣式與小程式（htmltools dependency；自己組頁面時用） |
-| `kit_header()`、`kit_app_meta()` | 頁首、版本行 |
-| `kit_app_description()` | 讀 app 的 DESCRIPTION 的 Version、Date |
-| `kit_brand()`、`kit_current_brand()` | 品牌：標誌、分頁圖示、顏色（預設 KIT；`options(kitDesign.brand = )`） |
-| `kit_logo_uri()`、`kit_colors()` | KIT 標誌（data URI）、品牌色 |
-| `kit_gallery()` | 元件樣張 app（`brand = "demo"`：看別的品牌） |
-| `kit_new_app()` | 開一個新的 KIT app 套件骨架 |
-| `kit_versions()` | kitDesign 與 app 的版本（回報問題用） |
+| `kit_page()` | Whole page: `bslib::page_fluid(lang = "zh-Hant-TW")` + theme + styles + header |
+| `kit_theme()` | bslib theme (Bootswatch Brite + KIT colors and fonts) |
+| `use_kit()` | Styles and scripts (htmltools dependency; for building pages yourself) |
+| `kit_header()`, `kit_app_meta()` | Header, version line |
+| `kit_app_description()` | Reads Version and Date from the app's DESCRIPTION |
+| `kit_brand()`, `kit_current_brand()` | Brand: logo, tab icon, colors (default KIT; `options(kitDesign.brand = )`) |
+| `kit_logo_uri()`, `kit_colors()` | KIT logo (data URI), brand colors |
+| `kit_gallery()` | Component sample app (`brand = "demo"`: see another brand) |
+| `kit_new_app()` | Creates a new KIT app package skeleton |
+| `kit_versions()` | Versions of kitDesign and the app (for reporting problems) |
 
-### 模組（有狀態的元件，一頁一行）
+### Modules (stateful components, one line per page)
 
-| UI | server | 做什麼 | server 回傳 |
+| UI | server | What it does | server returns |
 |---|---|---|---|
-| `kit_step_tabs_ui()` | `kit_step_tabs_server()` | 步驟分頁（流程或分組）；做完 ✓、還不能做、要重新執行 | `selected()`、`select()`、`states()` |
-| `kit_stepcards_ui()` | `kit_stepcards_server()` | 步驟卡：哪一步打開、「對，下一步」、「改」、摘要、檢查 | `current()`、`done()`、`open()`、`reset()` |
-| `kit_run_gate_ui()` | `kit_run_gate_server()` | 主要按鈕＋「還差：…」 | 可以執行時按了幾次 |
-| `kit_code_panel_ui()` | `kit_code_panel_server()` | 用 R 怎麼做（打開時才算） | 現在的 `kit_code` |
+| `kit_step_tabs_ui()` | `kit_step_tabs_server()` | Step tabs (flow or grouped); ✓ when done, not available yet, needs re-run | `selected()`, `select()`, `states()` |
+| `kit_stepcards_ui()` | `kit_stepcards_server()` | Step cards: which step is open, "對，下一步" ("Yes, next step"), "改" ("Edit"), summary, checks | `current()`, `done()`, `open()`, `reset()` |
+| `kit_run_gate_ui()` | `kit_run_gate_server()` | Primary button + "還差：…" ("Still needed: ...") | Number of clicks while it was allowed to run |
+| `kit_code_panel_ui()` | `kit_code_panel_server()` | "How to do it in R" (computed only when opened) | The current `kit_code` |
 
-### 分頁骨架
+### Tab skeleton
 
-| UI | server | 做什麼 | server 回傳 |
+| UI | server | What it does | server returns |
 |---|---|---|---|
-| `kit_run_tab_ui(id, run_label, guide, ..., gate, result, downloads, details, code, next_step)` | `kit_run_tab_server(input, output, session, run_label, run, done, ready, settings, stale_on, progress, error, guard, confirm, result_ui, details_ui, code)` | 一頁一個主要按鈕的分頁：照頁面骨架排好；還差、設定摘要、執行（進度條）、狀態框、通知、捲到狀態框、【要重新執行】、結果的重點與細節、用 R 怎麼做 | `result`、`status`、`state`、`run(...)` |
+| `kit_run_tab_ui(id, run_label, guide, ..., gate, result, downloads, details, code, next_step)` | `kit_run_tab_server(input, output, session, run_label, run, done, ready, settings, stale_on, progress, error, guard, confirm, result_ui, details_ui, code)` | A tab with one primary button, laid out with the page skeleton: still needed, settings summary, run (progress bar), status box, notification, scroll to status box, 【要重新執行】 ("Needs re-run"), key results and details, "How to do it in R" | `result`, `status`, `state`, `run(...)` |
 
-不是 Shiny 模組：在分頁自己的 `moduleServer()` 裡呼叫，設定的 input 留在分頁的 namespace 裡。
+Not a Shiny module: call it inside the tab's own `moduleServer()`, so the settings inputs stay in the tab's namespace.
 
-### 值物件（直接放進頁面或 `renderUI()`）
+### Value objects (put directly into a page or `renderUI()`)
 
-| 函式 | class | 做什麼 |
+| Function | class | What it does |
 |---|---|---|
-| `kit_status()`、`kit_done_status()`、`kit_error_status()`、`kit_stale_status()` | `kit_status` | 狀態框：【完成】【完成，但請注意】【停下來】【要重新執行】 |
-| `kit_check()`、`kit_checklist()` | `kit_check`、`kit_checklist` | 檢查清單（! 要決定、✓ 沒問題、i 提醒） |
-| `kit_code()` | `kit_code` | 一個版本的程式碼（每行最多 70 欄、附「複製」） |
+| `kit_status()`, `kit_done_status()`, `kit_error_status()`, `kit_stale_status()` | `kit_status` | Status box: 【完成】 ("Done"), 【完成，但請注意】 ("Done, but note"), 【停下來】 ("Stopped"), 【要重新執行】 ("Needs re-run") |
+| `kit_check()`, `kit_checklist()` | `kit_check`, `kit_checklist` | Checklist (! needs a decision, ✓ OK, i reminder) |
+| `kit_code()` | `kit_code` | One version of the code (at most 70 columns per line, with a "複製" ("Copy") button) |
 
-建構時檢查內容（例如狀態只能是 idle／success／warning／error／stale）；
-都有 `htmltools::as.tags()`、`format()`、`print()`。
+Contents are checked at construction (for example, the state can only be idle/success/warning/error/stale);
+all have `htmltools::as.tags()`, `format()`, and `print()`.
 
-### 導覽（低階）
+### Navigation (low level)
 
-| 函式 | 做什麼 |
+| Function | What it does |
 |---|---|
-| `kit_navgroups()`、`kit_navgroup()` | 分組、不編號的分頁列（搭配 `tabsetPanel(type = "hidden")`） |
-| `kit_flow_tabs()` | 有順序的流程分頁（① ② ③），不是流程一步的分頁放最右邊 |
-| `kit_tab_states()` | 從狀態框的狀態算出分頁的 ✓、灰色、要重新執行 |
-| `kit_watch_tab_states()`、`kit_send_tab_states()` | 把分頁狀態送到瀏覽器 |
+| `kit_navgroups()`, `kit_navgroup()` | Grouped, unnumbered tab bar (use with `tabsetPanel(type = "hidden")`) |
+| `kit_flow_tabs()` | Ordered flow tabs (① ② ③); tabs that are not a flow step go on the far right |
+| `kit_tab_states()` | Computes tab ✓, gray, and needs re-run from status box states |
+| `kit_watch_tab_states()`, `kit_send_tab_states()` | Sends tab states to the browser |
 
-### 頁面元件
+### Page components
 
-| 函式 | 做什麼 |
+| Function | What it does |
 |---|---|
-| `kit_tab_guide()`、`kit_steps()` | 這一頁做什麼（預設收起，「看步驟 ▸」） |
-| `kit_diagram()`、`kit_dg_table()` | 圖解：處理前的小表 → 處理後的小表 |
-| `kit_button()`、`kit_btn_class()` | 主要、小、危險按鈕 |
-| `kit_callout()` | 提示框（資訊／注意） |
-| `kit_cloud_banner()`、`kit_cloud_footer()`、`kit_is_cloud()` | 雲端版：頁首下面的提醒橫幅、頁尾的使用須知、是不是雲端版 |
-| `kit_download_button()` | 下載按鈕：中文檔名在每個瀏覽器都存得對（測試用 `kit_test_download()`） |
-| `kit_advanced()` | 進階設定（收起） |
-| `kit_settings_line()` | 設定摘要（「本次：…」） |
-| `kit_ready_line()` | 還差：… |
-| `kit_next_step()`、`kit_app_link()` | 下一步、連到別的 app |
-| `kit_step_card()`、`kit_step_head()`、`kit_step_body()` | 步驟卡（現在、做完、還不能做） |
-| `kit_problems()` | 步驟卡裡的單一問題（「還差：…」） |
+| `kit_tab_guide()`, `kit_steps()` | What this page does (collapsed by default, "看步驟 ▸" ("See steps ▸")) |
+| `kit_diagram()`, `kit_dg_table()` | Diagram: small table before processing → small table after |
+| `kit_button()`, `kit_btn_class()` | Primary, secondary, and danger buttons |
+| `kit_callout()` | Callout (info/caution) |
+| `kit_cloud_banner()`, `kit_cloud_footer()`, `kit_is_cloud()` | Cloud version: reminder banner below the header, usage notes in the footer, whether this is the cloud version |
+| `kit_download_button()` | Download button: Chinese file names save correctly in every browser (test with `kit_test_download()`) |
+| `kit_advanced()` | Advanced settings (collapsed) |
+| `kit_settings_line()` | Settings summary ("本次：…" ("This run: ...")) |
+| `kit_ready_line()` | Still needed: ... |
+| `kit_next_step()`, `kit_app_link()` | Next step, link to another app |
+| `kit_step_card()`, `kit_step_head()`, `kit_step_body()` | Step card (current, done, not available yet) |
+| `kit_problems()` | A single problem inside a step card ("還差：…" ("Still needed: ...")) |
 
-### 結果
+### Results
 
-| 函式 | 做什麼 |
+| Function | What it does |
 |---|---|
-| `kit_status_ui()` | 狀態框的低階畫法（最多 3 點，其他「還有 N 點」；怎麼辦；原始訊息） |
-| `kit_details_row()`、`kit_detail()` | 結果下面一排收起來的細節 |
-| `kit_code_panel()`、`kit_code_blocks()`、`kit_render_code_panel()` | 用 R 怎麼做的低階函式 |
-| `kit_code_wrap()`、`kit_code_cols()` | 程式碼換行成每行最多 70 欄；每行幾欄（中文字算 2 欄） |
-| `kit_static_table()`、`kit_preview_table()`、`kit_table_scroll()` | 資料表、預覽表、左右捲的框 |
-| `kit_rows_note()`、`kit_dims()`、`kit_num()` | 「共 3,418 列 × 25 欄，以下前 10 列。」、千分位 |
-| `kit_chart_colors()`、`kit_chart_neutral()` | 圖的類別色（Okabe–Ito）與中性色 |
-| `kit_chart_sequential()` | 連續數值的色階（極淡萊姆 → 淡萊姆 → KIT 綠；0% 和沒有資料的白格分得開），熱圖用 |
-| `kit_plotly_style()` | plotly 圖套上 KIT 的樣子：字型、軸線、格線、白底、靠左的粗體標題、圖例、色階、滑過的說明框、精簡的工具列（plotly 是 Suggests） |
-| `kit_plotly_fonts()` | plotly 圖附上 app 的字型（下載的單一 HTML 檔用；`kit_plotly_style()` 預設已經附上） |
+| `kit_status_ui()` | Low-level status box rendering (at most 3 points, the rest as "還有 N 點" ("N more"); what to do; raw message) |
+| `kit_details_row()`, `kit_detail()` | A row of collapsed details below the results |
+| `kit_code_panel()`, `kit_code_blocks()`, `kit_render_code_panel()` | Low-level functions for "How to do it in R" |
+| `kit_code_wrap()`, `kit_code_cols()` | Wraps code to at most 70 columns per line; columns per line (a Chinese character counts as 2) |
+| `kit_static_table()`, `kit_preview_table()`, `kit_table_scroll()` | Data table, preview table, horizontally scrolling box |
+| `kit_rows_note()`, `kit_dims()`, `kit_num()` | "共 3,418 列 × 25 欄，以下前 10 列。" ("3,418 rows × 25 columns; first 10 rows below."), thousands separators |
+| `kit_chart_colors()`, `kit_chart_neutral()` | Chart categorical colors (Okabe–Ito) and neutral colors |
+| `kit_chart_sequential()` | Color scale for continuous values (very light lime → light lime → KIT green; 0% stays distinct from blank no-data cells), for heatmaps |
+| `kit_plotly_style()` | Applies the KIT look to plotly charts: fonts, axis lines, gridlines, white background, left-aligned bold title, legend, color scale, hover boxes, a trimmed toolbar (plotly is in Suggests) |
+| `kit_plotly_fonts()` | Attaches the app's fonts to plotly charts (for downloaded single-file HTML; `kit_plotly_style()` attaches them by default) |
 
-### server 端
+### Server side
 
-| 函式 | 做什麼 |
+| Function | What it does |
 |---|---|
-| `kit_run_gate()`、`kit_need_files()` | 主要按鈕還不能按時停用它，上面寫還差什麼（模組的低階版） |
-| `kit_scroll_to()` | 執行完把狀態框捲到畫面上方 |
-| `kit_open_details()` | 打開一個收合區塊 |
-| `kit_unload_guard()` | 有結果時，離開頁面前先問一次 |
-| `kit_notify()` | 通知（停下來紅色 10 秒，其他 6 秒） |
-| `kit_abort()`、`kit_is_user_error()` | 給使用者看的白話錯誤 |
+| `kit_run_gate()`, `kit_need_files()` | Disables the primary button while it can't be clicked yet and writes what's still needed above it (low-level version of the module) |
+| `kit_scroll_to()` | Scrolls the status box to the top of the screen after a run |
+| `kit_open_details()` | Opens a collapsible section |
+| `kit_unload_guard()` | When there are results, asks once before leaving the page |
+| `kit_notify()` | Notifications (stopped: red for 10 seconds; others 6 seconds) |
+| `kit_abort()`, `kit_is_user_error()` | Plain-language errors shown to users |
 
-## 設計語言
+## Design language
 
-[`brand/KIT設計語言.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/KIT設計語言.md) 是每個元件的規格（用途、長相、規則、不要）；
-[`brand/_brand.yml`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/_brand.yml) 是顏色、字型等設計變數；[`brand/logo/`](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo) 是標誌檔。
+[`brand/en/design-language.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/design-language.md) is the spec for every component (purpose, look, rules, don'ts);
+[`brand/_brand.yml`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/_brand.yml) holds the design variables such as colors and fonts; [`brand/logo/`](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo) holds the logo files.
 
-## 版本與維護
+## Versions and maintenance
 
-- 語意化版本：patch＝修正、畫面和函式不變；minor＝新元件或選項；major＝改名、拿掉、看得到的設計改變。
-  發布步驟與檢查清單：[`brand/版本與發布.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/版本與發布.md)；每一版的改變：[`NEWS.md`](NEWS.md)。
-- app 固定用某一版：`Remotes: jiewenTsai/kitDesign@vX.Y.Z`、`Imports: kitDesign (>= X.Y.Z)`。
-- 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.2.0」。
-- kitJoin、kitsUI 換成 kitDesign 時的名稱對照：[`brand/遷移對照.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/遷移對照.md)。
+- Semantic versioning: patch = fixes, screens and functions unchanged; minor = new components or options; major = renames, removals, visible design changes.
+  Release steps and checklist: [`brand/en/release.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/release.md); changes in each version: [`NEWS.md`](NEWS.md).
+- To pin an app to a version: `Remotes: jiewenTsai/kitDesign@vX.Y.Z`, `Imports: kitDesign (>= X.Y.Z)`.
+- The header can show both versions: `kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · 2026-10-31 · kitDesign 0.2.0".
+- Name mapping for moving kitJoin and kitsUI to kitDesign: [`brand/en/migration.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md).
 
-## 開發
+## Development
 
-- R 程式碼只能用 ASCII（`R CMD check` 的規定）。字串直接寫中文，改完在套件根目錄跑
-  `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`：中文換成 `\uXXXX`，上面加一行「# 原文：…」註解。
-- 樣式在 `inst/www/`：`kit-base.css` → `kit-brite.css` → `kit-design.css`（順序不能換）；小程式在 `inst/www/kit.js`。
-- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.4.0.tar.gz`；
-  畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）；
-  示範品牌：`Rscript tools/check_gallery.R <資料夾> 7551 demo`。
-- GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）；
-  `.github/workflows/pkgdown.yaml`（網站，放到 `gh-pages` 分支）。
-- 網站：`pkgdown::build_site()` 建到 `docs/`（不進 git）；設定在 `_pkgdown.yml`、`pkgdown/extra.css`，
-  網站才有的文章在 `vignettes/articles/`（不會當成 vignette 打包）。
+- R code must be ASCII only (an `R CMD check` rule). Write strings in Chinese directly; after editing, run
+  `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R` from the package root: Chinese is replaced with `\uXXXX`, with a "# 原文：…" ("# Original: ...") comment added above.
+- Styles live in `inst/www/`: `kit-base.css` → `kit-brite.css` → `kit-design.css` (the order must not change); scripts are in `inst/www/kit.js`.
+- Checks: `LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.4.0.tar.gz`;
+  screens: `LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R` (screenshots at 1280 and 390 width; the page must not scroll horizontally; danger buttons are salmon);
+  demo brand: `Rscript tools/check_gallery.R <folder> 7551 demo`.
+- GitHub Actions: `.github/workflows/R-CMD-check.yaml` (push and pull request);
+  `.github/workflows/pkgdown.yaml` (website, deployed to the `gh-pages` branch).
+- Website: `pkgdown::build_site()` builds into `docs/` (not tracked in git); configuration is in `_pkgdown.yml` and `pkgdown/extra.css`,
+  and site-only articles are in `vignettes/articles/` (not packaged as vignettes).
 
-## 授權
+## License
 
 MIT © KIT

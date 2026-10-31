@@ -1,0 +1,25 @@
+% English translation of man/kit_problems.Rd (roxygen2 output of R/steps.R). Update by hand when the Chinese changes.
+\name{kit_problems}
+\alias{kit_problems}
+\title{Problems in a table or list (dark orange-red text)}
+\usage{
+kit_problems(..., head = NULL, bullets = TRUE)
+}
+\arguments{
+\item{...}{One string (or tag) per problem.}
+
+\item{head}{Bold text in front, for example "還差：" ("Still needed:"); \code{NULL} shows nothing.}
+
+\item{bullets}{\code{TRUE} (default): one bullet per problem; \code{FALSE}: one per line, without bullets
+(for example when each line is already a full sentence, or already has its own numbering).}
+}
+\value{
+\verb{<div class="kit-problems">}; \code{NULL} when there are no problems.
+}
+\description{
+A list of individual problems inside a step card, such as "還差：…" ("Still needed: …") or "這幾欄有問題" ("these columns have problems").
+}
+\examples{
+kit_problems("第 2 列沒有選世代", "第 4 列的波次不是數字", head = "還差：")
+kit_problems("bsrs1：w1d5_1 和 w2d5_1 的分數範圍不同", bullets = FALSE)
+}

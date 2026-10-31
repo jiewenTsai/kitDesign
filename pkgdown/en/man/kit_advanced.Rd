@@ -1,0 +1,27 @@
+% English translation of man/kit_advanced.Rd (roxygen2 output of R/details.R). Update by hand when the Chinese changes.
+\name{kit_advanced}
+\alias{kit_advanced}
+\title{Advanced settings: collapsed by default}
+\usage{
+kit_advanced(..., title = "進階設定", open = FALSE, id = NULL)
+}
+\arguments{
+\item{...}{The settings inside.}
+
+\item{title}{The collapsible title (can be a tag, e.g. followed by the current settings).}
+
+\item{open}{Whether it starts open.}
+
+\item{id}{The id of the \verb{<details>} (used by \code{\link[=kit_open_details]{kit_open_details()}} to open it).}
+}
+\value{
+\verb{<details class="kit-advanced">}.
+}
+\description{
+Options in a settings area that are rarely changed (text column matching, ID type conversion,
+reverse-scored item rules, separators…). A one-line small-print title; when opened, a faint line
+on the left sets it apart from the other settings (no box).
+}
+\examples{
+kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))  # "Trim spaces before matching"
+}

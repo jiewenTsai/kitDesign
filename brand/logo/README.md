@@ -1,3 +1,31 @@
+# KIT logo files
+
+English | [繁體中文](#kit-標誌檔)
+
+| File | Content | Used for |
+|---|---|---|
+| `kit-logo.svg` | Full logo (bean + KIT wordmark), vector | Header (`kit_header()`; sharp at any size) |
+| `kit-mark.svg` | Bean only, vector | Browser tab icon (favicon) |
+| `kit-logo-h512.png`, `kit-logo-h1024.png` | Full logo, 512 and 1024 px tall, exported from the SVG | Documents, slides |
+| `kit-mark-h512.png`, `kit-mark-h1024.png` | Bean, 512 and 1024 px tall, exported from the SVG | Documents, slides |
+| `kit-logo-128.png`, `kit-logo-192.png` | Full logo, older PNGs | `kit_logo_uri(128 or 192, "logo")` |
+| `kit-mark-32.png`…`kit-mark-256.png` | Bean, older PNGs | `kit_logo_uri()`, tab icon for older browsers |
+| `kit-logo-original.png` | Original image from the author (600×656) | Source file; not used directly |
+| `kit-logo.png`, `kit-mark.png` | Original image with a transparent background | Source files |
+
+**The SVGs are traced**: KIT has no vector source file. `kit-logo.svg` and `kit-mark.svg` were traced from the
+600×656 original (`kit-logo-original.png`) and compared with it pixel by pixel (about 0.006% of pixels differ).
+Colors are the logo's own `#006835` (dark green), `#aad05f` (bean), and `#fff57f` (leaf), on a transparent background.
+If a designer's vector source becomes available, replace these two SVGs and re-export the PNGs.
+
+Usage rules (size, clear space, allowed background colors) are in the "Logo" section of
+[`../en/design-language.md`](../en/design-language.md). The logo inside the `kitDesign` package is in `inst/logo/`
+(the header SVG is served through an htmlDependency, not base64).
+
+---
+
+[English](#kit-logo-files) | 繁體中文
+
 # KIT 標誌檔
 
 | 檔案 | 內容 | 用在 |

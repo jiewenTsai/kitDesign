@@ -1,0 +1,70 @@
+% English translation of man/kit_step_tabs_ui.Rd (roxygen2 output of R/modules.R). Update by hand when the Chinese changes.
+\name{kit_step_tabs_ui}
+\alias{kit_step_tabs_ui}
+\alias{kit_step_tabs_server}
+\title{Step tabs module}
+\usage{
+kit_step_tabs_ui(id, ..., groups = NULL, selected = NULL, aside = NULL)
+
+kit_step_tabs_server(id, states = NULL, tips = NULL)
+}
+\arguments{
+\item{id}{The module id.}
+
+\item{...}{\code{shiny::tabPanel()}s (\code{value} is required).}
+
+\item{groups}{Groups (a list of \code{\link[=kit_navgroup]{kit_navgroup()}}); \code{NULL} means an ordered flow.}
+
+\item{selected}{The tab selected at the start (value).}
+
+\item{aside}{Tabs in a flow that are not a step of the flow (value).}
+
+\item{states}{A reactive (or function): the state of each tab, a named character vector or list. Values are
+\code{\link[=kit_status]{kit_status()}} states (\code{"success"} and \code{"warning"} add a ✓; \code{"stale"} removes the ✓),
+or directly \code{"done"}, \code{"locked"}, \code{"ready"}. Tabs not listed are left unchanged. With \code{NULL}, no states are sent.}
+
+\item{tips}{The hover text for tabs not yet available: a named character vector (or a reactive that returns one), or one sentence for all.}
+}
+\value{
+\code{kit_step_tabs_ui()}: the tab bar and the tabs.
+
+\code{kit_step_tabs_server()}: a list,
+\itemize{
+\item \code{selected}: a reactive, the current tab (value);
+\item \code{select(value)}: switches to a tab;
+\item \code{states}: a reactive, the states sent to the browser (the result of \code{\link[=kit_tab_states]{kit_tab_states()}}).
+}
+}
+\description{
+Two looks, one set of states (done ✓; not yet available gray plus the reason; run again removes the ✓):
+}
+\details{
+\itemize{
+\item Ordered flow (kitsUI): do not pass \code{groups}; the \code{tabPanel()} names in \code{...} use circled numbers;
+\code{aside} tabs (for example "使用手冊", "User manual") are dashed and placed at the far right.
+\item Grouped, unnumbered (kitJoin): pass \code{groups} (a list of \code{\link[=kit_navgroup]{kit_navgroup()}}); the tab bar is
+\code{\link[=kit_navgroups]{kit_navgroups()}}, and the real tabs are a hidden \code{tabsetPanel()}.
+}
+
+The tabs' input is \code{input[["<id>-tabs"]]}; the \code{selected()} returned by the server is the same value.
+}
+\examples{
+if (interactive()) {
+  ui <- kit_page("KIT 示範", NULL,
+    kit_step_tabs_ui("nav",
+      shiny::tabPanel("① 資料", value = "data", "…"),
+      shiny::tabPanel("② 題目校準", value = "items", "…")
+    )
+  )
+  server <- function(input, output, session) {
+    kit_step_tabs_server("nav",
+      states = shiny::reactive(c(data = "success", items = "locked")),
+      tips = c(items = "先在「① 資料」選好資料")
+    )
+  }
+  shiny::shinyApp(ui, server)
+}
+}
+\seealso{
+\code{\link[=kit_flow_tabs]{kit_flow_tabs()}}, \code{\link[=kit_navgroups]{kit_navgroups()}}, \code{\link[=kit_tab_states]{kit_tab_states()}} (low-level)
+}

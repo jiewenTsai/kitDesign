@@ -1,0 +1,27 @@
+% English translation of man/kit_error_status.Rd (roxygen2 output of R/status.R). Update by hand when the Chinese changes.
+\name{kit_error_status}
+\alias{kit_error_status}
+\title{Status for a failed run (【停下來】, stopped)}
+\usage{
+kit_error_status(e, action, todo = NULL)
+}
+\arguments{
+\item{e}{The error (a condition).}
+
+\item{action}{The action name, e.g. "串接" ("join").}
+
+\item{todo}{A button or link for what to do (a tag); \code{NULL} shows nothing.}
+}
+\value{
+A \code{kit_status} object.
+}
+\description{
+Plain-language errors from \code{\link[=kit_abort]{kit_abort()}} are shown directly; for unexpected errors it says what to do,
+and the original message is tucked inside "原始訊息" ("Original message").
+}
+\examples{
+e <- tryCatch(stop("object 'x' not found"), error = identity)
+kit_error_status(e, "串接")
+u <- tryCatch(kit_abort("至少要 2 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
+kit_error_status(u, "串接")$message
+}

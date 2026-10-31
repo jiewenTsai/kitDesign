@@ -1,4 +1,5 @@
 # KIT 設計語言（v1.1）
+[English](en/design-language.md) | 繁體中文
 
 > **看得清楚、按得放心、結果先說。**
 

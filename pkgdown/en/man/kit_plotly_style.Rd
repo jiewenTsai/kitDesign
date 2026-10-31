@@ -1,0 +1,93 @@
+% English translation of man/kit_plotly_style.Rd (roxygen2 output of R/plotly.R). Update by hand when the Chinese changes.
+\name{kit_plotly_style}
+\alias{kit_plotly_style}
+\title{Give a plotly chart the KIT look (chart)}
+\usage{
+kit_plotly_style(
+  p,
+  legend = c("auto", "bottom", "right", "keep"),
+  colorscale = TRUE,
+  fonts = TRUE,
+  filename = "kit-chart",
+  font_size = 15,
+  brand = kit_current_brand()
+)
+}
+\arguments{
+\item{p}{A plotly chart (\code{plotly::plot_ly()}, kits' \code{plot()}; one already passed through \code{plotly::plotly_build()} also works).}
+
+\item{legend}{Where the legend goes:
+\itemize{
+\item \code{"auto"} (default): with more than 4 entries, or when the longest entry is wider than 20 columns (a Chinese character counts as 2),
+the legend goes below the chart, horizontal, left-aligned; otherwise on the right. When the chart is narrower than 600px (phones) it also
+moves below, and returns to the right when the chart gets wider (decided in the browser).
+\item \code{"bottom"}: always below; \code{"right"}: always on the right.
+\item \code{"keep"}: leave the legend position alone (only change the font).
+}}
+
+\item{colorscale}{When \code{TRUE} (default), heatmap-type traces switch to \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}; when \code{FALSE}, the original color scale is kept.}
+
+\item{fonts}{When \code{TRUE} (default), attaches the rounded typeface from Google Fonts (\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}),
+so a downloaded single HTML file also uses the app's typeface.}
+
+\item{filename}{The file name (without extension) for the toolbar's "download as PNG".}
+
+\item{font_size}{Body text size (px); the other sizes are derived from it.}
+
+\item{brand}{The brand (\code{\link[=kit_brand]{kit_brand()}}): the heatmap color scale comes from it (\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}).
+Defaults to \code{\link[=kit_current_brand]{kit_current_brand()}} (KIT when not set). Text, axis lines, and background keep the design language's ink and white.}
+}
+\value{
+A plotly chart (passed through \code{plotly_build()}).
+}
+\description{
+Makes plotly charts look like part of the same app: typeface, text sizes, and colors all use KIT's design variables.
+Only the look changes, not the data (points, lines, axis ranges, tick positions, and hover text stay the same).
+}
+\details{
+What changes:
+\itemize{
+\item \strong{Typeface}: everything uses the app's rounded typeface \verb{"Chiron GoRound TC", sans-serif}; text is \code{nb-ink} (#141414),
+ticks are \code{text-hint} (#5a5a5a). Sizes: body \code{font_size} (default 15px), legend and hover box 1px smaller,
+ticks 2px smaller, title about \code{h5} (1.2 times \code{font_size}).
+\item \strong{Title}: left-aligned, bold. When the chart is too narrow, it wraps in the browser (breaking between Chinese characters or at spaces).
+\item \strong{Every axis} (\code{xaxis}, \code{xaxis2}…, \code{yaxis}…, including side-by-side small charts such as a Wright map):
+axis line \code{nb-ink} 1.5px, grid lines \code{line-soft} (#e3ded2), zero line \code{line} (#d9d4c5),
+ticks outside; no frame on four sides (\code{mirror = FALSE}, and the black frame kits draws around each small chart is removed;
+KIT design language: no frames inside frames). When axis titles and ticks do not fit, the margins widen automatically (\code{automargin}).
+\item \strong{Background}: white (the chart sits in a white card); downloaded PNGs also have a white background.
+\item \strong{Colors}: \code{colorway} is Okabe–Ito (\code{\link[=kit_chart_colors]{kit_chart_colors()}}). plotly's own default colors are replaced with the
+Okabe–Ito color in the same position; \strong{colors set by kits or kitsUI stay unchanged} (kitsUI's role colors and
+category recoloring are kept).
+\item \strong{Color scale} (\code{colorscale = TRUE}): heatmap-type traces (heatmap, contour, histogram2d) switch to
+\code{\link[=kit_chart_sequential]{kit_chart_sequential()}} (very light lime → light lime → KIT green); the color bar's text and outline always get the new look.
+\item \strong{Hover box}: white background, \code{nb-ink} border, the app's typeface.
+\item \strong{Legend}: the app's typeface, no border. For position, see \code{legend}.
+\item \strong{Toolbar}: no plotly logo; only "download as PNG" (white background, 2x resolution), zoom in, zoom out, and
+reset to the original range remain; interface text is Traditional Chinese (\code{zh-TW}).
+\item \strong{Margins}: equally small on all sides; plotly widens them automatically when axes, legend, or color bar do not fit, so no text is cut off.
+}
+
+What does not change: data, axis ranges and ticks, trace colors (other than plotly's default colors), marker shapes, line
+widths and dashes, opacity, hover text, legend text, the text of titles and axis titles (only bold is added),
+chart height and width, and \code{shapes} (other than kits' small-chart frames; for example, the gray band in fit plots).
+
+\strong{Order when used with kits and kitsUI}: kits' \code{plot()} → kitsUI recoloring
+(\code{kit_chart_categorical()}, \code{kit_chart_role()}) → kitsUI Chinese labels (\code{kit_chart_zh()}) →
+\code{kit_plotly_style()}. Recoloring and this function can be swapped (this function does not touch set colors), but \strong{Chinese labels must come first}:
+this function wraps the title in \verb{<b>}, after which \code{kit_chart_zh()} no longer recognizes the original English title.
+Applying it twice to the same chart is the same as applying it once.
+}
+\examples{
+if (requireNamespace("plotly", quietly = TRUE)) {
+  d <- data.frame(wave = rep(c(3, 6, 12), 2), score = c(8, 11, 15, 7, 10, 13),
+                  cohort = rep(c("M03", "M36"), each = 3))
+  p <- plotly::plot_ly(d, x = ~wave, y = ~score, split = ~cohort,
+                       type = "scatter", mode = "lines+markers")
+  p <- plotly::layout(p, title = "各世代的分數中位數")
+  kit_plotly_style(p)
+}
+}
+\seealso{
+\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}, \code{\link[=kit_chart_colors]{kit_chart_colors()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
+}

@@ -1,0 +1,85 @@
+% English translation of man/kit_brand.Rd (roxygen2 output of R/brand.R). Update by hand when the Chinese changes.
+\name{kit_brand}
+\alias{kit_brand}
+\title{Brand: logo and colors}
+\usage{
+kit_brand(
+  name = "KIT",
+  logo = NULL,
+  mark = NULL,
+  logo_alt = NULL,
+  colors = list()
+)
+}
+\arguments{
+\item{name}{The brand name, e.g. \code{"KIT"}, \code{"示範實驗室"} ("Demo Lab").}
+
+\item{logo}{Path to the header logo file (SVG or PNG); for \code{NULL} see above; \code{FALSE} shows no logo.}
+
+\item{mark}{Path to the browser tab icon file (SVG or PNG, square); when \code{NULL}, \code{logo} is used.}
+
+\item{logo_alt}{Alt text for the logo; when \code{NULL}, "KIT 標誌" ("KIT logo") for KIT, or "\if{html}{\out{<name>}} 標誌" ("<name> logo").}
+
+\item{colors}{Colors to replace: a named list or named character vector; names are in the table above, values are \code{"#RRGGBB"}
+or color names R knows. An unknown name stops with an error listing the names you can use.}
+}
+\value{
+A \code{kit_brand} object (a list: \code{name}, \code{logo_alt}, \code{colors} (11 \verb{#rrggbb} values), and the logo files).
+}
+\description{
+kitDesign looks like KIT by default. When another project or lab uses kitDesign, \code{kit_brand()}
+swaps the logo and colors; typeface, borders, shadows, and how components look follow the design language and stay the same.
+With no arguments it is KIT (\code{kit_brand()}), and pages look exactly as before.
+}
+\details{
+Pass the brand to \code{\link[=kit_page]{kit_page()}} (\verb{brand =}), or set it once when the app starts:
+\code{options(kitDesign.brand = kit_brand(...))}. After that \code{\link[=kit_page]{kit_page()}}, \code{\link[=kit_header]{kit_header()}},
+\code{\link[=kit_theme]{kit_theme()}}, \code{\link[=kit_colors]{kit_colors()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}, and \code{\link[=kit_plotly_style]{kit_plotly_style()}}
+all use it (\code{\link[=kit_current_brand]{kit_current_brand()}}).
+
+\strong{Colors} (\code{colors}) use the design-language names; anything not given follows KIT:\tabular{llll}{
+   Name \tab CSS variable \tab KIT \tab Used for \cr
+   \code{ink} \tab \code{--nb-ink} \tab \verb{#141414} \tab text, borders, shadows \cr
+   \code{page} \tab \code{--nb-page} \tab \verb{#faf7f0} \tab page background \cr
+   \code{card} \tab \code{--nb-card} \tab \verb{#ffffff} \tab cards, inputs, tables \cr
+   \code{accent} \tab \code{--nb-lime} \tab \verb{#c6d033} \tab main color block: header, primary button, current tab \cr
+   \code{accent_light} \tab \code{--nb-bg-new} \tab \verb{#e8f0a0} \tab light main color: new columns in diagrams, light end of the color scale \cr
+   \code{primary} \tab \code{--nb-green} \tab \verb{#006835} \tab links, checkboxes, progress bars, dark end of the color scale \cr
+   \code{primary_hover} \tab \code{--nb-green-hover} \tab \verb{#004d27} \tab link hover \cr
+   \code{success} \tab \code{--nb-mint} \tab \verb{#b9f0a8} \tab [done] \cr
+   \code{warning} \tab \code{--nb-yellow} \tab \verb{#ffde59} \tab [done, but take note] \cr
+   \code{danger} \tab \code{--nb-salmon} \tab \verb{#ff9b8f} \tab [stopped], danger button \cr
+   \code{info} \tab \code{--nb-sky} \tab \verb{#a8dcff} \tab info callout \cr
+}
+
+
+If only \code{accent} is given, \code{accent_light} is derived from it (mixed with white); if only \code{primary} is given,
+\code{primary_hover} is derived from it (darkened). Text on color blocks is always \code{ink}: when choosing \code{accent} and the four status colors,
+check that \code{ink} on them has at least 4.5:1 contrast; \code{primary} is a text color and also needs 4.5:1 on \code{page}.
+
+\strong{Logo}: \code{logo} is the full header logo, \code{mark} is the small browser tab icon (square; when not given,
+\code{logo} is used). Both are paths to SVG or PNG files; the files are read when the brand is created, so changing the working directory later does not matter.
+In Shiny they are served by an htmlDependency containing only these two files (the folder they live in is not exposed);
+with \code{kit_header(logo = "inline")} they are written as a data URI.
+With \code{name = "KIT"} and no \code{logo}, the KIT logo is used; with any other name and no \code{logo}, the header has no logo.
+\code{logo = FALSE} never shows a logo.
+}
+\examples{
+kit_brand()
+
+# Another lab: blue colors, its own logo
+demo <- kit_brand(
+  "示範實驗室",
+  logo = system.file("examples", "brand", "demo-logo.svg", package = "kitDesign"),
+  mark = system.file("examples", "brand", "demo-mark.svg", package = "kitDesign"),
+  colors = list(accent = "#9cc0ff", primary = "#1f4fa3", page = "#f5f7fa")
+)
+demo
+if (interactive()) {
+  options(kitDesign.brand = demo)   # use this brand for the whole app
+  kit_gallery()
+}
+}
+\seealso{
+\code{\link[=kit_current_brand]{kit_current_brand()}}, \code{\link[=kit_page]{kit_page()}}, \code{\link[=kit_theme]{kit_theme()}}, \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}
+}

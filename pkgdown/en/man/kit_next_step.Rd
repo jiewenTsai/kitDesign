@@ -1,0 +1,36 @@
+% English translation of man/kit_next_step.Rd (roxygen2 output of R/buttons.R). Update by hand when the Chinese changes.
+\name{kit_next_step}
+\alias{kit_next_step}
+\title{Next step}
+\usage{
+kit_next_step(
+  text = NULL,
+  button_id = NULL,
+  label = NULL,
+  button = NULL,
+  kind = "primary"
+)
+}
+\arguments{
+\item{text}{Small text on the left; \code{NULL} shows nothing.}
+
+\item{button_id}{The button id; when \code{NULL} no button is drawn (unless \code{button} is given).}
+
+\item{label}{The button text, e.g. "下一步：橫向資料串接" ("Next step: wide join"); " →" is added automatically.}
+
+\item{button}{A button to use directly instead of an actionButton (e.g. a link to another app).}
+
+\item{kind}{The button kind: primary button by default; use \code{"secondary"} when the page already has another main action (e.g. a download).}
+}
+\value{
+\verb{<div class="kit-next">}.
+}
+\description{
+At the bottom of the page, aligned right: a line of small text on the left (it can be a list of places to go next), and a button on the right,
+"下一步：××× →" ("Next step: ××× →"). Shown only after a result is ready (【完成】 done, or 【完成，但請注意】 done, but take note);
+removed when the result is out of date (【要重新執行】, needs a rerun).
+}
+\examples{
+kit_next_step("串接好了，可以接著做 kits 作答檔。", "next", "下一步：kits 作答檔")
+# "Join done; you can go on to the kits response file." / "Next step: kits response file"
+}

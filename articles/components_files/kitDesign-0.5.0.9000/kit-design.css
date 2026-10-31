@@ -33,3 +33,6 @@ pre,
 .kit-itemtable-title { margin: 0 0 0.2rem; }
 .kit-itemtable-title + .kit-hint { margin: 0 0 0.3rem; }
 .kit-itemtable-dl { margin: 0.8rem 0 0.2rem; }
+
+/* 下載中（kit.js 在背景抓檔案）：按鈕變淡、游標是等待中，不能重複按 */
+.kit-downloading { opacity: 0.6; cursor: progress; pointer-events: none; }

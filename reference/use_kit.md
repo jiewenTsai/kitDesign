@@ -40,7 +40,7 @@ the page.
 use_kit()
 #> List of 10
 #>  $ name      : chr "kitDesign"
-#>  $ version   : chr "0.6.0"
+#>  $ version   : chr "0.6.1"
 #>  $ src       :List of 1
 #>   ..$ file: chr "www"
 #>  $ meta      : NULL

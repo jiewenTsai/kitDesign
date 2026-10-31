@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,13 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.1" id="kitdesign-061-2026-11-01">kitDesign 0.6.1 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-061-2026-11-01"></a></h2>
+<div class="section level3">
+<h3 id="修正-0-6-1">修正<a class="anchor" aria-label="anchor" href="#%E4%BF%AE%E6%AD%A3-0-6-1"></a></h3>
+<ul><li>收起來的 <code>&lt;details&gt;</code>（<code><a href="../reference/kit_detail.html">kit_detail()</a></code> 等）裡面的東西不排版（<code>display: none</code>）。新的 Chrome、Firefox 收起來時只是看不到，裡面的元素還有寬高，Shiny 就以為裡面的圖看得到，在 76px 寬的框裡畫 plotly： 圖畫壞（打開後擠成一條），還跳「axis scaling」的錯，連帶擋住同一頁其他畫面的更新（kitsUI 按「用這一回合的 固定檔開始下一回合」後 ① 沒有更新）。現在收起來時 Shiny 知道它藏著，打開才畫，寬度也對。</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.0" id="kitdesign-060-2026-11-01">kitDesign 0.6.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-060-2026-11-01"></a></h2>
 <p>minor：圖的工具列可以下載投稿用的圖；app 不用改。</p>

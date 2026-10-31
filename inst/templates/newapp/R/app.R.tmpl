@@ -10,7 +10,7 @@ app_ui <- function(request) {
   ver <- kitDesign::kit_app_description("{{package}}")
   kitDesign::kit_page(
     "{{title}}", "{{subtitle}}",
-    version = ver$version, date = ver$date, show_kitdesign = TRUE,
+    version = ver$version, date = ver$date, package = "{{package}}", show_kitdesign = TRUE,
     kitDesign::kit_step_tabs_ui(
       "nav",
       shiny::tabPanel("① 計算", value = "calc", page_calc_ui("calc")),

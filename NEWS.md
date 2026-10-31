@@ -1,3 +1,13 @@
+# kitDesign 0.5.0 (2026-11-01)
+
+minor：版本行可以寫 app 的名稱；現有的 app 不用改，畫面也不會變。
+
+## 元件
+
+* `kit_page()`、`kit_header()`、`kit_app_meta()` 多了 `package`：app 的套件名稱寫在版本行最前面，
+  「kitsUI v0.5.0 · 2026-10-31 · kits 0.25.2」。回報問題時一看就知道是哪個 app 的哪一版。
+  預設 `NULL`：不寫名稱，和以前一樣。
+
 # kitDesign 0.4.0 (2026-10-31)
 
 minor：kitJoin 與 kitsUI 各有一份的機制搬進 kitDesign；舊的 app 不用改，兩個 app 的畫面與下載的檔案一模一樣。

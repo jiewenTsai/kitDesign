@@ -62,6 +62,17 @@ test_that("kit_header() has the logo, subtitle, tagline and version line", {
   expect_false(grepl("kit-app-meta", no_logo, fixed = TRUE))
 })
 
+test_that("kit_app_meta() puts the package name before the version", {
+  expect_match(html(kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin")),
+               ">kitJoin v0.6.0 \u00b7 2026-10-31<", fixed = TRUE)
+  expect_match(html(kit_app_meta(NA, "2026-10-31", package = "kitJoin")),
+               ">kitJoin \u00b7 2026-10-31<", fixed = TRUE)
+  expect_match(html(kit_app_meta("0.6.0", package = NULL)), ">v0.6.0<", fixed = TRUE)
+  expect_match(html(kit_page("KIT", NULL, version = "0.5.0", date = "2026-10-31", package = "kitsUI",
+                             meta_extra = "kits 0.25.2")),
+               "kitsUI v0.5.0 \u00b7 2026-10-31 \u00b7 kits 0.25.2", fixed = TRUE)
+})
+
 test_that("kit_app_meta() joins version, date and extra parts", {
   expect_match(html(kit_app_meta("0.4.0", "2026-10-31", "kits 0.25.0")),
                "v0.4.0 · 2026-10-31 · kits 0.25.0", fixed = TRUE)
@@ -72,7 +83,7 @@ test_that("kit_app_meta() joins version, date and extra parts", {
 test_that("kit_app_description() reads a package or a DESCRIPTION file", {
   own <- kit_app_description("kitDesign")
   expect_equal(own$version, as.character(utils::packageVersion("kitDesign")))
-  expect_equal(own$date, "2026-10-31")
+  expect_equal(own$date, utils::packageDescription("kitDesign")$Date)
   tmp <- tempfile()
   writeLines(c("Package: kitDemo", "Version: 9.8.7", "Date: 2026-01-02"), tmp)
   expect_equal(kit_app_description(path = tmp), list(version = "9.8.7", date = "2026-01-02"))

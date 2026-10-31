@@ -119,6 +119,8 @@ kit_pkg_version <- function() {
 #' @param tagline 接在副標後面的一句（例如「跨波次資料處理」）；`NULL` 不顯示。
 #' @param version,date 頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
 #'   `kit_app_description("kitJoin")`。
+#' @param package app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
+#'   回報問題時一看就知道是哪個 app 的哪一版。`NULL`（預設）不寫，和以前一樣。
 #' @param logo 頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：`TRUE`（標誌檔由
 #'   htmlDependency 提供，Shiny 裡用）、`"inline"`（標誌直接寫進頁面，給沒有 Shiny 的
 #'   單一 HTML 檔，例如使用手冊）、`FALSE`。
@@ -142,7 +144,7 @@ kit_pkg_version <- function() {
 #' @export
 kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL,
                      date = NULL, logo = TRUE, meta_extra = NULL, window_title = title,
-                     show_kitdesign = FALSE, brand = kit_current_brand()) {
+                     show_kitdesign = FALSE, brand = kit_current_brand(), package = NULL) {
   brand <- kit_check_brand(brand)
   bslib::page_fluid(
     lang = "zh-Hant-TW",
@@ -152,7 +154,7 @@ kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL
     kit_header(
       title = title, subtitle = subtitle, tagline = tagline,
       version = version, date = date, meta_extra = meta_extra, logo = logo,
-      show_kitdesign = show_kitdesign, brand = brand
+      show_kitdesign = show_kitdesign, brand = brand, package = package
     ),
     ...
   )
@@ -205,7 +207,7 @@ kit_app_description <- function(package = NULL, path = NULL) {
   none
 }
 
-#' 頁首的版本行，例如「v0.5.0 · 2026-10-31」
+#' 頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」
 #'
 #' 版本行永遠在頁首，回報問題時用得到。
 #'
@@ -213,14 +215,19 @@ kit_app_description <- function(package = NULL, path = NULL) {
 #' @param date 日期；`NULL` 或 `NA` 不顯示。
 #' @param extra 後面再接的字（例如 `paste("kits", utils::packageVersion("kits"))`）。
 #' @param show_kitdesign 後面要不要接「kitDesign 0.1.0」（[kit_versions()]）。
+#' @param package app 的套件名稱，寫在版本前面（「kitJoin v0.6.0」）；`NULL` 不寫。
 #' @return `<div class="kit-app-meta">`；三樣都沒有時是 `NULL`。
 #' @examples
 #' kit_app_meta("0.5.0", "2026-10-31")
+#' kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin")
 #' @export
-kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE) {
+kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE,
+                         package = NULL) {
   ok <- function(x) !is.null(x) && length(x) == 1 && !is.na(x) && nzchar(x)
+  # 套件名稱和版本是同一段：「kitJoin v0.6.0」（沒有版本時只寫名稱）
+  app <- paste(c(if (ok(package)) package, if (ok(version)) paste0("v", version)), collapse = " ")
   parts <- c(
-    if (ok(version)) paste0("v", version),
+    if (nzchar(app)) app,
     if (ok(date)) date,
     unlist(extra),
     if (isTRUE(show_kitdesign)) paste("kitDesign", kit_versions()[["kitDesign"]])
@@ -243,11 +250,11 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
 #' @return `<div class="kit-header mb-4">`。
 #' @examples
 #' kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
-#'            version = "0.5.0", date = "2026-10-31")
+#'            version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #' @export
 kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, date = NULL,
                        meta_extra = NULL, logo = TRUE, show_kitdesign = FALSE,
-                       brand = kit_current_brand()) {
+                       brand = kit_current_brand(), package = NULL) {
   brand <- kit_check_brand(brand)
   sub_line <- if (!is.null(subtitle) || !is.null(tagline)) {
     shiny::p(
@@ -281,7 +288,7 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
       shiny::div(
         shiny::h1(title),
         sub_line,
-        kit_app_meta(version, date, meta_extra, show_kitdesign = show_kitdesign)
+        kit_app_meta(version, date, meta_extra, show_kitdesign = show_kitdesign, package = package)
       )
     )
   )

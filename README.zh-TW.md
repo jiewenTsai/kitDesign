@@ -210,7 +210,7 @@ options(kitDesign.brand = kit_brand(
 - 語意化版本：patch＝修正、畫面和函式不變；minor＝新元件或選項；major＝改名、拿掉、看得到的設計改變。
   發布步驟與檢查清單：[`brand/版本與發布.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/版本與發布.md)；每一版的改變：[`NEWS.md`](NEWS.md)。
 - app 固定用某一版：`Remotes: jiewenTsai/kitDesign@vX.Y.Z`、`Imports: kitDesign (>= X.Y.Z)`。
-- 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.2.0」。
+- 頁首可以同時寫出兩個版本：`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)` →「kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0」。
 - kitJoin、kitsUI 換成 kitDesign 時的名稱對照：[`brand/遷移對照.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/遷移對照.md)。
 
 ## 開發

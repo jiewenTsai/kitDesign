@@ -2,9 +2,15 @@
 % Please edit documentation in R/setup.R
 \name{kit_app_meta}
 \alias{kit_app_meta}
-\title{頁首的版本行，例如「v0.5.0 · 2026-10-31」}
+\title{頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」}
 \usage{
-kit_app_meta(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE)
+kit_app_meta(
+  version = NULL,
+  date = NULL,
+  extra = NULL,
+  show_kitdesign = FALSE,
+  package = NULL
+)
 }
 \arguments{
 \item{version}{版本（前面自動加「v」）；\code{NULL} 或 \code{NA} 不顯示。}
@@ -14,6 +20,8 @@ kit_app_meta(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE)
 \item{extra}{後面再接的字（例如 \code{paste("kits", utils::packageVersion("kits"))}）。}
 
 \item{show_kitdesign}{後面要不要接「kitDesign 0.1.0」（\code{\link[=kit_versions]{kit_versions()}}）。}
+
+\item{package}{app 的套件名稱，寫在版本前面（「kitJoin v0.6.0」）；\code{NULL} 不寫。}
 }
 \value{
 \verb{<div class="kit-app-meta">}；三樣都沒有時是 \code{NULL}。
@@ -23,4 +31,5 @@ kit_app_meta(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE)
 }
 \examples{
 kit_app_meta("0.5.0", "2026-10-31")
+kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin")
 }

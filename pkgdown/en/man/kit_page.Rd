@@ -14,7 +14,8 @@ kit_page(
   meta_extra = NULL,
   window_title = title,
   show_kitdesign = FALSE,
-  brand = kit_current_brand()
+  brand = kit_current_brand(),
+  package = NULL
 )
 }
 \arguments{
@@ -42,6 +43,8 @@ so both versions are visible when someone reports a problem.}
 
 \item{brand}{The brand: logo, tab icon, and colors (\code{\link[=kit_brand]{kit_brand()}}). Defaults to \code{\link[=kit_current_brand]{kit_current_brand()}}:
 KIT when \code{options(kitDesign.brand = )} is not set.}
+
+\item{package}{The app's package name, written at the start of the version line: "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which version. \code{NULL} (the default) writes no name, as before.}
 }
 \value{
 A complete page (\code{bslib::page_fluid()}).

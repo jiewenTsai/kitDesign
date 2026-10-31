@@ -13,7 +13,8 @@ kit_header(
   meta_extra = NULL,
   logo = TRUE,
   show_kitdesign = FALSE,
-  brand = kit_current_brand()
+  brand = kit_current_brand(),
+  package = NULL
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進�
 
 \item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
 沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}
+
+\item{package}{app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
+回報問題時一看就知道是哪個 app 的哪一版。\code{NULL}（預設）不寫，和以前一樣。}
 }
 \value{
 \verb{<div class="kit-header mb-4">}。
@@ -52,5 +56,5 @@ htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進�
 }
 \examples{
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
-           version = "0.5.0", date = "2026-10-31")
+           version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 }

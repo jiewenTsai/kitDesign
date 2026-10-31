@@ -12,7 +12,8 @@ kit_header(
   meta_extra = NULL,
   logo = TRUE,
   show_kitdesign = FALSE,
-  brand = kit_current_brand()
+  brand = kit_current_brand(),
+  package = NULL
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ so both versions are visible when reporting a problem.}
 
 \item{brand}{The brand: logo, tab icon, colors (\code{\link[=kit_brand]{kit_brand()}}). Defaults to \code{\link[=kit_current_brand]{kit_current_brand()}}:
 KIT when \code{options(kitDesign.brand = )} is not set.}
+
+\item{package}{The app's package name, written at the start of the version line: "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which version. \code{NULL} (the default) writes no name, as before.}
 }
 \value{
 \verb{<div class="kit-header mb-4">}.
@@ -51,5 +54,5 @@ Logo, tab icon, and colors come from the brand (\code{\link[=kit_brand]{kit_bran
 }
 \examples{
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
-           version = "0.5.0", date = "2026-10-31")
+           version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 }

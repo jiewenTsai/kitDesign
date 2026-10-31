@@ -44,8 +44,8 @@ has its own version. They stay in step because each app states which version of 
 
 ## When reporting a problem
 
-The version line in the header shows both versions (`kit_page(..., show_kitdesign = TRUE)`):
-"v0.5.0 · 2026-10-31 · kitDesign 0.1.0". In R, use `kit_versions("kitJoin")`.
+The version line in the header shows the app's name and both versions (`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)`):
+"kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0". In R, use `kit_versions("kitJoin")`.
 
 ## Pre-release checklist
 

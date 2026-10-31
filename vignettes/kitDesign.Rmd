@@ -32,7 +32,7 @@ library(kitDesign)
 ver <- kit_app_description("kitScore")
 ui <- kit_page(
   "KIT 計分工具", "臺灣幼兒發展調查資料庫",
-  version = ver$version, date = ver$date, show_kitdesign = TRUE,
+  version = ver$version, date = ver$date, package = "kitScore", show_kitdesign = TRUE,
   tabs_ui   # 第 2 步
 )
 ```

@@ -33,11 +33,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: KIT Join Tool \email{joinkit@example.com}
+\strong{Maintainer}: Jie-Wen Tsai \email{tsai.jiewen@gmail.com}
 
 Authors:
 \itemize{
-  \item KIT Join Tool \email{joinkit@example.com}
+  \item Jie-Wen Tsai \email{tsai.jiewen@gmail.com}
 }
 
 }

@@ -1,3 +1,10 @@
+# kitDesign（開發中）
+
+## 修正
+
+* Firefox：按下載按鈕時會跳出「離開前提醒」（`kit_unload_guard()`）；按「離開」後頁面真的離開、
+  連線斷掉，下載變成 Not Found。現在按下載後 2 秒內不提醒（Chrome、Safari 本來就不會）。
+
 # kitDesign 0.5.0 (2026-11-01)
 
 minor：版本行可以寫 app 的名稱；現有的 app 不用改，畫面也不會變。

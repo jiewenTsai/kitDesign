@@ -96,9 +96,17 @@
   }
 
   // 7. 離開頁面前的提醒
+  // Firefox 按下載連結（<a download>）時也會觸發 beforeunload：使用者按「離開」後頁面真的離開、
+  // 連線斷掉，下載網址就是 Not Found。按下載後 2 秒內不提醒（Chrome、Safari 本來就不會觸發）。
   var guard = false;
+  var downloading = 0;
+  document.addEventListener('click', function(e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[download]') : null;
+    if (a) downloading = Date.now();
+  }, true);
   window.addEventListener('beforeunload', function(e) {
     if (!guard) return;
+    if (Date.now() - downloading < 2000) return;
     e.preventDefault();
     e.returnValue = '';
   });

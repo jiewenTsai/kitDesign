@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,19 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="kitdesign-060-2026-11-01">kitDesign 0.6.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-060-2026-11-01"></a></h2>
+<p>minor：圖的工具列可以下載投稿用的圖；app 不用改。</p>
+<div class="section level3">
+<h3 id="元件-0-6-0">元件<a class="anchor" aria-label="anchor" href="#%E5%85%83%E4%BB%B6-0-6-0"></a></h3>
+<ul><li>
+<code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code> 的工具列：
+<ul><li>「下載 PNG」一律 2100 像素寬（7 吋、300 dpi；長寬比照畫面，不受視窗大小影響），檔案裡寫 300 dpi： 插進 Word 預設就是 7 吋寬（雙欄論文的寬度），投稿系統讀到的也是 300 dpi。以前是畫面大小的 2 倍、沒寫 dpi。</li>
+<li>新的「下載 SVG」：向量圖，給要 600 dpi 以上、EPS 或 PDF 的期刊（用 Inkscape、Illustrator 轉）。 文字只記字型名稱，用打開它的電腦裡有的字型（圓體是網頁字型，沒裝的電腦會換成系統字型）。</li>
+<li>兩個都在瀏覽器裡做，不經過 R、不增加伺服器負擔；下載的單一 HTML 檔裡也能用。存檔不經過頁面上的連結，外掛攔不到。</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.2" id="kitdesign-052-2026-11-01">kitDesign 0.5.2 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-052-2026-11-01"></a></h2>
 <div class="section level3">

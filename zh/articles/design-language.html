@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -869,7 +869,8 @@ kitsUI
 <ul>
 <li>卡片：<code>nb-card</code> 底、<code>bw-frame</code>
 框、<code>shadow-card</code>（CSS 的
-<code>.js-plotly-plot</code>）；圖本身白底，下載的 PNG 也是白底。</li>
+<code>.js-plotly-plot</code>）；圖本身白底，下載的 PNG、SVG
+也是白底。</li>
 <li>字：全部圓體（<code>sans</code>）、<code>nb-ink</code>；內文
 15px，圖例與滑過的說明框 14px，刻度 13px、<code>text-hint</code>。</li>
 <li>標題：靠左、粗體、約
@@ -890,8 +891,10 @@ kitsUI
 <code>nb-green</code>，值越大越深；最小值不用白色，0%
 和沒有資料的空格才分得開）； <code>colorscale = FALSE</code>
 保留原來的色階。色條的字、外框照上面的字級與顏色。</li>
-<li>工具列：沒有 plotly 的標誌；只有「下載成
-PNG」、放大、縮小、回到原來的範圍；繁體中文。</li>
+<li>工具列：沒有 plotly 的標誌；只有「下載 PNG」、「下載
+SVG」、放大、縮小、回到原來的範圍；繁體中文。 PNG 一律 2100
+像素寬、檔案寫 300 dpi（插進 Word 就是 7 吋寬，雙欄論文的寬度）；SVG
+是向量圖，文字用電腦裡有的字型。</li>
 <li>邊界：上下左右一樣小；軸、圖例、色條放不下時自動加寬，軸標題與圖例離卡片的邊至少
 16px，不會切到字。</li>
 <li>不改：資料、軸的範圍與刻度、指定的顏色、點的形狀、線的粗細與虛線、hover
@@ -920,7 +923,8 @@ kits 得到的圖一樣，可以直接放進論文。
 Kept、Dropped），在說明裡寫出中文意思。</li>
 <li>圖和下面的說明之間至少留 1.2rem，說明不能壓到 x 軸。</li>
 <li>下載這張圖用小按鈕（HTML 用
-<code><a href="https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html" class="external-link">htmlwidgets::saveWidget()</a></code>；工具列另外可以存 PNG）。</li>
+<code><a href="https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html" class="external-link">htmlwidgets::saveWidget()</a></code>；工具列另外可以存
+PNG、SVG）。</li>
 </ul>
 </li>
 <li>

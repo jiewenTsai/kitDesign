@@ -87,7 +87,7 @@ kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", taglin
            version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #> <div class="kit-header mb-4">
 #>   <div class="kit-header-row">
-#>     <img src="kitDesign-logo-0.5.2/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
+#>     <img src="kitDesign-logo-0.6.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
 #>     <div>
 #>       <h1>KIT 資料串接工具</h1>
 #>       <p>

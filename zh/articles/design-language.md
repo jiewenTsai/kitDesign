@@ -428,7 +428,7 @@ app 的其他部分看起來是一套。
 - **長相**（[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_plotly_style.md)
   做的事）：
   - 卡片：`nb-card` 底、`bw-frame` 框、`shadow-card`（CSS 的
-    `.js-plotly-plot`）；圖本身白底，下載的 PNG 也是白底。
+    `.js-plotly-plot`）；圖本身白底，下載的 PNG、SVG 也是白底。
   - 字：全部圓體（`sans`）、`nb-ink`；內文 15px，圖例與滑過的說明框
     14px，刻度 13px、`text-hint`。
   - 標題：靠左、粗體、約 `h5`（18px）；圖寬放不下時在瀏覽器端換行。kits
@@ -447,8 +447,10 @@ app 的其他部分看起來是一套。
     → `bg-new` → `nb-green`，值越大越深；最小值不用白色，0%
     和沒有資料的空格才分得開）； `colorscale = FALSE`
     保留原來的色階。色條的字、外框照上面的字級與顏色。
-  - 工具列：沒有 plotly 的標誌；只有「下載成
-    PNG」、放大、縮小、回到原來的範圍；繁體中文。
+  - 工具列：沒有 plotly 的標誌；只有「下載 PNG」、「下載
+    SVG」、放大、縮小、回到原來的範圍；繁體中文。 PNG 一律 2100
+    像素寬、檔案寫 300 dpi（插進 Word 就是 7 吋寬，雙欄論文的寬度）；SVG
+    是向量圖，文字用電腦裡有的字型。
   - 邊界：上下左右一樣小；軸、圖例、色條放不下時自動加寬，軸標題與圖例離卡片的邊至少
     16px，不會切到字。
   - 不改：資料、軸的範圍與刻度、指定的顏色、點的形狀、線的粗細與虛線、hover
@@ -469,7 +471,7 @@ app 的其他部分看起來是一套。
   - 圖和下面的說明之間至少留 1.2rem，說明不能壓到 x 軸。
   - 下載這張圖用小按鈕（HTML 用
     [`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html)；工具列另外可以存
-    PNG）。
+    PNG、SVG）。
 - **不要**：用 plotly 的預設色或預設的工具列；在 app 裡另外改 plotly
   的字型與軸線；在一張圖裡回答兩個問題。
 

@@ -140,6 +140,10 @@ reference:
     contents:
       - kit_download_button
       - kit_test_download
+  - title: 檔案的小工具
+    desc: 編碼、SPSS 變項名稱、壓縮檔路徑、開啟瀏覽器。
+    contents:
+      - kit_files
   - title: 提示框（Callout）
     contents:
       - kit_callout

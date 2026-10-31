@@ -4,6 +4,8 @@ minor：kitJoin 與 kitsUI 各有一份的機制搬進 kitDesign；舊的 app �
 
 ## 元件
 
+* 檔案的小工具（原本 kitJoin、kitsUI 各一份一模一樣的）：`kit_fix_utf8_chr()`、`kit_fix_utf8_df()`、
+  `kit_is_valid_utf8_df()`、`kit_sav_safe_names()`、`kit_truncate_bytes()`、`kit_gz_path()`、`kit_open_browser()`。
 * `kit_download_button(session, id, label, filename, content, class, app)`：下載按鈕（從兩個 app 的
   `R/download.R` 搬過來）。中文檔名在每個瀏覽器都存得對：網址最後一段、`Content-Disposition`
   （`filename` 與 UTF-8 的 `filename*`）、`<a download>` 都是同一個檔名。`.csv`、`.zip`、`.html`

@@ -4,12 +4,15 @@
 \alias{kit_problems}
 \title{表格或清單裡的問題（深橘紅的字）}
 \usage{
-kit_problems(..., head = NULL)
+kit_problems(..., head = NULL, bullets = TRUE)
 }
 \arguments{
 \item{...}{每個問題一個字串（或 tag）。}
 
 \item{head}{前面的粗體字，例如「還差：」；\code{NULL} 不顯示。}
+
+\item{bullets}{\code{TRUE}（預設）每個問題一個項目符號；\code{FALSE} 一行一個、不加符號
+（例如每一行已經是完整的句子，或前面自己有編號）。}
 }
 \value{
 \verb{<div class="kit-problems">}；沒有問題時是 \code{NULL}。
@@ -19,4 +22,5 @@ kit_problems(..., head = NULL)
 }
 \examples{
 kit_problems("第 2 列沒有選世代", "第 4 列的波次不是數字", head = "還差：")
+kit_problems("bsrs1：w1d5_1 和 w2d5_1 的分數範圍不同", bullets = FALSE)
 }

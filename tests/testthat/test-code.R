@@ -56,9 +56,27 @@ test_that("kit_code() warns (does not stop) when a line stays too long after wra
   long <- paste0("df <- readr::read_csv(\"", strrep("a", 80), ".csv\")")
   expect_warning(out <- html(kit_code(long)), "still longer than 70 columns")
   expect_match(out, strrep("a", 80), fixed = TRUE)
-  expect_warning(kit_code_blocks(list(tidy = long)), "still longer than 70")
+  long2 <- sub("a.csv", "b.csv", long, fixed = TRUE)
+  expect_warning(kit_code_blocks(list(tidy = long2)), "still longer than 70")
   expect_no_warning(kit_code_blocks(list(tidy = long), width = NULL))
   expect_no_warning(kit_code_blocks(list(tidy = "x <- 1")))
+})
+
+test_that("the long-line warning comes once per code block, and can be turned off", {
+  long <- paste0("df <- readr::read_csv(\"", strrep("c", 80), ".csv\")")
+  expect_warning(html(kit_code(long)), "still longer than 70")
+  expect_no_warning(html(kit_code(long)))
+  long3 <- sub("c.csv", "d.csv", long, fixed = TRUE)
+  withr_opt <- options(kitDesign.warn_long_code = FALSE)
+  on.exit(options(withr_opt), add = TRUE)
+  expect_no_warning(html(kit_code(long3)))
+})
+
+test_that("kit_problems(bullets = FALSE) puts one problem per line without bullets", {
+  x <- as.character(kit_problems("a", "b", bullets = FALSE))
+  expect_false(grepl("<ul>", x))
+  expect_equal(lengths(regmatches(x, gregexpr("<div>", x))), 2L)
+  expect_match(as.character(kit_problems("a")), "<li>a</li>")
 })
 
 test_that("format() and print() show the label and the wrapped code", {

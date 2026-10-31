@@ -178,3 +178,27 @@ test_that("kitDesign itself requires bslib 0.11.0 or later", {
   imports <- utils::packageDescription("kitDesign")$Imports
   expect_match(imports, "bslib (>= 0.11.0)", fixed = TRUE)
 })
+
+test_that("kit_app_description(): a local DESCRIPTION wins over an installed copy that isn't loaded", {
+  # 雲端版、run.bat 用 runApp(資料夾)：套件沒有載入，電腦上可能另外裝了舊版
+  skip_if_not_installed("MASS")
+  skip_if("MASS" %in% loadedNamespaces())
+  dir <- tempfile()
+  dir.create(dir)
+  writeLines(c("Package: MASS", "Version: 0.0.1", "Date: 2026-10-31"), file.path(dir, "DESCRIPTION"))
+  old <- setwd(dir)
+  on.exit(setwd(old), add = TRUE)
+  expect_equal(kit_app_description("MASS"), list(version = "0.0.1", date = "2026-10-31"))
+  setwd(old)
+  expect_false(identical(kit_app_description("MASS")$version, "0.0.1"))
+})
+
+test_that("kit_header(logo = \"inline\") writes the logo into the page, with no file dependency", {
+  h <- kit_header("KIT 工具", logo = "inline")
+  x <- as.character(h)
+  expect_match(x, 'src="data:image/svg\\+xml;base64,')
+  expect_match(as.character(htmltools::renderTags(h)$head), 'href="data:image/png;base64,')
+  expect_length(htmltools::htmlDependencies(h), 0)
+  expect_false(grepl("kitDesign-logo-", x))
+  expect_length(htmltools::htmlDependencies(kit_header("KIT 工具")), 1)
+})

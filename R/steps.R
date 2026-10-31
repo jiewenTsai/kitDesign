@@ -224,16 +224,23 @@ print.kit_checklist <- function(x, ...) {
 #'
 #' @param ... 每個問題一個字串（或 tag）。
 #' @param head 前面的粗體字，例如「還差：」；`NULL` 不顯示。
+#' @param bullets `TRUE`（預設）每個問題一個項目符號；`FALSE` 一行一個、不加符號
+#'   （例如每一行已經是完整的句子，或前面自己有編號）。
 #' @return `<div class="kit-problems">`；沒有問題時是 `NULL`。
 #' @examples
 #' kit_problems("第 2 列沒有選世代", "第 4 列的波次不是數字", head = "還差：")
+#' kit_problems("bsrs1：w1d5_1 和 w2d5_1 的分數範圍不同", bullets = FALSE)
 #' @export
-kit_problems <- function(..., head = NULL) {
+kit_problems <- function(..., head = NULL, bullets = TRUE) {
   items <- c(...)
   if (length(items) == 0) return(NULL)
   shiny::tags$div(
     class = "kit-problems",
     if (!is.null(head)) shiny::tags$strong(head),
-    shiny::tags$ul(lapply(items, shiny::tags$li))
+    if (isTRUE(bullets)) {
+      shiny::tags$ul(lapply(items, shiny::tags$li))
+    } else {
+      lapply(items, shiny::tags$div)
+    }
   )
 }

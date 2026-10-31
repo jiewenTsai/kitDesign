@@ -29,7 +29,8 @@ kit_page(
 \item{version, date}{頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
 \code{kit_app_description("kitJoin")}。}
 
-\item{logo}{頁首要不要放 KIT 標誌。}
+\item{logo}{頁首要不要放 KIT 標誌：\code{TRUE}（標誌檔由 htmlDependency 提供，Shiny 裡用）、
+\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
 
 \item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
 

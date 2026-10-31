@@ -45,7 +45,11 @@ kit_code <- function(code, label = "R", width = KIT_CODE_WIDTH) {
   structure(list(code = paste(code, collapse = "\n"), label = label, width = width), class = "kit_code")
 }
 
+# 已經提醒過的程式碼（同一段只提醒一次：畫面每次更新都會重畫）
+kit_code_warned <- new.env(parent = emptyenv())
+
 #' 換行以後的程式碼；還有太長的行時發出 warning
+#' 同一個 R session 裡，同一段程式碼只提醒一次；`options(kitDesign.warn_long_code = FALSE)` 不提醒。
 #' @noRd
 kit_code_text <- function(x) {
   code <- sub("\\s+$", "", x$code)
@@ -53,7 +57,10 @@ kit_code_text <- function(x) {
   code <- kit_code_wrap(code, x$width)
   lines <- strsplit(code, "\n", fixed = TRUE)[[1]]
   long <- which(kit_code_cols(lines) > x$width)
-  if (length(long) > 0) {
+  key <- paste(x$label, x$width, code, sep = "\r")
+  if (length(long) > 0 && isTRUE(getOption("kitDesign.warn_long_code", TRUE)) &&
+      is.null(kit_code_warned[[key]])) {
+    assign(key, TRUE, envir = kit_code_warned)
     warning(sprintf(
       "%s: %d line(s) still longer than %d columns after wrapping (CJK characters count as 2): line %s",
       x$label, length(long), x$width, paste(long, collapse = ", ")

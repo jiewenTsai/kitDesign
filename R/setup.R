@@ -108,7 +108,8 @@ kit_pkg_version <- function() {
 #' @param tagline 接在副標後面的一句（例如「跨波次資料處理」）；`NULL` 不顯示。
 #' @param version,date 頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
 #'   `kit_app_description("kitJoin")`。
-#' @param logo 頁首要不要放 KIT 標誌。
+#' @param logo 頁首要不要放 KIT 標誌：`TRUE`（標誌檔由 htmlDependency 提供，Shiny 裡用）、
+#'   `"inline"`（標誌直接寫進頁面，給沒有 Shiny 的單一 HTML 檔，例如使用手冊）、`FALSE`。
 #' @param meta_extra 版本行後面再接的字（例如「kits 0.25.0」）。
 #' @param show_kitdesign 版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
 #'   回報問題時兩個版本都看得到。
@@ -149,9 +150,11 @@ kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL
 #'
 #' 找的順序：
 #' 1. `path` 有給：讀那個 DESCRIPTION 檔。
-#' 2. `package` 已經載入或安裝：讀套件的 DESCRIPTION。
+#' 2. `package` 已經載入（`library()`、`run_xxx()`、`load_all()`）：讀載入的那一份。
 #' 3. 工作目錄的 `DESCRIPTION`，再往上一層、兩層找（測試時工作目錄在 `tests/testthat`）；
-#'    有給 `package` 時，只認 `Package:` 是它的那一份。
+#'    有給 `package` 時，只認 `Package:` 是它的那一份。雲端版與 run.bat 用 `runApp(資料夾)`，
+#'    套件沒有載入，讀的是這一份。
+#' 4. `package` 有安裝（但沒有載入）：讀安裝的那一份。放在最後，因為它可能是舊版。
 #'
 #' @param package app 的套件名稱，例如 `"kitJoin"`；`NULL` 時只找 DESCRIPTION 檔。
 #' @param path DESCRIPTION 檔的路徑；`NULL` 時照上面的順序找。
@@ -171,10 +174,11 @@ kit_app_description <- function(package = NULL, path = NULL) {
     d <- read_one(path)
     return(list(version = d$version, date = d$date))
   }
-  if (!is.null(package) && nzchar(system.file(package = package))) {
+  installed <- function() {
     desc <- utils::packageDescription(package)
-    return(list(version = desc$Version %||% NA_character_, date = desc$Date %||% NA_character_))
+    list(version = desc$Version %||% NA_character_, date = desc$Date %||% NA_character_)
   }
+  if (!is.null(package) && package %in% loadedNamespaces()) return(installed())
   paths <- c("DESCRIPTION", file.path("..", "DESCRIPTION"), file.path("..", "..", "DESCRIPTION"))
   for (p in paths[file.exists(paths)]) {
     d <- read_one(p)
@@ -182,6 +186,7 @@ kit_app_description <- function(package = NULL, path = NULL) {
       return(list(version = d$version, date = d$date))
     }
   }
+  if (!is.null(package) && nzchar(system.file(package = package))) return(installed())
   none
 }
 
@@ -232,19 +237,21 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
       tagline
     )
   }
+  inline <- identical(logo, "inline")
+  src <- function(file) if (inline) kit_logo_data(file) else kit_logo_file(file)
   header <- shiny::div(
     class = "kit-header mb-4",
     # 分頁圖示（favicon）：向量的豆子，舊的瀏覽器用 PNG；Shiny 會把 tags$head() 搬到 <head>
     shiny::tags$head(
-      shiny::tags$link(rel = "icon", type = "image/svg+xml", href = kit_logo_file("kit-mark.svg")),
-      shiny::tags$link(rel = "alternate icon", type = "image/png", href = kit_logo_file("kit-mark-64.png"))
+      shiny::tags$link(rel = "icon", type = "image/svg+xml", href = src("kit-mark.svg")),
+      shiny::tags$link(rel = "alternate icon", type = "image/png", href = src("kit-mark-64.png"))
     ),
     shiny::div(
       class = "kit-header-row",
-      if (isTRUE(logo)) {
-        # 向量標誌（SVG）：放大縮小都清楚；檔案由 htmlDependency 提供（不是 base64）
+      if (isTRUE(logo) || inline) {
+        # 向量標誌（SVG）：放大縮小都清楚；檔案由 htmlDependency 提供（inline 時寫進頁面）
         # 原文：KIT 標誌
-        shiny::tags$img(src = kit_logo_file("kit-logo.svg"), alt = "KIT \u6a19\u8a8c", class = "kit-header-logo")
+        shiny::tags$img(src = src("kit-logo.svg"), alt = "KIT \u6a19\u8a8c", class = "kit-header-logo")
       },
       shiny::div(
         shiny::h1(title),
@@ -253,7 +260,17 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
       )
     )
   )
+  if (inline) return(header)
   htmltools::attachDependencies(header, kit_logo_dependency(), append = TRUE)
+}
+
+#' 標誌檔寫成 data URI（kit_header(logo = "inline") 用）
+#' @noRd
+kit_logo_data <- function(file) {
+  path <- system.file("logo", file, package = "kitDesign")
+  if (!nzchar(path)) stop("No such logo file: ", file, call. = FALSE)
+  type <- if (grepl("\\.svg$", file)) "image/svg+xml" else "image/png"
+  paste0("data:", type, ";base64,", kit_base64(readBin(path, "raw", n = file.size(path))))
 }
 
 #' 標誌檔（inst/logo/）的 htmlDependency：頁首的 SVG 與分頁圖示用網址取得

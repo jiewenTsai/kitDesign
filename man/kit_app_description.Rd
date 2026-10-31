@@ -22,9 +22,11 @@ kit_app_description(package = NULL, path = NULL)
 找的順序：
 \enumerate{
 \item \code{path} 有給：讀那個 DESCRIPTION 檔。
-\item \code{package} 已經載入或安裝：讀套件的 DESCRIPTION。
+\item \code{package} 已經載入（\code{library()}、\code{run_xxx()}、\code{load_all()}）：讀載入的那一份。
 \item 工作目錄的 \code{DESCRIPTION}，再往上一層、兩層找（測試時工作目錄在 \code{tests/testthat}）；
-有給 \code{package} 時，只認 \verb{Package:} 是它的那一份。
+有給 \code{package} 時，只認 \verb{Package:} 是它的那一份。雲端版與 run.bat 用 \code{runApp(資料夾)}，
+套件沒有載入，讀的是這一份。
+\item \code{package} 有安裝（但沒有載入）：讀安裝的那一份。放在最後，因為它可能是舊版。
 }
 }
 \examples{

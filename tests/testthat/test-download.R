@@ -2,7 +2,7 @@
 # （kitJoin 與 kitsUI 的 R/download.R 的測試搬過來；app 名稱改成參數）
 
 link_attr <- function(html, id, attr) {
-  tag <- regmatches(html, regexpr(paste0('<a [^>]*id="', id, '"[^>]*>'), html))
+  tag <- regmatches(html, regexpr(paste0('<button [^>]*id="', id, '"[^>]*>'), html))
   value <- sub(paste0(".*\\s", attr, '="([^"]*)".*'), "\\1", tag)
   gsub("&amp;", "&", value, fixed = TRUE)
 }
@@ -62,7 +62,7 @@ test_that("副檔名與 Content-Type：.csv.gz 算一個；csv、zip、html 有�
   expect_equal(kit_download_type("readme"), "application/octet-stream")
 })
 
-test_that("網址最後一段是檔名（registerDataObj 的網址插入檔名），按鈕帶 download 與 class", {
+test_that("網址最後一段是檔名（registerDataObj 的網址插入檔名），按鈕帶 data-kit-download 與 class，沒有連結", {
   # 像模組的 session：registerDataObj() 自己加 namespace
   registered <- list()
   session <- list(
@@ -77,10 +77,13 @@ test_that("網址最後一段是檔名（registerDataObj 的網址插入檔名�
     class = "btn-sm btn-primary"
   ))
   expect_equal(
-    link_attr(out, "m-dl", "href"),
+    link_attr(out, "m-dl", "data-kit-href"),
     "session/abc/dataobj/m-dl/%E7%AC%AC%E4%B8%80%E6%B3%A2_na.sav?w=&nonce=n1"
   )
-  expect_equal(link_attr(out, "m-dl", "download"), "第一波_na.sav")
+  expect_equal(link_attr(out, "m-dl", "data-kit-download"), "第一波_na.sav")
+  expect_equal(link_attr(out, "m-dl", "type"), "button")
+  # 外掛攔得到的東西都沒有：沒有 <a>、href、download 屬性
+  expect_false(grepl("<a |\\shref=|\\sdownload=", out))
   expect_match(out, "fa-download")
   expect_match(out, 'class="btn btn-default kit-download btn-sm btn-primary"', fixed = TRUE)
   expect_named(registered, "m-dl")
@@ -88,7 +91,7 @@ test_that("網址最後一段是檔名（registerDataObj 的網址插入檔名�
   out <- as.character(kit_download_button(
     session, "fixed_dl", "下載", "kitsui_fixed_R1.zip", function(file) writeLines("x", file)
   ))
-  expect_equal(link_attr(out, "m-fixed_dl", "href"),
+  expect_equal(link_attr(out, "m-fixed_dl", "data-kit-href"),
                "session/abc/dataobj/m-fixed_dl/kitsui_fixed_R1.zip?w=&nonce=n1")
 })
 

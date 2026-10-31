@@ -32,7 +32,7 @@ fallback name for old browsers is its lowercase form ("第一波.csv" → "kitjo
 Defaults to \code{getOption("kitDesign.app", "kit")}: the app sets it once in \code{.onLoad()}.}
 }
 \value{
-\verb{<a class="btn btn-default kit-download" download="檔名">} (\code{download} holds the file
+\verb{<button type="button" class="btn btn-default kit-download" data-kit-href="網址" data-kit-download="檔名">} (\code{data-kit-href} is the download URL, \code{data-kit-download} the file
 name).
 }
 \description{
@@ -48,6 +48,11 @@ reactives). If writing fails: the error goes to the log ("\if{html}{\out{<app>}}
 download failed (file name): …"), this session shows a red notification (which does not
 disappear on its own), and the response is 500 with the same sentence. Messages from
 \code{\link[=kit_abort]{kit_abort()}} are shown to the user as written; other errors do not expose internal messages.
+
+The button is a \verb{<button>}, not a link: the URL and the file name are in \code{data-kit-href} and
+\code{data-kit-download}, and \code{kit.js} (loaded by \code{\link[=use_kit]{use_kit()}}) fetches the file in the background and
+saves it, so the page never leaves. Browser extensions that take over links on the page (some
+"document viewer" add-ons do, and the download then fails with "Not Found") find nothing to take.
 
 \code{Content-Type} follows the extension: \code{.csv}, \code{.zip}, and \code{.html} get their own MIME types;
 everything else (\code{.sav}, \code{.csv.gz}) is \code{application/octet-stream}, so browsers that add an

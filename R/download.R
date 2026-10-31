@@ -6,7 +6,10 @@
 # 自己回應，三道保險都放上同一個檔名：
 #   1. 網址最後一段就是檔名：session/<token>/dataobj/<key>/<檔名>?w=&nonce=
 #   2. Content-Disposition 同時有 filename（ASCII 備用名）與 filename*（UTF-8，RFC 6266）
-#   3. <a download="檔名">
+#   3. 存檔時的 <a download="檔名">（kit.js）
+# 按鈕本身是 <button data-kit-href data-kit-download>，不是連結：有些瀏覽器外掛（例如 Firefox 的
+# Google PDF Viewer）會攔截頁面上的連結、把頁面導到下載網址，Firefox 跳「離開前提醒」、按離開後連線
+# 斷掉，下載就是 Not Found。按鈕上沒有連結就攔不到；按下去由 kit.js 在背景拿檔案再存檔。
 # kitJoin 與 kitsUI 原本各有一份（R/download.R），kitDesign 0.4.0 起放在這裡。
 
 #' Download button
@@ -23,6 +26,11 @@
 #' disappear on its own), and the response is 500 with the same sentence. Messages from
 #' [kit_abort()] are shown to the user as written; other errors do not expose internal messages.
 #'
+#' The button is a `<button>`, not a link: the URL and the file name are in `data-kit-href` and
+#' `data-kit-download`, and `kit.js` (loaded by [use_kit()]) fetches the file in the background and
+#' saves it, so the page never leaves. Browser extensions that take over links on the page (some
+#' "document viewer" add-ons do, and the download then fails with "Not Found") find nothing to take.
+#'
 #' `Content-Type` follows the extension: `.csv`, `.zip`, and `.html` get their own MIME types;
 #' everything else (`.sav`, `.csv.gz`) is `application/octet-stream`, so browsers that add an
 #' extension based on MIME type don't add an extra one.
@@ -36,7 +44,8 @@
 #' @param app The app name: used in log messages; when the file name is all Chinese, the ASCII
 #'   fallback name for old browsers is its lowercase form ("第一波.csv" → "kitjoin.csv").
 #'   Defaults to `getOption("kitDesign.app", "kit")`: the app sets it once in `.onLoad()`.
-#' @return `<a class="btn btn-default kit-download" download="檔名">` (`download` holds the file
+#' @return `<button type="button" class="btn btn-default kit-download" data-kit-href="網址"
+#'   data-kit-download="檔名">` (`data-kit-href` is the download URL, `data-kit-download` the file
 #'   name).
 #' @seealso [kit_test_download()] (for tests)
 #' @examples
@@ -51,13 +60,13 @@
 #' @export
 kit_download_button <- function(session, id, label, filename, content, class = NULL,
                                 app = getOption("kitDesign.app", "kit")) {
-  shiny::tags$a(
+  shiny::tags$button(
     id = session$ns(id),
+    type = "button",
     class = "btn btn-default kit-download",
     class = class,
-    href = kit_register_download(session, id, filename, content, app),
-    target = "_blank",
-    download = filename,
+    `data-kit-href` = kit_register_download(session, id, filename, content, app),
+    `data-kit-download` = filename,
     shiny::icon("download"),
     label
   )
@@ -146,7 +155,7 @@ kit_content_disposition <- function(filename, app = "kit") {
 }
 
 # 收到下載請求時寫檔、回應；content() 在 session 的 reactive domain 裡跑，可以讀 reactive。
-# 出錯時：log、紅色通知（<a download> 失敗時瀏覽器頂多寫「失敗」）、500 與同一句話
+# 出錯時：log、紅色通知（下載失敗時瀏覽器頂多寫「失敗」）、500 與同一句話
 kit_download_filter <- function(session) {
   function(data, req) {
     tryCatch(

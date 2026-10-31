@@ -11,8 +11,9 @@
  *  5. kit-open-details：打開指定 id 的收合區塊（kit_open_details()）。
  *  6. kit-scroll：把指定 id 的元素捲到畫面上方（kit_scroll_to()）；
  *     使用者設定「減少動態效果」時直接跳過去。
- *  7. kit-unload-guard：有結果時，關掉或重新整理分頁前先問一次（kit_unload_guard()）。
- *  8. 「複製」按鈕（.kit-copy）：複製下一個元素（程式碼框）的文字，按了顯示「已複製」1.5 秒。
+ *  7. 下載按鈕（kit_download_button()）：在背景拿檔案再存檔，頁面不離開。
+ *  8. kit-unload-guard：有結果時，關掉或重新整理分頁前先問一次（kit_unload_guard()）。
+ *  9. 「複製」按鈕（.kit-copy）：複製下一個元素（程式碼框）的文字，按了顯示「已複製」1.5 秒。
  */
 (function() {
   var $ = window.jQuery;
@@ -84,7 +85,7 @@
       });
     });
 
-    // 8. 複製
+    // 9. 複製
     $(document).on('click', '.kit-copy', function() {
       var b = this, target = b.parentElement && b.parentElement.nextElementSibling;
       if (!target || !navigator.clipboard) return;
@@ -95,37 +96,42 @@
     });
   }
 
-  // 7. 下載：不離開頁面
-  // 瀏覽器照 <a download> 去要下載網址時，Firefox 會把它當成要離開這一頁（觸發 beforeunload、
-  // 跳出離開提醒）；按「離開」後頁面真的離開、連線斷掉，下載網址就是 Not Found。
-  // 所以下載的連結改成在背景 fetch() 拿檔案，再用 blob 網址存檔：頁面從頭到尾不離開。
-  // fetch() 不能用時（或伺服器回錯誤）照原本的方式；錯誤的紅色通知由 R 那邊送。
+  // 7. 下載：按鈕上沒有下載網址，頁面也不離開
+  // 下載按鈕（kit_download_button()）是 <button data-kit-href data-kit-download>，不是
+  // <a href download>：有些瀏覽器外掛會攔截頁面上的連結，自己把頁面導到下載網址；Firefox 會先跳
+  // 「離開前提醒」，按「離開」後連線斷掉，下載就是 Not Found。按鈕上沒有連結，外掛沒有東西可以攔。
+  // 按下去時在背景 fetch() 拿檔案，再用一個不放進頁面的 <a download> 存檔：頁面從頭到尾不離開，
+  // 聽整個頁面點擊的外掛也看不到這個點擊。伺服器回錯誤時不存檔；紅色通知由 R 那邊送。
+  function saveFile(href, name) {
+    var t = document.createElement('a');
+    t.href = href;
+    t.download = name;
+    t.click();
+  }
   document.addEventListener('click', function(e) {
-    var a = e.target && e.target.closest ? e.target.closest('a[download]') : null;
-    if (!a || a.hasAttribute('data-kit-blob') || !window.fetch || !window.URL || !a.href) return;
-    if (a.href.indexOf('/dataobj/') < 0) return;  // 只管 kit_download_button() 的連結
+    var b = e.target && e.target.closest ? e.target.closest('[data-kit-href]') : null;
+    if (!b) return;
     e.preventDefault();
-    if (a.classList.contains('kit-downloading')) return;
-    a.classList.add('kit-downloading');
-    fetch(a.href, { credentials: 'same-origin' })
+    if (b.classList.contains('kit-downloading')) return;
+    var href = b.getAttribute('data-kit-href'), name = b.getAttribute('data-kit-download') || '';
+    if (!window.fetch || !window.URL || !URL.createObjectURL) return saveFile(href, name);
+    b.classList.add('kit-downloading');
+    b.setAttribute('aria-busy', 'true');
+    fetch(href, { credentials: 'same-origin' })
       .then(function(r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.blob();
       })
       .then(function(blob) {
         var url = URL.createObjectURL(blob);
-        var t = document.createElement('a');
-        t.href = url;
-        t.download = a.getAttribute('download') || '';
-        t.setAttribute('data-kit-blob', '');
-        t.style.display = 'none';
-        document.body.appendChild(t);
-        t.click();
-        t.remove();
+        saveFile(url, name);
         setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
       })
       .catch(function() { /* R 已經跳出紅色通知 */ })
-      .then(function() { a.classList.remove('kit-downloading'); });
+      .then(function() {
+        b.classList.remove('kit-downloading');
+        b.removeAttribute('aria-busy');
+      });
   }, true);
 
   // 8. 離開頁面前的提醒

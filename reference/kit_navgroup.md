@@ -1,7 +1,7 @@
-# 分頁列的一組（給 [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)）
+# One group in the tab bar (for [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md))
 
-分頁列的一組（給
-[`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)）
+One group in the tab bar (for
+[`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)).
 
 ## Usage
 
@@ -13,20 +13,22 @@ kit_navgroup(label, tabs, tools = FALSE)
 
 - label:
 
-  組標籤（灰色小字），例如「準備」「做出資料（選一個）」「其他工具」。
+  The group label (small gray text), e.g. "準備" ("Prepare"),
+  "做出資料（選一個）" ("Make the data (pick one)"), "其他工具" ("Other
+  tools").
 
 - tabs:
 
-  具名字串向量：名字是分頁的
-  value（`tabPanel(value = )`），值是分頁名稱。
+  A named character vector: names are tab values (`tabPanel(value = )`),
+  values are tab names.
 
 - tools:
 
-  `TRUE` 時是獨立的小工具：虛線框、沒有陰影。
+  When `TRUE`, these are standalone tools: dashed border, no shadow.
 
 ## Value
 
-list（`class = "kit_navgroup"`）。
+A list (`class = "kit_navgroup"`).
 
 ## Examples
 
@@ -44,4 +46,5 @@ kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理"))
 #> 
 #> attr(,"class")
 #> [1] "kit_navgroup"
+# "Prepare": "File upload", "Missing values"
 ```

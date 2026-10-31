@@ -1,25 +1,28 @@
-# 元件一覽
+# Components
 
-這一頁的元件都是用 kitDesign 直接畫出來的：每一段先是 R
-程式碼，下面就是它的樣子。
-規格（什麼時候用、不要怎麼用）在[設計語言](https://jiewentsai.github.io/kitDesign/articles/design-language.md)；在自己的電腦上看所有元件：
-[`kitDesign::kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)。
+Every component on this page is rendered directly by kitDesign: each
+section shows the R code first, and right below it what it looks like.
+The specs (when to use it, what not to do) are in the [design
+language](https://jiewentsai.github.io/kitDesign/articles/design-language.md);
+to see every component on your own computer:
+[`kitDesign::kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md).
 
-按鈕、收合這些在 Shiny
-裡才會動的地方，這裡只看樣子。有狀態的元件（模組）放在最後，用截圖。
+Things that only respond inside Shiny, like buttons and collapsibles,
+are shown here for their look only. Stateful components (modules) come
+last, as screenshots.
 
-### 頁首（Header）
+### Header
 
-一個 app
-只有一個，放在最上面：標誌、工具名稱、副標、版本行。[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)
-已經放好了。
+One per app, at the very top: logo, tool name, subtitle, version line.
+[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)
+already includes it.
 
 ``` r
 
 kit_header(
-  "KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
+  "KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",   # "KIT Data Join Tool", "Kids in Taiwan", "Cross-wave data processing"
   version = "0.5.0", date = "2026-10-31",
-  logo = "inline"   # 在 Shiny 裡用預設的 TRUE；這裡是靜態網頁，所以把標誌寫進頁面
+  logo = "inline"   # in Shiny use the default TRUE; this is a static web page, so the logo is written into the page
 )
 ```
 
@@ -32,17 +35,17 @@ kit_header(
 
 v0.5.0 · 2026-10-31
 
-### 步驟分頁（NavTabs）
+### Step tabs (NavTabs)
 
-分組、不編號的分頁列（kitJoin
-的樣子）。目前的分頁是萊姆色；虛線框是「工具」組。
+A grouped, unnumbered tab bar (as in kitJoin). The current tab is lime;
+the dashed box is the “tools” group.
 
 ``` r
 
 kit_navgroups(list(
-  kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理")),
-  kit_navgroup("做出資料", c(join = "串接", kits = "轉成 kits 作答檔")),
-  kit_navgroup("其他工具", c(manual = "使用手冊"), tools = TRUE)
+  kit_navgroup("準備", c(upload = "檔案上傳", missing = "遺漏值處理")),        # "Prepare": "Upload files", "Missing values"
+  kit_navgroup("做出資料", c(join = "串接", kits = "轉成 kits 作答檔")),      # "Build data": "Join", "Convert to kits response file"
+  kit_navgroup("其他工具", c(manual = "使用手冊"), tools = TRUE)               # "Other tools": "User manual"
 ), tabset = "tabs", selected = "join")
 ```
 
@@ -60,16 +63,18 @@ kit_navgroups(list(
 
 - [使用手冊](#)
 
-### 頁面說明：這一頁做什麼（PageGuide）
+### Page guide: what this page does (PageGuide)
 
-每一頁最上面一句話，旁邊「看步驟 ▸」；步驟與會得到什麼預設收起。
+One sentence at the top of each page, with “看步驟 ▸” (“See steps ▸”)
+next to it; the steps and what you get are collapsed by default.
 
 ``` r
 
 kit_tab_guide(
-  goal = "把兩個波次的檔案依 ID 接成一張寬資料。",
+  goal = "把兩個波次的檔案依 ID 接成一張寬資料。",   # "Join files from two waves by ID into one wide table."
   steps = c("選 ID 欄", "選要保留哪些人", "按「執行串接」", "看狀態框與結果"),
-  output = "一張寬資料：一人一列。"
+  # "Pick the ID column", "Choose who to keep", "Click 'Run join'", "Check the status box and results"
+  output = "一張寬資料：一人一列。"                   # "One wide table: one row per person."
 )
 ```
 
@@ -84,19 +89,20 @@ kit_tab_guide(
 
 **會得到：** 一張寬資料：一人一列。
 
-### 按鈕（Button）
+### Button
 
-一頁只有一個主要按鈕（萊姆色）。小按鈕給下載、全選；危險按鈕是鮭魚色。停用的按鈕是灰的，
-上面一定寫「還差：…」。
+Only one primary button per page (lime). Secondary buttons are for
+downloads and select-all; the danger button is salmon. A disabled button
+is gray, and always has “還差：…” (“Still needed: …”) above it.
 
 ``` r
 
 tags$div(
   style = "display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem;",
-  kit_button("run", "開始校準", "primary"),
-  kit_button("csv", "下載 CSV"),
-  kit_button("skip", "這一回合不做", "danger"),
-  kit_button("convert", "執行轉換", "primary", disabled = TRUE)
+  kit_button("run", "開始校準", "primary"),           # "Start calibration"
+  kit_button("csv", "下載 CSV"),                      # "Download CSV"
+  kit_button("skip", "這一回合不做", "danger"),        # "Skip this run"
+  kit_button("convert", "執行轉換", "primary", disabled = TRUE)   # "Run conversion"
 )
 ```
 
@@ -108,23 +114,24 @@ tags$div(
 
 執行轉換
 
-### 下載按鈕（DownloadButton）
+### Download button (DownloadButton)
 
-和小按鈕一樣的樣子；中文檔名在每個瀏覽器都存得對（網址最後一段、檔名標頭、`download`
-屬性都是同一個檔名）。放在 server 的
-[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)
-裡，檔案在按下載時才寫。這裡用測試用的 session
-畫出來，所以按了沒有作用。
+Looks the same as a secondary button; Chinese file names save correctly
+in every browser (the last part of the URL, the file name header, and
+the `download` attribute all use the same name). Put it inside
+[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html) in the
+server; the file is written only when the user clicks download. Here it
+is drawn with a test session, so clicking it does nothing.
 
 ``` r
 
 session <- shiny::MockShinySession$new()
 tags$div(
   class = "kit-downloads",
-  kit_download_button(session, "dl_csv", "下載 CSV", "第一波 資料.csv",
+  kit_download_button(session, "dl_csv", "下載 CSV", "第一波 資料.csv",   # "Download CSV", "Wave 1 data.csv"
                       function(file) utils::write.csv(mtcars, file),
                       class = kit_btn_class("secondary")),
-  kit_download_button(session, "dl_gz", "下載作答檔（.csv.gz）", "kits_long.csv.gz",
+  kit_download_button(session, "dl_gz", "下載作答檔（.csv.gz）", "kits_long.csv.gz",   # "Download response file (.csv.gz)"
                       function(file) writeLines("x", file), class = "btn-primary")
 )
 ```
@@ -134,14 +141,17 @@ CSV](https://jiewentsai.github.io/kitDesign/articles/session/test/dataobj/mock-s
 [
 下載作答檔（.csv.gz）](https://jiewentsai.github.io/kitDesign/articles/session/test/dataobj/mock-session-dl_gz/kits_long.csv.gz?w=&nonce=test)
 
-### 狀態框（StatusBox）
+### Status box (StatusBox)
 
-按了主要按鈕以後第一眼看的框，只有四種：【完成】【完成，但請注意】【停下來】【要重新執行】。
-第一行是一句結論，下面最多 3 點，其他收起來。
+The first thing to look at after clicking the primary button. There are
+only four kinds: 【完成】 (Done), 【完成，但請注意】 (Done, but take
+note), 【停下來】 (Stopped), 【要重新執行】 (Needs a rerun). The first
+line is a one-sentence conclusion, followed by at most 3 points;
+anything more is collapsed.
 
 ``` r
 
-kit_done_status("串接完成：結果共 3,389 列 × 2,058 欄。",
+kit_done_status("串接完成：結果共 3,389 列 × 2,058 欄。",   # "Join done: 3,389 rows × 2,058 columns."
                 points = c("688 人每個檔案都有資料。", "第 1 波 3,389 人，第 2 波 3,102 人。"))
 ```
 
@@ -152,9 +162,15 @@ kit_done_status("串接完成：結果共 3,389 列 × 2,058 欄。",
 
 ``` r
 
+                # "688 people have data in every file.", "Wave 1: 3,389 people; wave 2: 3,102 people."
+```
+
+``` r
+
 kit_done_status(
   "串接完成：結果共 3,389 列 × 2,058 欄。",
   warnings = c("有 12 人的 ID 重複，只留第一筆。", "第 3 波沒有 sex 欄。")
+  # "12 people have duplicate IDs; only the first record is kept.", "Wave 3 has no sex column."
 )
 ```
 
@@ -165,7 +181,7 @@ kit_done_status(
 
 ``` r
 
-kit_error_status(simpleError("object 'subj_id' not found"), "串接")
+kit_error_status(simpleError("object 'subj_id' not found"), "串接")   # "Join"
 ```
 
 **【停下來】** 串接時發生沒有預期到的問題，沒有做完。
@@ -178,15 +194,16 @@ kit_error_status(simpleError("object 'subj_id' not found"), "串接")
 
 ``` r
 
-kit_stale_status("執行串接")
+kit_stale_status("執行串接")   # "Run join"
 ```
 
 **【要重新執行】**
 檔案或設定改過了，舊的結果已清除：請再按一次「執行串接」。
 
-### 提示框（Callout）
+### Callout
 
-資訊是天藍色，要注意是黃色。提示框不是結果，所以沒有陰影。
+Info is sky blue; take-note is yellow. A callout is not a result, so it
+has no shadow.
 
 ``` r
 
@@ -197,13 +214,22 @@ kit_callout("外部連結不適用：這一回合只有一個世代，這不是�
 
 ``` r
 
+# "External linking does not apply: this run has only one cohort. This is not an error."
 kit_callout("資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。", warn = TRUE)
 ```
 
 資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。
 
-雲端版（[`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)）：頁首下面一行黃色的橫幅，頁面最下面是灰色小字的使用須知。
-文字是 app 的：每一段的段名與內文、參考連結。
+``` r
+
+# "The data contain what look like missing-value codes. Go to 'Missing values' first."
+```
+
+Cloud version
+([`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)):
+a yellow banner line under the header, and the usage notes in small gray
+text at the very bottom of the page. The text belongs to the app: each
+section’s title and body, and the reference links.
 
 ``` r
 
@@ -216,14 +242,18 @@ kit_cloud_banner("此為雲端版：上傳的資料會傳送至位於美國的 P
 
 ``` r
 
+# "This is the cloud version: uploaded data are sent to Posit servers in the US." "(Cloud version usage notes)"
 kit_cloud_footer(
   sections = list(
     "一、資料傳輸與儲存" = c("本雲端版部署於 Posit Connect Cloud，主機位於美國。",
                              "本工具不另行保存、備份或分享您的資料。"),
+    # "1. Data transfer and storage": "This cloud version runs on Posit Connect Cloud, hosted in the US.",
+    #   "This tool does not separately keep, back up, or share your data."
     "二、免責聲明" = "本工具以現況提供，僅供資料處理輔助之用。"
+    # "2. Disclaimer": "This tool is provided as is, only to assist with data processing."
   ),
   links = c("Posit Trust Center" = "https://trust.posit.co",
-            "Posit 隱私權政策" = "https://posit.co/about/privacy-policy/")
+            "Posit 隱私權政策" = "https://posit.co/about/privacy-policy/")   # "Posit privacy policy"
 )
 ```
 
@@ -237,9 +267,11 @@ Cloud，主機位於美國。本工具不另行保存、備份或分享您的資
 參考連結： [Posit Trust Center](https://trust.posit.co) · [Posit
 隱私權政策](https://posit.co/about/privacy-policy/)
 
-### 資料表（DataTable）
+### Data table (DataTable)
 
-表格寬度跟著內容；太寬時在自己的框裡左右捲。上面一行小字寫共幾列幾欄。
+The table is as wide as its content; when it is too wide, it scrolls
+sideways inside its own frame. A line of small text above it gives the
+number of rows and columns.
 
 ``` r
 
@@ -263,13 +295,14 @@ tagList(
 | 104 | M36    | 3      | 51,200 |
 | 105 | M03    | 6      | 39,900 |
 
-### 圖（Chart）
+### Chart
 
-plotly 圖最後交給
-[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)：字型、軸線、圖例、工具列和
-app 一致。
-前後對照與用法見[「圖」](https://jiewentsai.github.io/kitDesign/articles/charts.md)。類別色用色盲友善的
-Okabe–Ito：
+Pass a plotly chart to
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+as the last step: font, axis lines, legend, and toolbar match the app.
+For before/after comparisons and usage, see
+[“Charts”](https://jiewentsai.github.io/kitDesign/articles/charts.md).
+Categorical colors use the colorblind-friendly Okabe–Ito palette:
 
 ``` r
 
@@ -299,15 +332,16 @@ vermillion
 
 neutral
 
-### 細節列（Details）
+### Details row (Details)
 
-結果下面一排收起來的細節：紀錄、檢查表、用 R 怎麼做。要看再打開。
+A row of collapsed details under the result: log, check table, How to do
+it in R. Open them when you need them.
 
 ``` r
 
 kit_details_row(
-  kit_detail("這一回合的紀錄", tags$p("2026-10-31 14:02 串接 2 個檔案。")),
-  kit_detail("用 R 怎麼做", kit_code("joined <- dplyr::left_join(t1, t2, by = \"subj_id\")"))
+  kit_detail("這一回合的紀錄", tags$p("2026-10-31 14:02 串接 2 個檔案。")),   # "Log for this run": "... joined 2 files."
+  kit_detail("用 R 怎麼做", kit_code("joined <- dplyr::left_join(t1, t2, by = \"subj_id\")"))   # "How to do it in R"
 )
 ```
 
@@ -323,13 +357,13 @@ kit_details_row(
 
     joined <- dplyr::left_join(t1, t2, by = "subj_id")
 
-進階設定（預設收起）與設定摘要：
+Advanced settings (collapsed by default) and the settings summary:
 
 ``` r
 
 tagList(
-  kit_advanced(checkboxInput("trim", "比對前去掉 ID 前後的空白", TRUE)),
-  kit_settings_line(c("2 個檔案", "ID：subj_id", "向後追蹤樣本"))
+  kit_advanced(checkboxInput("trim", "比對前去掉 ID 前後的空白", TRUE)),   # "Trim spaces around IDs before matching"
+  kit_settings_line(c("2 個檔案", "ID：subj_id", "向後追蹤樣本"))        # "2 files", "ID: subj_id", "Follow-up sample"
 )
 ```
 
@@ -339,15 +373,16 @@ tagList(
 
 本次：2 個檔案 · ID：subj_id · 向後追蹤樣本
 
-### 用 R 怎麼做（CodePanel）
+### How to do it in R (CodePanel)
 
-一個版本的程式碼：每行最多 70 欄（太長自動換行），旁邊有「複製」。
+Code for one version: at most 70 characters per line (longer lines wrap
+automatically), with “複製” (“Copy”) next to it.
 
 ``` r
 
 kit_code(
   "scores <- kits::kits_subj(X, item, persons = persons, method = \"WLE\", se = TRUE, theta_range = c(-6, 6))",
-  "kits 版"
+  "kits 版"   # "kits version"
 )
 ```
 
@@ -358,21 +393,24 @@ kit_code(
     scores <- kits::kits_subj(X, item, persons = persons, method = "WLE",
                               se = TRUE, theta_range = c(-6, 6))
 
-### 步驟卡（StepCard）
+### Step card (StepCard)
 
-一次做一步：現在這一步有框和陰影，做完的收成一行摘要（「改」可以回去），還不能做的是灰的。
+One step at a time: the current step has a border and shadow, done steps
+collapse to a one-line summary (“改” (“Edit”) goes back), and steps that
+can’t be done yet are gray.
 
 ``` r
 
 tagList(
-  kit_step_card(kit_step_head(1, "每個檔案是哪個世代、哪個波次", "done",
-                              summary = "2 個檔案 · 世代 TDCYP", edit_id = "edit1")),
+  kit_step_card(kit_step_head(1, "每個檔案是哪個世代、哪個波次", "done",   # "Which cohort and wave each file is"
+                              summary = "2 個檔案 · 世代 TDCYP", edit_id = "edit1")),   # "2 files · cohort TDCYP"
   kit_step_card(
-    kit_step_head(2, "哪些欄是題目", "current", title_id = "st2"),
+    kit_step_head(2, "哪些欄是題目", "current", title_id = "st2"),   # "Which columns are items"
     kit_step_body(tags$p("挑出哪些欄是題目（至少一題）。"), actionButton("ok2", "對，下一步")),
+    # "Pick the columns that are items (at least one)." "Yes, next"
     title_id = "st2"
   ),
-  kit_step_card(kit_step_head(3, "計分檢查", "locked"))
+  kit_step_card(kit_step_head(3, "計分檢查", "locked"))   # "Scoring check"
 )
 ```
 
@@ -387,17 +425,20 @@ tagList(
 
 3 第 3 步，還不能做： 計分檢查 先完成第 2 步
 
-### 檢查清單（Checklist）
+### Checklist
 
-轉換前要看的事：! 要決定（旁邊有按鈕）、✓ 沒問題、i 提醒。
+Things to review before converting: ! needs a decision (with buttons
+next to it), ✓ fine, i a reminder.
 
 ``` r
 
 kit_checklist(
   kit_check("todo", "有 3 題的分數從 1 開始", "kits 要的分數是 0、1、2…。可以全部減 1，或照原樣。",
             actions = list(kit_button("shift", "全部減 1（建議）"), kit_button("keep", "照原樣"))),
-  kit_check("ok", "45 題的分數都是整數"),
-  kit_check("note", "有 2 題沒有人作答，不會放進作答檔")
+  # "3 items have scores starting at 1", "kits needs scores 0, 1, 2…. You can subtract 1 from all, or keep them as is."
+  # buttons: "Subtract 1 from all (recommended)", "Keep as is"
+  kit_check("ok", "45 題的分數都是整數"),                   # "All 45 items have integer scores"
+  kit_check("note", "有 2 題沒有人作答，不會放進作答檔")      # "2 items have no responses and won't go into the response file"
 )
 ```
 
@@ -411,16 +452,18 @@ kit_checklist(
 - i 提醒：
   **有 2 題沒有人作答，不會放進作答檔**
 
-### 還差什麼（ReadyLine）
+### Ready line: what’s still needed (ReadyLine)
 
-主要按鈕還不能按時，上面一行寫還差什麼，旁邊一個連結帶使用者去補。
+When the primary button can’t be clicked yet, a line above it says what
+is still needed, with a link next to it that takes the user where to fix
+it.
 
 ``` r
 
 tagList(
-  kit_ready_line("至少要 2 個波次的檔案，目前只有 1 個",
-                 actionLink("goto_upload", "到「檔案上傳」加入檔案 →")),
-  kit_button("join", "執行串接", "primary", disabled = TRUE)
+  kit_ready_line("至少要 2 個波次的檔案，目前只有 1 個",   # "Needs files from at least 2 waves; there is only 1 now"
+                 actionLink("goto_upload", "到「檔案上傳」加入檔案 →")),   # "Go to 'Upload files' to add files →"
+  kit_button("join", "執行串接", "primary", disabled = TRUE)   # "Run join"
 )
 ```
 
@@ -429,9 +472,10 @@ tagList(
 
 執行串接
 
-### 下一步（NextStep）
+### Next step (NextStep)
 
-做完一頁，最下面告訴使用者接著去哪裡。
+When a page is done, the bottom of the page tells the user where to go
+next.
 
 ``` r
 
@@ -442,18 +486,25 @@ kit_next_step("串接好了。接著把資料轉成 kits 作答檔。", "next", 
 
 下一步：轉成作答檔 →
 
-### 圖解（Diagram）
+``` r
 
-處理前的小表 → 處理後的小表。新加的欄是淡萊姆色，欄名後面寫「（新）」。
+# "Join done. Next, convert the data into a kits response file." "Next: convert to response file"
+```
+
+### Diagram
+
+Small table before processing → small table after processing. New
+columns are light lime, with “（新）” (“(new)”) after the column name.
 
 ``` r
 
 kit_diagram(
-  list(kit_dg_table(data.frame(id = 1:2, score = c(3, 5)), "第 1 波（t1）"),
-       kit_dg_table(data.frame(id = c(1, 3), score = c(4, 6)), "第 2 波（t2）")),
+  list(kit_dg_table(data.frame(id = 1:2, score = c(3, 5)), "第 1 波（t1）"),      # "Wave 1 (t1)"
+       kit_dg_table(data.frame(id = c(1, 3), score = c(4, 6)), "第 2 波（t2）")),  # "Wave 2 (t2)"
   kit_dg_table(data.frame(id = 1:2, score_t1 = c(3, 5), score_t2 = c(4, NA), wave = c(2, 1)),
-               "結果", added = "wave"),
+               "結果", added = "wave"),   # "Result"
   "依 id 接起來：第 2 波沒有出席的人，t2 的格子是空的。"
+  # "Joined by id: for people absent in wave 2, the t2 cells are empty."
 )
 ```
 
@@ -482,24 +533,31 @@ kit_diagram(
 
 依 id 接起來：第 2 波沒有出席的人，t2 的格子是空的。
 
-### 執行分頁（RunTab）
+### Run tab (RunTab)
 
-一頁一個主要按鈕的分頁（kitJoin
-的串接、疊加、流失樣本、遺漏值、長寬轉換、格式轉換）都是同一個骨架：
+Tabs with one primary button each (kitJoin’s join, stack, attrition
+sample, missing values, long/wide reshaping, and format conversion) all
+share one skeleton:
 [`kit_run_tab_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)
-照頁面骨架排好固定的部分，分頁自己的設定放在中間；[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)
-在分頁的
-[`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html)
-裡呼叫，做好還差、設定摘要、執行、狀態框、通知、捲到狀態框、
-【要重新執行】、結果的細節與「用 R 怎麼做」。下面是還沒有 server
-時的樣子（設定摘要、狀態框、 結果都是空的，主要按鈕停用）。
+lays out the fixed parts following the page skeleton, with the tab’s own
+settings in the middle;
+[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md),
+called inside the tab’s
+[`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html),
+handles still needed, the settings summary, running, the status box,
+notifications, scrolling to the status box, 【要重新執行】 (Needs a
+rerun), and the result details and “How to do it in R”. Below is how it
+looks before there is a server (settings summary, status box, and result
+are empty, and the primary button is disabled).
 
 ``` r
 
 kit_run_tab_ui(
-  "stack", "執行疊加",
+  "stack", "執行疊加",   # "Run stack"
   guide = kit_tab_guide("把各波資料上下疊起來：每個人在每一波各佔一列。", c("按「執行疊加」", "看狀態框與預覽"), "一張長格式的資料。"),
-  selectInput("stack-wave_col", "波次欄的名稱", c("wave", "t"))
+  # "Stack each wave's data on top of each other: one row per person per wave.",
+  # "Click 'Run stack'", "Check the status box and preview", "One long-format table."
+  selectInput("stack-wave_col", "波次欄的名稱", c("wave", "t"))   # "Name of the wave column"
 )
 ```
 
@@ -520,49 +578,63 @@ wave t
 
 用 R 怎麼做
 
-server（在分頁的
-[`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html)
-裡）：
+Server (inside the tab’s
+[`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html)):
 
 ``` r
 
 tab <- kit_run_tab_server(
   input, output, session, "執行疊加",
-  ready = reactive(kit_need_files(length(files()), 2L)),       # 還差：…（停用主要按鈕）
-  settings = function() paste0(length(files()), " 個檔案"),     # 本次：…
-  stale_on = function() list(files(), input$wave_col),         # 改了 →【要重新執行】
-  progress = "正在疊加資料…",
+  ready = reactive(kit_need_files(length(files()), 2L)),       # Still needed: … (disables the primary button)
+  settings = function() paste0(length(files()), " 個檔案"),     # This run: … ("N files")
+  stale_on = function() list(files(), input$wave_col),         # changed → 【要重新執行】 (Needs a rerun)
+  progress = "正在疊加資料…",                                   # "Stacking data…"
   run = function() dplyr::bind_rows(files(), .id = input$wave_col),
   done = function(res) kit_done_status(paste0("疊加完成：結果共 ", kit_dims(nrow(res), ncol(res)), "。")),
-  details_ui = function(res) kit_detail("結果預覽", kit_preview_table(res)),
+  details_ui = function(res) kit_detail("結果預覽", kit_preview_table(res)),   # "Result preview"
   code = function() "stacked <- dplyr::bind_rows(t1, t2, .id = \"wave\")"
 )
-list(state = tab$state)                                        # 步驟分頁打 ✓ 用
+list(state = tab$state)                                        # used by step tabs for the ✓
 ```
 
-### 模組（有狀態的元件）
+### Modules (stateful components)
 
-下面四個元件要在 Shiny 裡才會動（哪一步打開、按鈕能不能按、分頁的 ✓），
-所以用截圖。每一個都是一頁一行：`*_ui(id)` 放在頁面，`*_server(id)` 放在
-server。
+The four components below only work inside Shiny (which step is open,
+whether a button can be clicked, the ✓ on tabs), so they are shown as
+screenshots. Each takes one line in each place: `*_ui(id)` goes in the
+page, `*_server(id)` goes in the server.
 
-**步驟卡**：[`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)／[`kit_stepcards_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)
+**Step cards**:
+[`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)
+/
+[`kit_stepcards_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)
 
-![步驟卡：第 1 步做完（打勾、一行摘要、改），第 2 步打開，第 3
-步還不能做](figures/module-stepcards.jpg)
+![Step cards: step 1 done (check mark, one-line summary, edit), step 2
+open, step 3 not available yet](figures/module-stepcards.jpg)
 
-**主要按鈕＋還差**：[`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)／[`kit_run_gate_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)
+**Primary button + still needed**:
+[`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)
+/
+[`kit_run_gate_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)
 
-![設定摘要、主要按鈕「執行串接」，下面是【完成，但請注意】的狀態框](figures/module-rungate.jpg)
+![Settings summary, the primary button 執行串接 (Run join), and below it
+a 【完成，但請注意】 (Done, but take note) status
+box](figures/module-rungate.jpg)
 
-**步驟分頁**：[`kit_step_tabs_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md)／[`kit_step_tabs_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md)（流程分頁：做完
-✓、還不能做是灰的）
+**Step tabs**:
+[`kit_step_tabs_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md)
+/
+[`kit_step_tabs_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md)
+(flow tabs: ✓ when done, gray when not available yet)
 
-![分組的分頁列與有順序的流程分頁，① ② 打勾，④
-還不能做](figures/module-steptabs.jpg)
+![A grouped tab bar and an ordered flow tab bar; ① and ② are checked, ④
+is not available yet](figures/module-steptabs.jpg)
 
-**用 R
-怎麼做**：[`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)／[`kit_code_panel_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)（打開時才算程式碼）
+**How to do it in R**:
+[`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)
+/
+[`kit_code_panel_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)
+(code is computed only when opened)
 
-![打開的「用 R
-怎麼做」：程式碼自動換行，旁邊有複製](figures/module-codepanel.jpg)
+![The opened How to do it in R panel: code wraps automatically, with a
+copy button next to it](figures/module-codepanel.jpg)

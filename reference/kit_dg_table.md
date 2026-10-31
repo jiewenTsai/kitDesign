@@ -1,9 +1,10 @@
-# 圖解用的小表格（2–3 欄、2–4 列）
+# Small table for diagrams (2–3 columns, 2–4 rows)
 
-配角：不加框、表格跟著內容寬、1px
-細線、淡色表頭（不是大資料表的黑表頭）；
-值用等寬字。新加的欄淡萊姆底，欄名後面加「（新）」，不只靠顏色；
-空的格子寫灰色的「（空）」。
+A supporting element: no box, table as wide as its content, 1px thin
+lines, a light header (not the black header of large data tables);
+values in a monospace font. New columns get a light lime background and
+"（新）" ("(new)") after the name, so it does not rely on color alone;
+empty cells show a gray "（空）" ("(empty)").
 
 ## Usage
 
@@ -15,28 +16,30 @@ kit_dg_table(df, title, added = NULL, row_header = FALSE)
 
 - df:
 
-  data.frame（值會轉成文字）；`NA` 或 `""` 顯示成「（空）」。
+  A data.frame (values are converted to text); `NA` or `""` shows as
+  "（空）" ("(empty)").
 
 - title:
 
-  表名，放在 `<caption>`（例如「第 1 波（t1）」「結果」）。
+  The table name, placed in `<caption>` (e.g. "第 1 波（t1）" ("Wave 1
+  (t1)"), "結果" ("Result")).
 
 - added:
 
-  這一步新加的欄名（例如 `wave`）。
+  Names of columns added in this step (e.g. `wave`).
 
 - row_header:
 
-  第 1 欄是列標題（`<th scope="row">`）。
+  Whether column 1 holds row headers (`<th scope="row">`).
 
 ## Value
 
-`<table class="kit-dg-table">`。
+`<table class="kit-dg-table">`.
 
 ## Examples
 
 ``` r
-kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")
+kit_dg_table(data.frame(id = 1:2, score = c(3, NA)), "第 1 波（t1）")  # "Wave 1 (t1)"
 #> <table class="kit-dg-table">
 #>   <caption>第 1 波（t1）</caption>
 #>   <thead>

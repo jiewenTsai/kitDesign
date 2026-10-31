@@ -1,0 +1,79 @@
+/* kitDesign 網站：讓 pkgdown 的頁面像 KIT（克制的 neo-brutalism）
+ * 顏色與主題在 _pkgdown.yml（Bootswatch Brite＋KIT 的顏色）；這裡只補 pkgdown 的版面。
+ * 「元件一覽」那一頁另外載入 kitDesign 自己的 CSS（use_kit()），元件是真的畫出來的。
+ */
+:root {
+  --nb-ink: #141414;
+  --nb-page: #faf7f0;
+  --nb-card: #ffffff;
+  --nb-lime: #c6d033;
+  --nb-green: #006835;
+  --nb-line: #d9d4c5;
+}
+
+/* 給 40–60 歲的讀者：內文 17px（和 app 一樣） */
+html { font-size: 17px; }
+body { background: var(--nb-page); color: var(--nb-ink); line-height: 1.65; }
+h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+a { text-decoration-thickness: 2px; text-underline-offset: 2px; }
+
+/* 導覽列：萊姆色塊、黑框、墨色字 */
+.navbar {
+  background: var(--nb-lime) !important;
+  border-bottom: 2px solid var(--nb-ink);
+  box-shadow: 0 3px 0 0 var(--nb-ink);
+  margin-bottom: 1.5rem;
+}
+.navbar .navbar-brand, .navbar .nav-link { color: var(--nb-ink) !important; font-weight: 700; }
+.navbar .nav-link { white-space: nowrap; }  /* 英文的「Get started」不要折成兩行 */
+@media (min-width: 992px) { .navbar .form-control { width: 9rem; } }  /* 英文導覽列較長：搜尋框窄一點，GitHub 才放得下 */
+@media (min-width: 992px) and (max-width: 1199.98px) {  /* 小筆電：字小一點、間距窄一點 */
+  .navbar .nav-link { padding-left: 0.35rem !important; padding-right: 0.35rem !important; font-size: 0.9rem; }
+  .navbar .form-control { width: 6.5rem; }
+}
+.navbar .nav-link:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.navbar .version { color: var(--nb-ink); opacity: 0.75; }
+.navbar .dropdown-menu { border: 2px solid var(--nb-ink); border-radius: 8px; box-shadow: 2px 2px 0 0 var(--nb-ink); }
+.navbar .dropdown-item:active { background: var(--nb-lime); color: var(--nb-ink); }
+.navbar .form-control { border: 2px solid var(--nb-ink); border-radius: 8px; }
+
+/* 程式碼：米白底、黑框，沒有陰影 */
+pre {
+  background: #fffdf5;
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  font-variant-ligatures: none;
+}
+code { font-variant-ligatures: none; }
+:not(pre) > code { color: var(--nb-ink); background: #f1eee4; border-radius: 4px; padding: 0 0.25em; }
+.btn-copy-ex { border-width: 1.5px; }
+
+/* 首頁與文章裡的截圖：一個框就是一個單位 */
+.template-home img, .template-article img.kit-shot {
+  border: 2px solid var(--nb-ink);
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 0 var(--nb-ink);
+  max-width: 100%;
+  height: auto;
+}
+.template-article img.kit-shot { margin: 0.5rem 0 1rem; }
+
+figure figcaption { font-size: 0.85rem; color: #5a5a5a; margin-top: 0.3rem; }
+.template-home figure { margin: 1rem 0 1.6rem; }
+
+/* 表格：跟著內容，不拉滿 */
+.template-article table, .template-home table { width: auto; max-width: 100%; }
+.template-article .table-wrap, .contents { overflow-x: auto; }
+
+/* 「元件一覽」：每個元件下面一條淡線分開 */
+.kit-live { margin: 0.6rem 0 2rem; padding-bottom: 1.2rem; border-bottom: 1.5px solid var(--nb-line); }
+
+/* 側欄、頁尾 */
+footer { border-top: 2px solid var(--nb-ink); }
+.ref-index h2, .ref-index h3 { margin-top: 2rem; }
+
+@media (max-width: 576px) {
+  html { font-size: 16px; }
+  /* pkgdown 在手機上把程式碼框拉到螢幕邊（負邊距、沒有圓角）：留 gutter、保留框 */
+  main pre { margin-left: 0 !important; margin-right: 0 !important; border-radius: 8px !important; }
+}

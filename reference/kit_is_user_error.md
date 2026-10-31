@@ -1,8 +1,7 @@
-# 是不是 [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md) 丟出的錯誤
+# Was the error thrown by [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)?
 
-是不是
-[`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)
-丟出的錯誤
+Was the error thrown by
+[`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)?
 
 ## Usage
 
@@ -14,11 +13,11 @@ kit_is_user_error(e)
 
 - e:
 
-  錯誤（condition）。
+  The error (a condition).
 
 ## Value
 
-`TRUE` 或 `FALSE`。
+`TRUE` or `FALSE`.
 
 ## Examples
 

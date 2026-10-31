@@ -1,6 +1,7 @@
-# 顯示通知（Shiny 的 showNotification）
+# Show a notification (Shiny's showNotification)
 
-【停下來】用紅色、顯示 10 秒；其他用一般樣式、顯示 6 秒。
+【停下來】 (stopped) is red and shows for 10 seconds; everything else
+uses the regular style and shows for 6 seconds.
 
 ## Usage
 
@@ -12,25 +13,27 @@ kit_notify(st, session = shiny::getDefaultReactiveDomain(), duration = NULL)
 
 - st:
 
+  A
   [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md)
-  物件，或一個字串（一般通知）。
+  object, or a string (a plain notification).
 
 - session:
 
-  Shiny session（預設是目前的 session）。
+  The Shiny session (defaults to the current session).
 
 - duration:
 
-  顯示幾秒；`NULL` 時照上面的預設。
+  How many seconds to show it; when `NULL`, the defaults above apply.
 
 ## Value
 
-通知的 id（不可見）；`"idle"` 或沒有 session 時是 `NULL`。
+The notification id (invisible); `NULL` for `"idle"` or when there is no
+session.
 
 ## Examples
 
 ``` r
 if (interactive()) {
-  kit_notify(kit_done_status("串接完成。"))
+  kit_notify(kit_done_status("串接完成。"))  # "Join done."
 }
 ```

@@ -1,8 +1,9 @@
-# 把一段程式碼換行成每行最多 70 欄
+# Wrap code to at most 70 columns per line
 
-「用 R
-怎麼做」顯示之前才換行（[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
-會自動做），產生程式碼的函式不用管寬度：
+"How to do it in R" wraps the code only right before showing it
+([`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
+does this automatically), so functions that generate code need not worry
+about width:
 
 ## Usage
 
@@ -14,33 +15,40 @@ kit_code_wrap(code, width = KIT_CODE_WIDTH)
 
 - code:
 
-  程式碼（字串；可以有好幾行，或好幾個字串）。
+  The code (a string; may have several lines, or be several strings).
 
 - width:
 
-  一行最多幾欄。
+  Maximum columns per line.
 
 ## Value
 
-一個字串（`code` 長度 0 時原樣傳回）。
+A single string (returned as is when `code` has length 0).
 
 ## Details
 
-- 註解：在空白或中文字之間換行，續行一樣以「# 」開頭；標點不放在行首。
+- Comments: break at spaces or between Chinese characters; continuation
+  lines also start with "# "; punctuation is not put at the start of a
+  line.
 
-- 程式：在括號裡的逗號後面換行，續行對齊那個括號後面（R
-  在括號裡換行一定合法）。 括號在前面幾行打開的（例如 `mutate(`
-  自己一行，參數在下一行），續行和這一行一樣縮排。
+- Code: break after a comma inside parentheses, and align continuation
+  lines just after that parenthesis (a line break inside parentheses is
+  always valid R). If the parenthesis was opened on an earlier line
+  (e.g. `mutate(` on its own line with the arguments on the next),
+  continuation lines use the same indent as this line.
 
-- 行尾註解讓這一行太寬時，搬到這一行上面。
+- If a trailing comment makes the line too wide, it is moved above the
+  line.
 
-換行後再 parse 一次：和原本的運算式不同（或原本就 parse
-不了）時，維持原樣。
-斷不開的地方（例如很長的字串）也維持原樣，在程式碼框裡左右捲。
+After wrapping, the code is parsed again: if the expression differs from
+the original (or the original did not parse), the code is left
+unchanged. Places that cannot be broken (e.g. a very long string) are
+also left as is and scroll sideways in the code box.
 
 ## See also
 
-[`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)、[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
+[`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md),
+[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
 
 ## Examples
 

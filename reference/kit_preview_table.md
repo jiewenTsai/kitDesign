@@ -1,9 +1,11 @@
-# 預覽表的資料（交給 `shiny::renderTable()`）
+# Data for a preview table (pass to `shiny::renderTable()`)
 
-欄位太多時只取前 `max_cols` 欄（優先保留 `priority_cols`），列只取前 `n`
-列， 每一欄轉成方便閱讀的文字（值標籤寫成「`[值] 標籤`」、日期
-yyyy-mm-dd）。 上面配一行
-[`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md)。
+With too many columns, only the first `max_cols` columns are kept
+(`priority_cols` are kept first); only the first `n` rows are kept. Each
+column is converted to easy-to-read text (value labels as
+"`[value] label`", dates as yyyy-mm-dd). Put a
+[`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md)
+line above it.
 
 ## Usage
 
@@ -20,23 +22,24 @@ kit_preview_table(
 
 - df:
 
-  data.frame。
+  A data.frame.
 
 - priority_cols:
 
-  一定要放進預覽的欄（例如 ID 欄），排在最前面。
+  Columns that must be in the preview (for example the ID column); they
+  go first.
 
 - n:
 
-  最多幾列。
+  Maximum number of rows.
 
 - max_cols:
 
-  最多幾欄。
+  Maximum number of columns.
 
 ## Value
 
-data.frame（全部是文字欄）。
+A data.frame (all columns are text).
 
 ## Examples
 

@@ -1,6 +1,6 @@
-# 維度描述：「5 列 × 7 欄」
+# Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns")
 
-維度描述：「5 列 × 7 欄」
+Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns").
 
 ## Usage
 
@@ -12,15 +12,17 @@ kit_dims(nrow, ncol, preview_cols = NULL)
 
 - nrow, ncol:
 
-  列數、欄數。
+  Number of rows and columns.
 
 - preview_cols:
 
-  畫面上只預覽前幾欄時給它（比欄數少時補一句「以下只預覽前 N 欄」）。
+  Give this when the screen previews only the first few columns (if
+  fewer than the column count, adds "以下只預覽前 N 欄" ("previewing
+  only the first N columns below")).
 
 ## Value
 
-字串。
+A string.
 
 ## Examples
 

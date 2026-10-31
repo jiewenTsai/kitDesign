@@ -1,10 +1,14 @@
-# 現在的品牌：`options(kitDesign.brand = )`，沒有設定時是 KIT
+# The current brand: `options(kitDesign.brand = )`, KIT when not set
 
-kitDesign
-的函式（[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)、[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)、[`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md)、
-[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)、[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)）的
-`brand` 預設值。 app 只要在開始時設定一次
-`options(kitDesign.brand = kit_brand(...))`。
+The default `brand` for kitDesign functions
+([`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md),
+[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md),
+[`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md),
+[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md),
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)).
+An app only needs to set `options(kitDesign.brand = kit_brand(...))`
+once at startup.
 
 ## Usage
 
@@ -14,7 +18,7 @@ kit_current_brand()
 
 ## Value
 
-`kit_brand` 物件。
+A `kit_brand` object.
 
 ## See also
 

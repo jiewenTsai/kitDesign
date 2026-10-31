@@ -1,6 +1,7 @@
-# 執行完的狀態：有要注意的事時是【完成，但請注意】，否則是【完成】
+# Status after a run: 【完成，但請注意】 (done, but take note) when something needs attention, otherwise 【完成】 (done)
 
-異常一定要被看見：有 `warnings` 時，狀態就不能是單純的【完成】。
+Anything unusual must be seen: when there are `warnings`, the status
+cannot be a plain 【完成】 (done).
 
 ## Usage
 
@@ -17,30 +18,34 @@ kit_done_status(
 
 - message:
 
-  第一行的結論（一句話，帶數字與單位）：一個字串或 tag。
+  The conclusion on the first line (one sentence, with numbers and
+  units): a string or tag.
 
 - warnings:
 
-  需要注意的事（字串向量，或字串與 tag 的 list）。排在最前面。
+  Things that need attention (a character vector, or a list of strings
+  and tags). Listed first.
 
 - notes:
 
-  補充說明（灰色小字）。
+  Extra notes (small gray text).
 
 - points:
 
-  結果的重點（排在 `warnings` 後面；不會讓狀態變成「請注意」）。
+  Key points of the result (listed after `warnings`; they do not turn
+  the status into "take note").
 
 ## Value
 
-`kit_status` 物件。
+A `kit_status` object.
 
 ## Examples
 
 ``` r
-kit_done_status("串接完成：3,389 人。")
+kit_done_status("串接完成：3,389 人。")  # "Join done: 3,389 children."
 #> 【完成】 串接完成：3,389 人。
 kit_done_status("串接完成：3,389 人。", warnings = "有 12 人的 ID 重複，只留第一筆。")
 #> 【完成，但請注意】 串接完成：3,389 人。
 #> - 有 12 人的 ID 重複，只留第一筆。
+# warning: "12 children have duplicate IDs; only the first record is kept."
 ```

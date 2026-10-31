@@ -1,13 +1,13 @@
-# 狀態物件（StatusBox）
+# Status object (status box)
 
-一個動作的結果。這是一個 S3 值物件（class
-`kit_status`）：建構時檢查內容； 有
+The result of an action. This is an S3 value object (class
+`kit_status`): its content is checked when it is built. It has an
 [`htmltools::as.tags()`](https://rstudio.github.io/htmltools/reference/as.tags.html)
-方法，所以 `renderUI(st)` 或直接放進
+method, so `renderUI(st)` or putting it straight into
 [`tagList()`](https://rstudio.github.io/htmltools/reference/tagList.html)
-就會畫成狀態框 （和
-[`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md)
-一樣）。`print(st)` 印出文字版。
+renders it as a status box (the same as
+[`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md)).
+`print(st)` prints a text version.
 
 ## Usage
 
@@ -37,68 +37,76 @@ print(x, ...)
 
 - state:
 
-  `"idle"`、`"success"`、`"warning"`、`"error"` 或 `"stale"`。
+  `"idle"`, `"success"`, `"warning"`, `"error"`, or `"stale"`.
 
 - message:
 
-  第一行的結論（一句話，帶數字與單位）：一個字串或 tag。
+  The conclusion on the first line (one sentence, with numbers and
+  units): a string or tag.
 
 - warnings:
 
-  需要注意的事（字串向量，或字串與 tag 的 list）。排在最前面。
+  Things to watch out for (a character vector, or a list of strings and
+  tags). Listed first.
 
 - notes:
 
-  補充說明（灰色小字）。
+  Additional notes (small gray text).
 
 - details:
 
-  原始訊息（R 的錯誤原文；收起來）：一個字串或 `NULL`。
+  The raw message (R's original error text; collapsed): a string or
+  `NULL`.
 
 - action:
 
-  怎麼辦的按鈕或連結（tag）；`NULL` 不顯示。
+  A button or link for what to do (a tag); `NULL` shows nothing.
 
 - points:
 
-  結果的重點（排在 `warnings` 後面；不會讓狀態變成「請注意」）。
+  Key results (listed after `warnings`; they do not turn the status into
+  "請注意", "please note").
 
 - details_title:
 
-  原始訊息的收合標題（kitsUI 用「kits 的原文」）。
+  The collapsible title for the raw message (kitsUI uses "kits 的原文",
+  "kits' original text").
 
 - x:
 
-  `kit_status` 物件。
+  A `kit_status` object.
 
 - ...:
 
-  給
+  Other content for
   [`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md)
-  的其他內容（as.tags）；format、print 不用。
+  (as.tags); not used by format and print.
 
 ## Value
 
-`kit_status` 物件。
+A `kit_status` object.
 
 ## Details
 
-四種狀態各有固定的標籤與顏色：
+Each of the four states has a fixed label and color:
 
-|             |                    |        |
-|-------------|--------------------|--------|
-| state       | 標籤               | 底色   |
-| `"success"` | 【完成】           | 薄荷綠 |
-| `"warning"` | 【完成，但請注意】 | 黃     |
-| `"error"`   | 【停下來】         | 鮭紅   |
-| `"stale"`   | 【要重新執行】     | 黃     |
+|             |                                              |            |
+|-------------|----------------------------------------------|------------|
+| state       | Label                                        | Background |
+| `"success"` | 【完成】 ("Done")                            | mint green |
+| `"warning"` | 【完成，但請注意】 ("Done, but please note") | yellow     |
+| `"error"`   | 【停下來】 ("Stopped")                       | salmon     |
+| `"stale"`   | 【要重新執行】 ("Run again")                 | yellow     |
 
-`"idle"`（還沒有執行）不顯示。也接受 kitsUI
-的名字：`"done"`、`"warn"`、`"stop"`。
+`"idle"` (not run yet) is not shown. kitsUI's names are also accepted:
+`"done"`, `"warn"`, `"stop"`.
 
 ## See also
 
-[`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md)、[`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md)、[`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md)、[`kit_stale_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_stale_status.md)
+[`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md),
+[`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md),
+[`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md),
+[`kit_stale_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_stale_status.md)
 
 ## Examples
 

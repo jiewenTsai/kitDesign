@@ -1,8 +1,11 @@
-# 步驟卡模組（StepCard）
+# Step card module
 
-一頁裡有好幾步、而且有先後時用：一次只打開一步，做完的收成一行（✓、摘要、「改」），
-還不能做的是灰的。每一步最下面是「對，下一步」（一般按鈕）；按了以後這一步做完、
-打開下一個還沒做完的步驟。做完的按「改」回去。
+Use when a page has several steps that must be done in order: only one
+step is open at a time; finished steps collapse to one line (✓, summary,
+"改" ("Edit")), and steps not yet available are gray. Each step ends
+with "對，下一步" ("Yes, next step") (a regular button); pressing it
+marks the step done and opens the next unfinished step. Press "改" on a
+finished step to go back.
 
 ## Usage
 
@@ -22,59 +25,68 @@ kit_stepcards_server(
 
 - id:
 
-  模組的 id。
+  The module id.
 
 - ...:
 
-  每一步的內容（一步一個 tag 或
-  [`tagList()`](https://rstudio.github.io/htmltools/reference/tagList.html)，依順序）。
+  The content of each step (one tag or
+  [`tagList()`](https://rstudio.github.io/htmltools/reference/tagList.html)
+  per step, in order).
 
 - next_label:
 
-  每一步最下面的按鈕字。
+  The button text at the bottom of each step.
 
 - titles:
 
-  每一步的標題（字串向量，長度＝步數）。
+  The title of each step (character vector, length = number of steps).
 
 - summaries:
 
-  每一步做完時的摘要：list，一步一個（字串、函式或 reactive；`NULL`
-  不顯示）。
+  The summary shown when each step is done: a list, one per step (a
+  string, function, or reactive; `NULL` shows nothing).
 
 - checks:
 
-  按「對，下一步」前的檢查：list，一步一個函式，傳回還差的事（字串向量；
-  長度 0 =
-  可以往下）。還差時這一步不算做完，按鈕上面列出「還差：…」（[`kit_problems()`](https://jiewentsai.github.io/kitDesign/reference/kit_problems.md)）。
+  Checks before "對，下一步" ("Yes, next step") is pressed: a list, one
+  function per step, returning what is still needed (character vector;
+  length 0 = can move on). While something is still needed, the step is
+  not done, and "還差：…" ("Still needed: …") is listed above the button
+  ([`kit_problems()`](https://jiewentsai.github.io/kitDesign/reference/kit_problems.md)).
 
 - start:
 
-  一開始打開第幾步。
+  Which step is open at the start.
 
 ## Value
 
-`kit_stepcards_ui()`：[`tagList()`](https://rstudio.github.io/htmltools/reference/tagList.html)，裡面是一張張
-[`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)。
+`kit_stepcards_ui()`: a
+[`tagList()`](https://rstudio.github.io/htmltools/reference/tagList.html)
+of
+[`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)s.
 
-`kit_stepcards_server()`：list，
+`kit_stepcards_server()`: a list,
 
-- `current`：reactive，現在打開第幾步（都做完時是 0）；
+- `current`: a reactive, which step is open now (0 when all are done);
 
-- `done`：reactive，每一步做完了沒有（logical 向量）；
+- `done`: a reactive, whether each step is done (logical vector);
 
-- `open(k)`：打開第 k 步（例如資料改了，要回第 1 步）；
+- `open(k)`: opens step k (for example, back to step 1 when the data
+  change);
 
-- `reset()`：全部回到還沒做，打開第 1 步。
+- `reset()`: marks all steps as not done and opens step 1.
 
 ## Details
 
-`kit_stepcards_ui()` 放每一步的內容（依順序）；`kit_stepcards_server()`
-給每一步的標題、 做完時的摘要、按「對，下一步」前的檢查。
+`kit_stepcards_ui()` holds the content of each step (in order);
+`kit_stepcards_server()` gives each step's title, its summary when done,
+and the check before "對，下一步" is pressed.
 
 ## See also
 
-[`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)、[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)（低階）
+[`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md),
+[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)
+(low-level)
 
 ## Examples
 

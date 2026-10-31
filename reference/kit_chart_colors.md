@@ -1,9 +1,10 @@
-# 圖的類別色（Chart）
+# Categorical chart colors
 
-色盲友善的
-Okabe–Ito，世代、量尺、分數依序取色：藍、橘、綠、紫紅、天藍、朱紅； 超過
-6 類從頭再取。參考線、帶子、沒有判斷的點用
-[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md)。
+Colorblind-friendly Okabe–Ito. Cohorts, scales, and scores take colors
+in order: blue, orange, green, reddish purple, sky blue, vermillion;
+past 6 categories it starts over. For reference lines, bands, and points
+with no judgment, use
+[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md).
 
 ## Usage
 
@@ -15,11 +16,12 @@ kit_chart_colors(n = NULL)
 
 - n:
 
-  `NULL` 時回傳全部 6 個（具名）；給數字時依序取 `n` 個（不具名）。
+  When `NULL`, returns all 6 (named); when a number, takes the first `n`
+  in order (unnamed).
 
 ## Value
 
-顏色字串向量。
+A character vector of colors.
 
 ## Examples
 

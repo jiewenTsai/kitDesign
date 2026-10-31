@@ -1,11 +1,12 @@
-# server 端：把程式碼畫進 [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)
+# Server side: render code into [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)
 
-`output[["code"]] <- kit_render_code_panel(function() code_text())`。
-收起來時不算（Shiny 不畫看不見的 output；打開「用 R
-怎麼做」時才算）。[`code()`](https://rstudio.github.io/htmltools/reference/builder.html)
-停下來
-（[`req()`](https://rdrr.io/pkg/shiny/man/req.html)）、出錯或是空的時，只有一行
-`empty`。
+`output[["code"]] <- kit_render_code_panel(function() code_text())`.
+Nothing is computed while the panel is collapsed (Shiny does not render
+hidden outputs; it computes only when "用 R 怎麼做" ("How to do it in
+R") is opened). When
+[`code()`](https://rstudio.github.io/htmltools/reference/builder.html)
+stops ([`req()`](https://rdrr.io/pkg/shiny/man/req.html)), fails, or is
+empty, only the `empty` line is shown.
 
 ## Usage
 
@@ -22,22 +23,21 @@ kit_render_code_panel(
 
 - code:
 
-  傳回程式碼的函式或
-  reactive：[`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md)
-  的 `snips`。
+  A function or reactive that returns the code: the `snips` of
+  [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md).
 
 - note, width:
 
-  見
-  [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md)。
+  See
+  [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md).
 
 - empty:
 
-  還沒有程式碼時的一行字。
+  The one line shown while there is no code yet.
 
 ## Value
 
-[`shiny::renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)。
+[`shiny::renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html).
 
 ## Examples
 

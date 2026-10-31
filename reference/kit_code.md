@@ -1,14 +1,16 @@
-# 一個版本的程式碼（CodePanel）
+# Code for one version (code panel)
 
-一個 S3 值物件（class `kit_code`）：程式碼文字＋版本名稱。有
+An S3 value object (class `kit_code`): code text plus a version name. It
+has an
 [`htmltools::as.tags()`](https://rstudio.github.io/htmltools/reference/as.tags.html)
-方法：
-直接放進頁面就畫成「版本名稱（粗體）＋複製」一行和下面的程式碼框，
-程式碼先用
+method: put it straight into a page and it renders a line with "version
+name (bold) + Copy" and the code box below, with the code first wrapped
+by
 [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md)
-換行成每行最多 70 欄（中文字算 2 欄）。
-換行後還是有太長的行（例如斷不開的長字串）時發出
-warning（不會停下來），在框裡左右捲。
+to at most 70 columns per line (Chinese characters count as 2). If a
+line is still too long after wrapping (e.g. a long string that cannot be
+broken), it gives a warning (it does not stop), and the box scrolls
+sideways.
 
 ## Usage
 
@@ -29,31 +31,34 @@ print(x, ...)
 
 - code:
 
-  程式碼（字串向量；一個元素一行，或含換行）。
+  The code (a character vector; one element per line, or containing
+  newlines).
 
 - label:
 
-  版本名稱，例如「tidyverse 版」「base R 版」「kits 版」。
+  The version name, e.g. "tidyverse 版" ("tidyverse version"), "base R
+  版" ("base R version"), "kits 版" ("kits version").
 
 - width:
 
-  一行最多幾欄；`NULL` 不換行、不檢查。
+  Maximum columns per line; `NULL` means no wrapping and no check.
 
 - x:
 
-  `kit_code` 物件。
+  A `kit_code` object.
 
 - ...:
 
-  不用。
+  Not used.
 
 ## Value
 
-`kit_code` 物件。
+A `kit_code` object.
 
 ## See also
 
-[`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md)、[`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)
+[`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md),
+[`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)
 
 ## Examples
 

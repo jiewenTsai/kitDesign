@@ -1,6 +1,7 @@
-# 設定摘要：主要按鈕或結果上面一行小字
+# Settings summary: a line of small text above the primary button or the result
 
-例如「本次：5 個檔案 · ID：各檔各自 · 全勤樣本」。
+For example "本次：5 個檔案 · ID：各檔各自 · 全勤樣本" ("This run: 5
+files · ID: per file · complete-attendance sample").
 
 ## Usage
 
@@ -12,17 +13,18 @@ kit_settings_line(parts, prefix = "本次：")
 
 - parts:
 
-  各段文字（空字串、`NA` 與 `NULL` 略過），用「 · 」接起來；
-  也可以是已經寫好的一整句（kitsUI 的 `ui_settings_line(text)`，這時用
-  `prefix = NULL`）。
+  The parts of the text (empty strings, `NA`, and `NULL` are skipped),
+  joined with " · "; can also be a complete sentence written beforehand
+  (kitsUI's `ui_settings_line(text)`; in that case use `prefix = NULL`).
 
 - prefix:
 
-  前面的字，預設「本次：」；`NULL` 不加。
+  The text in front, default "本次：" ("This run:"); `NULL` adds
+  nothing.
 
 ## Value
 
-`<p class="kit-settings-line">`；沒有任何一段時是 `NULL`。
+`<p class="kit-settings-line">`; `NULL` when there are no parts.
 
 ## Examples
 

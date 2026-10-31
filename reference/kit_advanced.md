@@ -1,7 +1,9 @@
-# 進階設定：預設收起
+# Advanced settings: collapsed by default
 
-設定區裡不常改的選項（文字欄比對、ID 型別轉換、反向題規則、分隔符號…）。
-一行小字標題；打開後左邊一條淡線，和其他設定分開（不加框）。
+Options in a settings area that are rarely changed (text column
+matching, ID type conversion, reverse-scored item rules, separators…). A
+one-line small-print title; when opened, a faint line on the left sets
+it apart from the other settings (no box).
 
 ## Usage
 
@@ -13,30 +15,31 @@ kit_advanced(..., title = "進階設定", open = FALSE, id = NULL)
 
 - ...:
 
-  裡面的設定。
+  The settings inside.
 
 - title:
 
-  收合標題（可以是 tag，例如後面接現在的設定）。
+  The collapsible title (can be a tag, e.g. followed by the current
+  settings).
 
 - open:
 
-  一開始要不要打開。
+  Whether it starts open.
 
 - id:
 
-  `<details>` 的 id（給
+  The id of the `<details>` (used by
   [`kit_open_details()`](https://jiewentsai.github.io/kitDesign/reference/kit_open_details.md)
-  打開用）。
+  to open it).
 
 ## Value
 
-`<details class="kit-advanced">`。
+`<details class="kit-advanced">`.
 
 ## Examples
 
 ``` r
-kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))
+kit_advanced(shiny::checkboxInput("trim", "比對前去掉前後空白", TRUE))  # "Trim spaces before matching"
 #> <details class="kit-advanced">
 #>   <summary>進階設定</summary>
 #>   <div class="kit-advanced-body">

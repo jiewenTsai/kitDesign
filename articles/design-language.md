@@ -1,996 +1,1277 @@
-# KIT 設計語言
+# KIT design language
 
-> 這一頁就是 kitDesign 裡的
-> `brand/KIT設計語言.md`（以那一份為準）。元件的樣子見[元件一覽](https://jiewentsai.github.io/kitDesign/articles/components.md)。
+> This page is `brand/en/design-language.md` in kitDesign (the English
+> translation of `brand/KIT設計語言.md`, which is the source of truth).
+> To see what the components look like, see
+> [Components](https://jiewentsai.github.io/kitDesign/articles/components.md).
 
-> **看得清楚、按得放心、結果先說。**
+> **Easy to see, safe to click, results first.**
 
-KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny
-app）共用的設計語言。新的 app
-照這份做，使用者學會一個工具，其他工具也會用。
+The design language shared by the KIT research tools (kitJoin, kitsUI,
+and future Shiny apps). New apps follow this document, so once people
+learn one tool, they can use the others.
 
-- **配套**：
-  - 實作：R 套件
-    **kitDesign**（[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、元件、模組、`inst/www/`
-    的 CSS）。這份文件就在 kitDesign 的 `brand/`，以這一份為準。
-  - 設計系統（即時樣張、tokens、標誌）：<https://claude.ai/artifact/GFN5Q5ie9jAHKwmsBaxb2M>
-    （私人，要分享才看得到）
-  - [\_brand.yml](https://github.com/jiewenTsai/kitDesign/blob/main/brand/_brand.yml)：顏色、字型等設計變數；[logo/](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo)：標誌（SVG、PNG）
-  - 所有元件的樣子：[`kitDesign::kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)
-- **狀態**：v1.1（2026-10-31）。v1.0 把 v0.2
-  的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0
-  的圖（[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)）、
-  危險按鈕、熱圖色階、步驟卡的「前面只選、後面再細修」，以及「作者的決定」6–9。規格和程式不同時照程式寫，差異列在最後一節。
+- **Companions**:
+  - Implementation: the R package **kitDesign**
+    ([`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+    components, modules, the CSS in `inst/www/`). This document lives in
+    kitDesign’s `brand/`, and this copy is the source of truth.
+  - Design system (live samples, tokens, logo):
+    <https://claude.ai/artifact/GFN5Q5ie9jAHKwmsBaxb2M> (private;
+    visible only when shared)
+  - [\_brand.yml](https://github.com/jiewenTsai/kitDesign/blob/main/brand/_brand.yml):
+    design variables such as colors and fonts;
+    [logo/](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo):
+    the logo (SVG, PNG)
+  - What every component looks like:
+    [`kitDesign::kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)
+- **Status**: v1.1 (2026-10-31). v1.0 merged v0.2’s “additions after
+  design review” into the main text; v1.1 adds kitDesign 0.2.0’s charts
+  ([`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)),
+  the danger button, the heatmap color scale, the step card rule “choose
+  first, refine later”, and “Author’s decisions” 6–9. Where the spec and
+  the code differ, this document follows the code; the differences are
+  listed in the last section.
 
 ------------------------------------------------------------------------
 
-## 為誰設計
+## Who we design for
 
 |  |  |
 |----|----|
-| **誰** | 研究人員、研究助理，多半 40–60 歲；會用 SPSS、Excel，不一定會寫 R |
-| **多久用一次** | 一年幾次，一次一兩個小時；每次回來都像第一次 |
-| **在做什麼** | 處理真實的研究資料：串接、轉換、校準、評分。**結果錯了會跟著寫進論文** |
-| **在哪裡用** | 研究室的桌機或筆電，螢幕 13–27 吋；偶爾用手機看結果 |
-| **最怕什麼** | 不知道下一步按哪裡；按了不知道成功沒有；結果看起來成功但其實錯了 |
+| **Who** | Researchers and research assistants, mostly aged 40–60; they use SPSS and Excel, and may not write R |
+| **How often** | A few times a year, an hour or two each time; every return feels like the first time |
+| **Doing what** | Working with real research data: joining, converting, calibrating, scoring. **Wrong results end up in papers** |
+| **Where** | Desktops or laptops in the office, 13–27 inch screens; sometimes a phone to check results |
+| **Biggest fears** | Not knowing what to click next; clicking and not knowing whether it worked; results that look right but are wrong |
 
-優先順序：**正確 \> 清楚 \>
-好看**。好看是為了讓人願意用、看得舒服，不能犧牲前兩者。設計要簡單、乾淨。
+Priority: **correct \> clear \> good-looking**. Looking good makes
+people willing to use the tool and comfortable reading it, but it must
+never cost the first two. Keep the design simple and clean.
 
-## 七個原則
+## Seven principles
 
-1.  **一頁一個主角。**
-    每一頁只有一個主要按鈕（`nb-lime`），例如「開始校準」。其他東西都是配角，視覺上退後。
-2.  **先結果、後細節。**
-    按下去以後，第一眼是狀態框的一句結論、兩三個重點、一張表或一張圖。參數表、紀錄、檢查表、R
-    程式碼收在細節列，要看再打開。
-3.  **異常一定要被看見。**
-    最危險的是「看起來成功其實錯了」。有需要人注意的事，狀態就不能是單純的【完成】。會改變結果的動作（跳過量尺、把代碼當遺漏值）由使用者自己按。
-4.  **框就是一個單位。**
-    有黑框的東西，代表可以操作，或是一個完整的單位（按鈕、輸入框、一個結果、一張圖）。框裡面不再有框，裝飾用的框一律不要。
-5.  **安靜的配角。** 說明、提示、技術細節用 `hint` 字級、`text-hint`
-    顏色、不加框，而且預設收起。第一次用的人找得到，熟手不會被擋住。
-6.  **每一頁長得一樣。**
-    同一套頁面骨架、同一組元件、同一套用詞。學會一頁就會用其他頁；學會
-    kitJoin，kitsUI 也會用。
-7.  **白話先行。**
-    主要畫面用台灣常用的中文短句。英文術語（函式名、欄名）放在細節裡或下載的檔案裡。
+1.  **One lead per page.** Each page has exactly one primary button
+    (`nb-lime`), for example “開始校準” (“Start calibration”).
+    Everything else is supporting cast and steps back visually.
+2.  **Results first, details later.** After a click, the first thing
+    people see is the status box: a one-sentence conclusion, two or
+    three key points, and one table or one chart. Parameter tables,
+    logs, check tables, and R code go in the details row, opened on
+    demand.
+3.  **Problems must be seen.** The most dangerous case is “looks
+    successful but is actually wrong”. If anything needs attention, the
+    status cannot be a plain 【完成】 (“Done”). Actions that change
+    results (skipping a scale, treating codes as missing values) are
+    clicked by the user, never done automatically.
+4.  **A frame is a unit.** Anything with a black frame is either
+    something you can operate or a complete unit (a button, an input,
+    one result, one chart). No frames inside frames, and no decorative
+    frames.
+5.  **Quiet supporting cast.** Explanations, hints, and technical
+    details use the `hint` size and `text-hint` color, no frame, and are
+    collapsed by default. First-time users can find them; experienced
+    users are not slowed down.
+6.  **Every page looks the same.** The same page skeleton, the same
+    components, the same wording. Learn one page and you can use the
+    others; learn kitJoin and you can use kitsUI.
+7.  **Plain language first.** The main screen uses short sentences in
+    the Chinese commonly used in Taiwan. English terms (function names,
+    column names) go in the details or in downloaded files.
 
-## 視覺基礎
+## Visual foundations
 
-### 風格：克制的 neo-brutalism
+### Style: restrained neo-brutalism
 
-保留三個特徵：黑框、零模糊的位移陰影、平塗色塊配黑字。為了中年使用者與長時間閱讀，全部調得克制：
+We keep three traits: black frames, offset shadows with zero blur, and
+flat color blocks with black text. Everything is toned down for
+middle-aged users and long reading sessions:
 
-| 一般的 neo-brutalism | KIT 的做法 | 理由 |
+| Typical neo-brutalism | The KIT way | Why |
 |----|----|----|
-| 框 3–5px | `bw-frame` 2px | 和圓體字的筆畫相稱，看久不累 |
-| 陰影 6–8px | `shadow-header` 4px、`shadow-card` 3px、`shadow-sm` 2px | 陰影只表示「可以按」或「一個結果」 |
-| 大面積高彩度 | 高彩度只在頁首、主要按鈕、目前的步驟 | 大面積亮色看久了會累 |
-| 刻意不對齊 | 對齊、規律的間距 | 工具要可預期 |
+| 3–5px frames | `bw-frame` 2px | Matches the stroke weight of the rounded typeface; easy on the eyes over time |
+| 6–8px shadows | `shadow-header` 4px, `shadow-card` 3px, `shadow-sm` 2px | Shadows only mean “clickable” or “a result” |
+| Large areas of saturated color | Saturated color only on the header, the primary button, and the current step | Large bright areas are tiring over time |
+| Deliberate misalignment | Aligned, regular spacing | A tool should be predictable |
 
-### 顏色
+### Color
 
-顏色依角色定義，每個角色只有一個顏色。
+Colors are defined by role, and each role has exactly one color.
 
-- **底**：整頁 `nb-page`（米白）；卡片、輸入框、表格、圖用
-  `nb-card`。只有淺色，沒有深色模式。
-- **墨**：所有文字、框、陰影都是 `nb-ink`。**色塊上的字一律用
-  `nb-ink`**，不用白字。唯一的白字是主要資料表的黑色表頭。
-- **主角**：`nb-lime`
-  只用在頁首、主要按鈕、目前的分頁、目前步驟的編號、下拉的選取項。不要當文字色。
-- **品牌與連結**：`nb-green`（和標誌深綠同一色）用在連結、進度條、✓、勾選框。滑過
-  `nb-green-hover`。不要當大面積底色。
-- **四個語意色**，看到顏色就知道意思：
-  - `nb-mint` 完成
-  - `nb-yellow` 要注意（也用在【要重新執行】）
-  - `nb-salmon` 停下來（也用在危險按鈕）
-  - `nb-sky` 資訊
-- **顏色不能是唯一的訊號。**
-  狀態框一定有文字標籤【完成】【完成，但請注意】【停下來】【要重新執行】；分頁的
-  ✓、檢查清單的 ! 都有看不見的文字。
-- **灰色只有這幾種**：
-  - 配角文字 `text-hint`
-  - 停用文字 `text-disabled`
-  - 線 `line`、`line-soft`
-  - 停用的框 `border-disabled`
-- **強調文字**：「還差：…」用 `text-todo`；檢查清單的 ! 用
-  `text-decide`；清單裡的單一問題用 `text-stop`。
-- **標誌色**（`logo-bean`、`logo-leaf`）只用在標誌與插圖，不進介面。
-- **圖**：類別色用色盲友善的 Okabe–Ito，依序取
-  `chart-blue`、`chart-orange`、`chart-green`、`chart-purple`、`chart-sky`、`chart-vermillion`。參考線、帶子用
-  `chart-neutral`；連續的值用 `chart-sequential`。
+- **Background**: the whole page is `nb-page` (off-white); cards,
+  inputs, tables, and charts use `nb-card`. Light only; there is no dark
+  mode.
+- **Ink**: all text, frames, and shadows are `nb-ink`. **Text on color
+  blocks is always `nb-ink`**, never white. The only white text is the
+  black header row of the main data table.
+- **Lead**: `nb-lime` is used only for the header, the primary button,
+  the current tab, the current step number, and the selected item in a
+  dropdown. Never use it as a text color.
+- **Brand and links**: `nb-green` (the same color as the logo’s dark
+  green) is for links, progress bars, ✓, and checkboxes. On hover,
+  `nb-green-hover`. Never use it as a large background.
+- **Four semantic colors**; seeing the color tells you the meaning:
+  - `nb-mint` done
+  - `nb-yellow` needs attention (also used for 【要重新執行】 (“Run
+    again”))
+  - `nb-salmon` stopped (also used for the danger button)
+  - `nb-sky` information
+- **Color must never be the only signal.** The status box always has a
+  text label: 【完成】 (“Done”), 【完成，但請注意】 (“Done, but note”),
+  【停下來】 (“Stopped”), 【要重新執行】 (“Run again”); the ✓ on tabs
+  and the ! in checklists both carry hidden text.
+- **These are the only grays**:
+  - Supporting text `text-hint`
+  - Disabled text `text-disabled`
+  - Lines `line`, `line-soft`
+  - Disabled frames `border-disabled`
+- **Emphasis text**: “還差：…” (“Still needed: …”) uses `text-todo`; the
+  checklist ! uses `text-decide`; a single problem in a list uses
+  `text-stop`.
+- **Logo colors** (`logo-bean`, `logo-leaf`) are only for the logo and
+  illustrations, never for the interface.
+- **Charts**: categorical colors use the colorblind-friendly Okabe–Ito
+  palette, taken in order: `chart-blue`, `chart-orange`, `chart-green`,
+  `chart-purple`, `chart-sky`, `chart-vermillion`. Reference lines and
+  bands use `chart-neutral`; continuous values use `chart-sequential`.
 
-### 字型
+### Typography
 
-- 全文一套圓體：**Chiron GoRound TC**（`sans`，Google Fonts，字重
-  400、700、900）。
-  - 層次靠字重和字級，不靠換字型。
-  - 字重用 400 和 700；頁首 h1 可以到
-    900。小按鈕與「沒問題」的檢查項目用 500。
-- 程式碼、原始訊息、圖解裡的值：**JetBrains
-  Mono**（`mono`），中文退回圓體。一律關掉連字（`font-variant-ligatures: none`），`<-`、`|>`
-  照原樣顯示。
-- 字級六級，基準 **17px**（`html { font-size: 17px }`）：
-  - `display`：頁首 h1
-  - `h4`：小節標題
-  - `h5`：子標題、步驟卡標題、主要按鈕、狀態框第一行
-  - `body`：內文
-  - `small`：表格、步驟摘要
-  - `hint`：提示、收合標題、組標籤、版本行
-- 最小 `hint`（約 14px），更小只給圖表刻度。
-- 中文與英文、數字之間加半形空格：「688 人」「依 SPSS
-  數值標籤」。四位數以上加千分位：「3,389 人」。
+- One rounded typeface throughout: **Chiron GoRound TC** (`sans`, Google
+  Fonts, weights 400, 700, 900).
+  - Hierarchy comes from weight and size, not from switching typefaces.
+  - Use weights 400 and 700; the header h1 may go to 900. Secondary
+    buttons and “no problem” checklist items use 500.
+- Code, raw messages, and values in diagrams: **JetBrains Mono**
+  (`mono`), falling back to the rounded typeface for Chinese. Ligatures
+  are always off (`font-variant-ligatures: none`), so `<-` and `|>`
+  display as typed.
+- Six type sizes, base **17px** (`html { font-size: 17px }`):
+  - `display`: header h1
+  - `h4`: section titles
+  - `h5`: subtitles, step card titles, the primary button, the first
+    line of the status box
+  - `body`: body text
+  - `small`: tables, step summaries
+  - `hint`: hints, collapsible titles, group labels, the version line
+- The smallest size is `hint` (about 14px); anything smaller is for
+  chart tick labels only.
+- Put a half-width space between Chinese and English or numbers: 「688
+  人」, 「依 SPSS 數值標籤」. Numbers of four digits or more get
+  thousands separators: 「3,389 人」.
 
-### 框、陰影、圓角
+### Frames, shadows, corners
 
-- **框**：
-  - 頂層元件用 `bw-frame`（2px）`nb-ink`。
-  - 表格列分隔和小按鈕用 `bw-line`（1.5px）。
-  - 圖解格線用 `bw-hair`（1px）。
-- **圓角**：全部 `radius`（8px）；進度條 `radius-bar`；步驟編號
-  `radius-round`。
-- **陰影**，從大到小：
-  - `shadow-header`：只有頁首。
-  - `shadow-card`：結果，包括狀態框、圖、目前的步驟卡、主要按鈕。
-  - `shadow-sm`：可以按的，包括分頁、一般按鈕、下拉選單、聚焦的輸入框。
-  - 沒有陰影：提示框、程式碼、輸入框（沒聚焦時）、做完或還不能做的步驟卡、表格、小按鈕。提示框不是結果，所以沒有陰影，這樣狀態框永遠是頁面上最突出的盒子。
-- **互動**：
-  - 滑過時往右下移 1px，陰影變 `shadow-hover`。
-  - 按下時移到底、沒有陰影，動畫 80ms。
-  - 目前的分頁是「按下去」的樣子：萊姆色、沒有陰影、位移 2px。
-  - 使用者設定「減少動態效果」時，不位移、不做動畫。
-- **鍵盤焦點**：3px `focus` 外框、外推
-  3px。分頁、檔案按鈕、勾選框都要有。
+- **Frames**:
+  - Top-level components use `bw-frame` (2px) `nb-ink`.
+  - Table row dividers and secondary buttons use `bw-line` (1.5px).
+  - Diagram grid lines use `bw-hair` (1px).
+- **Corners**: everything `radius` (8px); progress bars `radius-bar`;
+  step numbers `radius-round`.
+- **Shadows**, from largest to smallest:
+  - `shadow-header`: the header only.
+  - `shadow-card`: results, including the status box, charts, the
+    current step card, and the primary button.
+  - `shadow-sm`: clickable things, including tabs, regular buttons,
+    dropdowns, and focused inputs.
+  - No shadow: callouts, code, inputs (when not focused), finished or
+    not-yet-available step cards, tables, secondary buttons. A callout
+    is not a result, so it has no shadow; that keeps the status box
+    always the most prominent box on the page.
+- **Interaction**:
+  - On hover, move 1px down and to the right; the shadow becomes
+    `shadow-hover`.
+  - On press, move all the way and drop the shadow; animation 80ms.
+  - The current tab looks “pressed”: lime, no shadow, offset 2px.
+  - When the user has set “reduce motion”, no offset and no animation.
+- **Keyboard focus**: 3px `focus` outline, offset 3px outward. Tabs,
+  file buttons, and checkboxes all need it.
 
-### 間距與版面
+### Spacing and layout
 
-- 間距以 0.25rem 為一格，用 `sp-1`（0.25rem）到 `sp-5`（2.4rem）。
-  - 小節之間 `sp-5`。
-  - 同一小節的元件之間 `sp-3`。
-  - 一排按鈕之間 `sp-2`。
-- 內容最寬 `content-max`（1140px）置中；左右留 `gutter`，≤ `bp-tablet`
-  時 1rem。
-- 設定與結果並排時左 1/3、右 2/3；≤ `bp-tablet` 改上下排，設定在上。
-- 表格寬度跟著內容，不拉滿；最寬到版面寬度，超過時在自己的框裡左右捲。
+- Spacing uses a 0.25rem unit, from `sp-1` (0.25rem) to `sp-5` (2.4rem).
+  - Between sections: `sp-5`.
+  - Between components in the same section: `sp-3`.
+  - Between buttons in a row: `sp-2`.
+- Content is at most `content-max` (1140px) wide, centered; `gutter` on
+  the left and right, 1rem at ≤ `bp-tablet`.
+- When settings and results sit side by side: settings on the left 1/3,
+  results on the right 2/3; at ≤ `bp-tablet` they stack, settings on
+  top.
+- Tables are as wide as their content, not stretched; at most the layout
+  width, and they scroll sideways inside their own frame when wider.
 
-## 圖示
+## Icons
 
-- 只用文字符號：
-  - ✓：做完、沒問題
-  - !：要決定
-  - i：提醒
-  - →：下一步、會離開這一頁
-  - ▸／▾：收合
-  - ↑↓：排序
-  - ⬇：下載
-  - ①–④：只用在有順序的流程分頁
-- 不用 emoji，也不用其他圖示字型。
-- 圖示一定配文字；文字旁的符號加 `aria-hidden="true"`。
-- 同一個符號只有一個意思。
+- Text symbols only:
+  - ✓: done, no problem
+  - !: needs a decision
+  - i: reminder
+  - →: next step, leaves this page
+  - ▸／▾: collapse
+  - ↑↓: sort
+  - ⬇: download
+  - ①–④: only for tabs of an ordered workflow
+- No emoji and no other icon fonts.
+- Icons always come with text; symbols next to text get
+  `aria-hidden="true"`.
+- Each symbol has exactly one meaning.
 
-## 標誌
+## Logo
 
-- 頁首用完整標誌 `kit-logo`（豆子＋KIT 字樣），高 5.6rem；手機
-  3.6rem。瀏覽器分頁圖示只用豆子 `kit-mark`。
-- 四周至少留標誌高度的 1/4。可以放在 `nb-lime`、`nb-page`、`nb-card`
-  上；不要放在狀態色或 `nb-green` 上。
-- 不要改顏色、比例，不要加框或陰影。旁邊已經有工具名稱時 `alt=""`。
+- The header uses the full logo `kit-logo` (bean + KIT wordmark), 5.6rem
+  tall; 3.6rem on phones. The browser tab icon uses only the bean,
+  `kit-mark`.
+- Leave clear space of at least 1/4 of the logo height on all sides. It
+  may sit on `nb-lime`, `nb-page`, or `nb-card`; not on status colors or
+  `nb-green`.
+- Do not change its colors or proportions, and do not add frames or
+  shadows. Use `alt=""` when the tool name is already next to it.
 
-## 元件
+## Components
 
-每個元件寫用途、對應的 R
-函式、長相、規則、不要。即時樣張在設計系統的元件頁。
+Each component lists its purpose, R function, appearance, rules, and
+don’ts. Live samples are on the design system’s components page.
 
-### 頁首（Header）
+### Header
 
-頁首告訴使用者這是哪個工具、哪一版；一個 app 只有一個，放在最上面。
+The header tells users which tool this is and which version; an app has
+exactly one, at the very top.
 
-- **R**：[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)（kit_theme.R），讀
-  DESCRIPTION 的 Version、Date。
-- **長相**：
-  - `nb-lime` 色塊、`bw-frame` 框、`shadow-header`。
-  - 左邊完整標誌（高
-    5.6rem）；右邊工具名稱（`display`）、一行副標（粗體）、一行版本（`hint`）。
-- **你要提供**：工具名稱（「KIT ×× 工具」）、副標（資料庫名稱 ·
-  這個工具做什麼）。
-- **規則**：
-  - 版本行永遠在，回報問題時用得到。
-  - 用其他資料測試時不改工具名稱。
-  - 手機（≤ 576px）：標誌 3.6rem、h1 1.35rem。
-- **不要**：在頁首放按鈕或導覽；改標誌的顏色、比例，或替標誌加框。
+- **R**:
+  [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)
+  (kit_theme.R), reads Version and Date from DESCRIPTION.
+- **Appearance**:
+  - `nb-lime` block, `bw-frame` frame, `shadow-header`.
+  - Full logo on the left (5.6rem tall); on the right the tool name
+    (`display`), one line of tagline (bold), and one line of version
+    (`hint`).
+- **You provide**: the tool name (“KIT ×× 工具”, “KIT ×× tool”) and the
+  tagline (database name · what this tool does).
+- **Rules**:
+  - The version line is always there; it is needed when reporting
+    problems.
+  - Do not change the tool name when testing with other data.
+  - Phones (≤ 576px): logo 3.6rem, h1 1.35rem.
+- **Don’t**: put buttons or navigation in the header; change the logo’s
+  colors or proportions, or put a frame around it.
 
-### 步驟分頁（NavTabs）
+### Step tabs (NavTabs)
 
-步驟分頁是工具裡的主要導覽：一排可以按的方塊，目前的萊姆色、做完的打
-✓、還不能做的灰色。
+Step tabs are the main navigation inside a tool: a row of clickable
+blocks; the current one is lime, finished ones get a ✓, and
+not-yet-available ones are gray.
 
-- **兩種**：
-  - **有順序的流程**（kitsUI）：① 資料 → ② 題目校準 → ③ 連結 → ④
-    受試者評分，用圈數字。
-  - **不是每一頁都要做**（kitJoin）：分三組、不編號，每組上面一行 `hint`
-    組標籤：
-    - 準備
-    - 做出資料（選一個）
-    - 其他工具
-- **R**：kitsUI 用 `navset_tab` 加 `kit_tabs_js()` 的狀態；kitJoin 用
-  [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)
-  畫分頁列，真的分頁是 `tabsetPanel(type = "hidden")`，所以
+- **Two kinds**:
+  - **Ordered workflow** (kitsUI): ① 資料 → ② 題目校準 → ③ 連結 → ④
+    受試者評分 (① Data → ② Item calibration → ③ Linking → ④ Respondent
+    scoring), with circled numbers.
+  - **Not every page is required** (kitJoin): three groups, unnumbered,
+    each with a `hint` group label above it:
+    - 準備 (Prepare)
+    - 做出資料（選一個） (Make the data (pick one))
+    - 其他工具 (Other tools)
+- **R**: kitsUI uses `navset_tab` plus the states from `kit_tabs_js()`;
+  kitJoin draws the tab bar with
+  [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md),
+  and the real tabs are a `tabsetPanel(type = "hidden")`, so
   [`updateTabsetPanel()`](https://rdrr.io/pkg/shiny/man/updateTabsetPanel.html)
-  照常可用。
-- **長相**：
-  - 白底、`bw-frame` 框、`shadow-sm`。
-  - 目前的分頁 `nb-lime`、沒有陰影、往右下移 2px（被按下去的樣子）。
-  - 獨立的小工具與「使用手冊」：虛線框、沒有陰影，放最右邊。
-- **狀態**：
-  - 做完：✓（`nb-green`），加看不見的「（已完成）」。
-  - 還不能做：`bg-disabled` 底、`text-disabled`
-    字，滑過時說明要先做什麼。
-  - 要重新執行：✓ 拿掉。
-- **規則**：
-  - 分頁名稱用「名詞＋動詞」：檔案上傳、遺漏值處理。
-  - ≤ 768px 時一排左右滑，不換行。
-- **不要**：在分頁外面再加大框；用編號暗示每一步都要做，其實是擇一。
+  works as usual.
+- **Appearance**:
+  - White background, `bw-frame` frame, `shadow-sm`.
+  - Current tab `nb-lime`, no shadow, moved 2px down and to the right
+    (the pressed look).
+  - Standalone small tools and “使用手冊” (“User guide”): dashed frame,
+    no shadow, placed at the far right.
+- **States**:
+  - Done: ✓ (`nb-green`), plus hidden text 「（已完成）」 (“(done)”).
+  - Not yet available: `bg-disabled` background, `text-disabled` text;
+    on hover, explains what must be done first.
+  - Needs re-running: the ✓ is removed.
+- **Rules**:
+  - Tab names are “noun + verb”: 檔案上傳 (file upload), 遺漏值處理
+    (missing value handling).
+  - At ≤ 768px the tabs stay in one row and scroll sideways; they do not
+    wrap.
+- **Don’t**: wrap the tabs in another big frame; use numbers that imply
+  every step is required when the steps are actually alternatives.
 
-### 頁面說明（這一頁做什麼）（PageGuide）
+### Page guide (“What this page does”) (PageGuide)
 
-「這一頁做什麼」是每個分頁最上面的一行說明，預設收起，第一次用的人打開看步驟。
+“這一頁做什麼” (“What this page does”) is a one-line explanation at the
+top of each tab, collapsed by default; first-time users open it to see
+the steps.
 
-- **R**：`kit_tab_guide(goal, steps, output, technical = NULL, note = NULL, diagram = NULL)`。
-- **長相**：
-  - 沒有框、`hint` 字級、`text-hint` 顏色，下面一條 `line` 淡線。
-  - 「看步驟 ▸」是 `nb-green` 的底線字。
-- **你要提供**：
-  - `goal`：一句話，不超過 30 字。
-  - `steps`：3–6 點。
-  - `output`：會得到什麼。
-  - 選填：`note` 補充、`technical`（再收一層）、`diagram`（見
-    Diagram）。
-- **不要**：預設打開；把設定或按鈕放進說明裡；寫成卡片。
+- **R**:
+  `kit_tab_guide(goal, steps, output, technical = NULL, note = NULL, diagram = NULL)`.
+- **Appearance**:
+  - No frame, `hint` size, `text-hint` color, with a faint `line` rule
+    below.
+  - “看步驟 ▸” (“See steps ▸”) is underlined `nb-green` text.
+- **You provide**:
+  - `goal`: one sentence, at most 30 characters.
+  - `steps`: 3–6 points.
+  - `output`: what you get.
+  - Optional: `note` for extra notes, `technical` (one more collapsed
+    level), `diagram` (see Diagram).
+- **Don’t**: open it by default; put settings or buttons inside it; make
+  it a card.
 
-### 按鈕（Button）
+### Button
 
-按鈕分四種，每一頁只有一個主要按鈕；文字用動詞開頭，說清楚按下去會發生什麼。
+There are four kinds of buttons, and each page has only one primary
+button; labels start with a verb and say clearly what happens on click.
 
-- **R**：`kit_button(id, label, kind = "secondary")`，`kind` 是
-  `"primary"`、`"secondary"`、`"danger"`；一般按鈕就是
-  [`shiny::actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
-  的預設樣子。
-- **主要按鈕**（`btn-primary`）：
-  - `nb-lime` 底、`h5` 字級、`shadow-card`，高度 ≥ 48px。
-  - 一頁一個，加上最下面的「下一步」。
-- **一般按鈕**（[`actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
-  預設）：白底、`bw-frame` 框、`shadow-sm`，高度 ≥
-  40px。用在「對，下一步」這類流程內的按鈕。
-- **小按鈕**（`kind = "secondary"`，`btn-sm btn-outline-secondary`）：
-  - 白底、`bw-line` 框、沒有陰影、0.85rem、字重 500，高度 ≥ 36px。
-  - 用在下載、全選、範例檔、上移下移、複製。
-- **危險按鈕**（`kind = "danger"`，`btn-sm btn-danger`）：
-  - `nb-salmon` 底、`nb-ink` 字、`bw-line`
-    框，大小和小按鈕一樣；滑過、按下時還是 `nb-salmon`。
-  - 停用時照停用的樣子（`bg-disabled` 底），不是鮭魚色。
-  - 用在刪除、移除、這一回合不做。
-- **停用**：`bg-disabled` 底、`text-hint` 字、`border-disabled`
-  框、沒有陰影，不用 opacity。停用的主要按鈕上面一定有「還差：…」（見
-  ReadyLine）。
-- **規則**：
-  - 會離開這一頁的按鈕或連結，文字後面加「→」。
-  - 建議的選項放第一個，寫「（建議）」。
-  - 下載是這一頁的主角時（例如作答檔）用 `kit-download btn-primary`。
-- **不要**：寫「確定」「送出」；一頁放兩個萊姆按鈕；用白字。
+- **R**: `kit_button(id, label, kind = "secondary")`, where `kind` is
+  `"primary"`, `"secondary"`, or `"danger"`; a regular button is just
+  the default look of
+  [`shiny::actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html).
+- **Primary button** (`btn-primary`):
+  - `nb-lime` background, `h5` size, `shadow-card`, height ≥ 48px.
+  - One per page, plus the “下一步” (“Next step”) at the bottom.
+- **Regular button**
+  ([`actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
+  default): white background, `bw-frame` frame, `shadow-sm`, height ≥
+  40px. Used for in-flow buttons such as “對，下一步” (“Yes, next
+  step”).
+- **Secondary button** (`kind = "secondary"`,
+  `btn-sm btn-outline-secondary`):
+  - White background, `bw-line` frame, no shadow, 0.85rem, weight 500,
+    height ≥ 36px.
+  - Used for download, select all, example files, move up/down, copy.
+- **Danger button** (`kind = "danger"`, `btn-sm btn-danger`):
+  - `nb-salmon` background, `nb-ink` text, `bw-line` frame, same size as
+    the secondary button; stays `nb-salmon` on hover and press.
+  - When disabled it uses the disabled look (`bg-disabled` background),
+    not salmon.
+  - Used for delete, remove, and “這一回合不做” (“Skip this round”).
+- **Disabled**: `bg-disabled` background, `text-hint` text,
+  `border-disabled` frame, no shadow; do not use opacity. A disabled
+  primary button always has a “還差：…” (“Still needed: …”) line above
+  it (see ReadyLine).
+- **Rules**:
+  - Buttons or links that leave the page end with “→”.
+  - The recommended option goes first and says 「（建議）」
+    (“(recommended)”).
+  - When a download is the lead of the page (for example, a response
+    file), use `kit-download btn-primary`.
+- **Don’t**: write 「確定」 (“OK”) or 「送出」 (“Submit”); put two lime
+  buttons on one page; use white text.
 
-### 下載按鈕（DownloadButton）
+### Download button (DownloadButton)
 
-下載按鈕和小按鈕長得一樣（⬇ 圖示＋「下載
-CSV」），但檔名在每個瀏覽器都存得對，中文也一樣。
+The download button looks the same as a secondary button (⬇ icon +
+「下載 CSV」, “Download CSV”), but the file name is saved correctly in
+every browser, Chinese names included.
 
-- **R**：`kit_download_button(session, id, label, filename, content, class = NULL)`，放在
-  [`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html) 裡；
-  測試裡按下載用 `kit_test_download(session, id)`。
-- **長相**：`<a class="btn btn-default kit-download">`，小按鈕的樣子；是這一頁的主角時加
-  `class = "btn-primary"`。
-- **規則**：
-  - 檔名在畫按鈕時決定；網址最後一段、`Content-Disposition`（`filename`
-    與 UTF-8 的 `filename*`）、 `download` 屬性三處都是同一個檔名。
-  - 檔案在按下載時才寫；寫不出來時跳出紅色通知（不會自己消失），[`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)
-    的白話原文照寫。
-  - `.csv`、`.zip`、`.html` 用自己的 MIME，其他（`.sav`、`.csv.gz`）是
-    `application/octet-stream`，瀏覽器不會多加副檔名。
-  - app 在 `.onLoad()` 設一次 `options(kitDesign.app = "kitJoin")`：log
-    寫哪個 app；檔名全是中文時， 舊瀏覽器用的 ASCII
-    備用名是它的小寫（「第一波.sav」→「kitjoin.sav」）。
-- **不要**：用
-  [`shiny::downloadHandler()`](https://rdrr.io/pkg/shiny/man/downloadHandler.html)（中文檔名在有些瀏覽器變成
-  `missing-download_sav`）。
+- **R**:
+  `kit_download_button(session, id, label, filename, content, class = NULL)`,
+  placed inside
+  [`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html); in tests,
+  click download with `kit_test_download(session, id)`.
+- **Appearance**: `<a class="btn btn-default kit-download">`, styled as
+  a secondary button; add `class = "btn-primary"` when it is the lead of
+  the page.
+- **Rules**:
+  - The file name is decided when the button is drawn; the last segment
+    of the URL, `Content-Disposition` (`filename` and the UTF-8
+    `filename*`), and the `download` attribute all use the same file
+    name.
+  - The file is written only when download is clicked; if it cannot be
+    written, a red notification appears (it does not disappear on its
+    own) with the plain-language message from
+    [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)
+    as is.
+  - `.csv`, `.zip`, and `.html` use their own MIME types; everything
+    else (`.sav`, `.csv.gz`) is `application/octet-stream`, so the
+    browser does not add an extra extension.
+  - The app sets `options(kitDesign.app = "kitJoin")` once in
+    `.onLoad()`: it tells the log which app wrote it; when a file name
+    is all Chinese, the ASCII fallback name for older browsers is the
+    lowercase app name (「第一波.sav」 → 「kitjoin.sav」).
+- **Don’t**: use
+  [`shiny::downloadHandler()`](https://rdrr.io/pkg/shiny/man/downloadHandler.html)
+  (Chinese file names become `missing-download_sav` in some browsers).
 
-### 輸入元件（Input）
+### Input
 
-輸入元件是白底黑框，標籤在上、說明小字在下；預設值是最常用、最安全的那個。
+Inputs are white with a black frame, the label above and a small hint
+below; the default value is the most common and safest one.
 
-- **R**：Shiny 原生的
-  [`selectInput()`](https://rdrr.io/pkg/shiny/man/selectInput.html)、[`textInput()`](https://rdrr.io/pkg/shiny/man/textInput.html)、[`radioButtons()`](https://rdrr.io/pkg/shiny/man/radioButtons.html)、[`checkboxInput()`](https://rdrr.io/pkg/shiny/man/checkboxInput.html)；說明用
-  `.kit-hint`。
-- **長相**：
-  - 白底、`bw-frame` 框、`radius`。
-  - 聚焦時出現 `shadow-sm`；下拉選單打開時，選到的項目是 `nb-lime`。
-  - 勾選框、單選一律 20px，選取時 `nb-green`。
-- **規則**：
-  - 選項 2–5 個用單選圓鈕，一次全看得到；超過 5 個用下拉。
-  - 必填就寫「（必填）」，不用紅色星號。
-  - 進階選項收在「進階設定 ▸」（見 Details）。
-  - 照欄名猜到的值用 `bg-guess` 淡黃底，提醒使用者看一遍。
-  - **一格兩用**：同一欄有的檔案是「選檔案裡的一欄」，有的是「每一列都一樣的值」（世代
-    TDCYP、波次 2009）。用一個可以打字的下拉選單，不要另外選模式。
-  - 一組勾選框要有群組名稱；一排超過 8 個改成表格或「全選」。
-- **不要**：輸入框加陰影（聚焦時以外）；在表格裡放沒有 `aria-label`
-  的選單。
+- **R**: Shiny’s own
+  [`selectInput()`](https://rdrr.io/pkg/shiny/man/selectInput.html),
+  [`textInput()`](https://rdrr.io/pkg/shiny/man/textInput.html),
+  [`radioButtons()`](https://rdrr.io/pkg/shiny/man/radioButtons.html),
+  [`checkboxInput()`](https://rdrr.io/pkg/shiny/man/checkboxInput.html);
+  hints use `.kit-hint`.
+- **Appearance**:
+  - White background, `bw-frame` frame, `radius`.
+  - `shadow-sm` appears on focus; when a dropdown is open, the selected
+    item is `nb-lime`.
+  - Checkboxes and radio buttons are always 20px, `nb-green` when
+    selected.
+- **Rules**:
+  - 2–5 options: radio buttons, so all are visible at once; more than 5:
+    a dropdown.
+  - For required fields, write 「（必填）」 (“(required)”); no red
+    asterisks.
+  - Advanced options go under 「進階設定 ▸」 (“Advanced settings ▸”)
+    (see Details).
+  - Values guessed from column names get the pale yellow `bg-guess`
+    background, reminding users to check them.
+  - **One field, two uses**: for the same column, some files need “pick
+    a column in the file” and others need “the same value for every row”
+    (cohort TDCYP, wave 2009). Use one dropdown you can type into; do
+    not add a separate mode choice.
+  - A group of checkboxes needs a group name; more than 8 in a row
+    becomes a table or gets “select all”.
+- **Don’t**: give inputs a shadow (except on focus); put dropdowns in a
+  table without an `aria-label`.
 
-### 狀態框（StatusBox）
+### Status box (StatusBox)
 
-狀態框是按下主要按鈕以後第一眼要看的東西：固定四種標籤、顏色和用詞。
+The status box is the first thing to look at after clicking the primary
+button: four fixed labels, colors, and wordings.
 
-- **R**：[`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md)、[`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md)（有
-  warnings
-  時自動變成要注意）、`kit_error_status(e, action, todo)`、`kit_stale_status(run_label)`；畫面用
-  `make_status_ui()`。
-- **四種狀態**：
+- **R**:
+  [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md),
+  [`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md)
+  (switches to needs-attention automatically when there are warnings),
+  `kit_error_status(e, action, todo)`, `kit_stale_status(run_label)`;
+  rendered with `make_status_ui()`.
+- **Four states**:
 
-| 狀態     | 標籤               | 底色        |
-|----------|--------------------|-------------|
-| 完成     | 【完成】           | `nb-mint`   |
-| 要注意   | 【完成，但請注意】 | `nb-yellow` |
-| 停下來   | 【停下來】         | `nb-salmon` |
-| 需要重做 | 【要重新執行】     | `nb-yellow` |
+| State           | Label                                 | Background  |
+|-----------------|---------------------------------------|-------------|
+| Done            | 【完成】 (“Done”)                     | `nb-mint`   |
+| Needs attention | 【完成，但請注意】 (“Done, but note”) | `nb-yellow` |
+| Stopped         | 【停下來】 (“Stopped”)                | `nb-salmon` |
+| Needs redoing   | 【要重新執行】 (“Run again”)          | `nb-yellow` |
 
-- **長相**：`bw-frame` 框、`shadow-card`，是頁面上最突出的盒子。
-- **內容**：
-  - **第一行**：標籤＋一句結論，粗體、約 `h5`
-    字級。例如「【完成】串接完成：結果共 3,389 列 × 2,058 欄。」
-  - **接著**：最多 3
-    點，要注意的事排在前、結果的重點排在後；其他收在「還有 N 點」。
-  - **停下來時**：一定寫怎麼辦，附一個按鈕或連結；R
-    的原文收在「原始訊息」。
-- **規則**：
-  - 執行完把狀態框捲到畫面上方（[`kit_scroll_to()`](https://jiewentsai.github.io/kitDesign/reference/kit_scroll_to.md)）。
-  - 狀態框下面的重點是一張表或一張圖，不要再加「結果摘要」框。
-- **不要**：自己發明新的標籤；把錯誤原文放在第一層。
+- **Appearance**: `bw-frame` frame, `shadow-card`; the most prominent
+  box on the page.
+- **Content**:
+  - **First line**: label + one-sentence conclusion, bold, about `h5`
+    size. For example 「【完成】串接完成：結果共 3,389 列 × 2,058 欄。」
+    (“\[Done\] Join complete: 3,389 rows × 2,058 columns.”)
+  - **Then**: at most 3 points, things needing attention first, key
+    results after; the rest go under 「還有 N 點」 (“N more”).
+  - **When stopped**: always say what to do, with a button or link; R’s
+    original message goes under 「原始訊息」 (“Original message”).
+- **Rules**:
+  - After a run, scroll the status box to the top of the screen
+    ([`kit_scroll_to()`](https://jiewentsai.github.io/kitDesign/reference/kit_scroll_to.md)).
+  - The key output below the status box is one table or one chart; do
+    not add another “result summary” box.
+- **Don’t**: invent new labels; put the raw error message at the top
+  level.
 
-### 提示框（Callout）
+### Callout
 
-提示框是按下去之前就該知道的提醒，不是結果，所以沒有陰影。
+A callout is a reminder you should know before clicking; it is not a
+result, so it has no shadow.
 
-- **R**：`kit_callout(..., warn = FALSE)`。雲端版的提醒是同一個樣子：頁首下面的橫幅
-  [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md)，
-  頁面最下面的使用須知
-  `kit_cloud_footer(sections, links)`（灰色小字，文字是 app
-  的）；是不是雲端版用
-  [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)。
-- **兩種**：
-  - **資訊**（`nb-sky`）：一般補充，例如「外部連結不適用：……這不是錯誤」。
-  - **注意**（`warn = TRUE`，`nb-yellow`）：例如「資料裡有疑似遺漏值代碼，建議先到遺漏值處理」。
-- **長相**：`bw-frame` 框、沒有陰影；框裡的連結是 `nb-ink` 粗體。
-- **規則**：
-  - 一個區塊最多一個提示框。
-  - 能寫進狀態框的，就不要另外開提示框。
-  - 有按鈕時，按鈕放在框外面。
-- **不要**：用提示框報告結果；框裡再放框。
+- **R**: `kit_callout(..., warn = FALSE)`. Cloud-version reminders look
+  the same: the banner below the header
+  [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md),
+  and the usage notes at the very bottom of the page
+  `kit_cloud_footer(sections, links)` (small gray text; the wording
+  comes from the app); check whether it is the cloud version with
+  [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md).
+- **Two kinds**:
+  - **Information** (`nb-sky`): general extra notes, for example
+    「外部連結不適用：……這不是錯誤」 (“External linking does not apply:
+    … this is not an error”).
+  - **Attention** (`warn = TRUE`, `nb-yellow`): for example
+    「資料裡有疑似遺漏值代碼，建議先到遺漏值處理」 (“The data contain
+    what look like missing-value codes; we suggest going to missing
+    value handling first”).
+- **Appearance**: `bw-frame` frame, no shadow; links inside are bold
+  `nb-ink`.
+- **Rules**:
+  - At most one callout per block.
+  - If it can go in the status box, do not open a separate callout.
+  - When there is a button, put it outside the frame.
+- **Don’t**: use a callout to report results; put a frame inside the
+  frame.
 
-### 資料表（DataTable）
+### Data table (DataTable)
 
-資料表是結果的主角之一：白底、黑表頭、寬度跟著內容；長表只顯示前幾列。
+The data table is one of the leads of the results: white background,
+black header row, width follows content; long tables show only the first
+rows.
 
-- **R**：`kit_static_table(df)`（整數自動加千分位）、`kit_preview_table(df, priority_cols, n)`、`kit_rows_note(nrow, ncol, shown_rows)`。
-- **長相**：
-  - 白底、`bw-frame` 外框、`nb-ink` 表頭白字。
-  - 列之間 `bw-line` 細線、斑馬紋 `bg-stripe`、`small` 字級。
-  - 數字靠右、等寬數字。
-- **規則**：
-  - 上面一個 `h4` 標題，加一行 `hint`：「共 157 列，以下前 20
-    列。」完整的請下載，或放在「▸ 全部（157 列）」。
-  - 寬度跟著內容，最寬到版面寬度；超過時在 `.kit-table-scroll`
-    裡左右捲，不撐破版面。
-  - **欄名**：函式的輸出與資料本身維持英文；app
-    自己整理的摘要表可以用中文；下載的檔案維持原欄名。
-  - 步驟卡裡的表不加外框，表頭用 `bg-stripe`（淡），不用黑表頭。
-- **不要**：拉滿整頁；一次顯示幾百列。
+- **R**: `kit_static_table(df)` (integers get thousands separators
+  automatically), `kit_preview_table(df, priority_cols, n)`,
+  `kit_rows_note(nrow, ncol, shown_rows)`.
+- **Appearance**:
+  - White background, `bw-frame` outer frame, `nb-ink` header row with
+    white text.
+  - Thin `bw-line` lines between rows, `bg-stripe` zebra stripes,
+    `small` size.
+  - Numbers right-aligned, tabular figures.
+- **Rules**:
+  - An `h4` title above, plus one `hint` line: 「共 157 列，以下前 20
+    列。」 (“157 rows; the first 20 are shown below.”). The full table
+    is downloadable, or under 「▸ 全部（157 列）」 (“▸ All (157 rows)”).
+  - Width follows content, up to the layout width; when wider, it
+    scrolls sideways inside `.kit-table-scroll` and does not break the
+    layout.
+  - **Column names**: function output and the data itself keep English
+    names; summary tables the app builds itself may use Chinese;
+    downloaded files keep the original column names.
+  - Tables inside step cards have no outer frame and use a `bg-stripe`
+    (pale) header row, not the black one.
+- **Don’t**: stretch to full page width; show hundreds of rows at once.
 
-### 圖（Chart）
+### Chart
 
-圖放在白色卡片裡，一張圖只回答一個問題；類別色用
-Okabe–Ito，依序取色。plotly 圖最後一定交給
-[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)，和
-app 的其他部分看起來是一套。
+Charts sit in a white card, and each chart answers only one question;
+categorical colors use Okabe–Ito, taken in order. A plotly chart is
+always passed to
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+last, so it looks like part of the same app.
 
-- **R**：
-  - 顏色：[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)（類別色）、[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md)（中性色）、[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)（連續數值的色階）。
-  - 樣子：`kit_plotly_style(p)`（plotly 是 Suggests，app 自己要
-    `Imports: plotly`）；下載的單一 HTML 檔要 app 的字型：
-    `kit_plotly_fonts(p)`（[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-    預設已經附上）。
-  - kitsUI 的 `kit_chart.R`：`kit_chart_categorical()`（替 kits
-    畫好的圖換類別色）、`kit_chart_role()`（角色色）。
-- **和 kits 一起用的順序**：kits 的
+- **R**:
+  - Colors:
+    [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)
+    (categorical),
+    [`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md)
+    (neutral),
+    [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)
+    (color scale for continuous values).
+  - Look: `kit_plotly_style(p)` (plotly is in Suggests; the app needs
+    its own `Imports: plotly`); a downloaded single HTML file needs the
+    app’s fonts: `kit_plotly_fonts(p)`
+    ([`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+    already attaches them by default).
+  - kitsUI’s `kit_chart.R`: `kit_chart_categorical()` (recolors charts
+    drawn by kits with the categorical colors), `kit_chart_role()` (role
+    colors).
+- **Order when used with kits**: kits’
   [`plot()`](https://rdrr.io/r/graphics/plot.default.html) → kitsUI
-  換色（`kit_chart_categorical()`、`kit_chart_role()`）→
-  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)。kits
-  畫的是什麼就是什麼，app 只套顏色與樣子。
-  - 換色和
+  recoloring (`kit_chart_categorical()`, `kit_chart_role()`) →
+  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md).
+  What kits draws is what you get; the app only applies colors and look.
+  - Recoloring and
     [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-    的順序可以對調：它不動 kits 或 kitsUI 指定的顏色。
-  - 畫面上和下載的 HTML 用同一個 reactive（套一次），兩邊一樣。
+    can be swapped: it does not touch colors set by kits or kitsUI.
+  - The on-screen chart and the downloaded HTML use the same reactive
+    (styled once), so both are identical.
 
   ``` r
 
   p <- plot(x$item, type = "category", items = shown)          # kits
   p <- kit_chart_categorical(p)                                 # kitsUI
-  kitDesign::kit_plotly_style(p, filename = "item_category")    # 最後
+  kitDesign::kit_plotly_style(p, filename = "item_category")    # last
   ```
-- **長相**（[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  做的事）：
-  - 卡片：`nb-card` 底、`bw-frame` 框、`shadow-card`（CSS 的
-    `.js-plotly-plot`）；圖本身白底，下載的 PNG 也是白底。
-  - 字：全部圓體（`sans`）、`nb-ink`；內文 15px，圖例與滑過的說明框
-    14px，刻度 13px、`text-hint`。
-  - 標題：靠左、粗體、約 `h5`（18px）；圖寬放不下時在瀏覽器端換行。kits
-    的小標（`<sup>`）留在下一行。
-  - 軸（每一條，包括並排的小圖）：軸線 `nb-ink`
-    1.5px、只畫左邊與下面（不畫四邊的框）、刻度朝外、 格線
-    `line-soft`、零線 `line`。只有一張圖時拿掉 kits
-    的外框；並排的小圖（類別機率曲線、Wright map） 外框換成 `line`
-    淡線，小圖之間還分得開。
-  - 滑過的說明框：白底、`nb-ink` 框、圓體。
-  - 圖例：沒有框；超過 4 項，或最長的一項超過 20 欄（中文字算 2
-    欄），放在圖的下面、橫排、靠左； 其他放右邊。圖寬小於
-    600px（手機）時一律放到下面。`legend = "keep"` 不動位置。
-  - 色階：熱圖類換成
-    [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)（極淡萊姆
-    → `bg-new` → `nb-green`，值越大越深；最小值不用白色，0%
-    和沒有資料的空格才分得開）； `colorscale = FALSE`
-    保留原來的色階。色條的字、外框照上面的字級與顏色。
-  - 工具列：沒有 plotly 的標誌；只有「下載成
-    PNG」、放大、縮小、回到原來的範圍；繁體中文。
-  - 邊界：上下左右一樣小；軸、圖例、色條放不下時自動加寬，軸標題與圖例離卡片的邊至少
-    16px，不會切到字。
-  - 不改：資料、軸的範圍與刻度、指定的顏色、點的形狀、線的粗細與虛線、hover
-    與圖例的文字、圖的高度。
-- **配色**：
-  - 世代、量尺、分數依序取
-    `chart-blue`、`chart-orange`、`chart-green`、`chart-purple`、`chart-sky`、`chart-vermillion`。
-    plotly 自己給的預設色換成同一個位置的 Okabe–Ito。
-  - 參考線、帶子、沒有判斷的點用 `chart-neutral`。
-  - 連續的值（通過比例等）用 `chart-sequential`。
-- **規則**：
-  - 圖上方的標題就寫它回答的問題。
-  - 圖上的字照 kits 的原文（英文），不翻譯：畫面、下載的圖和在 R 裡跑
-    kits 得到的圖一樣，可以直接放進論文。
-    使用者自己輸入的標籤（題號、領域、世代、波次、量尺名稱）照輸入的樣子顯示，中文也一樣。
-  - 圖下面一行 `hint` 中文，說明怎麼讀；做決定要看的圖例（例如連結圖的
-    Kept、Dropped），在說明裡寫出中文意思。
-  - 圖和下面的說明之間至少留 1.2rem，說明不能壓到 x 軸。
-  - 下載這張圖用小按鈕（HTML 用
-    [`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html)；工具列另外可以存
-    PNG）。
-- **不要**：用 plotly 的預設色或預設的工具列；在 app 裡另外改 plotly
-  的字型與軸線；在一張圖裡回答兩個問題。
+- **Appearance** (what
+  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+  does):
+  - Card: `nb-card` background, `bw-frame` frame, `shadow-card` (CSS
+    `.js-plotly-plot`); the chart itself has a white background, and so
+    does the downloaded PNG.
+  - Text: all in the rounded typeface (`sans`), `nb-ink`; body 15px,
+    legend and hover box 14px, tick labels 13px in `text-hint`.
+  - Title: left-aligned, bold, about `h5` (18px); wraps in the browser
+    when the chart is too narrow. The kits subtitle (`<sup>`) stays on
+    the next line.
+  - Axes (every axis, including side-by-side panels): axis line `nb-ink`
+    1.5px, only left and bottom (no box on four sides), ticks pointing
+    outward, grid lines `line-soft`, zero line `line`. With a single
+    chart, the kits outer frame is removed; for side-by-side panels
+    (category probability curves, Wright map) the outer frames become
+    faint `line` rules, so the panels stay distinguishable.
+  - Hover box: white background, `nb-ink` frame, rounded typeface.
+  - Legend: no frame; with more than 4 items, or when the longest item
+    is wider than 20 columns (a Chinese character counts as 2), it goes
+    below the chart, horizontal, left-aligned; otherwise on the right.
+    When the chart is narrower than 600px (phones) it always goes below.
+    `legend = "keep"` leaves the position unchanged.
+  - Color scale: heatmap-type traces switch to
+    [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)
+    (very pale lime → `bg-new` → `nb-green`, darker for larger values;
+    the minimum is not white, so 0% and empty no-data cells stay
+    distinguishable); `colorscale = FALSE` keeps the original scale.
+    Color bar text and frame follow the sizes and colors above.
+  - Toolbar: no plotly logo; only “download as PNG”, zoom in, zoom out,
+    and reset to the original range; in Traditional Chinese.
+  - Margins: equally small on all sides; grows automatically when axes,
+    legend, or color bar do not fit; axis titles and the legend are at
+    least 16px from the card edge, so text is never cut off.
+  - Left unchanged: data, axis ranges and ticks, specified colors,
+    marker shapes, line widths and dashes, hover and legend text, chart
+    height.
+- **Palette**:
+  - Cohorts, scales, and scores take `chart-blue`, `chart-orange`,
+    `chart-green`, `chart-purple`, `chart-sky`, `chart-vermillion` in
+    order. plotly’s own default colors are replaced by the Okabe–Ito
+    color in the same position.
+  - Reference lines, bands, and unjudged points use `chart-neutral`.
+  - Continuous values (pass rates and so on) use `chart-sequential`.
+- **Rules**:
+  - The title above the chart states the question it answers.
+  - Text on the chart follows kits’ original (English) and is not
+    translated: the screen, the downloaded chart, and the chart from
+    running kits in R are identical and can go straight into a paper.
+    Labels the user typed (item IDs, domains, cohorts, waves, scale
+    names) display as typed, Chinese included.
+  - Below the chart, one `hint` line in Chinese explains how to read it;
+    legend entries needed for a decision (for example Kept and Dropped
+    in the linking chart) get their Chinese meaning in that line.
+  - Leave at least 1.2rem between the chart and the explanation below
+    it; the explanation must not overlap the x axis.
+  - Download the chart with a secondary button (HTML via
+    [`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html);
+    the toolbar can also save a PNG).
+- **Don’t**: use plotly’s default colors or default toolbar; change
+  plotly fonts and axis lines separately in the app; answer two
+  questions in one chart.
 
-### 細節列、進階設定、設定摘要（Details）
+### Details row, advanced settings, settings summary (Details)
 
-細節列放「先結果、後細節」裡的細節：一排收起來的小字標題，打開的那一個佔一整行。
+The details row holds the “details” in “results first, details later”: a
+row of collapsed small-text titles; the open one takes a full line.
 
-- **R**：`kit_details_row(...)` 包一排
-  `kit_detail(title, ..., open = FALSE)`；設定區的進階選項用
-  `kit_advanced(..., title = "進階設定")`；結果上面的一行設定摘要用
-  `kit_settings_line(parts)`。
-- **長相**：
-  - 標題是 `text-hint` 小字加 ▸，沒有框。
-  - 打開後內容也不加框；進階設定打開後左邊一條 `line` 淡線。
-- **你要提供**：每個細節的標題（名詞：「題目參數」「這一回合的紀錄」「用
-  R 怎麼做」）和內容。
-- **規則**：
-  - 預設收起。
-  - 「用 R 怎麼做」永遠放在細節列的最後一個。
-  - 設定摘要放在主要按鈕或結果上面，一行小字：「本回合 R1：M03、M36 ·
-    參照世代 M03 · 沒有固定檔」。
-- **不要**：用 accordion 卡片；細節裡再疊框。
+- **R**: `kit_details_row(...)` wraps a row of
+  `kit_detail(title, ..., open = FALSE)`; advanced options in the
+  settings area use `kit_advanced(..., title = "進階設定")`; the
+  one-line settings summary above results uses
+  `kit_settings_line(parts)`.
+- **Appearance**:
+  - Titles are small `text-hint` text with ▸, no frame.
+  - Opened content has no frame either; opened advanced settings get a
+    faint `line` rule on the left.
+- **You provide**: a title for each detail (a noun: 「題目參數」 (“Item
+  parameters”), 「這一回合的紀錄」 (“Log for this round”), 「用 R
+  怎麼做」 (“How to do it in R”)) and its content.
+- **Rules**:
+  - Collapsed by default.
+  - “用 R 怎麼做” (“How to do it in R”) is always the last item in the
+    details row.
+  - The settings summary goes above the primary button or the results,
+    one line of small text: 「本回合 R1：M03、M36 · 參照世代 M03 ·
+    沒有固定檔」 (“This round R1: M03, M36 · reference cohort M03 · no
+    anchor file”).
+- **Don’t**: use accordion cards; stack frames inside details.
 
-### 用 R 怎麼做（CodePanel）
+### “How to do it in R” panel (CodePanel)
 
-「用 R 怎麼做」把目前的設定寫成可以照著跑的 R 程式碼，永遠收在細節列裡。
+“用 R 怎麼做” (“How to do it in R”) turns the current settings into R
+code you can run as is, and always lives in the details row.
 
-- **R**：kitJoin 的
-  `kit_code_blocks(snips)`、`kit_code_panel(output_id)`；kitsUI
-  的同名元件。
-- **長相**：
-  - 收起時是細節列裡的一行小字「▸ 用 R 怎麼做」。
-  - 打開後由上而下：
-    1.  一行說明：「以下程式碼依你目前的設定產生，是簡化的示範。」
-    2.  版本名稱（粗體）和「複製」小按鈕，在同一行。
-    3.  程式碼。
-  - 只有程式碼本身有框：`bg-code` 底、`bw-frame` 框、沒有陰影、`code`
-    字級。
-  - 程式碼框最寬到版面的內容寬度（左右留白以內），打開時不能撐破版面。
-- **規則**：
-  - 有兩個版本（tidyverse、base R）時，兩組「版本名稱＋程式碼」上下排。
-  - 一律關掉連字：`<-`、`|>` 照原樣顯示，照著打才不會打錯。
-  - **一行最多約 70 欄**：程式碼範例與說明都一樣，英文字母、數字、符號算
-    1 欄，中文字算 2 欄。寫範本時就換行；顯示前
+- **R**: kitJoin’s `kit_code_blocks(snips)`,
+  `kit_code_panel(output_id)`; kitsUI’s component of the same name.
+- **Appearance**:
+  - Collapsed, it is one line of small text in the details row: 「▸ 用 R
+    怎麼做」.
+  - Opened, from top to bottom:
+    1.  One line of explanation:
+        「以下程式碼依你目前的設定產生，是簡化的示範。」 (“The code
+        below is generated from your current settings and is a
+        simplified example.”)
+    2.  The version name (bold) and a 「複製」 (“Copy”) secondary
+        button, on the same line.
+    3.  The code.
+  - Only the code itself has a frame: `bg-code` background, `bw-frame`
+    frame, no shadow, `code` size.
+  - The code frame is at most the content width of the layout (inside
+    the gutters) and must not break the layout when opened.
+- **Rules**:
+  - When there are two versions (tidyverse, base R), the two “version
+    name + code” pairs are stacked.
+  - Ligatures are always off: `<-` and `|>` display as typed, so copying
+    by hand does not introduce mistakes.
+  - **At most about 70 columns per line**: for both code examples and
+    explanations, letters, digits, and symbols count as 1 column,
+    Chinese characters as 2. Break lines when writing templates; before
+    display,
     [`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
-    自動用
+    wraps automatically with
     [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md)
-    換行（在括號裡的逗號後面、註解在空白或中文字之間；換行前後 parse
-    結果要一樣），[`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)
-    算每行幾欄；換行後還是太長的行（斷不開的長字串）會發出
-    warning（不會停下來）。
-  - 還是很長的程式碼在框裡左右捲，不換行。
-- **不要**：預設打開；用卡片、圖示或綠色標頭；框裡疊框。
+    (after commas inside parentheses, and in comments at spaces or
+    between Chinese characters; the parse result must be the same before
+    and after wrapping), and
+    [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)
+    counts columns per line; lines still too long after wrapping
+    (unbreakable long strings) raise a warning (they do not stop).
+  - Code that is still long scrolls sideways inside the frame and is not
+    wrapped.
+- **Don’t**: open it by default; use cards, icons, or a green header;
+  stack frames inside the frame.
 
-### 步驟卡（StepCard）
+### Step card (StepCard)
 
-一頁裡有好幾步、而且有先後時用步驟卡：一次只打開一步，做完的收成一行。
+Use step cards when a page has several steps in order: only one step is
+open at a time, and finished steps collapse to one line.
 
-- **R**：模組
-  [`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)／`kit_stepcards_server(id, titles, summaries, checks)`；低階
-  [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)、
-  [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)、[`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md)（kitJoin
-  的「kits 作答檔」第 1–3
-  步）。[`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)
-  是頁面說明裡的步驟清單，不是步驟卡。
-- **三種狀態**：
-  - **現在這一步**：白底、`bw-frame` 框、`shadow-card`；圓形編號
-    `nb-lime`。
-  - **做完的**：
-    - 收成一行：圓形 ✓ `nb-mint`，後面一句摘要（例如「5 個檔案 · 世代
-      TDCYP · 2009、2011（年）」），最右邊「改」。
-    - 框 `border-disabled`、沒有陰影。
-  - **還不能做的**：`border-disabled` 框、`text-disabled`
-    字，寫「先完成第 1 步」。
-- **規則**：
-  - 按「對，下一步」（一般按鈕）才往下；做完的按「改」回去。
-  - 主要按鈕在所有步驟下面，只有一個；上面一行「還差：…」（見
-    ReadyLine）。
-  - 卡片裡的表不加外框、淡表頭；手機上改成一列一塊（見 FileTable）。
-  - 「改」的可以按範圍至少 32px，`aria-label` 寫「改第 N
-    步：標題」；現在這一步加 `aria-current="step"`。
-- **前面只選、後面再細修**：前面的步驟只做最少的選擇（例如第 2
-  步只選「哪些欄是題目」）；細的設定放在後面的表裡改 （例如第 3
-  步的題目表設定領域與計分）。前面那一步的說明要寫「之後在第 N
-  步還能改」，使用者才不會以為一次要設好。
-- **要改的表直接打開**：這一步的主角是一張要改的表（例如題目表）時，表直接顯示、不收在細節列裡；
-  旁邊放「下載這張表」的小按鈕，任何時候都能下載。
-- **不要**：一次打開好幾步；卡片裡再放卡片。
+- **R**: module
+  [`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)／`kit_stepcards_server(id, titles, summaries, checks)`;
+  low level
+  [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md),
+  [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md),
+  [`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md)
+  (steps 1–3 of kitJoin’s 「kits 作答檔」 (“kits response file”)).
+  [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)
+  is the step list in the page guide, not a step card.
+- **Three states**:
+  - **Current step**: white background, `bw-frame` frame, `shadow-card`;
+    round number `nb-lime`.
+  - **Finished**:
+    - Collapsed to one line: round ✓ in `nb-mint`, followed by a
+      one-sentence summary (for example 「5 個檔案 · 世代 TDCYP ·
+      2009、2011（年）」 (“5 files · cohort TDCYP · 2009, 2011
+      (year)”)), and 「改」 (“Edit”) at the far right.
+    - Frame `border-disabled`, no shadow.
+  - **Not yet available**: `border-disabled` frame, `text-disabled`
+    text, says 「先完成第 1 步」 (“Finish step 1 first”).
+- **Rules**:
+  - Move forward only by clicking 「對，下一步」 (“Yes, next step”) (a
+    regular button); go back to a finished step with 「改」 (“Edit”).
+  - The primary button sits below all steps, only one; above it a
+    「還差：…」 (“Still needed: …”) line (see ReadyLine).
+  - Tables in cards have no outer frame and a pale header row; on phones
+    each row becomes a block (see FileTable).
+  - The clickable area of 「改」 is at least 32px, with `aria-label`
+    「改第 N 步：標題」 (“Edit step N: title”); the current step gets
+    `aria-current="step"`.
+- **Choose first, refine later**: earlier steps ask only for the minimum
+  choices (for example step 2 only picks “which columns are items”);
+  detailed settings are edited later in a table (for example the item
+  table in step 3 sets domain and scoring). The explanation in the
+  earlier step must say 「之後在第 N 步還能改」 (“You can still change
+  this in step N”), so users do not think everything must be set at
+  once.
+- **Tables to edit are open directly**: when the lead of a step is a
+  table to edit (for example the item table), show the table directly,
+  not inside the details row; put a 「下載這張表」 (“Download this
+  table”) secondary button next to it, so it can be downloaded at any
+  time.
+- **Don’t**: open several steps at once; put cards inside cards.
 
-### 檢查清單（Checklist）
+### Checklist
 
-檢查清單把「要決定的事」和「已經沒問題的事」列在一起，放在轉換或執行之前。
+The checklist lists “things to decide” together with “things that are
+already fine”, placed before a conversion or a run.
 
-- **長相**：一列一件事，左邊一個記號：
-  - **!**（`text-decide`）：要決定。粗體一句話，下面一行小字說為什麼，再下面是決定的按鈕。
-  - **✓**（`nb-green`）：沒問題，或已經決定。字重
-    500；使用者自己決定的寫「（你選的）」，旁邊有「改回來」。
-  - **i**（`text-hint`）：提醒，不用決定。
-  - 列之間 `line-soft` 細線。
-- **規則**：
-  - 建議的選項放第一個，按鈕上寫「（建議）」。
-  - 異常一定要按一下才算決定（疑似遺漏值代碼、資訊不足）；決定過的，結果的狀態框不再提醒一次。
-  - 只列需要的事；逐題的表收在「▸ 逐題看、逐題改（45 欄）」，一頁 25
-    列，可以搜尋。
-  - 記號加
-    `aria-hidden="true"`，前面放看不見的「要決定：」「沒問題：」「提醒：」。
-- **不要**：把幾百題的逐題提醒都列出來。
+- **Appearance**: one item per row, with a mark on the left:
+  - **!** (`text-decide`): needs a decision. One bold sentence, one line
+    of small text below saying why, and the decision buttons below that.
+  - **✓** (`nb-green`): fine, or already decided. Weight 500; decisions
+    the user made say 「（你選的）」 (“(your choice)”), with 「改回來」
+    (“Change back”) next to it.
+  - **i** (`text-hint`): reminder, no decision needed.
+  - Thin `line-soft` lines between rows.
+- **Rules**:
+  - The recommended option goes first, and its button says 「（建議）」
+    (“(recommended)”).
+  - A problem only counts as decided after a click (suspected
+    missing-value codes, insufficient information); once decided, the
+    result’s status box does not remind again.
+  - List only what is needed; the per-item table goes under 「▸
+    逐題看、逐題改（45 欄）」 (“▸ Review and edit item by item (45
+    columns)”), 25 rows per page, searchable.
+  - Marks get `aria-hidden="true"`, preceded by hidden text 「要決定：」
+    (“To decide:”), 「沒問題：」 (“OK:”), 「提醒：」 (“Note:”).
+- **Don’t**: list per-item reminders for hundreds of items.
 
-### 還差什麼（ReadyLine）
+### Ready line (“what’s still needed”) (ReadyLine)
 
-主要按鈕還不能按時，按鈕上面一行寫還差什麼，並給一個去處理的連結。
+When the primary button cannot be clicked yet, one line above it says
+what is still needed and gives a link to fix it.
 
-- **R**：`kit_ready_line(missing, link = NULL)`；在 server 用
-  `kit_run_gate(session, output, missing, link)`
-  同時停用按鈕；檔案不夠時用 `kit_need_files(n_files, need = 2L)`。
-- **長相**：一行 `text-todo` 粗體「還差：…」，後面接 `nb-green`
-  連結「到「檔案上傳」加入檔案 →」；下面是停用的主要按鈕。
-- **規則**：
-  - 主要按鈕一開始就顯示（停用），讓人知道這一頁最後要按什麼。
-  - 「還差」寫具體的事和數字：「至少要 2 個波次的檔案，目前只有 1 個。」
-  - 伺服器端仍然要檢查，不能只靠按鈕停用。
-- **不要**：把按鈕藏起來；用一個黃色提示框重複同一件事。
+- **R**: `kit_ready_line(missing, link = NULL)`; in the server,
+  `kit_run_gate(session, output, missing, link)` also disables the
+  button; when there are not enough files,
+  `kit_need_files(n_files, need = 2L)`.
+- **Appearance**: one line of bold `text-todo` 「還差：…」 (“Still
+  needed: …”), followed by an `nb-green` link 「到「檔案上傳」加入檔案
+  →」 (“Go to ‘File upload’ to add files →”); the disabled primary
+  button is below.
+- **Rules**:
+  - Show the primary button (disabled) from the start, so people know
+    what they will click at the end of the page.
+  - “Still needed” names the concrete thing and number: 「至少要 2
+    個波次的檔案，目前只有 1 個。」 (“Files from at least 2 waves are
+    needed; there is only 1 now.”)
+  - The server must still check; do not rely only on the disabled
+    button.
+- **Don’t**: hide the button; repeat the same thing in a yellow callout.
 
-### 下一步（NextStep）
+### Next step (NextStep)
 
-「下一步」在頁面最下面靠右，結果出來以後才出現，帶使用者到下一個分頁。
+“下一步” (“Next step”) sits at the bottom right of the page, appears
+only after results are out, and takes the user to the next tab.
 
-- **R**：`kit_next_step(text = NULL, button_id = NULL, label = NULL, button = NULL)`。
-- **長相**：左邊一句 `hint`
-  小字（可以是幾個去處的清單），右邊一個主要按鈕「下一步：××× →」。
-- **規則**：
-  - 出現的時機：狀態是【完成】或【完成，但請注意】。
-  - 結果過期（【要重新執行】）時拿掉。
-  - 按鈕文字寫出下一頁的名稱。
-- **不要**：在結果還沒出來時顯示；放在頁面中間。
+- **R**:
+  `kit_next_step(text = NULL, button_id = NULL, label = NULL, button = NULL)`.
+- **Appearance**: a `hint` sentence on the left (can be a list of
+  destinations), and a primary button 「下一步：××× →」 (“Next step: ×××
+  →”) on the right.
+- **Rules**:
+  - When it appears: the status is 【完成】 (“Done”) or
+    【完成，但請注意】 (“Done, but note”).
+  - Removed when results are outdated (【要重新執行】, “Run again”).
+  - The button text names the next page.
+- **Don’t**: show it before results are out; place it in the middle of
+  the page.
 
-### 圖解（Diagram）
+### Diagram
 
-圖解用幾張小表畫出這一頁做的事（前 → 後），放在「這一頁做什麼」下面。
+A diagram uses a few small tables to show what the page does (before →
+after), placed below “這一頁做什麼” (“What this page does”).
 
-- **R**：`kit_diagram(before, after, caption, arrow = "→")`，表用
-  `kit_dg_table(df, title, added = NULL)`。
-- **長相**：
-  - 配角：不加框、表格跟著內容寬、`bw-hair` 格線、`nb-page` 淡表頭。
-  - 值用 `mono` 字型。
-  - 新加的欄是 `bg-new` 底，欄名後面寫「（新）」，不只靠顏色。
-  - 空的格子寫灰色的「（空）」。
-- **規則**：
-  - 每張小表 2–3
-    列，用一般的名稱（id、score、wave），不用某個資料庫的欄名。
-  - 下面一行 `hint` 白話說明。
-  - ≤ 576px 時「前」在上、箭頭朝下、「後」在下。
-- **不要**：用真實資料；用大資料表的黑表頭。
+- **R**: `kit_diagram(before, after, caption, arrow = "→")`, with tables
+  from `kit_dg_table(df, title, added = NULL)`.
+- **Appearance**:
+  - Supporting cast: no frame, tables as wide as their content,
+    `bw-hair` grid lines, pale `nb-page` header row.
+  - Values in the `mono` typeface.
+  - Newly added columns have a `bg-new` background and 「（新）」
+    (“(new)”) after the column name, so color is not the only cue.
+  - Empty cells say 「（空）」 (“(empty)”) in gray.
+- **Rules**:
+  - Each small table has 2–3 rows and uses generic names (id, score,
+    wave), not column names from a specific database.
+  - One `hint` line of plain-language explanation below.
+  - At ≤ 576px, “before” is on top, the arrow points down, and “after”
+    is below.
+- **Don’t**: use real data; use the black header row of large data
+  tables.
 
-### 檔案表（FileTable）
+### File table (FileTable)
 
-檔案表是步驟卡或上傳頁裡「一列一個檔案、一欄一件事」的設定表；手機上每一列變成一塊。
+The file table is the settings table in step cards or upload pages with
+“one row per file, one column per setting”; on phones each row becomes a
+block.
 
-- **R**：`table.table.kit-file-table`，每個 `<td>` 加
-  `data-label`（欄名）；kitJoin 的上傳頁、kits 作答檔第 1 步，kitsUI
-  的題庫選擇表。
-- **長相**：
-  - 桌機：一般表格，在步驟卡裡沒有外框、淡表頭。
-  - ≤ 576px：表格和每一列都撐滿卡片寬度，每一列一塊，每格前面一行 `hint`
-    欄名，列之間 `line` 分隔線。
-- **規則**：
-  - 每一列的按鈕位置固定：用不到的「上移」「下移」放看不見的佔位（`btn invisible`、`aria-hidden`），按鈕才不會左右跳。
-  - 照欄名猜到的格子用 `bg-guess`。
-  - 輸入框最寬到版面寬度。
-- **不要**：在手機上讓整頁左右捲。
+- **R**: `table.table.kit-file-table`, with `data-label` (the column
+  name) on each `<td>`; used in kitJoin’s upload page, step 1 of the
+  kits response file, and kitsUI’s item bank selection table.
+- **Appearance**:
+  - Desktop: a regular table; inside step cards, no outer frame and a
+    pale header row.
+  - ≤ 576px: the table and every row fill the card width; each row is a
+    block, each cell preceded by a `hint` line with the column name,
+    with `line` dividers between rows.
+- **Rules**:
+  - Button positions are fixed in every row: unused 「上移」「下移」
+    (“Move up”, “Move down”) get invisible placeholders
+    (`btn invisible`, `aria-hidden`), so buttons do not jump sideways.
+  - Cells guessed from column names use `bg-guess`.
+  - Inputs are at most the layout width.
+- **Don’t**: let the whole page scroll sideways on phones.
 
-## 頁面骨架
+## Page skeleton
 
-每個分頁由上到下都是這個順序（一頁一個主要按鈕的分頁用
-[`kit_run_tab_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)／[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)，
-固定的部分與狀態流都做好了，分頁只寫自己的設定、執行與結果）：
+Every tab follows this order from top to bottom (tabs with one primary
+button use
+[`kit_run_tab_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)／[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md),
+which handle the fixed parts and the state flow; the tab only writes its
+own settings, run, and results):
 
-    頁首（一個 app 一個）
-    步驟分頁（目前的萊姆色、做完的打 ✓、還不能做的灰色）
-    這一頁做什麼：一句話                                      看步驟 ▸
-    設定（左 1/3）               │ 設定摘要與預覽（右 2/3）
-    進階設定 ▸
-    還差：…（還不能按時）
-    [ 主要按鈕 ]
-    狀態框：【完成】一句結論＋最多 3 點
-    重點：一張表（有 h4 標題）或一張圖
-    ▸ 細節 1   ▸ 細節 2   ▸ 用 R 怎麼做
-                                           [ 下一步：××× → ]
+    Header (one per app)
+    Step tabs (current is lime, finished get ✓, not yet available are gray)
+    What this page does: one sentence                         See steps ▸
+    Settings (left 1/3)          │ Settings summary and preview (right 2/3)
+    Advanced settings ▸
+    Still needed: … (while it cannot be clicked)
+    [ Primary button ]
+    Status box: [Done] one-sentence conclusion + at most 3 points
+    Key output: one table (with an h4 title) or one chart
+    ▸ Detail 1   ▸ Detail 2   ▸ How to do it in R
+                                           [ Next step: ××× → ]
 
-## 狀態流
+## State flow
 
-    還不能做 ──(前一步完成)──▶ 可以做 ──(按主要按鈕)──▶ 執行中
+    Not available ──(previous step done)──▶ Available ──(click primary button)──▶ Running
            ┌───────────────┬───────────────┬────────────┘
            ▼               ▼               ▼
-        【完成】  【完成，但請注意】    【停下來】
-           └───────┬───────┘     (處理後重按，或按「這一回合不做」)
+        [Done]     [Done, but note]     [Stopped]
+           └───────┬───────┘     (fix and click again, or click "Skip this round")
                    ▼
-       「下一步」按鈕出現；分頁打 ✓
-    （之後改了設定或檔案 →【要重新執行】，分頁的 ✓ 拿掉，後面的分頁變灰）
+       "Next step" button appears; tab gets ✓
+    (later changes to settings or files → [Run again]; the tab's ✓ is removed, later tabs turn gray)
 
-- 執行完把狀態框捲到畫面上方（減少動態效果時不要平滑捲動）。
-- 預設顯示第一個成功的結果，不要預設選到停下來的那一個。
-- 會改變結果的動作由使用者自己按，按鈕寫清楚後果（「這一回合不做（題庫與連結不會改變）」），做了要留紀錄。
+- After a run, scroll the status box to the top of the screen (no smooth
+  scrolling when motion is reduced).
+- Show the first successful result by default; do not preselect one that
+  stopped.
+- Actions that change results are clicked by the user; the button states
+  the consequence clearly (「這一回合不做（題庫與連結不會改變）」, “Skip
+  this round (item bank and linking will not change)”), and doing it
+  leaves a log entry.
 
-## 手機（≤ 576px）
+## Phones (≤ 576px)
 
-- 整頁不能左右捲動：`document.documentElement.scrollWidth`
-  要等於視窗寬。輸入框、表格 `max-width: 100%`。
-- 分頁一排左右滑，不要換行成好幾排。
-- 卡片裡的表改成「一列一塊、欄名在上」（`data-label`）。
-- 頁首縮小，第一屏看得到頁面說明和第一個設定。
+- The page must never scroll sideways:
+  `document.documentElement.scrollWidth` must equal the window width.
+  Inputs and tables get `max-width: 100%`.
+- Tabs stay in one row and scroll sideways; do not wrap into several
+  rows.
+- Tables in cards become “one row per block, column name on top”
+  (`data-label`).
+- The header shrinks, so the first screen shows the page guide and the
+  first setting.
 
-## 文案
+## Wording
 
-- 台灣繁體中文、短句、口語但不隨便；一句話只說一件事。主詞是「你」或省略，不寫「使用者」。
-- 先說結論，再說原因：「這一回合資訊不足，無法估計：每個人在要估的題只剩一題。」
-- 數字一定帶單位：「688 人」「3 個量尺」「2,058 欄」。
-- 按鈕用動詞開頭，說清楚會發生什麼：「開始校準」「下載
-  CSV」「到遺漏值處理頁改掉 →」，不寫「確定」「送出」。
-- 錯誤訊息一定寫怎麼辦；R 的原文收在「▸ 原始訊息」。
-- 建議的選項放第一個，按鈕上寫「（建議）」。
-- 用詞表（同一件事只用一個詞）：
+- Taiwanese Traditional Chinese, short sentences, conversational but not
+  casual; one sentence says one thing. The subject is 「你」 (“you”) or
+  omitted; never 「使用者」 (“the user”).
+- Conclusion first, then the reason:
+  「這一回合資訊不足，無法估計：每個人在要估的題只剩一題。」 (“Not
+  enough information to estimate this round: each person has only one
+  item left to estimate.”)
+- Numbers always carry units: 「688 人」 (“688 people”), 「3 個量尺」
+  (“3 scales”), 「2,058 欄」 (“2,058 columns”).
+- Buttons start with a verb and say clearly what will happen:
+  「開始校準」 (“Start calibration”), 「下載 CSV」 (“Download CSV”),
+  「到遺漏值處理頁改掉 →」 (“Fix it on the missing value page →”); never
+  「確定」 (“OK”) or 「送出」 (“Submit”).
+- Error messages always say what to do; R’s original message goes under
+  「▸ 原始訊息」 (“▸ Original message”).
+- The recommended option goes first, and its button says 「（建議）」
+  (“(recommended)”).
+- Word list (one word per concept):
 
-| 用這個       | 不用                       |
-|--------------|----------------------------|
-| 停下來       | 沒有完成、失敗、錯誤、中止 |
-| 要注意       | 警告、warning              |
-| 遺漏值       | 缺失值、missing            |
-| 世代         | cohort（細節裡可以附英文） |
-| 波次         | wave（細節裡可以附英文）   |
-| 這一回合不做 | 略過、排除、skip           |
+| Use this | Not these |
+|----|----|
+| 停下來 (stopped) | 沒有完成、失敗、錯誤、中止 (not completed, failed, error, aborted) |
+| 要注意 (needs attention) | 警告、warning |
+| 遺漏值 (missing value) | 缺失值、missing |
+| 世代 (cohort) | cohort (English may be added in details) |
+| 波次 (wave) | wave (English may be added in details) |
+| 這一回合不做 (skip this round) | 略過、排除、skip (skip, exclude) |
 
-- 分頁名稱用「名詞＋動詞」：檔案上傳、遺漏值處理、資料串接、格式轉換。
-- 表格欄名：函式的輸出與資料本身維持英文欄名；app
-  自己整理的摘要表可以用中文；下載的檔案一律維持原欄名。
+- Tab names are “noun + verb”: 檔案上傳 (file upload), 遺漏值處理
+  (missing value handling), 資料串接 (data join), 格式轉換 (format
+  conversion).
+- Table column names: function output and the data itself keep English
+  column names; summary tables the app builds itself may use Chinese;
+  downloaded files always keep the original column names.
 
-## 可及性檢查清單
+## Accessibility checklist
 
 `<html lang="zh-Hant-TW">`
 
-內文 17px，最小字 14px
+Body text 17px, smallest text 14px
 
-文字對比 ≥ 4.5:1；框、焦點框、圖形 ≥ 3:1
+Text contrast ≥ 4.5:1; frames, focus outlines, graphics ≥ 3:1
 
-主要按鈕 ≥ 48px 高、一般按鈕 ≥ 40px、小按鈕 ≥ 36px、收合標題與文字連結 ≥
-32px、勾選框 20px
+Primary button ≥ 48px tall, regular button ≥ 40px, secondary button ≥
+36px, collapsible titles and text links ≥ 32px, checkboxes 20px
 
-鍵盤可以操作，焦點有 3px `focus` 框
+Keyboard operable, focus has a 3px `focus` outline
 
-狀態不只靠顏色，一定有文字
+State never relies on color alone; there is always text
 
-「減少動態效果」時沒有位移和動畫
+No offsets or animation under “reduce motion”
 
-程式碼關掉連字
+Ligatures off in code
 
-390px 寬時整頁不能左右捲
+At 390px wide the page does not scroll sideways
 
-## 在新的 Shiny app 使用
+## Using it in a new Shiny app
 
-新的 app 不再複製檔案：載入 **kitDesign**
-套件就好。主題、樣式（`inst/www/*.css`）、瀏覽器端的小程式（`inst/www/kit.js`）、標誌都在套件裡，每個
-app 用的是同一份。
+New apps no longer copy files: just load the **kitDesign** package. The
+theme, styles (`inst/www/*.css`), browser-side scripts
+(`inst/www/kit.js`), and logo are all in the package, and every app uses
+the same copy.
 
 ``` r
 
-# 安裝
+# Install
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-在 app 套件的 DESCRIPTION 的 `Imports:` 寫 `kitDesign`。頁面這樣開始：
+Add `kitDesign` to `Imports:` in the app package’s DESCRIPTION. Start
+the page like this:
 
 ``` r
 
 library(kitDesign)
 
-ver <- kit_app_description("kitJoin")   # 讀 app 自己的 Version、Date
+ver <- kit_app_description("kitJoin")   # reads the app's own Version, Date
 ui <- kit_page(
-  "KIT ×× 工具", "臺灣幼兒發展調查資料庫",
-  tagline = "這個工具做什麼",
+  "KIT ×× 工具", "臺灣幼兒發展調查資料庫",  # "KIT ×× tool", "KIT database"
+  tagline = "這個工具做什麼",              # "What this tool does"
   version = ver$version, date = ver$date,
-  kit_navgroups(groups, "tabs"),          # 或 kit_flow_tabs(...)
+  kit_navgroups(groups, "tabs"),          # or kit_flow_tabs(...)
   shiny::tabsetPanel(id = "tabs", type = "hidden", ...)
 )
 ```
 
 [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)
-已經設定好
-`lang = "zh-Hant-TW"`、[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)、樣式與小程式（[`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md)）和頁首（[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)）。自己用
-`bslib::page_*()` 組頁面時，放 `theme = kit_theme()` 和
-[`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md)。開一個全新的
-app：`kit_new_app(path, title, subtitle)`（頁首、步驟分頁、照頁面骨架寫好的範例分頁、測試都有）。
+already sets `lang = "zh-Hant-TW"`,
+[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md),
+the styles and scripts
+([`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md)),
+and the header
+([`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)).
+When you build the page yourself with `bslib::page_*()`, add
+`theme = kit_theme()` and
+[`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md).
+To start a brand-new app: `kit_new_app(path, title, subtitle)` (it
+includes the header, step tabs, an example tab written to the page
+skeleton, and tests).
 
-元件分三種：
+Components come in three kinds:
 
-- **值物件**（S3）：`kit_status`（狀態框）、`kit_check`／`kit_checklist`（檢查清單）、`kit_code`（一個版本的程式碼）。建構時檢查內容（例如狀態只能是
-  idle／success／warning／error／stale），直接放進頁面或交給
-  [`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)
-  就畫出來，[`print()`](https://rdrr.io/r/base/print.html) 印文字版。
-- **模組**（有狀態的元件，`*_ui(id)` ＋ `*_server(id)`）：步驟分頁
-  `kit_step_tabs_*`、步驟卡 `kit_stepcards_*`、主要按鈕＋還差
-  `kit_run_gate_*`、用 R 怎麼做
-  `kit_code_panel_*`。一頁一行，不用自己管狀態。
-- **畫標記的函式**：其他元件，以及上面兩種的低階版（舊的 app
-  可以慢慢換）。
+- **Value objects** (S3): `kit_status` (status box),
+  `kit_check`／`kit_checklist` (checklist), `kit_code` (one version of
+  code). They check their content when constructed (for example, the
+  state can only be idle／success／warning／error／stale), render when
+  placed directly in the page or passed to
+  [`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html), and
+  [`print()`](https://rdrr.io/r/base/print.html) shows a text version.
+- **Modules** (stateful components, `*_ui(id)` + `*_server(id)`): step
+  tabs `kit_step_tabs_*`, step cards `kit_stepcards_*`, primary button +
+  still needed `kit_run_gate_*`, How to do it in R `kit_code_panel_*`.
+  One line per page; no state to manage yourself.
+- **Markup functions**: all other components, plus low-level versions of
+  the two kinds above (older apps can switch over gradually).
 
-每個元件用哪個函式：
+Which function to use for each component:
 
-| 元件 | 函式 |
+| Component | Functions |
 |----|----|
-| 頁首（Header） | [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md) 已經放了；單獨用 [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)、[`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md)；版本日期 [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md) |
-| 步驟分頁（NavTabs） | 模組 `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`；低階：[`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)＋[`kit_navgroup()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroup.md)、`kit_flow_tabs(aside = )`、[`kit_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_states.md)、[`kit_watch_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_watch_tab_states.md) |
-| 頁面說明（PageGuide） | [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md)、[`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md) |
-| 按鈕（Button） | `kit_button(id, label, kind)`、[`kit_btn_class()`](https://jiewentsai.github.io/kitDesign/reference/kit_btn_class.md) |
-| 下載按鈕（DownloadButton） | `kit_download_button(session, id, label, filename, content)`；測試 [`kit_test_download()`](https://jiewentsai.github.io/kitDesign/reference/kit_test_download.md) |
-| 狀態框（StatusBox） | 值物件 [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md)、[`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md)、[`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md)、[`kit_stale_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_stale_status.md)（直接放進頁面）；低階畫法 [`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md)；通知 [`kit_notify()`](https://jiewentsai.github.io/kitDesign/reference/kit_notify.md)；白話錯誤 [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md) |
-| 提示框（Callout） | `kit_callout(..., warn = )`；雲端版橫幅 [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md)、使用須知 [`kit_cloud_footer()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_footer.md)、判斷 [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md) |
-| 資料表（DataTable） | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md)、[`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md)、[`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md)、[`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/reference/kit_table_scroll.md)、[`kit_num()`](https://jiewentsai.github.io/kitDesign/reference/kit_num.md)、[`kit_dims()`](https://jiewentsai.github.io/kitDesign/reference/kit_dims.md) |
-| 圖（Chart） | [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)（plotly 圖的樣子）、[`kit_plotly_fonts()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_fonts.md)；顏色 [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)、[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md)、[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md) |
-| 細節列（Details） | [`kit_details_row()`](https://jiewentsai.github.io/kitDesign/reference/kit_details_row.md)、[`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md)、[`kit_advanced()`](https://jiewentsai.github.io/kitDesign/reference/kit_advanced.md)、[`kit_settings_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_settings_line.md) |
-| 用 R 怎麼做（CodePanel） | 模組 [`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)／[`kit_code_panel_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)；值物件 `kit_code(code, label)`；換行 [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md)、行寬 [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)；低階 [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)、[`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md)、[`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md) |
-| 步驟卡（StepCard） | 模組 [`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)／`kit_stepcards_server(id, titles, summaries, checks)`；低階 [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)、[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)、[`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md) |
-| 檢查清單（Checklist） | 值物件 [`kit_checklist()`](https://jiewentsai.github.io/kitDesign/reference/kit_checklist.md)、`kit_check(state, title, why, actions)`；單一問題 [`kit_problems()`](https://jiewentsai.github.io/kitDesign/reference/kit_problems.md) |
-| 還差什麼（ReadyLine） | 模組 [`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)／`kit_run_gate_server(id, missing, link)`；低階 [`kit_ready_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_ready_line.md)、[`kit_run_gate()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate.md)、[`kit_need_files()`](https://jiewentsai.github.io/kitDesign/reference/kit_need_files.md) |
-| 下一步（NextStep） | [`kit_next_step()`](https://jiewentsai.github.io/kitDesign/reference/kit_next_step.md)；連到別的 app [`kit_app_link()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_link.md) |
-| 圖解（Diagram） | [`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md)、[`kit_dg_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_dg_table.md) |
-| 捲到結果、打開收合、離開前提醒 | [`kit_scroll_to()`](https://jiewentsai.github.io/kitDesign/reference/kit_scroll_to.md)、[`kit_open_details()`](https://jiewentsai.github.io/kitDesign/reference/kit_open_details.md)、[`kit_unload_guard()`](https://jiewentsai.github.io/kitDesign/reference/kit_unload_guard.md) |
-| 頁面骨架＋狀態流（RunTab） | `kit_run_tab_ui(id, run_label, guide, ...)`／`kit_run_tab_server(input, output, session, run_label, run, done, ...)`：還差、設定摘要、執行、狀態框、通知、捲動、要重新執行、結果的細節、用 R 怎麼做 |
+| Header | Already included by [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md); on its own [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md), [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md); version and date [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md) |
+| Step tabs (NavTabs) | Module `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`; low level: [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md) + [`kit_navgroup()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroup.md), `kit_flow_tabs(aside = )`, [`kit_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_states.md), [`kit_watch_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_watch_tab_states.md) |
+| Page guide (PageGuide) | [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md), [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md) |
+| Button | `kit_button(id, label, kind)`, [`kit_btn_class()`](https://jiewentsai.github.io/kitDesign/reference/kit_btn_class.md) |
+| Download button (DownloadButton) | `kit_download_button(session, id, label, filename, content)`; tests [`kit_test_download()`](https://jiewentsai.github.io/kitDesign/reference/kit_test_download.md) |
+| Status box (StatusBox) | Value objects [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md), [`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md), [`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md), [`kit_stale_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_stale_status.md) (place directly in the page); low-level rendering [`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md); notifications [`kit_notify()`](https://jiewentsai.github.io/kitDesign/reference/kit_notify.md); plain-language errors [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md) |
+| Callout | `kit_callout(..., warn = )`; cloud-version banner [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md), usage notes [`kit_cloud_footer()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_footer.md), detection [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md) |
+| Data table (DataTable) | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md), [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md), [`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md), [`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/reference/kit_table_scroll.md), [`kit_num()`](https://jiewentsai.github.io/kitDesign/reference/kit_num.md), [`kit_dims()`](https://jiewentsai.github.io/kitDesign/reference/kit_dims.md) |
+| Chart | [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md) (look of plotly charts), [`kit_plotly_fonts()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_fonts.md); colors [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md), [`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md), [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md) |
+| Details row (Details) | [`kit_details_row()`](https://jiewentsai.github.io/kitDesign/reference/kit_details_row.md), [`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md), [`kit_advanced()`](https://jiewentsai.github.io/kitDesign/reference/kit_advanced.md), [`kit_settings_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_settings_line.md) |
+| How to do it in R (CodePanel) | Module [`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)／[`kit_code_panel_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md); value object `kit_code(code, label)`; wrapping [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md), line width [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md); low level [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md), [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md), [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md) |
+| Step card (StepCard) | Module [`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)／`kit_stepcards_server(id, titles, summaries, checks)`; low level [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md), [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md), [`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md) |
+| Checklist | Value objects [`kit_checklist()`](https://jiewentsai.github.io/kitDesign/reference/kit_checklist.md), `kit_check(state, title, why, actions)`; single problems [`kit_problems()`](https://jiewentsai.github.io/kitDesign/reference/kit_problems.md) |
+| Ready line (ReadyLine) | Module [`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)／`kit_run_gate_server(id, missing, link)`; low level [`kit_ready_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_ready_line.md), [`kit_run_gate()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate.md), [`kit_need_files()`](https://jiewentsai.github.io/kitDesign/reference/kit_need_files.md) |
+| Next step (NextStep) | [`kit_next_step()`](https://jiewentsai.github.io/kitDesign/reference/kit_next_step.md); link to another app [`kit_app_link()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_link.md) |
+| Diagram | [`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md), [`kit_dg_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_dg_table.md) |
+| Scroll to results, open collapsibles, warn before leaving | [`kit_scroll_to()`](https://jiewentsai.github.io/kitDesign/reference/kit_scroll_to.md), [`kit_open_details()`](https://jiewentsai.github.io/kitDesign/reference/kit_open_details.md), [`kit_unload_guard()`](https://jiewentsai.github.io/kitDesign/reference/kit_unload_guard.md) |
+| Page skeleton + state flow (RunTab) | `kit_run_tab_ui(id, run_label, guide, ...)`／`kit_run_tab_server(input, output, session, run_label, run, done, ...)`: still needed, settings summary, run, status box, notification, scrolling, run again, result details, How to do it in R |
 
-- 所有元件的樣子：[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)。
-- 工具名稱維持「KIT ×× 工具」，用其他資料（例如 TDCYP）測試時也不改名。
-- 版本行永遠在頁首，讀 app 自己的 DESCRIPTION 的 Version 與
-  Date（[`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md)）；`show_kitdesign = TRUE`
-  時後面接 kitDesign 的版本，回報問題時兩個版本都看得到。
-- 版本規則與發布步驟見
-  [版本與發布.md](https://jiewentsai.github.io/kitDesign/articles/release.md)；kitJoin、kitsUI
-  的舊名字見
-  [遷移對照.md](https://github.com/jiewenTsai/kitDesign/blob/main/brand/%E9%81%B7%E7%A7%BB%E5%B0%8D%E7%85%A7.md)。
-- 要新的元件或改樣式時，改 kitDesign（`inst/www/kit-design.css` 與
-  `R/`），不要在 app 裡另外寫 CSS；只用本系統的
-  tokens（顏色、`sp-*`、字級），寫之前先看有沒有現成的元件可以用。
+- What every component looks like:
+  [`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md).
+- The tool name stays “KIT ×× 工具” (“KIT ×× tool”); do not rename it
+  when testing with other data (for example TDCYP).
+- The version line is always in the header and reads Version and Date
+  from the app’s own DESCRIPTION
+  ([`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md));
+  with `show_kitdesign = TRUE` the kitDesign version follows, so both
+  versions are visible when reporting problems.
+- Versioning rules and release steps:
+  [release.md](https://jiewentsai.github.io/kitDesign/articles/release.md);
+  old names in kitJoin and kitsUI:
+  [migration.md](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md).
+- For new components or style changes, change kitDesign
+  (`inst/www/kit-design.css` and `R/`); do not write separate CSS in the
+  app. Use only this system’s tokens (colors, `sp-*`, type sizes), and
+  check for an existing component before writing a new one.
 
-### 換成別的品牌
+### Switching to another brand
 
-kitDesign 預設是 KIT（萊姆頁首、KIT 綠、豆子標誌）。不是 KIT
-的計畫也可以用：換**標誌**與**顏色**，
-其他（字型、框、陰影、間距、元件、文案規則）照這份設計語言。kitDesign
-0.3.0 起：
+kitDesign defaults to KIT (lime header, KIT green, bean logo). Projects
+other than KIT can use it too: change the **logo** and **colors**, and
+follow this design language for everything else (fonts, frames, shadows,
+spacing, components, wording rules). From kitDesign 0.3.0:
 
 ``` r
 
 options(kitDesign.brand = kit_brand(
-  "示範實驗室",
-  logo = "logo.svg",     # 頁首的完整標誌（SVG 或 PNG）
-  mark = "mark.svg",     # 瀏覽器分頁的圖示（方形；沒有給時用 logo）
+  "示範實驗室",          # "Demo lab"
+  logo = "logo.svg",     # full logo for the header (SVG or PNG)
+  mark = "mark.svg",     # browser tab icon (square; falls back to logo if missing)
   colors = list(accent = "#9cc0ff", primary = "#1f4fa3", page = "#f5f7fa")
 ))
 ```
 
-- 設定一次，[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)、[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)、[`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md)、[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)、
+- Set it once and
+  [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+  [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md),
+  [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md),
+  [`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md),
+  [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md),
+  and
   [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  都用它；只給一頁時用 `kit_page(..., brand = )`。
-- 可以換的顏色是下面附錄裡有 `--nb-*`
-  變數的幾個（對照見附錄「顏色」表下面的說明）；沒有給的照 KIT。 只給
-  `accent` 時 `accent_light` 自動算（和白色混合）；只給 `primary` 時
-  `primary_hover` 自動算（加深）。
-- 換顏色時照樣守這份文件的規則：色塊上的字一律 `ink`，所以 `accent`
-  與四個狀態色上面放 `ink` 要有 4.5:1；`primary` 是連結文字，在 `page`
-  上也要 4.5:1。四個狀態色最好不換，換的話意思不能變。
-- 灰色（`text-hint`、`line`
-  等）、焦點框、圖的類別色（Okabe–Ito）不跟著品牌換。
-- 看換了以後的樣子：`kit_gallery(brand = "demo")`（藍色系的示範品牌）。
+  all use it; for a single page use `kit_page(..., brand = )`.
+- The colors you can change are the ones with a `--nb-*` variable in the
+  appendix below (see the note below the appendix “Color” table for the
+  mapping); anything not given stays KIT. If only `accent` is given,
+  `accent_light` is computed automatically (mixed with white); if only
+  `primary` is given, `primary_hover` is computed automatically
+  (darkened).
+- When changing colors, keep this document’s rules: text on color blocks
+  is always `ink`, so `ink` on `accent` and on the four status colors
+  needs 4.5:1; `primary` is link text and also needs 4.5:1 on `page`.
+  Better not to change the four status colors; if you do, their meanings
+  must not change.
+- Grays (`text-hint`, `line`, and so on), the focus outline, and the
+  chart categorical colors (Okabe–Ito) do not change with the brand.
+- To see the result: `kit_gallery(brand = "demo")` (a blue demo brand).
 
-## 作者的決定（2026-10-31）
+## Author’s decisions (2026-10-31)
 
-1.  **工具名稱**：維持「KIT」。TDCYP 只是測試用資料。
-2.  **狀態標籤**：統一成【完成】【完成，但請注意】【停下來】【要重新執行】。
-3.  **表格欄名**：函式的輸出與資料本身維持英文欄名；套件自己整理的摘要表可以用中文；下載的檔案維持原欄名。
-4.  **kitJoin 的分頁**：分成三組、不編號（準備 · 做出資料（選一個）·
-    其他工具）。
-5.  **表格寬度**：跟著內容，不拉滿整頁。
-6.  **圖上的字**：照 kits
-    的原文（英文），不翻譯；使用者輸入的標籤照原樣（可以是中文）。app
-    只套顏色與
-    [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)。
-7.  **危險按鈕**：鮭紅色（`nb-salmon`）、黑字。
-8.  **熱圖色階**：最小值是極淡萊姆、不是白色，0%
-    和沒有資料的格子分得開。
-9.  **kits 作答檔**：第 2 步只選題目欄；領域、計分在第 3
-    步的題目表設定；預設領域是題組名去掉結尾的 `_`、`.`、`-`。
+1.  **Tool name**: stays “KIT”. TDCYP is only test data.
+2.  **Status labels**: unified as
+    【完成】【完成，但請注意】【停下來】【要重新執行】 (“Done”, “Done,
+    but note”, “Stopped”, “Run again”).
+3.  **Table column names**: function output and the data itself keep
+    English column names; summary tables the package builds itself may
+    use Chinese; downloaded files keep the original column names.
+4.  **kitJoin tabs**: three groups, unnumbered (準備 ·
+    做出資料（選一個）· 其他工具; Prepare · Make the data (pick one) ·
+    Other tools).
+5.  **Table width**: follows content, not stretched to the full page.
+6.  **Text on charts**: follows kits’ original (English), not
+    translated; labels typed by the user stay as typed (may be Chinese).
+    The app only applies colors and
+    [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md).
+7.  **Danger button**: salmon (`nb-salmon`), black text.
+8.  **Heatmap color scale**: the minimum is a very pale lime, not white,
+    so 0% and no-data cells are distinguishable.
+9.  **kits response file**: step 2 only picks the item columns; domain
+    and scoring are set in the item table in step 3; the default domain
+    is the item group name with a trailing `_`, `.`, or `-` removed.
 
-## 和程式還不一致的地方
+## Where the code still differs
 
-照程式寫進上面各節；要改程式或改規格時看這裡。
+The sections above follow the code; check here when changing the code or
+the spec.
 
-- **建議的選項**：v0.2
-  提議用薄荷底按鈕，程式沒有做；現在只有「放第一個、文字寫（建議）」。
-- **次要按鈕**：v0.2 第 9 節提議 2px 框加 2px 陰影；程式的
-  `kit_button(kind = "secondary")`
-  是小按鈕（1.5px、沒有陰影、0.85rem、字重 500）。帶陰影的白按鈕只有
-  [`actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
-  的預設樣子。
-- **字級**：規格是六級；`inst/www/kit-brite.css` 裡還有
-  0.85、0.88、0.9、0.92、1.08rem 這些值，狀態框第一行是 1.08rem。
-- **字重 500**：規格說只用 400 與 700，但小按鈕和「沒問題」的檢查項目用
-  500。
-- **舊的灰色**：`#4d4d4d`、`#6b6b6b`、`#9a9a9a`、`#c9c3b6` 還在
-  `inst/www/kit-brite.css`
-  的一些規則裡（大部分被後面的規則蓋掉）；還不能做的分頁底色是
-  `#ece8dc`，不是 `bg-disabled`。
+- **Recommended option**: v0.2 proposed a mint-background button; the
+  code never did it. Now it is only “goes first, text says
+  (recommended)”.
+- **Secondary button**: section 9 of v0.2 proposed a 2px frame plus a
+  2px shadow; the code’s `kit_button(kind = "secondary")` is the small
+  button (1.5px, no shadow, 0.85rem, weight 500). The white button with
+  a shadow is only the default look of
+  [`actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html).
+- **Type sizes**: the spec has six sizes; `inst/www/kit-brite.css` still
+  has values such as 0.85, 0.88, 0.9, 0.92, and 1.08rem, and the first
+  line of the status box is 1.08rem.
+- **Weight 500**: the spec says only 400 and 700, but secondary buttons
+  and “no problem” checklist items use 500.
+- **Old grays**: `#4d4d4d`, `#6b6b6b`, `#9a9a9a`, `#c9c3b6` remain in
+  some rules in `inst/www/kit-brite.css` (mostly overridden by later
+  rules); the background of not-yet-available tabs is `#ece8dc`, not
+  `bg-disabled`.
 
-## 附錄：tokens
+## Appendix: tokens
 
-程式裡的 CSS 變數是 `--` 加上名稱，例如
-`var(--nb-lime)`、`var(--sp-3)`。
+In code, the CSS variable is `--` plus the name, for example
+`var(--nb-lime)`, `var(--sp-3)`.
 
-### 顏色
+### Color
 
-| 名稱 | 值 | 用在 |
+| Name | Value | Used for |
 |----|----|----|
-| `nb-ink` | `#141414` | 墨：所有文字、2px 框線、硬陰影、主要資料表的表頭底色。色塊上的字一律用它。 |
-| `nb-page` | `#faf7f0` | 紙：整頁背景（米白）。nb-ink 在上面 17.2:1。 |
-| `nb-card` | `#ffffff` | 卡：卡片、輸入框、表格、圖、按鈕（主要按鈕以外）的底色。 |
-| `nb-lime` | `#c6d033` | KIT 萊姆，主角色：頁首、主要按鈕、目前的分頁與步驟編號、下拉選取。不要當文字色（在紙上只有 1.57:1）；上面放 nb-ink（10.9:1）。 |
-| `nb-green` | `#006835` | KIT 綠（和標誌深綠同一色）：連結文字、進度條、✓ 記號、勾選框選取。在紙上 6.5:1、白底 6.9:1。不要當大面積底色或主要按鈕。 |
-| `nb-green-hover` | `#004d27` | 連結滑過時的顏色。 |
-| `nb-sky` | `#a8dcff` | 資訊：天藍提示框（kit_callout()）的底色，上面放 nb-ink。 |
-| `nb-yellow` | `#ffde59` | 要注意：【完成，但請注意】【要重新執行】狀態框、注意提示框、雲端版橫幅。上面放 nb-ink。 |
-| `nb-salmon` | `#ff9b8f` | 停下來：【停下來】狀態框、危險按鈕（刪除、這一回合不做）。上面放 nb-ink。 |
-| `nb-mint` | `#b9f0a8` | 完成：【完成】狀態框、做完的步驟編號、上傳進度條的斜紋。上面放 nb-ink。 |
-| `text-hint` | `#5a5a5a` | 配角文字：提示小字、說明、收合標題、組標籤、表格裡的次要資訊。在紙上 6.45:1、白底 6.9:1。 |
-| `text-disabled` | `#6e6a60` | 停用文字：還不能做的步驟卡、還不能做的分頁、停用列。在紙上 5.0:1。 |
-| `text-todo` | `#8a4a00` | 主要按鈕上面「還差：…」那一行、逐題表的提醒字（粗體）。在紙上 6.4:1。 |
-| `text-decide` | `#a14a00` | 檢查清單「要決定」的 ! 記號。白底約 6.0:1。 |
-| `text-stop` | `#8a2a00` | 表格或清單裡的單一問題（.kit-problems）。在紙上 8.1:1。 |
-| `line` | `#d9d4c5` | 淡線：「這一頁做什麼」下緣、進階設定左邊的線、手機檔案表的分隔。只當線，不當文字。 |
-| `line-soft` | `#e3ded2` | 最淡的線：檢查清單列之間、合成題號區塊上緣。 |
-| `border-disabled` | `#8a8a8a` | 停用的框：還不能做或做完的步驟卡、停用的按鈕、還不能做的分頁。在紙上 3.2:1（框和圖形的門檻是 3:1）。 |
-| `bg-disabled` | `#e8e4d8` | 停用按鈕的底色（不要用 opacity）；還不能做的分頁底色用相近的 \#ece8dc。 |
-| `bg-stripe` | `#f3f0e6` | 資料表斑馬紋；步驟卡裡的淡表頭。 |
-| `bg-soft-hover` | `#f1eee4` | 小按鈕滑過時的底色。 |
-| `bg-code` | `#fffdf5` | 程式碼框的底色（加 2px nb-ink 框，沒有陰影）。 |
-| `bg-guess` | `#fffbe6` | 照欄名猜出來的格子（淡黃），提醒使用者看一遍。 |
-| `bg-new` | `#e8f0a0` | 圖解裡新加的欄（淡萊姆）；不用天藍，天藍是「資訊」。 |
-| `focus` | `#0044ff` | 鍵盤焦點：3px 外框、外推 3px。黑框上看得到，紙上 6.0:1。 |
-| `logo-bean` | `#aad05f` | 只用在標誌與插圖。不要當按鈕或底色（和萊姆只差 1.05:1）。 |
-| `logo-leaf` | `#fff57f` | 只用在標誌與插圖。不要用在任何介面元件（和「要注意」的黃太像）。 |
-| `chart-blue` | `#0072b2` | 圖的類別色第 1 個（Okabe–Ito）：世代、量尺、分數依序取色。 |
-| `chart-orange` | `#e69f00` | 圖的類別色第 2 個。 |
-| `chart-green` | `#009e73` | 圖的類別色第 3 個。 |
-| `chart-purple` | `#cc79a7` | 圖的類別色第 4 個。 |
-| `chart-sky` | `#56b4e9` | 圖的類別色第 5 個。 |
-| `chart-vermillion` | `#d55e00` | 圖的類別色第 6 個；超過 6 類從頭再取。 |
-| `chart-neutral` | `#7f7f7f` | 圖裡不分類別的中性色：參考線、帶子、沒有判斷的點。 |
-| `chart-sequential` | `#f3f7d3` → `#e8f0a0` → `#006835` | 連續數值的色階（熱圖、色條）：極淡萊姆（不用白色：白色留給沒有資料的格子）→ 淡萊姆（`bg-new`，在 0.2）→ KIT 綠（`nb-green`），中間在 Lab 空間內插。[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)。 |
+| `nb-ink` | `#141414` | Ink: all text, 2px frame lines, hard shadows, the header background of the main data table. Text on color blocks always uses it. |
+| `nb-page` | `#faf7f0` | Paper: the whole page background (off-white). nb-ink on it is 17.2:1. |
+| `nb-card` | `#ffffff` | Card: background of cards, inputs, tables, charts, and buttons (except the primary button). |
+| `nb-lime` | `#c6d033` | KIT lime, the lead color: header, primary button, current tab and step number, dropdown selection. Not a text color (only 1.57:1 on paper); put nb-ink on it (10.9:1). |
+| `nb-green` | `#006835` | KIT green (the same as the logo’s dark green): link text, progress bars, ✓ marks, selected checkboxes. 6.5:1 on paper, 6.9:1 on white. Not for large backgrounds or the primary button. |
+| `nb-green-hover` | `#004d27` | Link color on hover. |
+| `nb-sky` | `#a8dcff` | Information: background of the sky-blue callout (kit_callout()), with nb-ink on it. |
+| `nb-yellow` | `#ffde59` | Needs attention: 【完成，但請注意】 and 【要重新執行】 status boxes, attention callouts, the cloud-version banner. nb-ink on it. |
+| `nb-salmon` | `#ff9b8f` | Stopped: the 【停下來】 status box, danger buttons (delete, skip this round). nb-ink on it. |
+| `nb-mint` | `#b9f0a8` | Done: the 【完成】 status box, finished step numbers, the stripes of the upload progress bar. nb-ink on it. |
+| `text-hint` | `#5a5a5a` | Supporting text: small hints, explanations, collapsible titles, group labels, secondary information in tables. 6.45:1 on paper, 6.9:1 on white. |
+| `text-disabled` | `#6e6a60` | Disabled text: not-yet-available step cards and tabs, disabled rows. 5.0:1 on paper. |
+| `text-todo` | `#8a4a00` | The “還差：…” (“Still needed: …”) line above the primary button, reminder text in per-item tables (bold). 6.4:1 on paper. |
+| `text-decide` | `#a14a00` | The ! mark for “needs a decision” in checklists. About 6.0:1 on white. |
+| `text-stop` | `#8a2a00` | Single problems in tables or lists (.kit-problems). 8.1:1 on paper. |
+| `line` | `#d9d4c5` | Faint line: the bottom edge of “What this page does”, the left rule of advanced settings, dividers in the phone file table. Lines only, never text. |
+| `line-soft` | `#e3ded2` | Faintest line: between checklist rows, top edge of the composite item ID block. |
+| `border-disabled` | `#8a8a8a` | Disabled frames: not-yet-available or finished step cards, disabled buttons, not-yet-available tabs. 3.2:1 on paper (the threshold for frames and graphics is 3:1). |
+| `bg-disabled` | `#e8e4d8` | Background of disabled buttons (do not use opacity); not-yet-available tabs use the similar \#ece8dc. |
+| `bg-stripe` | `#f3f0e6` | Zebra stripes in data tables; pale header row inside step cards. |
+| `bg-soft-hover` | `#f1eee4` | Background of secondary buttons on hover. |
+| `bg-code` | `#fffdf5` | Background of code frames (with a 2px nb-ink frame, no shadow). |
+| `bg-guess` | `#fffbe6` | Cells guessed from column names (pale yellow), reminding users to check them. |
+| `bg-new` | `#e8f0a0` | Newly added columns in diagrams (pale lime); not sky blue, which means “information”. |
+| `focus` | `#0044ff` | Keyboard focus: 3px outline, offset 3px outward. Visible against black frames; 6.0:1 on paper. |
+| `logo-bean` | `#aad05f` | Logo and illustrations only. Not for buttons or backgrounds (only 1.05:1 against lime). |
+| `logo-leaf` | `#fff57f` | Logo and illustrations only. Not for any interface component (too close to the “needs attention” yellow). |
+| `chart-blue` | `#0072b2` | Chart categorical color 1 (Okabe–Ito): cohorts, scales, and scores take colors in order. |
+| `chart-orange` | `#e69f00` | Chart categorical color 2. |
+| `chart-green` | `#009e73` | Chart categorical color 3. |
+| `chart-purple` | `#cc79a7` | Chart categorical color 4. |
+| `chart-sky` | `#56b4e9` | Chart categorical color 5. |
+| `chart-vermillion` | `#d55e00` | Chart categorical color 6; beyond 6 categories, start over from the first. |
+| `chart-neutral` | `#7f7f7f` | Neutral color for non-categorical elements in charts: reference lines, bands, unjudged points. |
+| `chart-sequential` | `#f3f7d3` → `#e8f0a0` → `#006835` | Color scale for continuous values (heatmaps, color bars): very pale lime (not white: white is reserved for no-data cells) → pale lime (`bg-new`, at 0.2) → KIT green (`nb-green`), interpolated in Lab space. [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md). |
 
-**品牌可以換的顏色**（`kit_brand(colors = )` 的名稱 → token → CSS
-變數）： `ink` → `nb-ink`（`--nb-ink`）、`page` →
-`nb-page`（`--nb-page`）、`card` → `nb-card`（`--nb-card`）、 `accent` →
-`nb-lime`（`--nb-lime`）、`accent_light` → `bg-new`（`--nb-bg-new`）、
-`primary` → `nb-green`（`--nb-green`）、`primary_hover` →
-`nb-green-hover`（`--nb-green-hover`）、 `success` →
-`nb-mint`、`warning` → `nb-yellow`、`danger` → `nb-salmon`、`info` →
-`nb-sky`（都是 `--` 加上名稱）。 表裡的值是 KIT
-的；別的品牌換掉這幾個，`chart-sequential` 跟著 `accent_light` 與
-`primary` 算。 其他 token 不跟著品牌換。
+**Colors a brand can change** (`kit_brand(colors = )` name → token → CSS
+variable): `ink` → `nb-ink` (`--nb-ink`), `page` → `nb-page`
+(`--nb-page`), `card` → `nb-card` (`--nb-card`), `accent` → `nb-lime`
+(`--nb-lime`), `accent_light` → `bg-new` (`--nb-bg-new`), `primary` →
+`nb-green` (`--nb-green`), `primary_hover` → `nb-green-hover`
+(`--nb-green-hover`), `success` → `nb-mint`, `warning` → `nb-yellow`,
+`danger` → `nb-salmon`, `info` → `nb-sky` (all `--` plus the name). The
+values in the table are KIT’s; another brand replaces these, and
+`chart-sequential` is computed from `accent_light` and `primary`. Other
+tokens do not change with the brand.
 
-### 字級（基準 17px）
+### Type sizes (base 17px)
 
-| 名稱 | 大小 | 行高 | 字重 | 用在 |
+| Name | Size | Line height | Weight | Used for |
 |----|----|----|----|----|
-| `display` | 1.75rem | 1.25 | 700 | 頁首 h1（工具名稱），一個 app 只有一個。手機（≤ 576px）縮成 1.35rem。 |
-| `h4` | 1.35rem | 1.3 | 700 | 小節標題；上方留 2.4rem。標題要短，清單放下面的小字。 |
-| `h5` | 1.1rem | 1.35 | 700 | 子標題、步驟卡標題、主要按鈕、狀態框第一行（狀態框第一行實作是 1.08rem）。 |
-| `body` | 1rem | 1.65 | 400 | 內文、狀態框條列。html 基準字級 17px，所以 1rem = 17px。 |
-| `small` | 0.95rem | 1.4 | 400 | 資料表（0.95rem）、步驟摘要與檢查清單說明（0.92rem）。 |
-| `hint` | 0.82rem | 1.5 | 400 | 提示小字、收合標題、組標籤、版本行、圖解。最小字級，約 14px；更小只給圖表刻度。 |
-| `code` | 0.85rem | 1.5 | 400 | 「用 R 怎麼做」、原始錯誤訊息、圖解裡的值。一律關掉連字，\<- 和 |
+| `display` | 1.75rem | 1.25 | 700 | Header h1 (tool name), one per app. Shrinks to 1.35rem on phones (≤ 576px). |
+| `h4` | 1.35rem | 1.3 | 700 | Section titles; 2.4rem above. Keep titles short; lists go in small text below. |
+| `h5` | 1.1rem | 1.35 | 700 | Subtitles, step card titles, the primary button, the first line of the status box (implemented as 1.08rem for the status box). |
+| `body` | 1rem | 1.65 | 400 | Body text, status box bullet points. The html base size is 17px, so 1rem = 17px. |
+| `small` | 0.95rem | 1.4 | 400 | Data tables (0.95rem), step summaries and checklist explanations (0.92rem). |
+| `hint` | 0.82rem | 1.5 | 400 | Small hints, collapsible titles, group labels, the version line, diagrams. The smallest size, about 14px; anything smaller is for chart tick labels only. |
+| `code` | 0.85rem | 1.5 | 400 | “How to do it in R”, raw error messages, values in diagrams. Ligatures always off; \<- and \|\> display as typed. |
 
-字型：`sans` = “Chiron GoRound TC”, sans-serif；`mono` = “JetBrains
-Mono”, “Chiron GoRound TC”, Menlo, Consolas, monospace。
+Fonts: `sans` = “Chiron GoRound TC”, sans-serif; `mono` = “JetBrains
+Mono”, “Chiron GoRound TC”, Menlo, Consolas, monospace.
 
-### 間距
+### Spacing
 
-| 名稱 | 值 | 用在 |
+| Name | Value | Used for |
 |----|----|----|
-| `sp-1` | `0.25rem` | 圖示與文字之間。間距以 0.25rem 為一格。 |
-| `sp-2` | `0.5rem` | 同一組元件之間，例如一排按鈕、分頁之間（0.5–0.6rem）。 |
-| `sp-3` | `1rem` | 同一小節裡的元件之間、卡片內距、頁首上方。 |
-| `sp-4` | `1.6rem` | 分頁組之間、「這一頁做什麼」到第一個設定、細節列上方。 |
-| `sp-5` | `2.4rem` | 小節之間（h4 上方）、主要內容到「下一步」。 |
-| `gutter` | `2rem` | 版面左右留白；≤ 768px 時改成 1rem。 |
-| `content-max` | `1140px` | 內容最寬 1140px，置中；寬螢幕左右留白，不拉滿視窗。 |
+| `sp-1` | `0.25rem` | Between an icon and its text. Spacing uses a 0.25rem unit. |
+| `sp-2` | `0.5rem` | Between components in one group, such as a row of buttons or between tabs (0.5–0.6rem). |
+| `sp-3` | `1rem` | Between components in one section, card padding, above the header. |
+| `sp-4` | `1.6rem` | Between tab groups, from “What this page does” to the first setting, above the details row. |
+| `sp-5` | `2.4rem` | Between sections (above h4), from the main content to “Next step”. |
+| `gutter` | `2rem` | Left and right page margins; 1rem at ≤ 768px. |
+| `content-max` | `1140px` | Content is at most 1140px wide, centered; wide screens get side margins instead of stretching to the window. |
 
-### 圓角
+### Corners
 
-| 名稱           | 值    | 用在                                                 |
-|----------------|-------|------------------------------------------------------|
-| `radius`       | `8px` | 全部的框：卡片、按鈕、輸入框、分頁、表格、圖、頁首。 |
-| `radius-bar`   | `3px` | 只有上傳進度條。                                     |
-| `radius-round` | `50%` | 步驟卡的圓形編號（2rem 見方）。                      |
-
-### 陰影
-
-| 名稱 | 值 | 用在 |
+| Name | Value | Used for |
 |----|----|----|
-| `shadow-header` | `4px 4px 0 0 #141414` | 只有頁首。 |
-| `shadow-card` | `3px 3px 0 0 #141414` | 結果：狀態框、圖、目前的步驟卡、主要按鈕。 |
-| `shadow-sm` | `2px 2px 0 0 #141414` | 可以按的：分頁、一般按鈕（actionButton 預設）、下拉選單、輸入框聚焦。 |
-| `shadow-hover` | `1px 1px 0 0 #141414` | 按鈕、分頁滑過時：往右下移 1px（主要按鈕移 2px），陰影剩 1px；按下時移到底、沒有陰影。 |
+| `radius` | `8px` | All frames: cards, buttons, inputs, tabs, tables, charts, the header. |
+| `radius-bar` | `3px` | The upload progress bar only. |
+| `radius-round` | `50%` | The round step number in step cards (2rem square). |
 
-### 框的粗細
+### Shadows
 
-| 名稱 | 值 | 用在 |
+| Name | Value | Used for |
 |----|----|----|
-| `bw-frame` | `2px` | 所有頂層元件的框：卡片、按鈕、輸入框、分頁、表格外框、程式碼框。 |
-| `bw-line` | `1.5px` | 表格列分隔、小按鈕的框、說明區下緣。 |
-| `bw-hair` | `1px` | 圖解小表的格線、上傳進度條外框、檢查清單列之間。 |
+| `shadow-header` | `4px 4px 0 0 #141414` | The header only. |
+| `shadow-card` | `3px 3px 0 0 #141414` | Results: status box, charts, the current step card, the primary button. |
+| `shadow-sm` | `2px 2px 0 0 #141414` | Clickable things: tabs, regular buttons (actionButton default), dropdowns, focused inputs. |
+| `shadow-hover` | `1px 1px 0 0 #141414` | Buttons and tabs on hover: move 1px down and to the right (2px for the primary button), leaving a 1px shadow; on press, move all the way with no shadow. |
 
-### 斷點
+### Frame widths
 
-| 名稱 | 值 | 用在 |
+| Name | Value | Used for |
 |----|----|----|
-| `bp-phone` | `576px` | ≤ 576px：頁首變小、檔案表一列一塊、圖解改上下排、主要動作優先。 |
-| `bp-tablet` | `768px` | ≤ 768px：左右留白 1rem、分頁一排左右滑、步驟卡內容不縮排、設定與結果改上下排。 |
+| `bw-frame` | `2px` | Frames of all top-level components: cards, buttons, inputs, tabs, table outer frames, code frames. |
+| `bw-line` | `1.5px` | Table row dividers, secondary button frames, the bottom edge of the explanation area. |
+| `bw-hair` | `1px` | Grid lines of diagram tables, the upload progress bar frame, between checklist rows. |
+
+### Breakpoints
+
+| Name | Value | Used for |
+|----|----|----|
+| `bp-phone` | `576px` | ≤ 576px: smaller header, file table rows become blocks, diagrams stack vertically, main actions take priority. |
+| `bp-tablet` | `768px` | ≤ 768px: 1rem side margins, tabs in one row that scrolls sideways, step card content not indented, settings and results stack vertically. |

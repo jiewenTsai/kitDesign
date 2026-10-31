@@ -1,10 +1,13 @@
-# 有順序的流程分頁（kitsUI 的樣子）
+# Ordered workflow tabs (the kitsUI style)
 
-一般的
-[`shiny::tabsetPanel()`](https://rdrr.io/pkg/shiny/man/tabsetPanel.html)，分頁名稱用圈數字（①
-資料、② 題目校準…）。 不是流程一步的分頁（例如「使用手冊」）寫在
-`aside`：虛線框、沒有陰影、推到最右邊。 做完打 ✓（分頁裡多一個
-`.kit-tab-mark`）、還不能做灰色（[`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_send_tab_states.md)）。
+A regular
+[`shiny::tabsetPanel()`](https://rdrr.io/pkg/shiny/man/tabsetPanel.html)
+with circled numbers in the tab names (① 資料, ② 題目校準…; "Data",
+"Item calibration"). Tabs that are not a workflow step (e.g. "使用手冊",
+"User manual") go in `aside`: dashed border, no shadow, pushed to the
+far right. Done tabs get a ✓ (an extra `.kit-tab-mark` in the tab); tabs
+that can't be used yet are gray
+([`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_send_tab_states.md)).
 
 ## Usage
 
@@ -16,24 +19,24 @@ kit_flow_tabs(..., id = "tabs", selected = NULL, aside = NULL)
 
 - ...:
 
-  [`shiny::tabPanel()`](https://rdrr.io/pkg/shiny/man/tabPanel.html)。
+  [`shiny::tabPanel()`](https://rdrr.io/pkg/shiny/man/tabPanel.html).
 
 - id:
 
-  tabsetPanel 的 id（`input[[id]]` 是目前的分頁）。
+  The tabsetPanel id (`input[[id]]` is the current tab).
 
 - selected:
 
-  一開始的分頁（value）。
+  The tab to start on (value).
 
 - aside:
 
-  不是流程一步的分頁的 value（字串向量）。
+  Values of tabs that are not a workflow step (a character vector).
 
 ## Value
 
-`<div class="kit-flow-tabs">`，裡面是
-[`tabsetPanel()`](https://rdrr.io/pkg/shiny/man/tabsetPanel.html)。
+`<div class="kit-flow-tabs">` containing a
+[`tabsetPanel()`](https://rdrr.io/pkg/shiny/man/tabsetPanel.html).
 
 ## Examples
 
@@ -46,21 +49,21 @@ kit_flow_tabs(
 )
 #> <div class="kit-flow-tabs" data-kit-aside="manual">
 #>   <div class="tabbable">
-#>     <ul class="nav nav-tabs shiny-tab-input" id="flow" data-tabsetid="9118">
+#>     <ul class="nav nav-tabs shiny-tab-input" id="flow" data-tabsetid="5207">
 #>       <li class="active">
-#>         <a href="#tab-9118-1" data-toggle="tab" data-bs-toggle="tab" data-value="data">① 資料</a>
+#>         <a href="#tab-5207-1" data-toggle="tab" data-bs-toggle="tab" data-value="data">① 資料</a>
 #>       </li>
 #>       <li>
-#>         <a href="#tab-9118-2" data-toggle="tab" data-bs-toggle="tab" data-value="items">② 題目校準</a>
+#>         <a href="#tab-5207-2" data-toggle="tab" data-bs-toggle="tab" data-value="items">② 題目校準</a>
 #>       </li>
 #>       <li>
-#>         <a href="#tab-9118-3" data-toggle="tab" data-bs-toggle="tab" data-value="manual">使用手冊</a>
+#>         <a href="#tab-5207-3" data-toggle="tab" data-bs-toggle="tab" data-value="manual">使用手冊</a>
 #>       </li>
 #>     </ul>
-#>     <div class="tab-content" data-tabsetid="9118">
-#>       <div class="tab-pane active" data-value="data" id="tab-9118-1"></div>
-#>       <div class="tab-pane" data-value="items" id="tab-9118-2"></div>
-#>       <div class="tab-pane" data-value="manual" id="tab-9118-3"></div>
+#>     <div class="tab-content" data-tabsetid="5207">
+#>       <div class="tab-pane active" data-value="data" id="tab-5207-1"></div>
+#>       <div class="tab-pane" data-value="items" id="tab-5207-2"></div>
+#>       <div class="tab-pane" data-value="manual" id="tab-5207-3"></div>
 #>     </div>
 #>   </div>
 #> </div>

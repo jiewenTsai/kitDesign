@@ -1,13 +1,16 @@
-# 步驟卡（StepCard）
+# Step card
 
-一張卡片：上面是
-[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)（通常由
-server 依狀態畫，放
-[`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html)），
-下面是這一步的內容（[`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md)，通常包在
+One card: on top is
+[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)
+(usually rendered by the server based on the state, in a
+[`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html)), below is
+the content of this step
+([`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md),
+usually wrapped in
 [`conditionalPanel()`](https://rdrr.io/pkg/shiny/man/conditionalPanel.html)
-裡，只有現在這一步打開）。
-卡片的框和陰影跟著標頭的狀態：現在這一步有框和陰影；做完和還不能做的沒有陰影、框是灰的。
+so only the current step is open). The card's border and shadow follow
+the header's state: the current step has a border and shadow; finished
+steps and steps not yet available have no shadow and a gray border.
 
 ## Usage
 
@@ -19,30 +22,32 @@ kit_step_card(head, ..., title_id = NULL)
 
 - head:
 
-  標頭：[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)
-  或放它的
-  [`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html)。
+  The header:
+  [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md),
+  or the [`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html)
+  that holds it.
 
 - ...:
 
-  卡片的內容（[`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md)）。
+  The card content
+  ([`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md)).
 
 - title_id:
 
-  標頭標題的
-  id（[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)
-  的 `title_id`），給螢幕閱讀器當卡片名稱。
+  The id of the header title (the `title_id` of
+  [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md)),
+  used by screen readers as the card name.
 
 ## Value
 
-`<section class="kit-stepcard">`。
+`<section class="kit-stepcard">`.
 
 ## Details
 
-不想自己管哪一步打開時，用模組
+If you do not want to manage which step is open yourself, use the module
 [`kit_stepcards_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)
 /
-[`kit_stepcards_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md)。
+[`kit_stepcards_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_stepcards_ui.md).
 
 ## Examples
 

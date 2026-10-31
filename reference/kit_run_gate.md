@@ -1,8 +1,10 @@
-# 主要按鈕還不能按時：停用它，上面一行寫還差什麼
+# When the primary button cannot be pressed yet: disable it and show what is still needed above it
 
-頁面上放 `shiny::uiOutput(ns("ready"))`，緊接著
-`kit_button(ns("run"), ..., "primary", disabled = TRUE)`（一開始停用；伺服器算好以後才打開）。
-主要按鈕一開始就顯示，讓人知道這一頁最後要按什麼。
+Put `shiny::uiOutput(ns("ready"))` on the page, directly followed by
+`kit_button(ns("run"), ..., "primary", disabled = TRUE)` (disabled at
+first; enabled once the server has checked). The primary button is shown
+from the start, so people know what they will press at the end of this
+page.
 
 ## Usage
 
@@ -21,39 +23,38 @@ kit_run_gate(
 
 - session:
 
-  模組的 session。
+  The module's session.
 
 - output:
 
-  模組的 output。
+  The module's output.
 
 - missing:
 
-  reactive：還差的事（字串；長度 0 = 可以執行）。
+  A reactive: what is still needed (character; length 0 = ready to run).
 
 - link:
 
-  function()：跟在「還差」後面的連結（tag 或 `NULL`）。
+  function(): the link after "還差" ("Still needed") (a tag or `NULL`).
 
 - button_id:
 
-  主要按鈕的 id（模組內的 id，不加 `ns()`）。
+  The primary button's id (the id inside the module, without `ns()`).
 
 - output_id:
 
-  放「還差」的
-  [`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html)
-  id（模組內的 id）。
+  The [`uiOutput()`](https://rdrr.io/pkg/shiny/man/htmlOutput.html) id
+  for the "還差" line (the id inside the module).
 
 ## Value
 
-不可見的 `NULL`；在 server 裡呼叫。
+`NULL`, invisibly; call it inside the server.
 
 ## Details
 
-按鈕的
-[`observeEvent()`](https://rdrr.io/pkg/shiny/man/observeEvent.html)
-裡仍要自己檢查一次：停用只是畫面上的，不能當成唯一的防線。
+Still check again inside the button's
+[`observeEvent()`](https://rdrr.io/pkg/shiny/man/observeEvent.html):
+disabling is only on screen and must not be the only safeguard.
 
 ## Examples
 

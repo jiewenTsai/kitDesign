@@ -1,9 +1,10 @@
-# 圖解：處理前的小表 → 處理後的小表，下面一行白話說明（Diagram）
+# Diagram: small table before → small table after, with a plain-language line below
 
-放進
-[`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md)
-的 `diagram`。窄螢幕（≤ 576px）時「前」在上、箭頭朝下、「後」在下。
-每張小表 2–3 列，用一般的名稱（id、score、wave），不用某個資料庫的欄名。
+Goes in the `diagram` of
+[`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md).
+On narrow screens (≤ 576px) "before" is on top, the arrow points down,
+and "after" is below. Each small table has 2–3 rows and uses generic
+names (id, score, wave), not column names from a particular database.
 
 ## Usage
 
@@ -15,26 +16,26 @@ kit_diagram(before, after, caption, arrow = "→")
 
 - before:
 
-  處理前的小表：一個
+  The small table(s) before: one
   [`kit_dg_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_dg_table.md)
-  或它們的 list（並排）。
+  or a list of them (side by side).
 
 - after:
 
-  處理後的小表：一個
-  [`kit_dg_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_dg_table.md)。
+  The small table after: one
+  [`kit_dg_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_dg_table.md).
 
 - caption:
 
-  一行白話說明（`<figcaption>`）。
+  One plain-language line (`<figcaption>`).
 
 - arrow:
 
-  中間的箭頭。
+  The arrow in the middle.
 
 ## Value
 
-`<figure class="kit-diagram">`。
+`<figure class="kit-diagram">`.
 
 ## Examples
 
@@ -124,4 +125,6 @@ kit_diagram(
 #>   </div>
 #>   <figcaption class="kit-dg-caption">依 id 接起來：沒有出席的那一波是空的。</figcaption>
 #> </figure>
+# "Wave 1", "Wave 2", "Result";
+# caption: "Joined by id: a wave the child missed is empty."
 ```

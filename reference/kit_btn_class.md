@@ -1,10 +1,9 @@
-# 按鈕種類的 class
+# Class for a button kind
 
-自己畫按鈕（例如
-[`downloadButton()`](https://rdrr.io/pkg/shiny/man/downloadButton.html)、`<a class="btn">`）時，用這裡的
-class， 和
-[`kit_button()`](https://jiewentsai.github.io/kitDesign/reference/kit_button.md)
-長得一樣。
+When you build a button yourself (e.g.
+[`downloadButton()`](https://rdrr.io/pkg/shiny/man/downloadButton.html),
+`<a class="btn">`), use this class so it looks the same as
+[`kit_button()`](https://jiewentsai.github.io/kitDesign/reference/kit_button.md).
 
 ## Usage
 
@@ -16,12 +15,12 @@ kit_btn_class(kind = c("secondary", "primary", "danger"))
 
 - kind:
 
-  `"primary"`（主要按鈕）、`"secondary"`（小按鈕）或
-  `"danger"`（危險按鈕）。
+  `"primary"` (primary button), `"secondary"` (secondary button), or
+  `"danger"` (danger button).
 
 ## Value
 
-class 字串，例如 `"btn-sm btn-outline-secondary"`。
+A class string, e.g. `"btn-sm btn-outline-secondary"`.
 
 ## Examples
 

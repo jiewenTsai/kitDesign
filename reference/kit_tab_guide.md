@@ -1,8 +1,10 @@
-# 頁面說明：這一頁做什麼（PageGuide）
+# Page guide: what this page does
 
-每個分頁最上面的一行說明，預設收起：只看到「這一頁做什麼：」一句，旁邊「看步驟
-▸」；
-打開才看到步驟、會得到什麼、補充與技術說明。沒有框、小字、灰色，下面一條淡線。
+A one-line guide at the top of each tab, collapsed by default: only the
+sentence "這一頁做什麼：" ("What this page does:") is visible, with
+"看步驟 ▸" ("See steps ▸") next to it; opening it shows the steps, what
+you get, additional notes, and technical notes. No border, small gray
+text, a light line below.
 
 ## Usage
 
@@ -21,40 +23,45 @@ kit_tab_guide(
 
 - goal:
 
-  一句話，不超過 30 字。
+  One sentence, no more than 30 characters.
 
 - steps:
 
-  操作步驟：[`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)（3–6
-  點），或一個字串向量（自動變成
-  [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)）。
+  The steps to follow:
+  [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)
+  (3–6 points), or a character vector (turned into
+  [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)
+  automatically).
 
 - output:
 
-  會得到什麼。
+  What you get.
 
 - technical:
 
-  技術說明（給想了解原理的人，再收一層）；`NULL` 不顯示。
+  Technical notes (for people who want to know how it works; collapsed
+  one more level); `NULL` shows nothing.
 
 - note:
 
-  補充（灰色小字）；`NULL` 不顯示。
+  Additional notes (small gray text); `NULL` shows nothing.
 
 - diagram:
 
-  圖解（[`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md)）：放在說明框外面、緊接在後面，收起時也看得到；
-  `NULL` 不顯示。
+  A diagram
+  ([`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md)):
+  placed outside the guide box, right after it, and visible even when
+  the guide is collapsed; `NULL` shows nothing.
 
 ## Value
 
-沒有圖解時是
-`<details class="kit-guide kit-guide-page">`；有圖解時外面再包一層
-`<div class="kit-guide kit-guide-wrap">`。
+Without a diagram, `<details class="kit-guide kit-guide-page">`; with a
+diagram, it is wrapped in `<div class="kit-guide kit-guide-wrap">`.
 
 ## See also
 
-[`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md)、[`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md)
+[`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md),
+[`kit_diagram()`](https://jiewentsai.github.io/kitDesign/reference/kit_diagram.md)
 
 ## Examples
 

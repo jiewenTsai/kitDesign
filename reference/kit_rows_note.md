@@ -1,6 +1,6 @@
-# 長表的說明：「共 3,418 列 × 25 欄，以下前 10 列、前 20 欄。」
+# Note for a long table: "共 3,418 列 × 25 欄，以下前 10 列、前 20 欄。" ("3,418 rows × 25 columns in total; first 10 rows and 20 columns below.")
 
-放在表上面的一行 `kit-hint` 小字。
+One line of small `kit-hint` text placed above the table.
 
 ## Usage
 
@@ -12,15 +12,17 @@ kit_rows_note(nrow, ncol = NULL, shown_rows, shown_cols = NULL)
 
 - nrow, ncol:
 
-  全部的列數、欄數（`ncol = NULL` 時不提欄）。
+  Total number of rows and columns (with `ncol = NULL`, columns are not
+  mentioned).
 
 - shown_rows, shown_cols:
 
-  畫面上顯示幾列、幾欄（`shown_cols = NULL` 時不提欄）。
+  How many rows and columns are shown on screen (with
+  `shown_cols = NULL`, columns are not mentioned).
 
 ## Value
 
-字串。
+A string.
 
 ## Examples
 

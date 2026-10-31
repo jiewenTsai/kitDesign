@@ -1,8 +1,10 @@
-# 小表格（直接放在 renderUI() 裡，不用另開 output）
+# Small table (put directly inside renderUI(); no separate output needed)
 
-白底、黑表頭白字、斑馬紋、寬度跟著內容。整數欄自動加千分位（3389 →
-3,389）。 上面放一個 `h4` 標題與一行
-[`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md)。
+White background, black header with white text, zebra stripes, width
+fits the content. Integer columns get thousands separators automatically
+(3389 → 3,389). Put an `h4` title and a
+[`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md)
+line above it.
 
 ## Usage
 
@@ -14,15 +16,15 @@ kit_static_table(df, class = "table table-sm table-striped")
 
 - df:
 
-  data.frame。
+  A data.frame.
 
 - class:
 
-  表格的 class。
+  The table's class.
 
 ## Value
 
-`<table class="table table-sm table-striped">`。
+`<table class="table table-sm table-striped">`.
 
 ## Examples
 

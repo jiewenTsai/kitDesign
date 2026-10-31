@@ -1,8 +1,10 @@
-# 雲端版使用須知（頁面最下面，灰色小字）
+# Cloud version usage notes (bottom of the page, small gray text)
 
-一個標題、幾段（粗體的段名接句號，後面是內文）、最後一行參考連結（開新分頁）。
-段名接內文、內文串成一段，HTML 不會在中間插入空白。頁首的橫幅可以用
-`<a href="#kit-cloud-terms">` 連到這裡。
+A title, a few sections (bold section title followed by a period, then
+the body), and a final line of reference links (opening in new tabs).
+Section titles run into the body and body pieces are joined into one
+paragraph, with no spaces inserted by HTML. The header banner can link
+here with `<a href="#kit-cloud-terms">`.
 
 ## Usage
 
@@ -19,32 +21,36 @@ kit_cloud_footer(
 
 - sections:
 
-  每一段：具名 list 或字串向量，名字是段名（「一、資料傳輸與儲存」），
-  值是內文（字串向量，直接接起來）。
+  The sections: a named list or character vector; names are section
+  titles ("一、資料傳輸與儲存", "1. Data transfer and storage"), values
+  are the body text (a character vector, joined directly).
 
 - links:
 
-  參考連結：具名字串向量，名字是連結的字、值是網址；`NULL` 不放這一行。
+  Reference links: a named character vector, names are the link text and
+  values are URLs; `NULL` omits this line.
 
 - title:
 
-  最上面的標題。
+  The title at the top.
 
 - id:
 
-  頁尾的 id（橫幅的連結用）。
+  The footer's id (used by the banner's link).
 
 ## Value
 
-`<footer id="kit-cloud-terms" class="kit-cloud-footer">`。
+`<footer id="kit-cloud-terms" class="kit-cloud-footer">`.
 
 ## See also
 
-[`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md)、[`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)
+[`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md),
+[`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)
 
 ## Examples
 
 ``` r
+# Sections: "1. Data transfer and storage", "2. Disclaimer"
 kit_cloud_footer(
   sections = list(
     "一、資料傳輸與儲存" = c("本雲端版部署於 Posit Connect Cloud。",

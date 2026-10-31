@@ -1,9 +1,12 @@
-# 給使用者看的錯誤
+# An error meant for the user
 
-訊息要是白話中文、說明原因與怎麼修；[`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md)
-會原文顯示在狀態框，
-不加技術細節。其他沒有預期到的錯誤則包成「…時發生沒有預期到的問題」，
-原始訊息收起來。
+The message should be plain-language Chinese that says what went wrong
+and how to fix it;
+[`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md)
+shows it as written in the status box, with no technical details. Any
+other, unexpected error is wrapped as "…時發生沒有預期到的問題" ("an
+unexpected problem occurred while …"), with the original message tucked
+away.
 
 ## Usage
 
@@ -15,24 +18,26 @@ kit_abort(..., class = NULL, data = list())
 
 - ...:
 
-  訊息（用 [`paste0()`](https://rdrr.io/r/base/paste.html) 接起來）。
+  The message (joined with
+  [`paste0()`](https://rdrr.io/r/base/paste.html)).
 
 - class:
 
-  另外加的 condition class（呼叫端可以另外處理，例如跳出確認視窗）。
+  An extra condition class (the caller can handle it separately, e.g. to
+  show a confirmation dialog).
 
 - data:
 
-  附在 condition 上的其他欄位（具名 list）。
+  Other fields to attach to the condition (a named list).
 
 ## Value
 
-不會回傳：丟出 `kit_user_error` 錯誤。
+Does not return: throws a `kit_user_error` error.
 
 ## Examples
 
 ``` r
-e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)
+e <- tryCatch(kit_abort("至少要 ", 2, " 個波次的檔案。"), error = identity)  # "Need files from at least 2 waves."
 class(e)
 #> [1] "kit_user_error" "error"          "condition"     
 conditionMessage(e)

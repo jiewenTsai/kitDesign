@@ -1,10 +1,11 @@
-# 執行完把狀態框捲到畫面上方
+# After running, scroll the status box to the top of the screen
 
-「先結果、後細節」：在主要按鈕的
-[`observeEvent()`](https://rdrr.io/pkg/shiny/man/observeEvent.html)
-最後呼叫 `kit_scroll_to("status")`。 等這一輪的 output
-都送到瀏覽器以後（`session$onFlushed()`）才捲，狀態框已經畫好了。
-使用者設定「減少動態效果」時直接跳過去，不平滑捲動。
+"Results first, details after": call `kit_scroll_to("status")` at the
+end of the primary button's
+[`observeEvent()`](https://rdrr.io/pkg/shiny/man/observeEvent.html). It
+scrolls only after this round's outputs have all reached the browser
+(`session$onFlushed()`), so the status box is already rendered. When the
+user has set "reduce motion", it jumps there without smooth scrolling.
 
 ## Usage
 
@@ -16,22 +17,24 @@ kit_scroll_to(id, session = shiny::getDefaultReactiveDomain())
 
 - id:
 
-  模組裡的 output id（會自動加上模組的 namespace），例如 `"status"`。
+  The output id inside the module (the module's namespace is added
+  automatically), for example `"status"`.
 
 - session:
 
-  預設是目前的 session（模組裡呼叫就是模組的 session）。
+  Defaults to the current session (called inside a module, that is the
+  module's session).
 
 ## Value
 
-不可見的完整 id；沒有 session 時是 `NULL`。
+The full id, invisibly; `NULL` when there is no session.
 
 ## Examples
 
 ``` r
 if (interactive()) {
   shiny::observeEvent(input$run, {
-    # …執行…
+    # …run…
     kit_scroll_to("status")
   })
 }

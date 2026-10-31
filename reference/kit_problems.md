@@ -1,6 +1,7 @@
-# 表格或清單裡的問題（深橘紅的字）
+# Problems in a table or list (dark orange-red text)
 
-步驟卡裡「還差：…」或「這幾欄有問題」這類單一問題的清單。
+A list of individual problems inside a step card, such as "還差：…"
+("Still needed: …") or "這幾欄有問題" ("these columns have problems").
 
 ## Usage
 
@@ -12,20 +13,22 @@ kit_problems(..., head = NULL, bullets = TRUE)
 
 - ...:
 
-  每個問題一個字串（或 tag）。
+  One string (or tag) per problem.
 
 - head:
 
-  前面的粗體字，例如「還差：」；`NULL` 不顯示。
+  Bold text in front, for example "還差：" ("Still needed:"); `NULL`
+  shows nothing.
 
 - bullets:
 
-  `TRUE`（預設）每個問題一個項目符號；`FALSE` 一行一個、不加符號
-  （例如每一行已經是完整的句子，或前面自己有編號）。
+  `TRUE` (default): one bullet per problem; `FALSE`: one per line,
+  without bullets (for example when each line is already a full
+  sentence, or already has its own numbering).
 
 ## Value
 
-`<div class="kit-problems">`；沒有問題時是 `NULL`。
+`<div class="kit-problems">`; `NULL` when there are no problems.
 
 ## Examples
 

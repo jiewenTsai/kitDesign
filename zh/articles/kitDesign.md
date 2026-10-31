@@ -1,0 +1,189 @@
+# 用 kitDesign 做一頁 KIT app
+
+這份說明照「KIT 設計語言」的頁面骨架，一步一步做出一頁：
+
+    頁首 → 步驟分頁 → 這一頁做什麼 → 設定 → 還差＋主要按鈕
+    → 狀態框 → 重點（一張表）→ 細節列（用 R 怎麼做）→ 下一步
+
+想直接有一個可以跑的 app，用
+`kit_new_app("~/kitScore", "KIT 計分工具")`，
+它產生的就是下面這一頁。看所有元件：[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_gallery.md)。
+
+## 1. 頁面：`kit_page()`
+
+主題、樣式、頁首一次放好。版本行讀 app 自己的 DESCRIPTION，後面接
+kitDesign 的版本。
+
+``` r
+
+library(shiny)
+library(kitDesign)
+
+ver <- kit_app_description("kitScore")
+ui <- kit_page(
+  "KIT 計分工具", "臺灣幼兒發展調查資料庫",
+  version = ver$version, date = ver$date, show_kitdesign = TRUE,
+  tabs_ui   # 第 2 步
+)
+```
+
+## 2. 步驟分頁：`kit_step_tabs_ui()` / `kit_step_tabs_server()`
+
+有順序的流程用圈數字；不是每一頁都要做時給 `groups`（分組、不編號）。
+
+``` r
+
+tabs_ui <- kit_step_tabs_ui(
+  "nav",
+  tabPanel("① 計分", value = "score", score_ui("score")),   # 第 3–8 步
+  tabPanel("② 結果", value = "result", p("…"))
+)
+
+# server：做完打 ✓，還不能做的灰色、滑過說明原因
+nav <- kit_step_tabs_server(
+  "nav",
+  states = reactive(c(score = score$state(),
+                      result = if (score$state() == "success") "ready" else "locked")),
+  tips = c(result = "先在「① 計分」按「開始計分」")
+)
+```
+
+## 3–5. 這一頁做什麼、設定、還差＋主要按鈕
+
+``` r
+
+score_ui <- function(id) {
+  ns <- NS(id)
+  tagList(
+    kit_tab_guide(
+      goal = "把作答檔算成分數。",
+      steps = c("選量尺", "按「開始計分」", "看狀態框與結果"),
+      output = "一張分數表。"
+    ),
+    selectInput(ns("scale"), "量尺", c("（還沒選）" = "", "gm", "fm")),
+    kit_run_gate_ui(ns("run"), "開始計分"),    # 還差：…＋停用的主要按鈕
+    uiOutput(ns("status")),
+    uiOutput(ns("result")),
+    kit_details_row(
+      kit_detail("這一回合的紀錄", "…"),
+      kit_code_panel_ui(ns("code"))         # 用 R 怎麼做：永遠放最後
+    ),
+    uiOutput(ns("next_step"))
+  )
+}
+```
+
+## 6–9. server：狀態框、結果表、用 R 怎麼做、下一步
+
+狀態框是 `kit_status` 物件，直接交給
+[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)。
+
+``` r
+
+score_server <- function(id, goto) {
+  moduleServer(id, function(input, output, session) {
+    run <- kit_run_gate_server("run", reactive(if (input$scale == "") "選量尺"))
+    status <- reactiveVal(kit_status())
+    result <- reactiveVal(NULL)
+
+    observeEvent(run(), {
+      st <- tryCatch({
+        df <- data.frame(id = 1:3, score = c(12, 15, 9))   # 換成真的計分
+        result(df)
+        kit_done_status(paste0("計分完成：", kit_num(nrow(df)), " 人。"))
+      }, error = function(e) kit_error_status(e, "計分"))
+      status(st)
+      kit_scroll_to("status")                  # 先結果、後細節
+    }, ignoreInit = TRUE)
+
+    output$status <- renderUI(status())
+    output$result <- renderUI({
+      req(result())
+      tagList(
+        h4("分數"),
+        p(class = "kit-hint", kit_rows_note(nrow(result()), shown_rows = 10)),
+        kit_table_scroll(kit_static_table(head(result(), 10)))
+      )
+    })
+    kit_code_panel_server("code", function() list(
+      tidy = paste0("scores <- kits::kits_subj(X, item) |>\n",
+                    "  dplyr::filter(scale == \"", input$scale, "\")")
+    ))
+    output$next_step <- renderUI({
+      req(status()$state %in% c("success", "warning"))
+      kit_next_step("算好了。", session$ns("go"), "下一步：結果")
+    })
+    observeEvent(input$go, goto("result"))
+    list(state = reactive(status()$state))
+  })
+}
+```
+
+最後把它們接起來：
+
+``` r
+
+server <- function(input, output, session) {
+  goto <- function(tab) nav$select(tab)
+  score <- score_server("score", goto)
+  nav <- kit_step_tabs_server("nav", states = reactive(c(score = score$state())))
+}
+shinyApp(ui, server)
+```
+
+## 值物件可以先在 console 看
+
+``` r
+
+library(kitDesign)
+kit_done_status("計分完成：3,389 人。", warnings = "有 12 人沒有作答。")
+#> 【完成，但請注意】 計分完成：3,389 人。
+#> - 有 12 人沒有作答。
+kit_checklist(
+  kit_check("todo", "有 3 題的分數從 1 開始", "kits 要的分數是 0、1、2…。"),
+  kit_check("ok", "45 題的分數都是整數")
+)
+#> ! 有 3 題的分數從 1 開始（kits 要的分數是 0、1、2…。）
+#> ✓ 45 題的分數都是整數
+kit_code("scores <- kits::kits_subj(X, item, persons = persons, method = \"WLE\", se = TRUE)")
+#> ## R
+#> scores <- kits::kits_subj(X, item, persons = persons, method = "WLE",
+#>                           se = TRUE)
+```
+
+## 不是 KIT 的計畫：換品牌
+
+標誌與顏色不是寫死的。在 app
+開始時設定一次品牌，[`kit_page()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_page.md)、主題、圖的色階都會跟著換；
+字型、框、陰影、元件照設計語言不變。不設定時就是 KIT。
+
+``` r
+
+options(kitDesign.brand = kit_brand(
+  "示範實驗室",
+  logo = system.file("logo.svg", package = "kitScore"),   # 頁首的標誌（SVG 或 PNG）
+  colors = list(accent = "#9cc0ff", primary = "#1f4fa3")
+))
+```
+
+``` r
+
+kit_brand("示範實驗室", colors = list(accent = "#9cc0ff", primary = "#1f4fa3"))
+#> <kit_brand> 示範實驗室
+#>   logo: none  (alt: 示範實驗室 標誌)
+#>   mark: none
+#>   colors (* = not KIT):
+#>     ink            #141414
+#>     page           #faf7f0
+#>     card           #ffffff
+#>     accent         #9cc0ff  *
+#>     accent_light   #d4e2ff  *
+#>     primary        #1f4fa3  *
+#>     primary_hover  #1f3b77  *
+#>     success        #b9f0a8
+#>     warning        #ffde59
+#>     danger         #ff9b8f
+#>     info           #a8dcff
+```
+
+可以換哪些顏色、各用在哪裡：[`?kit_brand`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_brand.md)。看換了以後的樣子：`kit_gallery(brand = "demo")`。

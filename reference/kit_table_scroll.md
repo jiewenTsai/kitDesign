@@ -1,6 +1,7 @@
-# 寬的表放在這裡面：在自己的框裡左右捲，不撐破版面
+# Put wide tables in here: they scroll sideways in their own box and do not break the layout
 
-寬的表放在這裡面：在自己的框裡左右捲，不撐破版面
+Put wide tables in here: they scroll sideways in their own box and do
+not break the layout.
 
 ## Usage
 
@@ -12,18 +13,19 @@ kit_table_scroll(..., tall = FALSE)
 
 - ...:
 
-  表格（例如
+  Tables (for example
   [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md)
-  或
-  [`shiny::tableOutput()`](https://rdrr.io/pkg/shiny/man/renderTable.html)）。
+  or
+  [`shiny::tableOutput()`](https://rdrr.io/pkg/shiny/man/renderTable.html)).
 
 - tall:
 
-  長表時固定高度（約 26rem）、表頭固定在上面。
+  For long tables: fixed height (about 26rem), with the header fixed at
+  the top.
 
 ## Value
 
-`<div class="kit-table-scroll">`。
+`<div class="kit-table-scroll">`.
 
 ## Examples
 

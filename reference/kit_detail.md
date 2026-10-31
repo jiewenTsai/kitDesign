@@ -1,6 +1,7 @@
-# 一個細節：預設收起，標題一行小字
+# One detail: collapsed by default, a one-line small-print title
 
-收起來的 output 要打開才算出來：`kit.js` 會在打開時通知 Shiny 重新檢查。
+Outputs inside a collapsed detail are computed only when it is opened:
+`kit.js` tells Shiny to check again when it opens.
 
 ## Usage
 
@@ -12,24 +13,25 @@ kit_detail(title, ..., open = FALSE)
 
 - title:
 
-  標題（名詞：「題目參數」「這一回合的紀錄」）。
+  The title (a noun: "題目參數" ("Item parameters"), "這一回合的紀錄"
+  ("Log for this round")).
 
 - ...:
 
-  內容。
+  The content.
 
 - open:
 
-  一開始要不要打開。
+  Whether it starts open.
 
 ## Value
 
-`<details class="kit-detail">`。
+`<details class="kit-detail">`.
 
 ## Examples
 
 ``` r
-kit_detail("預覽", shiny::tags$p("前 10 列"))
+kit_detail("預覽", shiny::tags$p("前 10 列"))  # "Preview", "First 10 rows"
 #> <details class="kit-detail">
 #>   <summary>預覽</summary>
 #>   <div class="kit-detail-body">

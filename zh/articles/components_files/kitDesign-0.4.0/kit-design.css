@@ -1,0 +1,35 @@
+/* kitDesign 才有的規則（接在 kit-brite.css 後面）
+ *
+ * 只有兩種：原本寫在 R 裡的 inline style 搬過來，以及 kitDesign 新加的修正。
+ * 不改任何元件的長相。
+ */
+
+/* 頁首：標誌和文字排成一排（原本是 kit_header() 裡的 inline style） */
+.kit-header-row { display: flex; align-items: center; gap: 1.1rem; }
+.kit-header-row > div { min-width: 0; }
+
+/* 有順序的流程分頁（kit_flow_tabs()）：不是流程一步的分頁（例如「使用手冊」）
+   虛線框、沒有陰影，推到分頁列的最右邊（原本是 kitsUI 的 #tabs a[data-value='manual']） */
+.nav-tabs .nav-link.kit-tab-aside,
+.nav-tabs .nav-link.kit-tab-aside:hover {
+  border-style: dashed;
+  box-shadow: none;
+  transform: none;
+}
+.nav-tabs > li.kit-tab-aside-first { margin-left: auto; }
+
+/* 用 R 怎麼做：程式碼框最寬到版面寬度。
+   .kit-details 是 flex；打開的 .kit-detail（flex-basis 100%）預設 min-width: auto，
+   很長的一行程式碼會把它撐到版面外面。改成在程式碼框裡左右捲。 */
+.kit-details > .kit-detail { min-width: 0; max-width: 100%; }
+.kit-details > .shiny-html-output > .kit-detail { min-width: 0; max-width: 100%; }
+.kit-detail-body { min-width: 0; }
+pre,
+.kit-code-block { max-width: 100%; overflow-x: auto; }
+
+/* 步驟卡裡要改的表（例如 kitJoin「kits 作答檔」第 3 步的題目表）：
+   不收起來，細線和上面的檢查清單隔開；下面一個小的「下載這張表」按鈕 */
+.kit-itemtable { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #e3ded2; min-width: 0; }
+.kit-itemtable-title { margin: 0 0 0.2rem; }
+.kit-itemtable-title + .kit-hint { margin: 0 0 0.3rem; }
+.kit-itemtable-dl { margin: 0.8rem 0 0.2rem; }

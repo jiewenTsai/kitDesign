@@ -1,25 +1,29 @@
-# 檔案的小工具：編碼、SPSS 變項名稱、壓縮檔路徑、開啟瀏覽器
+# File helpers: encoding, SPSS variable names, compressed file paths, opening the browser
 
-- `kit_fix_utf8_chr()`：文字轉成 UTF-8（轉不了的字換成
-  `?`）；不是文字時原樣傳回。
+- `kit_fix_utf8_chr()`: converts text to UTF-8 (characters that cannot
+  be converted become `?`); returns non-text input as is.
 
-- `kit_fix_utf8_df()`：資料框每個文字欄（與因子）轉成 UTF-8，保留 SAV
-  的變項標籤與數值標籤。
+- `kit_fix_utf8_df()`: converts every text column (and factor) of a data
+  frame to UTF-8, keeping SAV variable labels and value labels.
 
-- `kit_is_valid_utf8_df()`：欄名與文字欄是不是都是合法的 UTF-8。
+- `kit_is_valid_utf8_df()`: whether the column names and text columns
+  are all valid UTF-8.
 
-- `kit_sav_safe_names()`：轉成合法的 SPSS 變項名稱（以
-  `haven::write_sav()` 實測：只能有字母、 數字與
-  `_ . @ # $`；開頭是字母或 `@`；不以 `.` 結尾；不是保留字；最長 64
-  bytes； 不分大小寫不重複，重複的第二個起加 `_2`、`_3`）。
+- `kit_sav_safe_names()`: converts to valid SPSS variable names (tested
+  against `haven::write_sav()`: only letters, digits, and `_ . @ # $`;
+  starts with a letter or `@`; does not end with `.`; not a reserved
+  word; at most 64 bytes; unique ignoring case, with `_2`, `_3` added
+  from the second duplicate on).
 
-- `kit_truncate_bytes()`：依 UTF-8 位元組數截斷，不切斷中文字。
+- `kit_truncate_bytes()`: truncates by UTF-8 byte count without cutting
+  a Chinese character in half.
 
-- `kit_gz_path()`：readr 看副檔名決定要不要解壓縮；路徑不是 `.gz`
-  結尾時，複製成 `.gz` 結尾的暫存檔。
+- `kit_gz_path()`: readr decides whether to decompress from the
+  extension; if the path does not end in `.gz`, it copies the file to a
+  temp file ending in `.gz`.
 
-- `kit_open_browser()`：在預設瀏覽器開啟網址（Windows 上不受 RStudio
-  檢視器影響）。
+- `kit_open_browser()`: opens the URL in the default browser (on
+  Windows, unaffected by the RStudio viewer).
 
 ## Usage
 
@@ -43,32 +47,33 @@ kit_open_browser(url)
 
 - x:
 
-  文字向量（`kit_fix_utf8_chr()`）或一個字串（`kit_truncate_bytes()`）。
+  A character vector (`kit_fix_utf8_chr()`) or a single string
+  (`kit_truncate_bytes()`).
 
 - df:
 
-  資料框。
+  A data frame.
 
 - cols:
 
-  欄名。
+  Column names.
 
 - max_bytes:
 
-  最多幾個位元組。
+  Maximum number of bytes.
 
 - path:
 
-  檔案路徑。
+  A file path.
 
 - url:
 
-  網址。
+  A URL.
 
 ## Value
 
-和輸入同類的物件；`kit_is_valid_utf8_df()` 是
-`TRUE`／`FALSE`；`kit_open_browser()` 是 `NULL`。
+An object of the same kind as the input; `kit_is_valid_utf8_df()` gives
+`TRUE` / `FALSE`; `kit_open_browser()` gives `NULL`.
 
 ## Examples
 

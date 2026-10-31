@@ -1,6 +1,6 @@
-# 步驟卡的標頭
+# Step card header
 
-三種狀態：
+Three states:
 
 ## Usage
 
@@ -19,47 +19,51 @@ kit_step_head(
 
 - k:
 
-  第幾步。
+  The step number.
 
 - title:
 
-  這一步的標題。
+  The title of this step.
 
 - state:
 
-  `"current"`、`"done"` 或 `"locked"`。
+  `"current"`, `"done"`, or `"locked"`.
 
 - summary:
 
-  做完時的一句摘要（例如「5 個檔案 · 世代 TDCYP · 2009、2011（年）」）。
-  現在這一步不顯示；還不能做時一律是「先完成第 N−1 步」。
+  A one-sentence summary shown when done (for example "5 個檔案 · 世代
+  TDCYP · 2009、2011（年）", "5 files · cohort TDCYP · 2009, 2011
+  (year)"). Not shown for the current step; a step not yet available
+  always shows "先完成第 N−1 步" ("Finish step N−1 first").
 
 - edit_id:
 
-  做完時「改」的
-  [`actionLink()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
-  id；`NULL` 不顯示「改」。
+  The [`actionLink()`](https://rdrr.io/pkg/shiny/man/actionButton.html)
+  id for "改" ("Edit") when done; `NULL` hides "改".
 
 - title_id:
 
-  標題的 id（給
-  [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)
-  的 `title_id`）。
+  The id of the title (pass it to the `title_id` of
+  [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md)).
 
 ## Value
 
-`<div class="kit-stephead is-current">` 等。
+`<div class="kit-stephead is-current">` or similar.
 
 ## Details
 
-- `"current"`：現在這一步，萊姆色的圓形編號，`aria-current="step"`。
+- `"current"`: the current step, a lime round number,
+  `aria-current="step"`.
 
-- `"done"`：做完的，圓形 ✓（薄荷綠），後面一句摘要，最右邊「改」（有給
-  `edit_id` 時）。
+- `"done"`: finished, a round ✓ (mint green), followed by a one-sentence
+  summary, with "改" ("Edit") at the far right (when `edit_id` is
+  given).
 
-- `"locked"`：還不能做的，灰色，寫「先完成第 N−1 步」。
+- `"locked"`: not yet available, gray, showing "先完成第 N−1 步"
+  ("Finish step N−1 first").
 
-編號旁邊有給螢幕閱讀器的文字：「第 N 步，現在這一步：」。
+Next to the number there is text for screen readers: "第 N
+步，現在這一步：" ("Step N, current step:").
 
 ## Examples
 

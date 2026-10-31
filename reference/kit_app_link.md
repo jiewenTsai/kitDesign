@@ -1,8 +1,9 @@
-# 連到別的網站或 app 的連結（開新分頁）
+# A link to another website or app (opens in a new tab)
 
-例如從 kitJoin 連到 kitsUI 的雲端版。連結開新分頁（`target="_blank"`），
-後面可以接一行小字說明會開到哪裡。要不要放連結（本機版、雲端版）由 app
-自己決定。
+For example, a link from kitJoin to the cloud version of kitsUI. The
+link opens in a new tab (`target="_blank"`) and can be followed by a
+line of small print saying where it goes. Whether to show the link
+(local version, cloud version) is up to the app.
 
 ## Usage
 
@@ -14,27 +15,28 @@ kit_app_link(label, href, kind = "link", class = NULL, note = NULL)
 
 - label:
 
-  連結的字，例如「開啟 kitsUI」。
+  The link text, e.g. "開啟 kitsUI" ("Open kitsUI").
 
 - href:
 
-  網址。
+  The URL.
 
 - kind:
 
-  `"link"`（文字連結）或按鈕的種類（`"secondary"`、`"primary"`）。
+  `"link"` (a text link) or a button kind (`"secondary"`, `"primary"`).
 
 - class:
 
-  連結另外加的 class（例如 `"kit-next-link"`）。
+  An extra class for the link (e.g. `"kit-next-link"`).
 
 - note:
 
-  後面的一行小字，例如「（開啟網路上的雲端版 kitsUI）」；`NULL` 不顯示。
+  A line of small print after it, e.g. "（開啟網路上的雲端版 kitsUI）"
+  ("(opens the online cloud version of kitsUI)"); `NULL` shows nothing.
 
 ## Value
 
-`<span class="kit-app-link">`。
+`<span class="kit-app-link">`.
 
 ## Examples
 

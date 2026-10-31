@@ -2,196 +2,258 @@
 
 ## kitDesign 0.4.0 (2026-10-31)
 
-minor：kitJoin 與 kitsUI 各有一份的機制搬進 kitDesign；舊的 app
-不用改，兩個 app 的畫面與下載的檔案一模一樣。
+minor: mechanisms that kitJoin and kitsUI each had their own copy of
+move into kitDesign; existing apps need no changes, and both apps’
+screens and downloaded files are exactly the same.
 
-### 元件
+### Components
 
-- 檔案的小工具（原本 kitJoin、kitsUI
-  各一份一模一樣的）：[`kit_fix_utf8_chr()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、[`kit_fix_utf8_df()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、
-  [`kit_is_valid_utf8_df()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、[`kit_sav_safe_names()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、[`kit_truncate_bytes()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、[`kit_gz_path()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)、[`kit_open_browser()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md)。
-- `kit_download_button(session, id, label, filename, content, class, app)`：下載按鈕（從兩個
-  app 的 `R/download.R`
-  搬過來）。中文檔名在每個瀏覽器都存得對：網址最後一段、`Content-Disposition`
-  （`filename` 與 UTF-8 的 `filename*`）、`<a download>`
-  都是同一個檔名。`.csv`、`.zip`、`.html` 用自己的 MIME，其他是
-  `application/octet-stream`。寫檔出錯時寫 log、跳出紅色通知、回 500。
-  `app`（預設 `getOption("kitDesign.app", "kit")`）是 log 裡的 app
-  名稱，也是全中文檔名的 ASCII 備用名（小寫）；app 在 `.onLoad()`
-  設一次。
-- `kit_test_download(session, id, write = TRUE)`：[`shiny::testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html)
-  裡按下載，回傳 `httpResponse` 和檔名。
-- [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md)：是不是雲端版（`KIT_DEPLOY`，沒有時看
-  `R_CONFIG_ACTIVE = "rsconnect"`）。
-- `kit_cloud_footer(sections, links, title, id)`：雲端版使用須知（頁尾的灰色小字）；
-  每一段的段名與內文、參考連結由 app
-  給。[`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md)
-  搬到同一個檔（`R/cloud.R`）。
-- [`kit_run_tab_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)／[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)：執行分頁的骨架（kitJoin
-  的六個分頁都是這個樣子）。 UI 照頁面骨架排：這一頁做什麼 →
-  分頁自己的設定（`...`）→ 設定摘要 → 還差 → 主要按鈕 → 狀態框 → 重點 →
-  下載 → 細節列（結果的細節、用 R 怎麼做）→ 下一步。server 在分頁的
+- File helpers (previously identical copies in both kitJoin and kitsUI):
+  [`kit_fix_utf8_chr()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_fix_utf8_df()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_is_valid_utf8_df()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_sav_safe_names()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_truncate_bytes()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_gz_path()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md),
+  [`kit_open_browser()`](https://jiewentsai.github.io/kitDesign/reference/kit_files.md).
+- `kit_download_button(session, id, label, filename, content, class, app)`:
+  download button (moved from both apps’ `R/download.R`). Chinese file
+  names save correctly in every browser: the last segment of the URL,
+  `Content-Disposition` (`filename` and the UTF-8 `filename*`), and
+  `<a download>` all use the same file name. `.csv`, `.zip`, and `.html`
+  get their own MIME types; everything else is
+  `application/octet-stream`. If writing the file fails, it writes to
+  the log, shows a red notification, and returns 500. `app` (default
+  `getOption("kitDesign.app", "kit")`) is the app name in the log, and
+  also the lowercase ASCII fallback name for file names that are
+  entirely Chinese; the app sets it once in `.onLoad()`.
+- `kit_test_download(session, id, write = TRUE)`: clicks download inside
+  [`shiny::testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html)
+  and returns the `httpResponse` and the file name.
+- [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md):
+  whether this is the cloud version (`KIT_DEPLOY`; if not set, checks
+  `R_CONFIG_ACTIVE = "rsconnect"`).
+- `kit_cloud_footer(sections, links, title, id)`: cloud-version usage
+  notes (small gray text in the footer); the app supplies each section’s
+  title and text and the reference links.
+  [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md)
+  moved to the same file (`R/cloud.R`).
+- [`kit_run_tab_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md)/[`kit_run_tab_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_tab_ui.md):
+  the run tab skeleton (all six kitJoin tabs look like this). The UI
+  follows the page skeleton: what this page does → the tab’s own
+  settings (`...`) → settings summary → still needed → primary button →
+  status box → key results → downloads → details row (result details,
+  “How to do it in R”) → next step. The server is called inside the
+  tab’s
   [`moduleServer()`](https://rdrr.io/pkg/shiny/man/moduleServer.html)
-  裡呼叫， 做好狀態流：還差與停用、設定摘要、按下去（`guard()` →
-  進度條裡 `run()` → `done(result)`，出錯是 `error(e)`）→
-  狀態框、通知、捲到狀態框；改了設定（`stale_on()`）→【要重新執行】；結果的重點、
-  細節與「用 R
-  怎麼做」。要使用者確認的錯誤（`confirm`）跳出視窗、不通知。回傳
-  `result`、`status`、 `state`、`run(...)`。不是 Shiny 模組：設定的
-  input 留在分頁自己的 namespace，id 不變
-  （`<tab>-run`、`<tab>-status`、`<tab>-code`…）。
+  and handles the state flow: still needed and disabling, settings
+  summary, the click (`guard()` → `run()` inside a progress bar →
+  `done(result)`; on error, `error(e)`) → status box, notification,
+  scroll to the status box; settings changed (`stale_on()`) →
+  【要重新執行】 (“Needs re-run”); key results, details, and “How to do
+  it in R”. Errors that need user confirmation (`confirm`) open a dialog
+  instead of a notification. Returns `result`, `status`, `state`,
+  `run(...)`. Not a Shiny module: the settings inputs stay in the tab’s
+  own namespace, and ids are unchanged (`<tab>-run`, `<tab>-status`,
+  `<tab>-code`, …).
 
 ## kitDesign 0.3.0 (2026-10-31)
 
-minor：新的函式與選項，舊的 app 不用改；KIT 的畫面一模一樣。
+minor: new functions and options; existing apps need no changes; KIT’s
+screens are exactly the same.
 
-### 元件
+### Components
 
-- [`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)：品牌物件（S3），標誌與顏色不再寫死，不是
-  KIT 的計畫也能用。
-  `kit_brand(name, logo, mark, logo_alt, colors)`：`logo`
-  是頁首的標誌、`mark` 是瀏覽器分頁的 圖示（SVG 或
-  PNG；檔案在建立時讀進來）；`colors` 用設計語言的名稱換顏色：
-  `ink`、`page`、`card`、`accent`（`--nb-lime`）、`accent_light`（`--nb-bg-new`）、
-  `primary`（`--nb-green`）、`primary_hover`（`--nb-green-hover`）、`success`（`--nb-mint`）、
-  `warning`（`--nb-yellow`）、`danger`（`--nb-salmon`）、`info`（`--nb-sky`）。
-  不認得的名稱會停下來，列出可以用的名稱。不給參數就是 KIT。
-- [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md)：`options(kitDesign.brand = kit_brand(...))`
-  設定一次，所有函式都用它； 沒有設定時是 KIT。
-- [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)、[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)、[`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md)、[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)、
+- [`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md):
+  a brand object (S3). The logo and colors are no longer hard-coded, so
+  projects other than KIT can use the package.
+  `kit_brand(name, logo, mark, logo_alt, colors)`: `logo` is the header
+  logo, `mark` is the browser-tab icon (SVG or PNG; files are read in
+  when the object is created); `colors` replaces colors using the design
+  language names: `ink`, `page`, `card`, `accent` (`--nb-lime`),
+  `accent_light` (`--nb-bg-new`), `primary` (`--nb-green`),
+  `primary_hover` (`--nb-green-hover`), `success` (`--nb-mint`),
+  `warning` (`--nb-yellow`), `danger` (`--nb-salmon`), `info`
+  (`--nb-sky`). Unknown names stop with an error that lists the names
+  you can use. With no arguments it is KIT.
+- [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md):
+  set `options(kitDesign.brand = kit_brand(...))` once and every
+  function uses it; when not set, it is KIT.
+- [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+  [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md),
+  [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md),
+  [`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md),
+  [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md),
+  and
   [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  多一個 `brand =` 參數（預設
-  [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md)）：
-  - 頁首的標誌、替代文字、分頁圖示從品牌來；自己的標誌檔在 Shiny
-    裡由一個只有這些檔的 htmlDependency 提供，`logo = "inline"` 時寫成
-    data URI。
-  - 顏色和 KIT 不同時，頁首多一小段
-    `<style>html:root { --nb-…: … }</style>`；bslib 主題的
-    `primary`、`link-color`、`body-bg`、`border-color` 也換。KIT
-    的品牌不放這一段。
-  - 熱圖的色階從品牌來（淡端是 `accent_light` 的極淡色，中間在 Lab
-    空間內插到 `primary`）； 類別色（Okabe–Ito）不換，維持色盲友善。
-- `kit_gallery(brand = "demo")`：用藍色系的示範品牌看所有元件；`tools/check_gallery.R`
-  的第三個參數 `demo` 也是。示範的標誌在 `inst/examples/brand/`。
-- [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md)
-  的 README 多一個 `brand =` 的例子。
+  gain a `brand =` argument (default
+  [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md)):
+  - The header logo, alt text, and tab icon come from the brand; in
+    Shiny, your own logo files are served by an htmlDependency that
+    contains only those files; with `logo = "inline"` they are written
+    as data URIs.
+  - When the colors differ from KIT, the header gets a short
+    `<style>html:root { --nb-…: … }</style>`; the bslib theme’s
+    `primary`, `link-color`, `body-bg`, and `border-color` change too.
+    The KIT brand does not add this block.
+  - The heatmap color scale comes from the brand (the light end is a
+    very light tint of `accent_light`, interpolated in Lab space to
+    `primary`); the categorical colors (Okabe–Ito) do not change, so
+    they stay colorblind-friendly.
+- `kit_gallery(brand = "demo")`: see all components with a blue demo
+  brand; the third argument `demo` to `tools/check_gallery.R` does the
+  same. The demo logos are in `inst/examples/brand/`.
+- The README from
+  [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md)
+  adds a `brand =` example.
 
-### 樣式
+### Styles
 
-- `inst/www/` 的 CSS 不再寫死 KIT 的品牌色：`kit-base.css` 與
-  `kit-brite.css` 改用 `--nb-*` 變數； `kit-brite.css` 的 `:root`
-  多兩個變數：`--nb-green-hover`、`--nb-bg-new`。KIT
-  的值不變，畫面不變。
+- The CSS in `inst/www/` no longer hard-codes KIT’s brand colors:
+  `kit-base.css` and `kit-brite.css` now use `--nb-*` variables;
+  `kit-brite.css`’s `:root` gains two variables: `--nb-green-hover` and
+  `--nb-bg-new`. KIT’s values are unchanged, and so are the screens.
 
-### 修正
+### Fixes
 
 - [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)
-  不再讀工作目錄或上層資料夾的 `_brand.yml`（bslib 0.9 起 `bs_theme()`
-  會自己找， 例如 `brand/_brand.yml`）：品牌只從
-  [`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)
-  來。沒有 `_brand.yml` 的地方（部署的 app） 主題一模一樣；開發時旁邊有
-  `_brand.yml` 的話，以前會被它改掉字型與顏色。
+  no longer reads `_brand.yml` from the working directory or parent
+  folders (since bslib 0.9, `bs_theme()` looks for it on its own, for
+  example `brand/_brand.yml`): the brand comes only from
+  [`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md).
+  Where there is no `_brand.yml` (deployed apps) the theme is exactly
+  the same; during development, a `_brand.yml` nearby used to override
+  the fonts and colors.
 
-### 開發
+### Development
 
-- 網站（pkgdown，`_pkgdown.yml`、`pkgdown/extra.css`、`vignettes/articles/`）：首頁、開始使用、
-  元件一覽（元件直接畫在頁面上，旁邊是程式碼）、圖、換成別的品牌、設計語言、版本與發布、函式參考
-  （照元件分組）、更新紀錄。`.github/workflows/pkgdown.yaml` 會在 push
-  到 main 時建好網站、 放到 `gh-pages` 分支；`docs/` 不進
-  git。本機：[`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)。
+- Website (pkgdown, `_pkgdown.yml`, `pkgdown/extra.css`,
+  `vignettes/articles/`): home page, getting started, component overview
+  (components rendered directly on the page, with the code beside them),
+  charts, switching to another brand, design language, versions and
+  releases, function reference (grouped by component), changelog.
+  `.github/workflows/pkgdown.yaml` builds the site on push to main and
+  deploys it to the `gh-pages` branch; `docs/` is not tracked in git.
+  Locally:
+  [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html).
 
 ## kitDesign 0.2.0 (2026-10-31)
 
-minor：新的函式與選項，舊的 app 不用改。
+minor: new functions and options; existing apps need no changes.
 
-### 元件
+### Components
 
-- [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)：plotly
-  圖（例如 kits 的
-  [`plot()`](https://rdrr.io/r/graphics/plot.default.html)）套上 KIT
-  的樣子，和 app 看起來是一套。 圓體字、`nb-ink` 字與軸線、`text-hint`
-  刻度、`line-soft` 格線、`line` 零線、白底、靠左的粗體標題
-  （放不下時換行）、每一條軸（包括並排的小圖）、Okabe–Ito 的
-  `colorway`（plotly 的預設色換成同一個 位置的
-  Okabe–Ito；指定的顏色不動）、熱圖換成 KIT
-  的色階、白底黑框的滑過說明框、圖例的位置 （超過 4 項或太長、或圖寬小於
-  600px 時放到下面）、精簡的工具列（下載 PNG、放大、縮小、
-  回到原來的範圍；沒有 plotly 的標誌；繁體中文）。只改樣子，不改資料。
-  `legend = "keep"`、`colorscale = FALSE` 可以不換圖例位置、不換色階。
-  和 kits、kitsUI 一起用的順序：kits 的
-  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) → kitsUI 換色
-  → kitsUI 換中文 →
-  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)。
-- [`kit_plotly_fonts()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_fonts.md)：plotly
-  圖附上 Google Fonts 的圓體（`data-external`，存成單一 HTML 時
-  不把字型檔塞進去）；下載的 HTML 也是 app
-  的字型。[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  預設已經附上。
-- [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)：連續數值的色階（極淡萊姆
-  `#f3f7d3` → `bg-new` → `nb-green`）。最小值不是白色，0%
-  和沒有施測的空格（白底）看得出來不同。
-- plotly 與 htmlwidgets 是 Suggests：沒有用到
+- [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md):
+  applies the KIT look to plotly charts (for example from kits’
+  [`plot()`](https://rdrr.io/r/graphics/plot.default.html)) so they
+  match the app. Rounded typeface, `nb-ink` text and axis lines,
+  `text-hint` tick labels, `line-soft` gridlines, `line` zero lines,
+  white background, left-aligned bold title (wraps when it doesn’t fit),
+  every axis (including side-by-side subplots), an Okabe–Ito `colorway`
+  (plotly’s default colors are replaced with the Okabe–Ito color in the
+  same position; colors you set are left alone), heatmaps switched to
+  the KIT color scale, white hover boxes with black borders, legend
+  placement (moved below when there are more than 4 entries or they are
+  too long, or the chart is narrower than 600px), a trimmed toolbar
+  (download PNG, zoom in, zoom out, reset to the original range; no
+  plotly logo; Traditional Chinese). It only changes the look, not the
+  data. `legend = "keep"` and `colorscale = FALSE` keep the legend
+  position and color scale unchanged. Order when used with kits and
+  kitsUI: kits’ [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+  → kitsUI recolor → kitsUI switch to Chinese →
+  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md).
+- [`kit_plotly_fonts()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_fonts.md):
+  attaches the rounded typeface from Google Fonts to plotly charts
+  (`data-external`, so saving as a single HTML file does not embed the
+  font files); downloaded HTML uses the app’s fonts too.
   [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  的 app 不用裝；沒有 plotly 時
+  attaches it by default.
+- [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md):
+  color scale for continuous values (very light lime `#f3f7d3` →
+  `bg-new` → `nb-green`). The minimum is not white, so 0% is
+  distinguishable from blank cells that were not administered (white
+  background).
+- plotly and htmlwidgets are in Suggests: apps that don’t use
   [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-  停下來，說要裝什麼。
-- 元件樣張的「圖」分頁換成兩張套好樣子的 plotly 圖（各世代的線圖、題目 ×
-  波次的熱圖）。
+  don’t need to install them; without plotly,
+  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+  stops and says what to install.
+- The “圖” (“Charts”) tab in the component sample app now shows two
+  styled plotly charts (a line chart by cohort, and an item × wave
+  heatmap).
 
-### 看得到的改變
+### Visible changes
 
-- 危險按鈕（`kit_button(kind = "danger")`）是鮭魚色（`nb-salmon`）底、墨色字，滑過、按下時也是；
-  之前小按鈕的白底蓋掉了它，看起來是白色的。停用的危險按鈕照停用的樣子。設計語言本來就這樣寫，
-  所以這是修正；但畫面會變，升級時看一下有危險按鈕的頁面。
-  `tools/check_gallery.R` 也檢查危險按鈕的顏色。
+- Danger buttons (`kit_button(kind = "danger")`) have a salmon
+  (`nb-salmon`) background with ink text, including on hover and when
+  pressed; before, the secondary button’s white background overrode it
+  and it looked white. Disabled danger buttons use the disabled look.
+  The design language already said this, so this is a fix; but the
+  screen changes, so check pages with danger buttons when upgrading.
+  `tools/check_gallery.R` also checks the danger button color.
 
-### 修正
+### Fixes
 
-- [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)：bslib
-  比 0.11.0 舊（沒有 Brite 主題）時，先停下來說要更新 bslib， 不再在
-  bslib 裡面出錯。
-- [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md)
-  的 README：用 `pak::pkg_install("<帳號>/<app>")` 或
-  `remotes::install_github(..., upgrade = "always")`
-  安裝，太舊的套件（例如 bslib）會一起升級。
+- [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md):
+  when bslib is older than 0.11.0 (no Brite theme), it stops first and
+  says to update bslib, instead of failing inside bslib.
+- README from
+  [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md):
+  install with `pak::pkg_install("<帳號>/<app>")` or
+  `remotes::install_github(..., upgrade = "always")` so outdated
+  packages (for example bslib) are upgraded too.
 
 ## kitDesign 0.1.0 (2026-10-31)
 
-第一版：把 kitJoin 0.5.0 與 kitsUI 0.4.0 各自的介面合成一個套件（phase
-1）。 兩個 app 還沒有改用它（phase 2、3）；名稱對照見
-`brand/遷移對照.md`。
+First version: merges the separate interfaces of kitJoin 0.5.0 and
+kitsUI 0.4.0 into one package (phase 1). The two apps do not use it yet
+(phases 2 and 3); for the name mapping, see `brand/en/migration.md`.
 
-### 設定
+### Setup
 
-- [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)、[`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md)、[`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)、[`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md)、
-  [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md)、[`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md)、[`kit_logo_uri()`](https://jiewentsai.github.io/kitDesign/reference/kit_logo_uri.md)、[`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md)。
-- 樣式從 R 字串搬到
-  `inst/www/`（`kit-base.css`、`kit-brite.css`、`kit-design.css`），
-  小程式在 `inst/www/kit.js`；畫面和 kitJoin 0.5.0、kitsUI 0.4.0 一樣。
-- 頁首的版本行可以接上 kitDesign 的版本（`show_kitdesign = TRUE`）。
+- [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+  [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md),
+  [`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md),
+  [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md),
+  [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md),
+  [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md),
+  [`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md),
+  [`kit_logo_uri()`](https://jiewentsai.github.io/kitDesign/reference/kit_logo_uri.md),
+  [`kit_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_colors.md).
+- Styles moved from R strings to `inst/www/` (`kit-base.css`,
+  `kit-brite.css`, `kit-design.css`), and scripts are in
+  `inst/www/kit.js`; the screens are the same as kitJoin 0.5.0 and
+  kitsUI 0.4.0.
+- The header’s version line can include the kitDesign version
+  (`show_kitdesign = TRUE`).
 
-### 元件
+### Components
 
-- 頁面說明、按鈕、提示框、細節列、進階設定、設定摘要、還差、下一步、圖解、資料表、
-  步驟卡、檢查清單、步驟分頁（流程與分組兩種）、圖的顏色。
-- 值物件：`kit_status`、`kit_check`／`kit_checklist`、`kit_code`（有
-  `as.tags()`、
-  [`format()`](https://rdrr.io/r/base/format.html)、[`print()`](https://rdrr.io/r/base/print.html)；建構時檢查內容）。
-- 模組：`kit_stepcards_*`、`kit_step_tabs_*`、`kit_run_gate_*`、`kit_code_panel_*`。
-- 「用 R 怎麼做」每行最多 70
-  欄：[`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md)、[`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)（演算法來自
-  kitJoin）。
+- Page guide, buttons, callout, details row, advanced settings, settings
+  summary, still needed, next step, diagram, data table, step cards,
+  checklist, step tabs (flow and grouped), chart colors.
+- Value objects: `kit_status`, `kit_check`/`kit_checklist`, `kit_code`
+  (with `as.tags()`, [`format()`](https://rdrr.io/r/base/format.html),
+  [`print()`](https://rdrr.io/r/base/print.html); contents checked at
+  construction).
+- Modules: `kit_stepcards_*`, `kit_step_tabs_*`, `kit_run_gate_*`,
+  `kit_code_panel_*`.
+- “How to do it in R” wraps to at most 70 columns per line:
+  [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md),
+  [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md)
+  (algorithm from kitJoin).
 
-### 修正
+### Fixes
 
-- 「用 R
-  怎麼做」打開時，很長的一行程式碼不再把版面撐寬（`.kit-details > .kit-detail`
-  加上 `min-width: 0`）。
+- When “How to do it in R” is open, a very long line of code no longer
+  stretches the layout (`.kit-details > .kit-detail` gets
+  `min-width: 0`).
 
-### 開發
+### Development
 
-- [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md)：開一個新的
-  KIT app 套件骨架。
-- [`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)：所有元件的樣張
-  app。
-- [`vignette("kitDesign")`](https://jiewentsai.github.io/kitDesign/articles/kitDesign.md)：一步一步做一頁。
+- [`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md):
+  creates a new KIT app package skeleton.
+- [`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md):
+  a sample app with every component.
+- [`vignette("kitDesign")`](https://jiewentsai.github.io/kitDesign/articles/kitDesign.md):
+  build a page step by step.

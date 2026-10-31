@@ -1,6 +1,6 @@
-# 圖裡不分類別的中性色
+# Neutral color for non-categorical chart elements
 
-參考線、帶子、沒有判斷的點。
+Reference lines, bands, and points with no judgment.
 
 ## Usage
 
@@ -10,7 +10,7 @@ kit_chart_neutral()
 
 ## Value
 
-`"#7F7F7F"`。
+`"#7F7F7F"`.
 
 ## Examples
 

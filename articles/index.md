@@ -1,32 +1,44 @@
 # Articles
 
-### 開始使用
+### Get started
 
-- [用 kitDesign 做一頁 KIT
-  app](https://jiewentsai.github.io/kitDesign/articles/kitDesign.md):
+- [Build a KIT app page with
+  kitDesign](https://jiewentsai.github.io/kitDesign/articles/kitDesign.md):
 
-### 元件
+### Components
 
-- [元件一覽](https://jiewentsai.github.io/kitDesign/articles/components.md):
+- [Components](https://jiewentsai.github.io/kitDesign/articles/components.md):
 
-  每一個 kitDesign 元件的樣子，和做出它的 R 程式碼。
+  What every kitDesign component looks like, and the R code that makes
+  it.
 
-- [圖](https://jiewentsai.github.io/kitDesign/articles/charts.md):
+- [Charts](https://jiewentsai.github.io/kitDesign/articles/charts.md):
 
-  kit_plotly_style()：plotly 圖套上 KIT 的樣子，和 app 看起來是一套。
+  kit_plotly_style(): give plotly charts the KIT look so they match the
+  app.
 
-- [換成別的品牌](https://jiewentsai.github.io/kitDesign/articles/brand.md):
+- [Using another
+  brand](https://jiewentsai.github.io/kitDesign/articles/brand.md):
 
-  kit_brand()：換掉標誌與顏色，不是 KIT 的計畫也能用 kitDesign。
+  kit_brand(): swap the logo and colors so projects other than KIT can
+  use kitDesign too.
 
-### 設計語言
+- [Use it in Quarto
+  documents](https://jiewentsai.github.io/kitDesign/articles/quarto.md):
 
-- [KIT
-  設計語言](https://jiewentsai.github.io/kitDesign/articles/design-language.md):
+  Give reports, user manuals and handouts the KIT look: two small files
+  set the theme, and components go straight into R code chunks.
 
-  KIT 研究工具共用的設計語言：為誰設計、原則、顏色字型、每個元件的規格與
-  tokens。
+### Design language
 
-- [版本與發布](https://jiewentsai.github.io/kitDesign/articles/release.md):
+- [KIT design
+  language](https://jiewentsai.github.io/kitDesign/articles/design-language.md):
 
-  kitDesign 的版本規則、發布步驟、app 怎麼升級。
+  The design language shared by KIT research tools: who it is for,
+  principles, colors and type, and the spec and tokens for every
+  component.
+
+- [Versions and
+  releases](https://jiewentsai.github.io/kitDesign/articles/release.md):
+
+  kitDesign’s versioning rules, release steps, and how apps upgrade.

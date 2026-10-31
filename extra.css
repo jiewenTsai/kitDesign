@@ -25,6 +25,12 @@ a { text-decoration-thickness: 2px; text-underline-offset: 2px; }
   margin-bottom: 1.5rem;
 }
 .navbar .navbar-brand, .navbar .nav-link { color: var(--nb-ink) !important; font-weight: 700; }
+.navbar .nav-link { white-space: nowrap; }  /* 英文的「Get started」不要折成兩行 */
+@media (min-width: 992px) { .navbar .form-control { width: 9rem; } }  /* 英文導覽列較長：搜尋框窄一點，GitHub 才放得下 */
+@media (min-width: 992px) and (max-width: 1199.98px) {  /* 小筆電：字小一點、間距窄一點 */
+  .navbar .nav-link { padding-left: 0.35rem !important; padding-right: 0.35rem !important; font-size: 0.9rem; }
+  .navbar .form-control { width: 6.5rem; }
+}
 .navbar .nav-link:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 .navbar .version { color: var(--nb-ink); opacity: 0.75; }
 .navbar .dropdown-menu { border: 2px solid var(--nb-ink); border-radius: 8px; box-shadow: 2px 2px 0 0 var(--nb-ink); }

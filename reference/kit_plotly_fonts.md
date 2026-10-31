@@ -1,11 +1,13 @@
-# plotly 圖附上 app 的字型（下載的 HTML 用）
+# Attach the app's typeface to a plotly chart (for downloaded HTML)
 
-在 plotly 圖上附一個 htmlDependency：向 Google Fonts 拿圓體 Chiron
-GoRound TC （字重 400、700）。Shiny
-的頁面已經有這個字型（[`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)），所以這主要是給
-[`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html)
-存成的單一 HTML 檔用：打開時也是 app 的字型；沒有網路時退回 系統的
-sans-serif。
+Attaches an htmlDependency to a plotly chart that loads the rounded
+typeface Chiron GoRound TC from Google Fonts (weights 400 and 700).
+Shiny pages already have this typeface
+([`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)),
+so this is mainly for single HTML files saved with
+[`htmlwidgets::saveWidget()`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html):
+they also open in the app's typeface; without a network connection they
+fall back to the system sans-serif.
 
 ## Usage
 
@@ -17,19 +19,22 @@ kit_plotly_fonts(p)
 
 - p:
 
-  plotly 圖（或其他 htmlwidget）。
+  A plotly chart (or another htmlwidget).
 
 ## Value
 
-同一張圖，多一個 htmlDependency（`kit-plotly-fonts`）。
+The same chart, with one more htmlDependency (`kit-plotly-fonts`).
 
 ## Details
 
-`<link>` 帶 `data-external="1"`：`saveWidget(selfcontained = TRUE)` 用
-pandoc 打包時不把 字型檔塞進
-HTML（中文字型切成上百個檔，塞進去檔案會很大）。
+The `<link>` carries `data-external="1"`: when
+`saveWidget(selfcontained = TRUE)` bundles the file with pandoc, the
+font files are not embedded in the HTML (a Chinese typeface is split
+into hundreds of files, so embedding them would make the file very
+large).
 [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-預設（`fonts = TRUE`）已經呼叫它；同一張圖附兩次和附一次一樣。
+already calls it by default (`fonts = TRUE`); attaching it twice to the
+same chart is the same as attaching it once.
 
 ## See also
 

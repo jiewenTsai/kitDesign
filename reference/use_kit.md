@@ -1,6 +1,7 @@
-# KIT 的樣式與瀏覽器端小程式（htmltools 的 dependency）
+# KIT styles and browser-side scripts (an htmltools dependency)
 
-放進頁面任何地方都可以（htmltools 會把它搬到 `<head>`）。裡面有：
+Can go anywhere in the page (htmltools moves it into `<head>`). It
+contains:
 
 ## Usage
 
@@ -10,26 +11,28 @@ use_kit()
 
 ## Value
 
+An
 [`htmltools::htmlDependency()`](https://rstudio.github.io/htmltools/reference/htmlDependency.html)
-物件。
+object.
 
 ## Details
 
-- `kit-base.css`：頁首、說明框、提示框等基本樣式（原本的
-  `kit_css()`、`kit_css_guide()`）。
+- `kit-base.css`: basic styles for the header, guide boxes, callouts,
+  and so on (formerly `kit_css()`, `kit_css_guide()`).
 
-- `kit-brite.css`：KIT 的 neo-brutalism 樣式（原本的
-  `kit_css_brite()`）。
+- `kit-brite.css`: KIT's neo-brutalism styles (formerly
+  `kit_css_brite()`).
 
-- `kit-design.css`：kitDesign
-  新加的少數規則（頁首排版、流程分頁的虛線分頁、程式碼框的寬度）。
+- `kit-design.css`: the few rules kitDesign adds (header layout, dashed
+  tabs in flow tabs, code box width).
 
-- `kit.js`：收合區塊、分頁列、分頁狀態、捲到結果、離開前提醒、「複製」按鈕。
+- `kit.js`: collapsible sections, tab bars, tab states, scrolling to
+  results, the reminder before leaving, and the "複製" ("Copy") button.
 
-用
 [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)
-時已經加好了；自己用 `bslib::page_*()` 組頁面時才需要放
-`use_kit()`，並把 `theme = kit_theme()` 傳給頁面。
+already adds it; you only need to add `use_kit()` when you build the
+page yourself with `bslib::page_*()`, and pass `theme = kit_theme()` to
+the page.
 
 ## Examples
 

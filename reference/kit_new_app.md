@@ -1,7 +1,7 @@
-# 開一個新的 KIT Shiny app
+# Start a new KIT Shiny app
 
-建立一個可以直接執行的 app 套件骨架，照 KIT
-設計語言的頁面骨架寫好一個範例分頁：
+Creates a ready-to-run app package skeleton, with one example tab
+written to the KIT design language's page skeleton:
 
 ## Usage
 
@@ -18,51 +18,61 @@ kit_new_app(
 
 - path:
 
-  新的資料夾（最後一層是套件名稱，例如 `"~/kitScore"`）。
+  The new folder (the last part is the package name, e.g.
+  `"~/kitScore"`).
 
 - title:
 
-  工具名稱，例如「KIT 計分工具」。
+  The tool name, e.g. "KIT 計分工具" ("KIT scoring tool").
 
 - subtitle:
 
-  副標，例如「臺灣幼兒發展調查資料庫」。
+  The subtitle, e.g. "臺灣幼兒發展調查資料庫" (the KIT database).
 
 - package:
 
-  套件名稱（預設是資料夾名稱）：英文字母開頭，只有英文字母、數字和點。
+  The package name (defaults to the folder name): starts with a letter
+  and contains only letters, digits, and periods.
 
 ## Value
 
-不可見的 `path`（完整路徑）。
+`path` (full path), invisibly.
 
 ## Details
 
-- `DESCRIPTION`：`Imports: kitDesign (>= 目前版本)`、`Remotes: jiewenTsai/kitDesign@v目前版本`。
+- `DESCRIPTION`: `Imports: kitDesign (>= current version)`,
+  `Remotes: jiewenTsai/kitDesign@v<current version>`.
 
-- `app.R`：Posit Connect Cloud 的入口（primary file）。
+- `app.R`: the entry point for Posit Connect Cloud (primary file).
 
-- `R/app.R`：[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)＋步驟分頁模組（[`kit_step_tabs_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md)）；`run_app()`。
+- `R/app.R`:
+  [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)
+  plus the step tabs module
+  ([`kit_step_tabs_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_tabs_ui.md));
+  `run_app()`.
 
-- `R/page_calc.R`：範例分頁，用了主要按鈕＋還差（[`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)）、狀態框、結果表、
-  用 R
-  怎麼做（[`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)）、下一步。
+- `R/page_calc.R`: an example tab using a primary button plus the ready
+  line
+  ([`kit_run_gate_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate_ui.md)),
+  a status box, a result table, "How to do it in R"
+  ([`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)),
+  and next step.
 
-- `tests/testthat/`：一個
+- `tests/testthat/`: one
   [`shiny::testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html)
-  測試。
+  test.
 
-- `.gitignore`（含
-  `tests/testthat/_problems/`、`testthat-problems.rds`）、`.Rbuildignore`、
-  `README.md`、`LICENSE`。
+- `.gitignore` (including `tests/testthat/_problems/` and
+  `testthat-problems.rds`), `.Rbuildignore`, `README.md`, `LICENSE`.
 
-資料夾已經存在而且不是空的時候，什麼都不做、停下來（不會蓋掉任何檔案）。
+If the folder already exists and is not empty, it does nothing and stops
+(it never overwrites any file).
 
 ## Examples
 
 ``` r
 dir <- file.path(tempdir(), "kitDemo")
-kit_new_app(dir, "KIT 示範工具", "臺灣幼兒發展調查資料庫")
+kit_new_app(dir, "KIT 示範工具", "臺灣幼兒發展調查資料庫")  # "KIT demo tool", the KIT database
 list.files(dir, recursive = TRUE)
 #> [1] "DESCRIPTION"               "LICENSE"                  
 #> [3] "NAMESPACE"                 "R/app.R"                  

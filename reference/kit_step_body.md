@@ -1,6 +1,7 @@
-# 步驟卡的內容
+# Step card content
 
-卡片裡的表不加外框、淡表頭（CSS 會處理）；手機上不縮排。
+Tables inside the card have no outer border and a light header (CSS
+handles this); no indent on phones.
 
 ## Usage
 
@@ -12,11 +13,14 @@ kit_step_body(...)
 
 - ...:
 
-  這一步的內容；最後通常是「對，下一步」（[`shiny::actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html)，一般按鈕）。
+  The content of this step; usually ends with "對，下一步" ("Yes, next
+  step")
+  ([`shiny::actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html),
+  a regular button).
 
 ## Value
 
-`<div class="kit-stepbody">`。
+`<div class="kit-stepbody">`.
 
 ## Examples
 

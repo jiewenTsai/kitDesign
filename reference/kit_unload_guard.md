@@ -1,8 +1,9 @@
-# 離開頁面前的提醒
+# Reminder before leaving the page
 
-有這一回合的結果時（例如校準過），關掉或重新整理分頁前，瀏覽器會先問一次。
-在 server
-裡依結果開關：`shiny::observe(kit_unload_guard(!is.null(result())))`。
+When there are results from this session (for example, after
+calibration), the browser asks once before the tab is closed or
+reloaded. Turn it on and off in the server based on the result:
+`shiny::observe(kit_unload_guard(!is.null(result())))`.
 
 ## Usage
 
@@ -14,15 +15,15 @@ kit_unload_guard(on = TRUE, session = shiny::getDefaultReactiveDomain())
 
 - on:
 
-  `TRUE` 開、`FALSE` 關。
+  `TRUE` turns it on, `FALSE` turns it off.
 
 - session:
 
-  預設是目前的 session。
+  Defaults to the current session.
 
 ## Value
 
-不可見的 `on`。
+`on`, invisibly.
 
 ## Examples
 

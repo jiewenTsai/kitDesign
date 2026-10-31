@@ -1,12 +1,14 @@
-# 狀態框（StatusBox）
+# Status box
 
-把
+Renders a
 [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md)
-畫成狀態框：第一行是標籤＋一句結論；接著最多 3 點
-（要注意的事在前、結果的重點在後），其他收在「還有 N
-點」；怎麼辦的按鈕； 補充小字；收起來的原始訊息。執行完用
+as a status box: the first line is the label plus a one-sentence
+conclusion; then up to 3 points (things to watch out for first, key
+results after), the rest collapsed under "還有 N 點" ("N more points");
+a button for what to do; small additional notes; the collapsed raw
+message. After running, use
 [`kit_scroll_to()`](https://jiewentsai.github.io/kitDesign/reference/kit_scroll_to.md)
-把它捲到畫面上方。
+to scroll it to the top of the screen.
 
 ## Usage
 
@@ -18,28 +20,30 @@ kit_status_ui(st, ..., max_points = KIT_STATUS_MAX_POINTS)
 
 - st:
 
+  A
   [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md)
-  物件（舊的 app 的同樣欄位的 list 也可以）；`NULL` 或 `"idle"`
-  時不顯示。
+  object (a list with the same fields, from older apps, also works);
+  `NULL` or `"idle"` shows nothing.
 
 - ...:
 
-  其他放在框裡最後的內容（kitsUI 的 `ui_status(...)`）。
+  Other content placed last inside the box (kitsUI's `ui_status(...)`).
 
 - max_points:
 
-  直接列出幾點（預設 3）。
+  How many points to list directly (default 3).
 
 ## Value
 
-`<div class="alert alert-success kit-status" role="alert">`
-等；不顯示時是 `NULL`。
+`<div class="alert alert-success kit-status" role="alert">` or similar;
+`NULL` when nothing is shown.
 
 ## Details
 
-`kit_status`
-物件直接放進頁面也可以（[`htmltools::as.tags()`](https://rstudio.github.io/htmltools/reference/as.tags.html)
-方法就是這個函式）； 要多放東西或改點數時才需要呼叫它。
+A `kit_status` object can also go straight into the page (its
+[`htmltools::as.tags()`](https://rstudio.github.io/htmltools/reference/as.tags.html)
+method is this function); you only need to call this function to add
+more content or change the number of points.
 
 ## Examples
 

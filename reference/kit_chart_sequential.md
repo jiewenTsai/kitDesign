@@ -1,10 +1,11 @@
-# 連續數值的色階（Chart）
+# Color scale for continuous values (chart)
 
-極淡萊姆 → 淡萊姆（`bg-new`）→ KIT
-綠（`nb-green`）：值越大越深。用在熱圖、色條
-（例如作答設計圖的通過比例）。最小值不是白色，所以 0
-和沒有資料的空格（白底）看得出來不同。[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-預設把熱圖換成這個色階。
+Very light lime → light lime (`bg-new`) → KIT green (`nb-green`): larger
+values are darker. For heatmaps and color bars (e.g. pass rates in a
+response design plot). The minimum is not white, so 0 looks different
+from an empty cell with no data (white background).
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+switches heatmaps to this scale by default.
 
 ## Usage
 
@@ -16,25 +17,32 @@ kit_chart_sequential(brand = kit_current_brand())
 
 - brand:
 
-  品牌（[`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)）；預設是
-  [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md)（沒有設定時是
-  KIT）。
+  The brand
+  ([`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md));
+  defaults to
+  [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md)
+  (KIT when none is set).
 
 ## Value
 
-plotly 的
-colorscale：`list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`。
+A plotly colorscale:
+`list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`.
 
 ## Details
 
-色階從品牌來（[`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)）：0
-是 `accent_light` 再和白色混合的極淡色，0.2 是 `accent_light`，0.2 到 1
-在 Lab 空間從 `accent_light` 內插到 `primary`。KIT 的品牌
-就是上面的值。類別色（[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)，Okabe–Ito）不跟著品牌換：它們是色盲友善的。
+The scale comes from the brand
+([`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)):
+0 is a very light color made by mixing `accent_light` with white, 0.2 is
+`accent_light`, and 0.2 to 1 interpolates in Lab space from
+`accent_light` to `primary`. For the KIT brand these are the values
+above. Categorical colors
+([`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md),
+Okabe–Ito) do not change with the brand: they are colorblind-friendly.
 
 ## See also
 
-[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)、[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md),
+[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)
 
 ## Examples
 

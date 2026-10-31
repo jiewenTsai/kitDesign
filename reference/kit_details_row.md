@@ -1,8 +1,9 @@
-# 一排細節（Details）
+# Details row
 
-結果下面一排收起來的小字標題（▸ 預覽　▸ 這一回合的紀錄　▸ 用 R
-怎麼做）； 打開的那一個佔一整行，內容不加框。「用 R
-怎麼做」永遠放在最後一個。
+A row of collapsed small-print titles below the result (▸ 預覽 ▸
+這一回合的紀錄 ▸ 用 R 怎麼做; "Preview", "Log for this round", "How to
+do it in R"). The one that is open takes a full line, and its content
+has no box. "用 R 怎麼做" ("How to do it in R") always goes last.
 
 ## Usage
 
@@ -14,12 +15,13 @@ kit_details_row(...)
 
 - ...:
 
-  [`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md)（或
-  [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)）。
+  [`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md)
+  (or
+  [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)).
 
 ## Value
 
-`<div class="kit-details">`。
+`<div class="kit-details">`.
 
 ## Examples
 
@@ -38,4 +40,5 @@ kit_details_row(
 #>     <div class="kit-detail-body">沒有提醒。</div>
 #>   </details>
 #> </div>
+# "Preview" / "First 10 rows"; "Log for this round" / "No notes."
 ```

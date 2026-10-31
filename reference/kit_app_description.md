@@ -1,8 +1,9 @@
-# 讀取 app 的版本與日期（DESCRIPTION 的 Version、Date）
+# Read the app's version and date (Version and Date in DESCRIPTION)
 
-雲端版、本機 run.bat、套件的 `run_xxx()` 都以 DESCRIPTION 的
-Version、Date 為準，
-三者顯示一致（不看檔案修改時間：解壓、安裝、部署都會改變 mtime）。
+The cloud version, the local run.bat, and the package's `run_xxx()` all
+take Version and Date from DESCRIPTION, so all three show the same thing
+(file modification times are not used: unzipping, installing, and
+deploying all change the mtime).
 
 ## Usage
 
@@ -14,32 +15,35 @@ kit_app_description(package = NULL, path = NULL)
 
 - package:
 
-  app 的套件名稱，例如 `"kitJoin"`；`NULL` 時只找 DESCRIPTION 檔。
+  The app's package name, e.g. `"kitJoin"`; when `NULL`, only
+  DESCRIPTION files are searched.
 
 - path:
 
-  DESCRIPTION 檔的路徑；`NULL` 時照上面的順序找。
+  Path to a DESCRIPTION file; when `NULL`, searched in the order below.
 
 ## Value
 
-`list(version = , date = )`；找不到的是 `NA`。
+`list(version = , date = )`; anything not found is `NA`.
 
 ## Details
 
-找的順序：
+Search order:
 
-1.  `path` 有給：讀那個 DESCRIPTION 檔。
+1.  `path` is given: read that DESCRIPTION file.
 
-2.  `package`
-    已經載入（[`library()`](https://rdrr.io/r/base/library.html)、`run_xxx()`、`load_all()`）：讀載入的那一份。
+2.  `package` is already loaded
+    ([`library()`](https://rdrr.io/r/base/library.html), `run_xxx()`,
+    `load_all()`): read the loaded copy.
 
-3.  工作目錄的 `DESCRIPTION`，再往上一層、兩層找（測試時工作目錄在
-    `tests/testthat`）； 有給 `package` 時，只認 `Package:`
-    是它的那一份。雲端版與 run.bat 用 `runApp(資料夾)`，
-    套件沒有載入，讀的是這一份。
+3.  `DESCRIPTION` in the working directory, then one and two levels up
+    (in tests the working directory is `tests/testthat`); when `package`
+    is given, only a file whose `Package:` matches counts. The cloud
+    version and run.bat use `runApp(folder)`, the package is not loaded,
+    and this is the copy that gets read.
 
-4.  `package`
-    有安裝（但沒有載入）：讀安裝的那一份。放在最後，因為它可能是舊版。
+4.  `package` is installed (but not loaded): read the installed copy.
+    This comes last because it may be an old version.
 
 ## Examples
 

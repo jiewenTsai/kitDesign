@@ -1,6 +1,7 @@
-# 「還差」：檔案不夠時的那一句
+# "還差" ("Still needed"): the sentence shown when there are not enough files
 
-「還差」：檔案不夠時的那一句
+"還差" ("Still needed"): the sentence shown when there are not enough
+files.
 
 ## Usage
 
@@ -12,15 +13,15 @@ kit_need_files(n_files, need = 2L)
 
 - n_files:
 
-  已經加入幾個檔案。
+  How many files have been added.
 
 - need:
 
-  這一頁至少要幾個檔案。
+  The minimum number of files this page needs.
 
 ## Value
 
-一句話；檔案夠了時是 `NULL`。
+One sentence; `NULL` when there are enough files.
 
 ## Examples
 

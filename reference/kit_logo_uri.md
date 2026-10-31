@@ -1,7 +1,7 @@
-# KIT 標誌（data URI）
+# KIT logo (data URI)
 
-直接放進頁面（不用另外設定靜態檔案的路徑）。標誌是透明底 PNG，在
-`inst/logo/`。
+Goes straight into the page (no static file path to set up). The logos
+are transparent PNGs in `inst/logo/`.
 
 ## Usage
 
@@ -13,19 +13,20 @@ kit_logo_uri(size = 96, kind = c("mark", "logo"))
 
 - size:
 
-  像素：豆子（`"mark"`）有
-  64、96、256、`"h512"`、`"h1024"`；完整標誌（`"logo"`， 豆子＋KIT
-  字樣）有 128、192、`"h512"`、`"h1024"`（高度）。頁首用的是向量標誌
-  （[`kit_logo_file()`](https://jiewentsai.github.io/kitDesign/reference/kit_logo_file.md)），這個函式給要嵌進頁面的
-  PNG。
+  Pixels: the bean (`"mark"`) comes in 64, 96, 256, `"h512"`, `"h1024"`;
+  the full logo (`"logo"`, bean plus KIT wordmark) comes in 128, 192,
+  `"h512"`, `"h1024"` (height). The header uses the vector logo
+  ([`kit_logo_file()`](https://jiewentsai.github.io/kitDesign/reference/kit_logo_file.md));
+  this function gives a PNG to embed in the page.
 
 - kind:
 
-  `"mark"` 只有豆子（瀏覽器分頁圖示）；`"logo"` 完整標誌（頁首）。
+  `"mark"` is the bean only (browser tab icon); `"logo"` is the full
+  logo (header).
 
 ## Value
 
-`"data:image/png;base64,..."`；沒有這個大小時是 `""`。
+`"data:image/png;base64,..."`; `""` when that size does not exist.
 
 ## Examples
 

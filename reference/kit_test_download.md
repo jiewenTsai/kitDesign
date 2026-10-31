@@ -1,10 +1,13 @@
-# 測試裡按下載按鈕
+# Press a download button in tests
 
+The mock session of
 [`shiny::testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html)
-的假 session 不會真的註冊下載（`registerDataObj()` 什麼都不做），
+does not really register downloads (`registerDataObj()` does nothing),
+so
 [`kit_download_button()`](https://jiewentsai.github.io/kitDesign/reference/kit_download_button.md)
-改把它存在 `session$userData`；這個函式從那裡拿出來，照瀏覽器
-按下載時一樣寫檔、回應。
+stores the download in `session$userData` instead; this function takes
+it from there and writes the file and responds the same way as when a
+browser presses download.
 
 ## Usage
 
@@ -16,23 +19,26 @@ kit_test_download(session, id, write = TRUE)
 
 - session:
 
-  [`testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html) 的
-  `session`。
+  The `session` of
+  [`testServer()`](https://rdrr.io/pkg/shiny/man/testServer.html).
 
 - id:
 
-  按鈕 id：模組裡用不含 namespace 的 id（`"dl"`），app 層用完整的 id
-  （`"stack-download_csv"`）。
+  The button id: inside a module, the id without namespace (`"dl"`); at
+  the app level, the full id (`"stack-download_csv"`).
 
 - write:
 
-  `FALSE` 時不寫檔、不回應，只看註冊時的檔名（例如畫圖很慢的下載）。
+  When `FALSE`, no file is written and no response is made; only the
+  file name registered is checked (for example, downloads that are slow
+  to draw a chart).
 
 ## Value
 
-[`shiny::httpResponse()`](https://rdrr.io/pkg/shiny/man/httpResponse.html)（`status`、`content_type`、`headers`、`content$file`），
-多一個欄位 `filename`：註冊時的檔名。`write = FALSE` 時只有
-`list(filename = )`。
+[`shiny::httpResponse()`](https://rdrr.io/pkg/shiny/man/httpResponse.html)
+(`status`, `content_type`, `headers`, `content$file`), with one more
+field `filename`: the file name registered. With `write = FALSE`, only
+`list(filename = )`.
 
 ## Examples
 

@@ -1,18 +1,20 @@
-# 用 kitDesign 做一頁 KIT app
+# Build a KIT app page with kitDesign
 
-這份說明照「KIT 設計語言」的頁面骨架，一步一步做出一頁：
+This guide follows the page skeleton from the “KIT design language” and
+builds one page step by step:
 
-    頁首 → 步驟分頁 → 這一頁做什麼 → 設定 → 還差＋主要按鈕
-    → 狀態框 → 重點（一張表）→ 細節列（用 R 怎麼做）→ 下一步
+    header → step tabs → what this page does → settings → still needed + primary button
+    → status box → key result (one table) → details row (How to do it in R) → next step
 
-想直接有一個可以跑的 app，用
-`kit_new_app("~/kitScore", "KIT 計分工具")`，
-它產生的就是下面這一頁。看所有元件：[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)。
+For an app you can run right away, use
+`kit_new_app("~/kitScore", "KIT 計分工具")`; the app it creates is the
+page below. To see every component:
+[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md).
 
-## 1. 頁面：`kit_page()`
+## 1. Page: `kit_page()`
 
-主題、樣式、頁首一次放好。版本行讀 app 自己的 DESCRIPTION，後面接
-kitDesign 的版本。
+Sets up the theme, styles, and header in one call. The version line
+reads the app’s own DESCRIPTION, followed by the kitDesign version.
 
 ``` r
 
@@ -21,34 +23,35 @@ library(kitDesign)
 
 ver <- kit_app_description("kitScore")
 ui <- kit_page(
-  "KIT 計分工具", "臺灣幼兒發展調查資料庫",
+  "KIT 計分工具", "臺灣幼兒發展調查資料庫",   # "KIT Scoring Tool", "Kids in Taiwan"
   version = ver$version, date = ver$date, show_kitdesign = TRUE,
-  tabs_ui   # 第 2 步
+  tabs_ui   # step 2
 )
 ```
 
-## 2. 步驟分頁：`kit_step_tabs_ui()` / `kit_step_tabs_server()`
+## 2. Step tabs: `kit_step_tabs_ui()` / `kit_step_tabs_server()`
 
-有順序的流程用圈數字；不是每一頁都要做時給 `groups`（分組、不編號）。
+Use circled numbers for a flow with a fixed order; when not every page
+has to be done, use `groups` (grouped, not numbered).
 
 ``` r
 
 tabs_ui <- kit_step_tabs_ui(
   "nav",
-  tabPanel("① 計分", value = "score", score_ui("score")),   # 第 3–8 步
-  tabPanel("② 結果", value = "result", p("…"))
+  tabPanel("① 計分", value = "score", score_ui("score")),   # steps 3–8 ("Scoring")
+  tabPanel("② 結果", value = "result", p("…"))               # ("Results")
 )
 
-# server：做完打 ✓，還不能做的灰色、滑過說明原因
+# server: done steps get a ✓; steps that can't be done yet are gray, and hovering explains why
 nav <- kit_step_tabs_server(
   "nav",
   states = reactive(c(score = score$state(),
                       result = if (score$state() == "success") "ready" else "locked")),
-  tips = c(result = "先在「① 計分」按「開始計分」")
+  tips = c(result = "先在「① 計分」按「開始計分」")   # "First click 'Start scoring' in '① Scoring'"
 )
 ```
 
-## 3–5. 這一頁做什麼、設定、還差＋主要按鈕
+## 3–5. What this page does, settings, still needed + primary button
 
 ``` r
 
@@ -56,27 +59,27 @@ score_ui <- function(id) {
   ns <- NS(id)
   tagList(
     kit_tab_guide(
-      goal = "把作答檔算成分數。",
-      steps = c("選量尺", "按「開始計分」", "看狀態框與結果"),
-      output = "一張分數表。"
+      goal = "把作答檔算成分數。",                               # "Turn the response file into scores."
+      steps = c("選量尺", "按「開始計分」", "看狀態框與結果"),   # "Pick a scale", "Click 'Start scoring'", "Check the status box and results"
+      output = "一張分數表。"                                    # "A table of scores."
     ),
-    selectInput(ns("scale"), "量尺", c("（還沒選）" = "", "gm", "fm")),
-    kit_run_gate_ui(ns("run"), "開始計分"),    # 還差：…＋停用的主要按鈕
+    selectInput(ns("scale"), "量尺", c("（還沒選）" = "", "gm", "fm")),   # "Scale", "(not chosen yet)"
+    kit_run_gate_ui(ns("run"), "開始計分"),    # Still needed: … + disabled primary button
     uiOutput(ns("status")),
     uiOutput(ns("result")),
     kit_details_row(
-      kit_detail("這一回合的紀錄", "…"),
-      kit_code_panel_ui(ns("code"))         # 用 R 怎麼做：永遠放最後
+      kit_detail("這一回合的紀錄", "…"),      # "Log for this run"
+      kit_code_panel_ui(ns("code"))         # How to do it in R: always last
     ),
     uiOutput(ns("next_step"))
   )
 }
 ```
 
-## 6–9. server：狀態框、結果表、用 R 怎麼做、下一步
+## 6–9. Server: status box, result table, How to do it in R, next step
 
-狀態框是 `kit_status` 物件，直接交給
-[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)。
+The status box is a `kit_status` object; pass it straight to
+[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html).
 
 ``` r
 
@@ -88,12 +91,12 @@ score_server <- function(id, goto) {
 
     observeEvent(run(), {
       st <- tryCatch({
-        df <- data.frame(id = 1:3, score = c(12, 15, 9))   # 換成真的計分
+        df <- data.frame(id = 1:3, score = c(12, 15, 9))   # replace with real scoring
         result(df)
-        kit_done_status(paste0("計分完成：", kit_num(nrow(df)), " 人。"))
+        kit_done_status(paste0("計分完成：", kit_num(nrow(df)), " 人。"))   # "Scoring done: N people."
       }, error = function(e) kit_error_status(e, "計分"))
       status(st)
-      kit_scroll_to("status")                  # 先結果、後細節
+      kit_scroll_to("status")                  # results first, details after
     }, ignoreInit = TRUE)
 
     output$status <- renderUI(status())
@@ -111,7 +114,7 @@ score_server <- function(id, goto) {
     ))
     output$next_step <- renderUI({
       req(status()$state %in% c("success", "warning"))
-      kit_next_step("算好了。", session$ns("go"), "下一步：結果")
+      kit_next_step("算好了。", session$ns("go"), "下一步：結果")   # "Done.", "Next: Results"
     })
     observeEvent(input$go, goto("result"))
     list(state = reactive(status()$state))
@@ -119,7 +122,7 @@ score_server <- function(id, goto) {
 }
 ```
 
-最後把它們接起來：
+Finally, wire them together:
 
 ``` r
 
@@ -131,7 +134,7 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-## 值物件可以先在 console 看
+## Value objects can be checked in the console first
 
 ``` r
 
@@ -151,17 +154,20 @@ kit_code("scores <- kits::kits_subj(X, item, persons = persons, method = \"WLE\"
 #>                           se = TRUE)
 ```
 
-## 不是 KIT 的計畫：換品牌
+## Projects other than KIT: change the brand
 
-標誌與顏色不是寫死的。在 app
-開始時設定一次品牌，[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md)、主題、圖的色階都會跟著換；
-字型、框、陰影、元件照設計語言不變。不設定時就是 KIT。
+The logo and colors are not hard-coded. Set the brand once when the app
+starts, and
+[`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+the theme, and chart color scales all follow it; typeface, borders,
+shadows, and components follow the design language unchanged. Without a
+brand setting, you get KIT.
 
 ``` r
 
 options(kitDesign.brand = kit_brand(
-  "示範實驗室",
-  logo = system.file("logo.svg", package = "kitScore"),   # 頁首的標誌（SVG 或 PNG）
+  "示範實驗室",                                            # "Demo Lab"
+  logo = system.file("logo.svg", package = "kitScore"),   # header logo (SVG or PNG)
   colors = list(accent = "#9cc0ff", primary = "#1f4fa3")
 ))
 ```
@@ -186,4 +192,6 @@ kit_brand("示範實驗室", colors = list(accent = "#9cc0ff", primary = "#1f4fa
 #>     info           #a8dcff
 ```
 
-可以換哪些顏色、各用在哪裡：[`?kit_brand`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)。看換了以後的樣子：`kit_gallery(brand = "demo")`。
+Which colors you can change and where each is used:
+[`?kit_brand`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md).
+To see the result: `kit_gallery(brand = "demo")`.

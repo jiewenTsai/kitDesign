@@ -1,6 +1,8 @@
-# 整數加千分位
+# Integer with thousands separators
 
-KIT 設計語言：四位數以上加千分位，「3,389 人」。小數會四捨五入成整數。
+KIT design language: numbers with four or more digits get thousands
+separators, as in "3,389 人" ("3,389 people"). Decimals are rounded to
+integers.
 
 ## Usage
 
@@ -12,11 +14,11 @@ kit_num(x)
 
 - x:
 
-  數字（或可以轉成數字的字串）。
+  A number (or a string that can be converted to a number).
 
 ## Value
 
-字串，例如 `"3,418"`。
+A string, for example `"3,418"`.
 
 ## Examples
 

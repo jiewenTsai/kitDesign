@@ -1,6 +1,7 @@
-# 頁首的版本行，例如「v0.5.0 · 2026-10-31」
+# The version line in the header, e.g. "v0.5.0 · 2026-10-31"
 
-版本行永遠在頁首，回報問題時用得到。
+The version line always sits in the header; it is needed when reporting
+problems.
 
 ## Usage
 
@@ -12,24 +13,24 @@ kit_app_meta(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE)
 
 - version:
 
-  版本（前面自動加「v」）；`NULL` 或 `NA` 不顯示。
+  The version ("v" is added in front); `NULL` or `NA` shows nothing.
 
 - date:
 
-  日期；`NULL` 或 `NA` 不顯示。
+  The date; `NULL` or `NA` shows nothing.
 
 - extra:
 
-  後面再接的字（例如 `paste("kits", utils::packageVersion("kits"))`）。
+  Text to append (e.g. `paste("kits", utils::packageVersion("kits"))`).
 
 - show_kitdesign:
 
-  後面要不要接「kitDesign
-  0.1.0」（[`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md)）。
+  Whether to append "kitDesign 0.1.0"
+  ([`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md)).
 
 ## Value
 
-`<div class="kit-app-meta">`；三樣都沒有時是 `NULL`。
+`<div class="kit-app-meta">`; `NULL` when all three are missing.
 
 ## Examples
 

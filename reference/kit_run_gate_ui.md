@@ -1,9 +1,13 @@
-# 主要按鈕＋「還差：…」模組（ReadyLine）
+# Primary button + "Still needed: …" module (ready line)
 
-主要按鈕一開始就顯示（停用）；還差的事（[`missing()`](https://rdrr.io/r/base/missing.html)）是空的時才能按，
-上面一行粗體「還差：…」，後面接一個去處理的連結。 server 回傳的 reactive
-只有在**沒有還差的事時**按下去才會變（伺服器端也擋，
-不只靠按鈕停用），所以直接 `observeEvent(run(), …)` 就好。
+The primary button is shown (disabled) from the start; it can be pressed
+only when nothing is still needed
+([`missing()`](https://rdrr.io/r/base/missing.html) is empty). Above it,
+a bold line says "還差：…" ("Still needed: …"), followed by a link to
+where to fix it. The reactive returned by the server changes only when
+the button is pressed **while nothing is still needed** (the server also
+blocks it, not just the disabled button), so a plain
+`observeEvent(run(), …)` is enough.
 
 ## Usage
 
@@ -17,35 +21,40 @@ kit_run_gate_server(id, missing, link = function() NULL)
 
 - id:
 
-  模組的 id。
+  The module id.
 
 - label:
 
-  主要按鈕的字（動詞開頭，例如「執行串接」）。
+  The primary button's text (start with a verb, for example "執行串接",
+  "Run join").
 
 - ...:
 
-  其他傳給
-  [`kit_button()`](https://jiewentsai.github.io/kitDesign/reference/kit_button.md)
-  的參數。
+  Other arguments passed to
+  [`kit_button()`](https://jiewentsai.github.io/kitDesign/reference/kit_button.md).
 
 - missing:
 
-  reactive：還差的事（字串向量；長度 0 = 可以執行）。
+  A reactive: what is still needed (character vector; length 0 = ready
+  to run).
 
 - link:
 
-  函式：跟在「還差」後面的連結（tag 或 `NULL`）。
+  A function: the link after "還差" ("Still needed") (a tag or `NULL`).
 
 ## Value
 
-`kit_run_gate_ui()`：「還差」的位置與主要按鈕。
+`kit_run_gate_ui()`: the slot for the "還差" line and the primary
+button.
 
-`kit_run_gate_server()`：reactive，可以執行時按了幾次（一開始是 0）。
+`kit_run_gate_server()`: a reactive counting presses made while ready to
+run (0 at first).
 
 ## See also
 
-[`kit_ready_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_ready_line.md)、[`kit_run_gate()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate.md)（低階）
+[`kit_ready_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_ready_line.md),
+[`kit_run_gate()`](https://jiewentsai.github.io/kitDesign/reference/kit_run_gate.md)
+(low-level)
 
 ## Examples
 

@@ -1,9 +1,10 @@
-# 「用 R 怎麼做」模組（CodePanel）
+# "How to do it in R" module (code panel)
 
-細節列裡的一個收合區塊；打開時才算程式碼（收起來時 Shiny 不畫裡面的
-output）， 畫成一個或幾個
-[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)（每行最多
-70 欄、附「複製」）。
+A collapsible block in the details row; the code is computed only when
+it is opened (Shiny does not render outputs inside a collapsed block),
+and rendered as one or more
+[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
+(at most 70 columns per line, with "Copy").
 
 ## Usage
 
@@ -23,41 +24,42 @@ kit_code_panel_server(
 
 - id:
 
-  模組的 id。
+  The module id.
 
 - title:
 
-  收合標題。
+  The collapsible title.
 
 - open:
 
-  一開始要不要打開。
+  Whether it starts open.
 
 - code:
 
-  傳回程式碼的函式或
-  reactive：一個字串、[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)，或它們的具名
-  list （見
-  [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md)
-  的 `snips`）。
+  A function or reactive returning the code: a string, a
+  [`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md),
+  or a named list of them (see `snips` in
+  [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md)).
 
 - note, width, empty:
 
-  見
-  [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md)。
+  See
+  [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md).
 
 ## Value
 
-`kit_code_panel_ui()`：`<details class="kit-detail">`，放在
-[`kit_details_row()`](https://jiewentsai.github.io/kitDesign/reference/kit_details_row.md)
-的最後。
+`kit_code_panel_ui()`: `<details class="kit-detail">`, placed last in
+[`kit_details_row()`](https://jiewentsai.github.io/kitDesign/reference/kit_details_row.md).
 
-`kit_code_panel_server()`：reactive，現在的程式碼（[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md)
-的 list；還沒有時是 `NULL`）。
+`kit_code_panel_server()`: a reactive with the current code (a list of
+[`kit_code()`](https://jiewentsai.github.io/kitDesign/reference/kit_code.md);
+`NULL` when there is none yet).
 
 ## See also
 
-[`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md)、[`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md)（低階）
+[`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md),
+[`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md)
+(low level)
 
 ## Examples
 

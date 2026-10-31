@@ -1,6 +1,6 @@
-# 分頁狀態一變就送到瀏覽器
+# Send tab states to the browser whenever they change
 
-`kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))`。
+`kit_watch_tab_states(session, shiny::reactive(kit_tab_states(...)))`.
 
 ## Usage
 
@@ -12,17 +12,17 @@ kit_watch_tab_states(session, states)
 
 - session:
 
-  Shiny session。
+  The Shiny session.
 
 - states:
 
-  reactive：[`kit_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_states.md)
-  的結果。
+  A reactive: the result of
+  [`kit_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_states.md).
 
 ## Value
 
-[`shiny::observe()`](https://rdrr.io/pkg/shiny/man/observe.html) 的
-observer（不可見）。
+The [`shiny::observe()`](https://rdrr.io/pkg/shiny/man/observe.html)
+observer (invisibly).
 
 ## Examples
 

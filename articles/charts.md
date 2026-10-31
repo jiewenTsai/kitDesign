@@ -1,37 +1,41 @@
-# 圖
+# Charts
 
-kits 畫好的 plotly 圖（例如 `plot(item, type = "category")`），最後交給
-[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)：
-字型、軸線、格線、底色、標題、圖例、色條、滑過的說明框、工具列都換成 KIT
-的樣子。 **只改樣子，不改資料**：點、線、軸的範圍、刻度、hover
-的文字都不動。
-
-## 前後對照
-
-左邊是原來的圖，右邊是
+Pass a plotly chart drawn by kits (for example
+`plot(item, type = "category")`) to
 [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-以後。
+as the last step: font, axis lines, grid lines, background, title,
+legend, color bar, hover labels, and toolbar all take the KIT look. **It
+changes only the look, not the data**: points, lines, axis ranges,
+ticks, and hover text stay as they are.
 
-**類別機率曲線**（並排的小圖：每個小圖外面的黑框換成淡線，框裡面不再有框）
+## Before and after
 
-![類別機率曲線：左邊原來的樣子，右邊套用 kit_plotly_style()
-以後](figures/chart-category.jpg)
+Left: the original chart. Right: after
+[`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md).
 
-**作答設計圖**（熱圖：換成 KIT 的色階）
+**Category probability curves** (small multiples: the black frame around
+each panel becomes a light line, and there are no frames inside frames)
 
-![作答設計圖：左邊原來的色階，右邊 KIT 的淡萊姆到 KIT
-綠](figures/chart-design.jpg)
+![Category probability curves: the original look on the left, after
+kit_plotly_style() on the right](figures/chart-category.jpg)
+
+**Response design chart** (heat map: switched to the KIT color scale)
+
+![Response design chart: the original color scale on the left, KIT's
+light lime to KIT green on the right](figures/chart-design.jpg)
 
 **Wright map**
 
-![Wright map：左邊原來的樣子，右邊套用以後](figures/chart-wright.jpg)
+![Wright map: the original look on the left, after styling on the
+right](figures/chart-wright.jpg)
 
-熱圖的最小值不是白色：0% 和沒有施測（空白）的格子分得開。
+The lowest value in a heat map is not white, so 0% cells and cells that
+were not administered (blank) are easy to tell apart.
 
-![熱圖：0%
-是極淡的萊姆色，沒有資料的格子是白色](figures/chart-heat-zero.jpg)
+![Heat map: 0% is a very light lime, cells with no data are
+white](figures/chart-heat-zero.jpg)
 
-## 怎麼用
+## How to use it
 
 ``` r
 
@@ -39,44 +43,48 @@ library(kitDesign)
 
 p <- plotly::plot_ly(d, x = ~wave, y = ~score, split = ~cohort,
                      type = "scatter", mode = "lines+markers")
-p <- plotly::layout(p, title = "各世代的分數中位數")
+p <- plotly::layout(p, title = "各世代的分數中位數")  # "Median score by cohort"
 kit_plotly_style(p)
 ```
 
-## 和 kits、kitsUI 一起用：順序
+## With kits and kitsUI: the order
 
-1.  kits 的 [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
-    畫圖。
-2.  kitsUI 換色：`kit_chart_categorical()`、`kit_chart_role()`。
-3.  kitsUI 換中文：`kit_chart_zh()`。**一定要在
+1.  Draw the chart with kits’
+    [`plot()`](https://rdrr.io/r/graphics/plot.default.html).
+2.  Recolor with kitsUI: `kit_chart_categorical()`, `kit_chart_role()`.
+3.  Switch to Chinese labels with kitsUI: `kit_chart_zh()`. **This must
+    come before
+    [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)**:
     [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-    前面**：
-    [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-    會把標題加粗（`<b>`），之後就認不得原來的英文標題了。
-4.  最後
-    [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)。
+    makes titles bold (`<b>`), and after that the original English
+    titles can no longer be recognized.
+4.  [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
+    last.
 
 ``` r
 
 p <- plot(item, type = "category")              # 1. kits
-p <- kit_chart_zh(kit_chart_categorical(p))     # 2–3. kitsUI：換色、換中文
-kit_plotly_style(p)                             # 4. 最後
+p <- kit_chart_zh(kit_chart_categorical(p))     # 2–3. kitsUI: recolor, Chinese labels
+kit_plotly_style(p)                             # 4. last
 ```
 
-同一張圖套兩次和套一次一樣。kits 或 kitsUI 指定的顏色不動；只有 plotly
-自己給的預設色 換成 Okabe–Ito（色盲友善）。
+Styling the same chart twice gives the same result as styling it once.
+Colors set by kits or kitsUI are kept; only plotly’s own default colors
+are replaced with Okabe–Ito (colorblind-friendly).
 
-## 常用的選項
+## Common options
 
-| 參數 | 做什麼 |
+| Argument | What it does |
 |----|----|
-| `legend = "auto"` | 圖例超過 4 項或太長、或圖寬小於 600px（手機）時放到下面；`"bottom"`、`"right"`、`"keep"` |
-| `colorscale = FALSE` | 熱圖保留原來的色階 |
-| `filename = "kit-chart"` | 工具列「下載成 PNG」的檔名 |
-| `font_size = 15` | 內文字級（px），其他字級跟著算 |
-| `brand =` | 熱圖的色階跟著品牌換（見[換成別的品牌](https://jiewentsai.github.io/kitDesign/articles/brand.md)） |
+| `legend = "auto"` | Moves the legend to the bottom when it has more than 4 entries or is too long, or when the chart is narrower than 600px (phones); also `"bottom"`, `"right"`, `"keep"` |
+| `colorscale = FALSE` | Keeps the heat map’s original color scale |
+| `filename = "kit-chart"` | File name for the toolbar’s “Download as PNG” |
+| `font_size = 15` | Body text size (px); other sizes are derived from it |
+| `brand =` | Heat map color scale follows the brand (see [Using another brand](https://jiewentsai.github.io/kitDesign/articles/brand.md)) |
 
-顏色：類別色
-[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md)、參考線
-[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md)、連續的值
-[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md)。
+Colors: categorical colors
+[`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md),
+reference lines
+[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md),
+continuous values
+[`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md).

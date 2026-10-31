@@ -1,6 +1,7 @@
-# 檔案或設定變更後，舊結果失效（【要重新執行】）
+# Old result no longer valid after files or settings change (【要重新執行】, "Run again")
 
-檔案或設定變更後，舊結果失效（【要重新執行】）
+Old result no longer valid after files or settings change
+(【要重新執行】, "Run again").
 
 ## Usage
 
@@ -12,15 +13,17 @@ kit_stale_status(run_label, message = NULL)
 
 - run_label:
 
-  主要按鈕的字，例如「執行串接」。
+  The primary button's text, for example "執行串接" ("Run join").
 
 - message:
 
-  自己寫的一句話（預設是「檔案或設定改過了，舊的結果已清除：請再按一次「…」。」）。
+  Your own sentence (the default is
+  "檔案或設定改過了，舊的結果已清除：請再按一次「…」。", "Files or
+  settings changed and the old result was cleared: press '…' again.").
 
 ## Value
 
-`kit_status` 物件。
+A `kit_status` object.
 
 ## Examples
 

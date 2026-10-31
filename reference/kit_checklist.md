@@ -1,10 +1,12 @@
-# 檢查清單（Checklist）
+# Checklist
 
-把「要決定的事」和「已經沒問題的事」列在一起，放在轉換或執行之前。 一個
-S3 值物件（class
-`kit_checklist`，[`kit_check()`](https://jiewentsai.github.io/kitDesign/reference/kit_check.md)
-的 list）：直接放進頁面就畫成
-`<ul class="kit-checklist">`，一列一件事，列之間一條最淡的線。
+Lists "things to decide" together with "things already fine", placed
+before a conversion or run. An S3 value object (class `kit_checklist`, a
+list of
+[`kit_check()`](https://jiewentsai.github.io/kitDesign/reference/kit_check.md)):
+put it straight into a page and it renders as
+`<ul class="kit-checklist">`, one item per row, with the faintest line
+between rows.
 
 ## Usage
 
@@ -25,16 +27,16 @@ print(x, ...)
 
 - ...:
 
-  [`kit_check()`](https://jiewentsai.github.io/kitDesign/reference/kit_check.md)，或它們的
-  list（`NULL` 略過）。
+  [`kit_check()`](https://jiewentsai.github.io/kitDesign/reference/kit_check.md)
+  items, or a list of them (`NULL` is skipped).
 
 - x:
 
-  `kit_checklist` 物件。
+  A `kit_checklist` object.
 
 ## Value
 
-`kit_checklist` 物件。
+A `kit_checklist` object.
 
 ## Examples
 
@@ -45,6 +47,9 @@ cl <- kit_checklist(
   kit_check("ok", "沒有疑似遺漏值代碼"),
   kit_check("note", "有 2 題沒有人作答，不會放進作答檔")
 )
+# todo: "3 items have scores starting at 1" / "kits needs scores 0, 1, 2…" / button "Subtract 1 from all (recommended)"
+# ok:   "No suspected missing-value codes"
+# note: "2 items have no responses and will not go into the response file"
 cl
 #> ! 有 3 題的分數從 1 開始（kits 要的分數是 0、1、2…。）
 #> ✓ 沒有疑似遺漏值代碼

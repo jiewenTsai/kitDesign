@@ -631,3 +631,8 @@ MIT © KIT
 - [版本與發布](https://jiewentsai.github.io/kitDesign/zh/articles/release.md):
 
   kitDesign 的版本規則、發布步驟、app 怎麼升級。
+
+- [套件開發須知](https://jiewentsai.github.io/kitDesign/zh/articles/package-guide.md):
+
+  KIT 的 R 套件共用的規則：檔案、相依套件、版本號與 NEWS、Shiny
+  app、統計計算。

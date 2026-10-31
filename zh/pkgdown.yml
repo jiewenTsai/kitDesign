@@ -7,9 +7,10 @@ articles:
   articles/components: components.html
   articles/design-language: design-language.html
   kitDesign: kitDesign.html
+  articles/package-guide: package-guide.html
   articles/quarto: quarto.html
   articles/release: release.html
-last_built: 2026-10-31T18:38Z
+last_built: 2026-10-31T18:57Z
 urls:
   reference: https://jiewentsai.github.io/kitDesign/zh/reference
   article: https://jiewentsai.github.io/kitDesign/zh/articles

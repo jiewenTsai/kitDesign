@@ -42,3 +42,9 @@
   releases](https://jiewentsai.github.io/kitDesign/articles/release.md):
 
   kitDesign’s versioning rules, release steps, and how apps upgrade.
+
+- [Package development
+  guide](https://jiewentsai.github.io/kitDesign/articles/package-guide.md):
+
+  Rules shared by the KIT R packages: files, dependencies, version
+  numbers and NEWS, Shiny apps, statistical computing.

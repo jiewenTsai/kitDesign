@@ -685,3 +685,8 @@ body > .container-fluid { padding-top: 1rem; }
 .kit-details .kit-detail, .kit-detail-body { min-width: 0; max-width: 100%; }
 pre, .kit-code-block, .kit-code-panel { max-width: 100%; overflow-x: auto; }
 
+
+/* 33 分頁上看不見的「（已完成）」（.visually-hidden 是 position: absolute）：
+   手機上分頁列左右捲，這個字如果以 body 定位，會跑到捲動框外面，把整頁撐寬。
+   讓分頁列與分頁本身成為定位的基準，字就留在捲動框裡 */
+.kit-navgroups, .kit-navgroups a, .nav-tabs .nav-link { position: relative; }

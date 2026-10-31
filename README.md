@@ -127,6 +127,14 @@ options(kitDesign.brand = kit_brand(
 | `kit_run_gate_ui()` | `kit_run_gate_server()` | 主要按鈕＋「還差：…」 | 可以執行時按了幾次 |
 | `kit_code_panel_ui()` | `kit_code_panel_server()` | 用 R 怎麼做（打開時才算） | 現在的 `kit_code` |
 
+### 分頁骨架
+
+| UI | server | 做什麼 | server 回傳 |
+|---|---|---|---|
+| `kit_run_tab_ui(id, run_label, guide, ..., gate, result, downloads, details, code, next_step)` | `kit_run_tab_server(input, output, session, run_label, run, done, ready, settings, stale_on, progress, error, guard, confirm, result_ui, details_ui, code)` | 一頁一個主要按鈕的分頁：照頁面骨架排好；還差、設定摘要、執行（進度條）、狀態框、通知、捲到狀態框、【要重新執行】、結果的重點與細節、用 R 怎麼做 | `result`、`status`、`state`、`run(...)` |
+
+不是 Shiny 模組：在分頁自己的 `moduleServer()` 裡呼叫，設定的 input 留在分頁的 namespace 裡。
+
 ### 值物件（直接放進頁面或 `renderUI()`）
 
 | 函式 | class | 做什麼 |

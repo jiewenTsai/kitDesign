@@ -15,6 +15,14 @@ minor：kitJoin 與 kitsUI 各有一份的機制搬進 kitDesign；舊的 app �
 * `kit_is_cloud()`：是不是雲端版（`KIT_DEPLOY`，沒有時看 `R_CONFIG_ACTIVE = "rsconnect"`）。
 * `kit_cloud_footer(sections, links, title, id)`：雲端版使用須知（頁尾的灰色小字）；
   每一段的段名與內文、參考連結由 app 給。`kit_cloud_banner()` 搬到同一個檔（`R/cloud.R`）。
+* `kit_run_tab_ui()`／`kit_run_tab_server()`：執行分頁的骨架（kitJoin 的六個分頁都是這個樣子）。
+  UI 照頁面骨架排：這一頁做什麼 → 分頁自己的設定（`...`）→ 設定摘要 → 還差 → 主要按鈕 → 狀態框 →
+  重點 → 下載 → 細節列（結果的細節、用 R 怎麼做）→ 下一步。server 在分頁的 `moduleServer()` 裡呼叫，
+  做好狀態流：還差與停用、設定摘要、按下去（`guard()` → 進度條裡 `run()` → `done(result)`，出錯是
+  `error(e)`）→ 狀態框、通知、捲到狀態框；改了設定（`stale_on()`）→【要重新執行】；結果的重點、
+  細節與「用 R 怎麼做」。要使用者確認的錯誤（`confirm`）跳出視窗、不通知。回傳 `result`、`status`、
+  `state`、`run(...)`。不是 Shiny 模組：設定的 input 留在分頁自己的 namespace，id 不變
+  （`<tab>-run`、`<tab>-status`、`<tab>-code`…）。
 
 # kitDesign 0.3.0 (2026-10-31)
 

@@ -201,6 +201,10 @@ reference:
     contents:
       - kit_diagram
       - kit_dg_table
+  - title: 執行分頁（RunTab）
+    desc: 一頁一個主要按鈕的分頁骨架：頁面骨架的順序與狀態流。
+    contents:
+      - kit_run_tab_ui
   - title: 模組
     desc: 有狀態的元件：`*_ui(id)` ＋ `*_server(id)`，一頁一行。
     contents:

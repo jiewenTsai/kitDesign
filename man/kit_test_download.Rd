@@ -4,17 +4,19 @@
 \alias{kit_test_download}
 \title{測試裡按下載按鈕}
 \usage{
-kit_test_download(session, id)
+kit_test_download(session, id, write = TRUE)
 }
 \arguments{
 \item{session}{\code{testServer()} 的 \code{session}。}
 
 \item{id}{按鈕 id：模組裡用不含 namespace 的 id（\code{"dl"}），app 層用完整的 id
 （\code{"stack-download_csv"}）。}
+
+\item{write}{\code{FALSE} 時不寫檔、不回應，只看註冊時的檔名（例如畫圖很慢的下載）。}
 }
 \value{
 \code{\link[shiny:httpResponse]{shiny::httpResponse()}}（\code{status}、\code{content_type}、\code{headers}、\code{content$file}），
-多一個欄位 \code{filename}：註冊時的檔名。
+多一個欄位 \code{filename}：註冊時的檔名。\code{write = FALSE} 時只有 \code{list(filename = )}。
 }
 \description{
 \code{\link[shiny:testServer]{shiny::testServer()}} 的假 session 不會真的註冊下載（\code{registerDataObj()} 什麼都不做），

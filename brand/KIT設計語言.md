@@ -488,7 +488,8 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 
 ## 頁面骨架
 
-每個分頁由上到下都是這個順序：
+每個分頁由上到下都是這個順序（一頁一個主要按鈕的分頁用 `kit_run_tab_ui()`／`kit_run_tab_server()`，
+固定的部分與狀態流都做好了，分頁只寫自己的設定、執行與結果）：
 
 ```
 頁首（一個 app 一個）
@@ -615,6 +616,7 @@ ui <- kit_page(
 | 下一步（NextStep） | `kit_next_step()`；連到別的 app `kit_app_link()` |
 | 圖解（Diagram） | `kit_diagram()`、`kit_dg_table()` |
 | 捲到結果、打開收合、離開前提醒 | `kit_scroll_to()`、`kit_open_details()`、`kit_unload_guard()` |
+| 頁面骨架＋狀態流（RunTab） | `kit_run_tab_ui(id, run_label, guide, ...)`／`kit_run_tab_server(input, output, session, run_label, run, done, ...)`：還差、設定摘要、執行、狀態框、通知、捲動、要重新執行、結果的細節、用 R 怎麼做 |
 
 - 所有元件的樣子：`kit_gallery()`。
 - 工具名稱維持「KIT ×× 工具」，用其他資料（例如 TDCYP）測試時也不改名。

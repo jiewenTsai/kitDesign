@@ -6,9 +6,10 @@ Authors@R: person("KIT", "Join Tool", email = "joinkit@example.com", role = c("a
 Description: The shared user interface layer of the KIT research tools built
     with 'shiny': a 'bslib' theme based on Bootswatch Brite, the KIT style
     sheets and logos, a page wrapper with the KIT header, and documented
-    components (page guide, buttons, callouts, status boxes, details rows,
-    code panels, step cards, checklists, step tabs, diagrams, tables and
-    a 'plotly' chart style),
+    components (page guide, buttons, download buttons, callouts, cloud-version
+    banner and footer, status boxes, details rows, code panels, step cards,
+    checklists, step tabs, diagrams, tables and a 'plotly' chart style),
+    a skeleton for tabs with one run button (page order and status flow),
     plus a few server-side helpers (run gate, scroll to result, tab states,
     notifications, number formatting, user-facing errors), value objects
     for status boxes, checklists and code, 'shiny' modules for the stateful

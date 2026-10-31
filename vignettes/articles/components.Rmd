@@ -316,6 +316,41 @@ kit_diagram(
 ```
 :::
 
+## 執行分頁（RunTab）
+
+一頁一個主要按鈕的分頁（kitJoin 的串接、疊加、流失樣本、遺漏值、長寬轉換、格式轉換）都是同一個骨架：
+`kit_run_tab_ui()` 照頁面骨架排好固定的部分，分頁自己的設定放在中間；`kit_run_tab_server()`
+在分頁的 `moduleServer()` 裡呼叫，做好還差、設定摘要、執行、狀態框、通知、捲到狀態框、
+【要重新執行】、結果的細節與「用 R 怎麼做」。下面是還沒有 server 時的樣子（設定摘要、狀態框、
+結果都是空的，主要按鈕停用）。
+
+::: {.kit-live}
+```{r}
+kit_run_tab_ui(
+  "stack", "執行疊加",
+  guide = kit_tab_guide("把各波資料上下疊起來：每個人在每一波各佔一列。", c("按「執行疊加」", "看狀態框與預覽"), "一張長格式的資料。"),
+  selectInput("stack-wave_col", "波次欄的名稱", c("wave", "t"))
+)
+```
+:::
+
+server（在分頁的 `moduleServer()` 裡）：
+
+```r
+tab <- kit_run_tab_server(
+  input, output, session, "執行疊加",
+  ready = reactive(kit_need_files(length(files()), 2L)),       # 還差：…（停用主要按鈕）
+  settings = function() paste0(length(files()), " 個檔案"),     # 本次：…
+  stale_on = function() list(files(), input$wave_col),         # 改了 →【要重新執行】
+  progress = "正在疊加資料…",
+  run = function() dplyr::bind_rows(files(), .id = input$wave_col),
+  done = function(res) kit_done_status(paste0("疊加完成：結果共 ", kit_dims(nrow(res), ncol(res)), "。")),
+  details_ui = function(res) kit_detail("結果預覽", kit_preview_table(res)),
+  code = function() "stacked <- dplyr::bind_rows(t1, t2, .id = \"wave\")"
+)
+list(state = tab$state)                                        # 步驟分頁打 ✓ 用
+```
+
 ## 模組（有狀態的元件）
 
 下面四個元件要在 Shiny 裡才會動（哪一步打開、按鈕能不能按、分頁的 ✓），

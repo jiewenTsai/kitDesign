@@ -3,7 +3,8 @@
 ## 修正
 
 * Firefox：按下載按鈕時會跳出「離開前提醒」（`kit_unload_guard()`）；按「離開」後頁面真的離開、
-  連線斷掉，下載變成 Not Found。現在按下載後 2 秒內不提醒（Chrome、Safari 本來就不會）。
+  連線斷掉，下載變成 Not Found。現在按下載後不提醒，直到回到這一頁或過了 2 分鐘（Firefox 在伺服器開始回傳檔案時才觸發，
+  圖檔要好幾秒）。Chrome、Safari 本來就不會。
 
 # kitDesign 0.5.0 (2026-11-01)
 

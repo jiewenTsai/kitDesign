@@ -1,0 +1,22 @@
+---
+title: "套件開發須知"
+description: >
+  KIT 的 R 套件共用的規則：檔案、相依套件、版本號與 NEWS、Shiny app、統計計算。
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+> 這一頁就是 kitDesign 裡的 `brand/套件開發須知.md`（以那一份為準）。
+
+```{r, results = "asis"}
+md <- readLines(file.path("..", "..", "brand", "套件開發須知.md"), encoding = "UTF-8")
+md <- md[-1]  # 標題已經在上面
+md <- md[!grepl("^\\[English\\]\\(", md)]  # 切換語言的那一行：網站用導覽列
+gh <- "https://github.com/jiewenTsai/kitDesign/blob/main/brand/"
+md <- gsub("](版本與發布.md)", "](release.html)", md, fixed = TRUE)
+md <- gsub("](KIT設計語言.md)", "](design-language.html)", md, fixed = TRUE)
+md <- gsub("](遷移對照.md)", paste0("](", gh, "遷移對照.md)"), md, fixed = TRUE)
+cat(md, sep = "\n")
+```

@@ -15,6 +15,7 @@ md <- readLines(file.path("..", "..", "brand", "版本與發布.md"), encoding =
 md <- md[-1]
 md <- md[!grepl("^\\[English\\]\\(", md)]  # 切換語言的那一行：網站用導覽列
 md <- md[!grepl("^\\[English\\]\\(", md)]  # 切換語言的那一行：網站用導覽列
+md <- gsub("](套件開發須知.md)", "](package-guide.html)", md, fixed = TRUE)
 md <- gsub("](遷移對照.md)",
            "](https://github.com/jiewenTsai/kitDesign/blob/main/brand/遷移對照.md)", md, fixed = TRUE)
 cat(md, sep = "\n")

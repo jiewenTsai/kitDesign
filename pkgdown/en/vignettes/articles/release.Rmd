@@ -15,6 +15,7 @@ md <- readLines(file.path("..", "..", "brand", "en", "release.md"), encoding = "
 md <- md[-1]
 md <- md[!grepl("^English \\| \\[", md)]  # the language switch line: the site uses the navbar
 md <- gsub("](design-language.md)", "](design-language.html)", md, fixed = TRUE)
+md <- gsub("](package-guide.md)", "](package-guide.html)", md, fixed = TRUE)
 md <- gsub("](migration.md)",
            "](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md)", md, fixed = TRUE)
 cat(md, sep = "\n")

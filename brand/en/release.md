@@ -4,6 +4,8 @@ English | [繁體中文](../版本與發布.md)
 
 kitDesign is the shared interface for kitJoin, kitsUI, and future KIT apps. Each of the three packages
 has its own version. They stay in step because each app states which version of kitDesign it uses.
+The development rules shared by all KIT packages (files, dependencies, NEWS, Shiny apps, statistical
+computing) are in the [package development guide](package-guide.md).
 
 ## Version numbers: semantic versioning (X.Y.Z)
 

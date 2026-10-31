@@ -66,6 +66,8 @@ navbar:
           href: articles/design-language.html
         - text: Versions and releases
           href: articles/release.html
+        - text: Package development guide
+          href: articles/package-guide.html
     reference:
       text: Reference
       href: reference/index.html
@@ -97,6 +99,7 @@ articles:
     contents:
       - articles/design-language
       - articles/release
+      - articles/package-guide
 
 reference:
   - title: Setup and page

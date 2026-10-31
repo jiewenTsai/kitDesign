@@ -64,6 +64,8 @@ navbar:
           href: articles/design-language.html
         - text: 版本與發布
           href: articles/release.html
+        - text: 套件開發須知
+          href: articles/package-guide.html
     reference:
       text: 函式參考
       href: reference/index.html
@@ -96,6 +98,7 @@ articles:
     contents:
       - articles/design-language
       - articles/release
+      - articles/package-guide
 
 reference:
   - title: 設定與頁面

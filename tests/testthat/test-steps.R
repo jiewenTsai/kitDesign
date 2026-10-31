@@ -19,7 +19,8 @@ test_that("kit_step_head() renders current, done and locked states", {
   expect_match(done, "<span class=\"kit-stepnum\" aria-hidden=\"true\">✓</span>", fixed = TRUE)
   expect_match(done, "第 1 步，做完了：", fixed = TRUE)
   expect_match(done, "<span class=\"kit-stepsum\">5 個檔案</span>", fixed = TRUE)
-  expect_match(done, "class=\"action-button kit-stepedit\"", fixed = TRUE)
+  # 新版 Shiny 的 actionLink 多一個 action-link class
+  expect_match(done, "class=\"action-button( action-link)? kit-stepedit\"")
   expect_match(done, "aria-label=\"改第 1 步：每個檔案是哪個世代\"", fixed = TRUE)
 
   locked <- html(kit_step_head(3, "計分檢查", "locked", summary = "不會顯示", edit_id = "edit3"))

@@ -28,8 +28,11 @@
 #' @param gate `TRUE`：主要按鈕一開始停用，上面是「還差」；`FALSE`：一直能按（沒有 `ready`）。
 #' @param result,downloads,next_step 狀態框下面的重點、下載區、最下面的下一步：`TRUE` 是
 #'   `uiOutput()`（id 是 `result`、`downloads`、`next_step`），也可以直接給 tag；`FALSE` 不放。
-#' @param details,code 細節列：`details = TRUE` 放 `uiOutput("result_details")`（結果的預覽與核對），
-#'   `code = TRUE` 放「用 R 怎麼做」（[kit_code_panel()]，output `code`）；兩個都 `FALSE` 時沒有細節列。
+#' @param details 細節列：`TRUE` 放 `uiOutput("result_details")`（結果的預覽與核對）；
+#'   `details` 與 `code` 都是 `FALSE` 時沒有細節列。
+#' @param code UI（`kit_run_tab_ui()`）：`TRUE` 放「用 R 怎麼做」（[kit_code_panel()]，output `code`）。
+#'   server（`kit_run_tab_server()`）：傳回程式碼的函式（[kit_render_code_panel()] 的 `code`）；
+#'   `NULL` 時分頁自己畫。
 #' @return `kit_run_tab_ui()`：`tagList()`。
 #'
 #'   `kit_run_tab_server()`：list，
@@ -111,7 +114,6 @@ kit_run_tab_ui <- function(id, run_label, guide = NULL, ..., gate = TRUE, result
 #' @param result_ui `function(result)`：狀態框下面的重點（output `result`）；`NULL` 時分頁自己畫。
 #' @param details_ui `function(result)`：細節列的第一格（output `result_details`，例如
 #'   [kit_detail()]「結果預覽」）；`NULL` 時分頁自己畫。
-#' @param code 函式：「用 R 怎麼做」的程式碼（[kit_render_code_panel()] 的 `code`）；`NULL` 時分頁自己畫。
 #' @param code_note 「用 R 怎麼做」最上面的一行說明。
 #' @export
 kit_run_tab_server <- function(input, output, session, run_label, run, done = NULL,

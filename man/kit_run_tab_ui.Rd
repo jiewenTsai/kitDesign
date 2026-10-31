@@ -53,10 +53,12 @@ kit_run_tab_server(
 \item{result, downloads, next_step}{狀態框下面的重點、下載區、最下面的下一步：\code{TRUE} 是
 \code{uiOutput()}（id 是 \code{result}、\code{downloads}、\code{next_step}），也可以直接給 tag；\code{FALSE} 不放。}
 
-\item{details, code}{細節列：\code{details = TRUE} 放 \code{uiOutput("result_details")}（結果的預覽與核對），
-\code{code = TRUE} 放「用 R 怎麼做」（\code{\link[=kit_code_panel]{kit_code_panel()}}，output \code{code}）；兩個都 \code{FALSE} 時沒有細節列。}
+\item{details}{細節列：\code{TRUE} 放 \code{uiOutput("result_details")}（結果的預覽與核對）；
+\code{details} 與 \code{code} 都是 \code{FALSE} 時沒有細節列。}
 
-\item{code}{函式：「用 R 怎麼做」的程式碼（\code{\link[=kit_render_code_panel]{kit_render_code_panel()}} 的 \code{code}）；\code{NULL} 時分頁自己畫。}
+\item{code}{UI（\code{kit_run_tab_ui()}）：\code{TRUE} 放「用 R 怎麼做」（\code{\link[=kit_code_panel]{kit_code_panel()}}，output \code{code}）。
+server（\code{kit_run_tab_server()}）：傳回程式碼的函式（\code{\link[=kit_render_code_panel]{kit_render_code_panel()}} 的 \code{code}）；
+\code{NULL} 時分頁自己畫。}
 
 \item{input, output, session}{分頁的 \code{moduleServer()} 的 input、output、session。}
 

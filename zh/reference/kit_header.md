@@ -17,7 +17,8 @@ kit_header(
   meta_extra = NULL,
   logo = TRUE,
   show_kitdesign = FALSE,
-  brand = kit_current_brand()
+  brand = kit_current_brand(),
+  package = NULL
 )
 ```
 
@@ -63,6 +64,12 @@ kit_header(
   [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_current_brand.md)：
   沒有設定 `options(kitDesign.brand = )` 時是 KIT。
 
+- package:
+
+  app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
+  回報問題時一看就知道是哪個 app
+  的哪一版。`NULL`（預設）不寫，和以前一樣。
+
 ## Value
 
 `<div class="kit-header mb-4">`。
@@ -77,10 +84,10 @@ KIT 不同時，頁首另外放一小段 `<style>`，把不同的 `--nb-*` 變�
 
 ``` r
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
-           version = "0.5.0", date = "2026-10-31")
+           version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #> <div class="kit-header mb-4">
 #>   <div class="kit-header-row">
-#>     <img src="kitDesign-logo-0.4.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
+#>     <img src="kitDesign-logo-0.5.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
 #>     <div>
 #>       <h1>KIT 資料串接工具</h1>
 #>       <p>
@@ -88,7 +95,7 @@ kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", taglin
 #>          · 
 #>         跨波次資料處理
 #>       </p>
-#>       <div class="kit-app-meta">v0.5.0 · 2026-10-31</div>
+#>       <div class="kit-app-meta">kitJoin v0.6.0 · 2026-10-31</div>
 #>     </div>
 #>   </div>
 #> </div>

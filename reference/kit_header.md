@@ -19,7 +19,8 @@ kit_header(
   meta_extra = NULL,
   logo = TRUE,
   show_kitdesign = FALSE,
-  brand = kit_current_brand()
+  brand = kit_current_brand(),
+  package = NULL
 )
 ```
 
@@ -71,6 +72,13 @@ kit_header(
   [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md):
   KIT when `options(kitDesign.brand = )` is not set.
 
+- package:
+
+  The app's package name, written at the start of the version line:
+  "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at
+  once which app and which version. `NULL` (the default) writes no name,
+  as before.
+
 ## Value
 
 `<div class="kit-header mb-4">`.
@@ -87,10 +95,10 @@ brand nothing is added and the page is the same as before.
 
 ``` r
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",
-           version = "0.5.0", date = "2026-10-31")
+           version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #> <div class="kit-header mb-4">
 #>   <div class="kit-header-row">
-#>     <img src="kitDesign-logo-0.4.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
+#>     <img src="kitDesign-logo-0.5.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
 #>     <div>
 #>       <h1>KIT 資料串接工具</h1>
 #>       <p>
@@ -98,7 +106,7 @@ kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", taglin
 #>          · 
 #>         跨波次資料處理
 #>       </p>
-#>       <div class="kit-app-meta">v0.5.0 · 2026-10-31</div>
+#>       <div class="kit-app-meta">kitJoin v0.6.0 · 2026-10-31</div>
 #>     </div>
 #>   </div>
 #> </div>

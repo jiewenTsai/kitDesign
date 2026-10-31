@@ -1061,9 +1061,10 @@ Which function to use for each component:
   when testing with other data (for example TDCYP).
 - The version line is always in the header and reads Version and Date
   from the app’s own DESCRIPTION
-  ([`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md));
-  with `show_kitdesign = TRUE` the kitDesign version follows, so both
-  versions are visible when reporting problems.
+  ([`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md)),
+  starting with the app’s package name (`package =`, e.g. “kitJoin
+  v0.6.0 · 2026-10-31”); with `show_kitdesign = TRUE` the kitDesign
+  version follows, so both versions are visible when reporting problems.
 - Versioning rules and release steps:
   [release.md](https://jiewentsai.github.io/kitDesign/articles/release.md);
   old names in kitJoin and kitsUI:

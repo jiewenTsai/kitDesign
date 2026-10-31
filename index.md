@@ -270,8 +270,8 @@ holds the logo files.
 - To pin an app to a version: `Remotes: jiewenTsai/kitDesign@vX.Y.Z`,
   `Imports: kitDesign (>= X.Y.Z)`.
 - The header can show both versions:
-  `kit_page(..., show_kitdesign = TRUE)` → “v0.5.0 · 2026-10-31 ·
-  kitDesign 0.2.0”.
+  `kit_page(..., package = "kitJoin", show_kitdesign = TRUE)` → “kitJoin
+  v0.6.0 · 2026-10-31 · kitDesign 0.5.0”.
 - Name mapping for moving kitJoin and kitsUI to kitDesign:
   [`brand/en/migration.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md).
 

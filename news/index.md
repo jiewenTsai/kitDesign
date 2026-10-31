@@ -1,5 +1,21 @@
 # Changelog
 
+## kitDesign 0.5.0 (2026-11-01)
+
+minor: the version line can show the app’s name; existing apps need no
+changes and their screens do not change.
+
+### 元件
+
+- [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md),
+  [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)
+  and
+  [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md)
+  gain `package`: the app’s package name goes at the start of the
+  version line, “kitsUI v0.5.0 · 2026-10-31 · kits 0.25.2”. When someone
+  reports a problem, you can see at once which app and which version it
+  is. The default `NULL` writes no name, as before.
+
 ## kitDesign 0.4.0 (2026-10-31)
 
 minor: mechanisms that kitJoin and kitsUI each had their own copy of

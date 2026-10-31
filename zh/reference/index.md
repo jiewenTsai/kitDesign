@@ -13,7 +13,7 @@
 - [`kit_header()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_header.md)
   : KIT 頁首
 - [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_meta.md)
-  : 頁首的版本行，例如「v0.5.0 · 2026-10-31」
+  : 頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」
 - [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_description.md)
   : 讀取 app 的版本與日期（DESCRIPTION 的 Version、Date）
 - [`kit_versions()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_versions.md)

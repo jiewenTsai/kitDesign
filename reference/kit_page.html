@@ -9,7 +9,7 @@ Below the header, put the tab bar (kit_navgroups() or kit_flow_tabs()) and the c
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,8 @@ Below the header, put the tab bar (<code><a href="kit_navgroups.html">kit_navgro
 <span>  meta_extra <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  window_title <span class="op">=</span> <span class="va">title</span>,</span>
 <span>  show_kitdesign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  brand <span class="op">=</span> <span class="fu"><a href="kit_current_brand.html">kit_current_brand</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  brand <span class="op">=</span> <span class="fu"><a href="kit_current_brand.html">kit_current_brand</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  package <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -118,6 +119,10 @@ so both versions are visible when someone reports a problem.</p></dd>
 <dt id="arg-brand">brand<a class="anchor" aria-label="anchor" href="#arg-brand"></a></dt>
 <dd><p>The brand: logo, tab icon, and colors (<code><a href="kit_brand.html">kit_brand()</a></code>). Defaults to <code><a href="kit_current_brand.html">kit_current_brand()</a></code>:
 KIT when <code>options(kitDesign.brand = )</code> is not set.</p></dd>
+
+
+<dt id="arg-package">package<a class="anchor" aria-label="anchor" href="#arg-package"></a></dt>
+<dd><p>The app's package name, written at the start of the version line: "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which version. <code>NULL</code> (the default) writes no name, as before.</p></dd>
 
 </dl></div>
     <div class="section level2">

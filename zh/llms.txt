@@ -243,8 +243,8 @@ KIT；[`kit_brand()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_br
   發布步驟與檢查清單：[`brand/版本與發布.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/%E7%89%88%E6%9C%AC%E8%88%87%E7%99%BC%E5%B8%83.md)；每一版的改變：[`NEWS.md`](https://jiewentsai.github.io/kitDesign/zh/news/index.md)。
 - app
   固定用某一版：`Remotes: jiewenTsai/kitDesign@vX.Y.Z`、`Imports: kitDesign (>= X.Y.Z)`。
-- 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)`
-  →「v0.5.0 · 2026-10-31 · kitDesign 0.2.0」。
+- 頁首可以同時寫出兩個版本：`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)`
+  →「kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0」。
 - kitJoin、kitsUI 換成 kitDesign
   時的名稱對照：[`brand/遷移對照.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/%E9%81%B7%E7%A7%BB%E5%B0%8D%E7%85%A7.md)。
 
@@ -286,7 +286,7 @@ MIT © KIT
 - [`kit_header()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_header.md)
   : KIT 頁首
 - [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_meta.md)
-  : 頁首的版本行，例如「v0.5.0 · 2026-10-31」
+  : 頁首的版本行，例如「kitJoin v0.6.0 · 2026-10-31」
 - [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_description.md)
   : 讀取 app 的版本與日期（DESCRIPTION 的 Version、Date）
 - [`kit_versions()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_versions.md)

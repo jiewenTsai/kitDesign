@@ -38,8 +38,8 @@ Useful links:
 
 ## Author
 
-**Maintainer**: KIT Join Tool <joinkit@example.com>
+**Maintainer**: Jie-Wen Tsai <tsai.jiewen@gmail.com>
 
 Authors:
 
-- KIT Join Tool <joinkit@example.com>
+- Jie-Wen Tsai <tsai.jiewen@gmail.com>

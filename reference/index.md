@@ -13,7 +13,7 @@ Once per app: theme, styles, header, versions.
 - [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md)
   : KIT header
 - [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md)
-  : The version line in the header, e.g. "v0.5.0 · 2026-10-31"
+  : The version line in the header, e.g. "kitJoin v0.6.0 · 2026-10-31"
 - [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md)
   : Read the app's version and date (Version and Date in DESCRIPTION)
 - [`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md)

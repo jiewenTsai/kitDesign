@@ -59,8 +59,9 @@ kitDesign」協調。
 
 ## 回報問題時
 
-頁首的版本行寫出兩個版本（`kit_page(..., show_kitdesign = TRUE)`）：
-「v0.5.0 · 2026-10-31 · kitDesign 0.1.0」。在 R 裡用
+頁首的版本行寫出 app
+的名稱與兩個版本（`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)`）：
+「kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0」。在 R 裡用
 `kit_versions("kitJoin")`。
 
 ## 發布前的檢查清單

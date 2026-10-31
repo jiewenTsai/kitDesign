@@ -9,7 +9,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,8 @@
 <span>  meta_extra <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  window_title <span class="op">=</span> <span class="va">title</span>,</span>
 <span>  show_kitdesign <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  brand <span class="op">=</span> <span class="fu"><a href="kit_current_brand.html">kit_current_brand</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  brand <span class="op">=</span> <span class="fu"><a href="kit_current_brand.html">kit_current_brand</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  package <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -118,6 +119,11 @@ htmlDependency 提供，Shiny 裡用）、<code>"inline"</code>（標誌直接�
 <dt id="arg-brand">brand<a class="anchor" aria-label="anchor" href="#arg-brand"></a></dt>
 <dd><p>品牌：標誌、分頁圖示、顏色（<code><a href="kit_brand.html">kit_brand()</a></code>）。預設是 <code><a href="kit_current_brand.html">kit_current_brand()</a></code>：
 沒有設定 <code>options(kitDesign.brand = )</code> 時是 KIT。</p></dd>
+
+
+<dt id="arg-package">package<a class="anchor" aria-label="anchor" href="#arg-package"></a></dt>
+<dd><p>app 的套件名稱，寫在版本行最前面：「kitJoin v0.6.0 · 2026-10-31」。
+回報問題時一看就知道是哪個 app 的哪一版。<code>NULL</code>（預設）不寫，和以前一樣。</p></dd>
 
 </dl></div>
     <div class="section level2">

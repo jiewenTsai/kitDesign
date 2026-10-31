@@ -94,6 +94,41 @@ test_that("kit_cloud_banner() is a yellow alert", {
   expect_match(out, "role=\"alert\"", fixed = TRUE)
 })
 
+test_that("kit_is_cloud(): KIT_DEPLOY first, then R_CONFIG_ACTIVE = rsconnect", {
+  old <- Sys.getenv(c("KIT_DEPLOY", "R_CONFIG_ACTIVE"), unset = NA)
+  on.exit(for (n in names(old)) {
+    if (is.na(old[[n]])) Sys.unsetenv(n) else do.call(Sys.setenv, as.list(old[n]))
+  })
+  Sys.setenv(KIT_DEPLOY = "cloud")
+  expect_true(kit_is_cloud())
+  Sys.setenv(KIT_DEPLOY = "Local", R_CONFIG_ACTIVE = "rsconnect")
+  expect_false(kit_is_cloud())
+  Sys.unsetenv("KIT_DEPLOY")
+  expect_true(kit_is_cloud())
+  Sys.setenv(R_CONFIG_ACTIVE = "default")
+  expect_false(kit_is_cloud())
+})
+
+test_that("kit_cloud_footer(): title, sections (bold name + text, no spaces), links in new tabs", {
+  out <- html(kit_cloud_footer(
+    list("一、資料" = c("第一句，", "第二句。"), "二、聲明" = "照現況提供。"),
+    links = c("Posit 安全說明" = "https://example.org/a", "GitHub" = "https://example.org/b")
+  ))
+  expect_match(out, '<footer id="kit-cloud-terms" class="kit-cloud-footer">', fixed = TRUE)
+  expect_match(out, '<div class="kit-cloud-footer-title">雲端版使用須知</div>', fixed = TRUE)
+  expect_match(out, "<strong>一、資料。</strong>第一句，第二句。", fixed = TRUE)
+  expect_match(out, "<strong>二、聲明。</strong>照現況提供。", fixed = TRUE)
+  expect_match(out, paste0(
+    '參考連結：\n    <a href="https://example.org/a" target="_blank" rel="noopener noreferrer">',
+    "Posit 安全說明</a>\n     · \n    ",
+    '<a href="https://example.org/b" target="_blank" rel="noopener noreferrer">GitHub</a>'
+  ), fixed = TRUE)
+  out <- html(kit_cloud_footer(c("一、資料" = "x"), title = "使用須知", id = "terms"))
+  expect_match(out, '<footer id="terms"', fixed = TRUE)
+  expect_false(grepl("參考連結", out))
+  expect_error(kit_cloud_footer(list("x")))
+})
+
 test_that("kit_advanced(), kit_details_row() and kit_detail() are collapsed details", {
   adv <- html(kit_advanced(shiny::p("x"), id = "adv"))
   expect_match(adv, "<details id=\"adv\" class=\"kit-advanced\">", fixed = TRUE)

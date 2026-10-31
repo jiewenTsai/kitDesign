@@ -85,6 +85,26 @@ tags$div(
 ```
 :::
 
+## 下載按鈕（DownloadButton）
+
+和小按鈕一樣的樣子；中文檔名在每個瀏覽器都存得對（網址最後一段、檔名標頭、`download`
+屬性都是同一個檔名）。放在 server 的 `renderUI()` 裡，檔案在按下載時才寫。這裡用測試用的 session
+畫出來，所以按了沒有作用。
+
+::: {.kit-live}
+```{r}
+session <- shiny::MockShinySession$new()
+tags$div(
+  class = "kit-downloads",
+  kit_download_button(session, "dl_csv", "下載 CSV", "第一波 資料.csv",
+                      function(file) utils::write.csv(mtcars, file),
+                      class = kit_btn_class("secondary")),
+  kit_download_button(session, "dl_gz", "下載作答檔（.csv.gz）", "kits_long.csv.gz",
+                      function(file) writeLines("x", file), class = "btn-primary")
+)
+```
+:::
+
 ## 狀態框（StatusBox）
 
 按了主要按鈕以後第一眼看的框，只有四種：【完成】【完成，但請注意】【停下來】【要重新執行】。
@@ -126,6 +146,25 @@ kit_stale_status("執行串接")
 ```{r}
 kit_callout("外部連結不適用：這一回合只有一個世代，這不是錯誤。")
 kit_callout("資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。", warn = TRUE)
+```
+:::
+
+雲端版（`kit_is_cloud()`）：頁首下面一行黃色的橫幅，頁面最下面是灰色小字的使用須知。
+文字是 app 的：每一段的段名與內文、參考連結。
+
+::: {.kit-live}
+```{r}
+kit_cloud_banner("此為雲端版：上傳的資料會傳送至位於美國的 Posit 伺服器。",
+                 tags$a(href = "#kit-cloud-terms", "〈雲端版使用須知〉"), "。")
+kit_cloud_footer(
+  sections = list(
+    "一、資料傳輸與儲存" = c("本雲端版部署於 Posit Connect Cloud，主機位於美國。",
+                             "本工具不另行保存、備份或分享您的資料。"),
+    "二、免責聲明" = "本工具以現況提供，僅供資料處理輔助之用。"
+  ),
+  links = c("Posit Trust Center" = "https://trust.posit.co",
+            "Posit 隱私權政策" = "https://posit.co/about/privacy-policy/")
+)
 ```
 :::
 

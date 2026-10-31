@@ -9,7 +9,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 - 主題：Bootswatch Brite（bslib 0.11.0 以上）＋ KIT 的顏色、圓體 Chiron GoRound TC、等寬 JetBrains Mono。
 - 品牌：標誌與顏色不寫死。預設是 KIT；別的計畫用 `kit_brand()` 換成自己的標誌與配色。
 - 樣式：克制的 neo-brutalism（2px 黑框、硬陰影、平塗色塊配黑字），內文 17px、內容最寬 1140px。
-- 元件：頁首、步驟分頁、頁面說明、按鈕、狀態框、提示框、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表、圖（plotly 的樣子）。
+- 元件：頁首、步驟分頁、頁面說明、按鈕、下載按鈕、狀態框、提示框、雲端版的橫幅與使用須知、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表、圖（plotly 的樣子）。
 - server 端的小工具：停用主要按鈕並寫還差什麼、執行完捲到狀態框、分頁打 ✓、通知、千分位、白話錯誤。
 
 ## 安裝
@@ -155,7 +155,8 @@ options(kitDesign.brand = kit_brand(
 | `kit_diagram()`、`kit_dg_table()` | 圖解：處理前的小表 → 處理後的小表 |
 | `kit_button()`、`kit_btn_class()` | 主要、小、危險按鈕 |
 | `kit_callout()` | 提示框（資訊／注意） |
-| `kit_cloud_banner()` | 雲端版提醒橫幅 |
+| `kit_cloud_banner()`、`kit_cloud_footer()`、`kit_is_cloud()` | 雲端版：頁首下面的提醒橫幅、頁尾的使用須知、是不是雲端版 |
+| `kit_download_button()` | 下載按鈕：中文檔名在每個瀏覽器都存得對（測試用 `kit_test_download()`） |
 | `kit_advanced()` | 進階設定（收起） |
 | `kit_settings_line()` | 設定摘要（「本次：…」） |
 | `kit_ready_line()` | 還差：… |
@@ -207,7 +208,7 @@ options(kitDesign.brand = kit_brand(
 - R 程式碼只能用 ASCII（`R CMD check` 的規定）。字串直接寫中文，改完在套件根目錄跑
   `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`：中文換成 `\uXXXX`，上面加一行「# 原文：…」註解。
 - 樣式在 `inst/www/`：`kit-base.css` → `kit-brite.css` → `kit-design.css`（順序不能換）；小程式在 `inst/www/kit.js`。
-- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.3.0.tar.gz`；
+- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.4.0.tar.gz`；
   畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）；
   示範品牌：`Rscript tools/check_gallery.R <資料夾> 7551 demo`。
 - GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）；

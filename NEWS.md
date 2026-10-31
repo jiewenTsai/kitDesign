@@ -1,3 +1,21 @@
+# kitDesign 0.4.0 (2026-10-31)
+
+minor：kitJoin 與 kitsUI 各有一份的機制搬進 kitDesign；舊的 app 不用改，兩個 app 的畫面與下載的檔案一模一樣。
+
+## 元件
+
+* `kit_download_button(session, id, label, filename, content, class, app)`：下載按鈕（從兩個 app 的
+  `R/download.R` 搬過來）。中文檔名在每個瀏覽器都存得對：網址最後一段、`Content-Disposition`
+  （`filename` 與 UTF-8 的 `filename*`）、`<a download>` 都是同一個檔名。`.csv`、`.zip`、`.html`
+  用自己的 MIME，其他是 `application/octet-stream`。寫檔出錯時寫 log、跳出紅色通知、回 500。
+  `app`（預設 `getOption("kitDesign.app", "kit")`）是 log 裡的 app 名稱，也是全中文檔名的
+  ASCII 備用名（小寫）；app 在 `.onLoad()` 設一次。
+* `kit_test_download(session, id, write = TRUE)`：`shiny::testServer()` 裡按下載，回傳
+  `httpResponse` 和檔名。
+* `kit_is_cloud()`：是不是雲端版（`KIT_DEPLOY`，沒有時看 `R_CONFIG_ACTIVE = "rsconnect"`）。
+* `kit_cloud_footer(sections, links, title, id)`：雲端版使用須知（頁尾的灰色小字）；
+  每一段的段名與內文、參考連結由 app 給。`kit_cloud_banner()` 搬到同一個檔（`R/cloud.R`）。
+
 # kitDesign 0.3.0 (2026-10-31)
 
 minor：新的函式與選項，舊的 app 不用改；KIT 的畫面一模一樣。

@@ -1,6 +1,6 @@
 Package: kitDesign
 Title: Shared 'Shiny' User Interface Components for KIT Research Tools
-Version: 0.3.0
+Version: 0.4.0
 Date: 2026-10-31
 Authors@R: person("KIT", "Join Tool", email = "joinkit@example.com", role = c("aut", "cre"))
 Description: The shared user interface layer of the KIT research tools built

@@ -219,6 +219,22 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 下載是這一頁的主角時（例如作答檔）用 `kit-download btn-primary`。
 - **不要**：寫「確定」「送出」；一頁放兩個萊姆按鈕；用白字。
 
+### 下載按鈕（DownloadButton）
+
+下載按鈕和小按鈕長得一樣（⬇ 圖示＋「下載 CSV」），但檔名在每個瀏覽器都存得對，中文也一樣。
+
+- **R**：`kit_download_button(session, id, label, filename, content, class = NULL)`，放在 `renderUI()` 裡；
+  測試裡按下載用 `kit_test_download(session, id)`。
+- **長相**：`<a class="btn btn-default kit-download">`，小按鈕的樣子；是這一頁的主角時加 `class = "btn-primary"`。
+- **規則**：
+  - 檔名在畫按鈕時決定；網址最後一段、`Content-Disposition`（`filename` 與 UTF-8 的 `filename*`）、
+    `download` 屬性三處都是同一個檔名。
+  - 檔案在按下載時才寫；寫不出來時跳出紅色通知（不會自己消失），`kit_abort()` 的白話原文照寫。
+  - `.csv`、`.zip`、`.html` 用自己的 MIME，其他（`.sav`、`.csv.gz`）是 `application/octet-stream`，瀏覽器不會多加副檔名。
+  - app 在 `.onLoad()` 設一次 `options(kitDesign.app = "kitJoin")`：log 寫哪個 app；檔名全是中文時，
+    舊瀏覽器用的 ASCII 備用名是它的小寫（「第一波.sav」→「kitjoin.sav」）。
+- **不要**：用 `shiny::downloadHandler()`（中文檔名在有些瀏覽器變成 `missing-download_sav`）。
+
 ### 輸入元件（Input）
 
 輸入元件是白底黑框，標籤在上、說明小字在下；預設值是最常用、最安全的那個。
@@ -265,7 +281,8 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 
 提示框是按下去之前就該知道的提醒，不是結果，所以沒有陰影。
 
-- **R**：`kit_callout(..., warn = FALSE)`。
+- **R**：`kit_callout(..., warn = FALSE)`。雲端版的提醒是同一個樣子：頁首下面的橫幅 `kit_cloud_banner()`，
+  頁面最下面的使用須知 `kit_cloud_footer(sections, links)`（灰色小字，文字是 app 的）；是不是雲端版用 `kit_is_cloud()`。
 - **兩種**：
   - **資訊**（`nb-sky`）：一般補充，例如「外部連結不適用：……這不是錯誤」。
   - **注意**（`warn = TRUE`，`nb-yellow`）：例如「資料裡有疑似遺漏值代碼，建議先到遺漏值處理」。
@@ -585,8 +602,9 @@ ui <- kit_page(
 | 步驟分頁（NavTabs） | 模組 `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`；低階：`kit_navgroups()`＋`kit_navgroup()`、`kit_flow_tabs(aside = )`、`kit_tab_states()`、`kit_watch_tab_states()` |
 | 頁面說明（PageGuide） | `kit_tab_guide()`、`kit_steps()` |
 | 按鈕（Button） | `kit_button(id, label, kind)`、`kit_btn_class()` |
+| 下載按鈕（DownloadButton） | `kit_download_button(session, id, label, filename, content)`；測試 `kit_test_download()` |
 | 狀態框（StatusBox） | 值物件 `kit_status()`、`kit_done_status()`、`kit_error_status()`、`kit_stale_status()`（直接放進頁面）；低階畫法 `kit_status_ui()`；通知 `kit_notify()`；白話錯誤 `kit_abort()` |
-| 提示框（Callout） | `kit_callout(..., warn = )`；雲端版橫幅 `kit_cloud_banner()` |
+| 提示框（Callout） | `kit_callout(..., warn = )`；雲端版橫幅 `kit_cloud_banner()`、使用須知 `kit_cloud_footer()`、判斷 `kit_is_cloud()` |
 | 資料表（DataTable） | `kit_static_table()`、`kit_preview_table()`、`kit_rows_note()`、`kit_table_scroll()`、`kit_num()`、`kit_dims()` |
 | 圖（Chart） | `kit_plotly_style()`（plotly 圖的樣子）、`kit_plotly_fonts()`；顏色 `kit_chart_colors()`、`kit_chart_neutral()`、`kit_chart_sequential()` |
 | 細節列（Details） | `kit_details_row()`、`kit_detail()`、`kit_advanced()`、`kit_settings_line()` |

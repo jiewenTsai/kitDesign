@@ -136,10 +136,16 @@ reference:
     contents:
       - kit_button
       - kit_btn_class
+  - title: 下載按鈕（DownloadButton）
+    contents:
+      - kit_download_button
+      - kit_test_download
   - title: 提示框（Callout）
     contents:
       - kit_callout
       - kit_cloud_banner
+      - kit_cloud_footer
+      - kit_is_cloud
   - title: 資料表（DataTable）
     contents:
       - kit_static_table

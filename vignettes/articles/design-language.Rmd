@@ -1,0 +1,23 @@
+---
+title: "KIT 設計語言"
+description: >
+  KIT 研究工具共用的設計語言：為誰設計、原則、顏色字型、每個元件的規格與 tokens。
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+> 這一頁就是 kitDesign 裡的 `brand/KIT設計語言.md`（以那一份為準）。元件的樣子見[元件一覽](components.html)。
+
+```{r, results = "asis"}
+md <- readLines(file.path("..", "..", "brand", "KIT設計語言.md"), encoding = "UTF-8")
+md <- md[-1]  # 標題已經在上面
+gh <- "https://github.com/jiewenTsai/kitDesign/blob/main/brand/"
+md <- gsub("](版本與發布.md)", "](release.html)", md, fixed = TRUE)
+md <- gsub("](遷移對照.md)", paste0("](", gh, "遷移對照.md)"), md, fixed = TRUE)
+md <- gsub("](_brand.yml)", paste0("](", gh, "_brand.yml)"), md, fixed = TRUE)
+md <- gsub("](logo/)", "](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo)", md, fixed = TRUE)
+# 文件裡的 "# 安裝" 是程式碼區塊裡的註解，不是標題：原樣輸出即可
+cat(md, sep = "\n")
+```

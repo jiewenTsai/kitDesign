@@ -30,6 +30,19 @@ minor：新的函式與選項，舊的 app 不用改；KIT 的畫面一模一樣
 * `inst/www/` 的 CSS 不再寫死 KIT 的品牌色：`kit-base.css` 與 `kit-brite.css` 改用 `--nb-*` 變數；
   `kit-brite.css` 的 `:root` 多兩個變數：`--nb-green-hover`、`--nb-bg-new`。KIT 的值不變，畫面不變。
 
+## 修正
+
+* `kit_theme()` 不再讀工作目錄或上層資料夾的 `_brand.yml`（bslib 0.9 起 `bs_theme()` 會自己找，
+  例如 `brand/_brand.yml`）：品牌只從 `kit_brand()` 來。沒有 `_brand.yml` 的地方（部署的 app）
+  主題一模一樣；開發時旁邊有 `_brand.yml` 的話，以前會被它改掉字型與顏色。
+
+## 開發
+
+* 網站（pkgdown，`_pkgdown.yml`、`pkgdown/extra.css`、`vignettes/articles/`）：首頁、開始使用、
+  元件一覽（元件直接畫在頁面上，旁邊是程式碼）、圖、換成別的品牌、設計語言、版本與發布、函式參考
+  （照元件分組）、更新紀錄。`.github/workflows/pkgdown.yaml` 會在 push 到 main 時建好網站、
+  放到 `gh-pages` 分支；`docs/` 不進 git。本機：`pkgdown::build_site()`。
+
 # kitDesign 0.2.0 (2026-10-31)
 
 minor：新的函式與選項，舊的 app 不用改。

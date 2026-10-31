@@ -17,6 +17,8 @@
 #' `primary`，`link-hover-color` 是 `primary_hover`，`body-bg` 是 `page`，`border-color` 是 `ink`。
 #' `info`、`warning`、`danger`、`secondary` 是 Bootstrap 自己用的深色，不跟著品牌換
 #' （提示框、狀態框的底色在 CSS 的 `--nb-*` 變數裡，跟著品牌換）。
+#' 不讀 brand.yml（`bslib::bs_theme(brand = FALSE)`）：工作目錄或上層有 `_brand.yml`
+#' （例如 `brand/_brand.yml`）時，主題也不會跟著變。
 #'
 #' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
 #' @return [bslib::bs_theme()] 物件。
@@ -46,6 +48,8 @@ kit_theme <- function(brand = kit_current_brand()) {
   bslib::bs_theme(
     version = 5,
     bootswatch = "brite",
+    # 品牌只從 kit_brand() 來：不讀工作目錄（或上層）的 _brand.yml
+    brand = FALSE,
     primary = col[["primary"]],
     secondary = "#616161",
     success = col[["primary"]],

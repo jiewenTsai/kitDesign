@@ -25,6 +25,8 @@ Chiron GoRound TC，程式碼用 JetBrains Mono。兩種字型都由瀏覽器向
 \code{primary}，\code{link-hover-color} 是 \code{primary_hover}，\code{body-bg} 是 \code{page}，\code{border-color} 是 \code{ink}。
 \code{info}、\code{warning}、\code{danger}、\code{secondary} 是 Bootstrap 自己用的深色，不跟著品牌換
 （提示框、狀態框的底色在 CSS 的 \verb{--nb-*} 變數裡，跟著品牌換）。
+不讀 brand.yml（\code{bslib::bs_theme(brand = FALSE)}）：工作目錄或上層有 \verb{_brand.yml}
+（例如 \verb{brand/_brand.yml}）時，主題也不會跟著變。
 }
 \examples{
 theme <- kit_theme()

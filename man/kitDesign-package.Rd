@@ -25,6 +25,7 @@ ui <- kit_page("KIT ×× 工具", "臺灣幼兒發展調查資料庫", version =
 Useful links:
 \itemize{
   \item \url{https://github.com/jiewenTsai/kitDesign}
+  \item \url{https://jiewentsai.github.io/kitDesign/}
   \item Report bugs at \url{https://github.com/jiewenTsai/kitDesign/issues}
 }
 

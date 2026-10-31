@@ -1,0 +1,210 @@
+url: https://jiewentsai.github.io/kitDesign/
+lang: zh-TW
+
+template:
+  bootstrap: 5
+  bootswatch: brite
+  bslib:
+    # 不讀 brand/_brand.yml（bslib 會自己找；它的 Google 字型會被下載到 docs/）
+    brand: false
+    # KIT 的顏色（brand/KIT設計語言.md 的附錄）
+    primary: "#006835"
+    success: "#006835"
+    body-bg: "#faf7f0"
+    border-color: "#141414"
+    border-width: 2px
+    link-color: "#006835"
+    link-hover-color: "#004d27"
+    navbar-bg: "#c6d033"
+    navbar-light-color: "#141414"
+    navbar-light-hover-color: "#141414"
+    headings-font-weight: 700
+    # 字型：瀏覽器向 Google Fonts 按需下載（in_header 的 <link>）；不用 base_font，
+    # 因為 pkgdown 會把 Google 字型全部下載到 docs/（圓體切成上百個檔）
+    font-family-base: "'Chiron GoRound TC', sans-serif"
+    headings-font-family: "'Chiron GoRound TC', sans-serif"
+    font-family-monospace: "'JetBrains Mono', 'Chiron GoRound TC', Menlo, Consolas, monospace"
+  includes:
+    in_header: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap">
+
+home:
+  title: kitDesign：KIT 研究工具共用的 Shiny 介面
+  description: >
+    一個設定函式放好主題、樣式、標誌與頁首，再用有說明的 kit_*() 元件組出頁面。
+    給 40–60 歲的研究人員：看得清楚、按得放心、結果先說。
+
+navbar:
+  structure:
+    left: [intro, components, design, reference, news]
+    right: [search, github]
+  components:
+    intro:
+      text: 開始使用
+      href: articles/kitDesign.html
+    components:
+      text: 元件
+      menu:
+        - text: 元件一覽
+          href: articles/components.html
+        - text: 圖
+          href: articles/charts.html
+        - text: 換成別的品牌
+          href: articles/brand.html
+    design:
+      text: 設計語言
+      menu:
+        - text: KIT 設計語言
+          href: articles/design-language.html
+        - text: 版本與發布
+          href: articles/release.html
+    reference:
+      text: 函式參考
+      href: reference/index.html
+    news:
+      text: 更新紀錄
+      href: news/index.html
+    github:
+      icon: fa-github
+      text: GitHub
+      href: https://github.com/jiewenTsai/kitDesign
+      aria-label: GitHub
+
+articles:
+  - title: 開始使用
+    navbar: ~
+    contents:
+      - kitDesign
+  - title: 元件
+    contents:
+      - articles/components
+      - articles/charts
+      - articles/brand
+  - title: 設計語言
+    contents:
+      - articles/design-language
+      - articles/release
+
+reference:
+  - title: 設定與頁面
+    desc: 一個 app 一次：主題、樣式、頁首、版本。
+    contents:
+      - kit_page
+      - kit_theme
+      - use_kit
+      - kit_header
+      - kit_app_meta
+      - kit_app_description
+      - kit_versions
+      - kit_logo_uri
+      - kit_logo_file
+      - kit_logo_dependency
+      - kit_colors
+      - kit_new_app
+      - kit_gallery
+  - title: 品牌
+    desc: 換成別的計畫的標誌與顏色。
+    contents:
+      - kit_brand
+      - kit_current_brand
+  - title: 步驟分頁（NavTabs）
+    contents:
+      - kit_step_tabs_ui
+      - kit_navgroups
+      - kit_navgroup
+      - kit_flow_tabs
+      - kit_tab_states
+      - kit_watch_tab_states
+      - kit_send_tab_states
+  - title: 頁面說明（PageGuide）
+    contents:
+      - kit_tab_guide
+      - kit_steps
+  - title: 狀態框（StatusBox）
+    contents:
+      - kit_status
+      - kit_done_status
+      - kit_error_status
+      - kit_stale_status
+      - kit_status_ui
+      - kit_notify
+      - kit_abort
+      - kit_is_user_error
+  - title: 按鈕（Button）
+    contents:
+      - kit_button
+      - kit_btn_class
+  - title: 提示框（Callout）
+    contents:
+      - kit_callout
+      - kit_cloud_banner
+  - title: 資料表（DataTable）
+    contents:
+      - kit_static_table
+      - kit_preview_table
+      - kit_rows_note
+      - kit_table_scroll
+      - kit_num
+      - kit_dims
+  - title: 圖（Chart）
+    contents:
+      - kit_plotly_style
+      - kit_plotly_fonts
+      - kit_chart_colors
+      - kit_chart_neutral
+      - kit_chart_sequential
+  - title: 細節列（Details）
+    contents:
+      - kit_details_row
+      - kit_detail
+      - kit_advanced
+      - kit_settings_line
+  - title: 用 R 怎麼做（CodePanel）
+    contents:
+      - kit_code_panel_ui
+      - kit_code
+      - kit_code_wrap
+      - kit_code_cols
+      - kit_code_panel
+      - kit_render_code_panel
+      - kit_code_blocks
+  - title: 步驟卡（StepCard）
+    contents:
+      - kit_stepcards_ui
+      - kit_step_card
+      - kit_step_head
+      - kit_step_body
+  - title: 檢查清單（Checklist）
+    contents:
+      - kit_checklist
+      - kit_check
+      - kit_problems
+  - title: 還差什麼（ReadyLine）
+    contents:
+      - kit_run_gate_ui
+      - kit_ready_line
+      - kit_run_gate
+      - kit_need_files
+  - title: 下一步（NextStep）
+    contents:
+      - kit_next_step
+      - kit_app_link
+  - title: 圖解（Diagram）
+    contents:
+      - kit_diagram
+      - kit_dg_table
+  - title: 模組
+    desc: 有狀態的元件：`*_ui(id)` ＋ `*_server(id)`，一頁一行。
+    contents:
+      - kit_step_tabs_ui
+      - kit_stepcards_ui
+      - kit_run_gate_ui
+      - kit_code_panel_ui
+  - title: 頁面行為
+    desc: 捲到結果、打開收合、離開前提醒。
+    contents:
+      - kit_scroll_to
+      - kit_open_details
+      - kit_unload_guard

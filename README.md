@@ -2,7 +2,9 @@
 
 KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的介面層：
 一個設定函式把主題、樣式、標誌、頁首放好，再用一組有說明的 `kit_*()` 元件組出頁面。
-每個元件都照「[KIT 設計語言](brand/KIT設計語言.md)」做：看得清楚、按得放心、結果先說。
+每個元件都照「[KIT 設計語言](https://github.com/jiewenTsai/kitDesign/blob/main/brand/KIT設計語言.md)」做：看得清楚、按得放心、結果先說。
+
+![kitDesign 的元件樣張：萊姆色的頁首、分組的步驟分頁、「這一頁做什麼」與圖解](man/figures/hero.jpg)
 
 - 主題：Bootswatch Brite（bslib 0.11.0 以上）＋ KIT 的顏色、圓體 Chiron GoRound TC、等寬 JetBrains Mono。
 - 品牌：標誌與顏色不寫死。預設是 KIT；別的計畫用 `kit_brand()` 換成自己的標誌與配色。
@@ -69,7 +71,8 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
-一步一步的說明：`vignette("kitDesign")`。看所有元件：`kitDesign::kit_gallery()`。
+一步一步的說明：`vignette("kitDesign")`。看所有元件：`kitDesign::kit_gallery()`，
+或網站上的[元件一覽](https://jiewentsai.github.io/kitDesign/articles/components.html)。
 
 plotly 圖（例如 kits 的 `plot()`）最後交給 `kit_plotly_style()`：
 
@@ -188,16 +191,16 @@ options(kitDesign.brand = kit_brand(
 
 ## 設計語言
 
-[`brand/KIT設計語言.md`](brand/KIT設計語言.md) 是每個元件的規格（用途、長相、規則、不要）；
-[`brand/_brand.yml`](brand/_brand.yml) 是顏色、字型等設計變數；[`brand/logo/`](brand/logo/) 是標誌檔。
+[`brand/KIT設計語言.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/KIT設計語言.md) 是每個元件的規格（用途、長相、規則、不要）；
+[`brand/_brand.yml`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/_brand.yml) 是顏色、字型等設計變數；[`brand/logo/`](https://github.com/jiewenTsai/kitDesign/tree/main/brand/logo) 是標誌檔。
 
 ## 版本與維護
 
 - 語意化版本：patch＝修正、畫面和函式不變；minor＝新元件或選項；major＝改名、拿掉、看得到的設計改變。
-  發布步驟與檢查清單：[`brand/版本與發布.md`](brand/版本與發布.md)；每一版的改變：[`NEWS.md`](NEWS.md)。
+  發布步驟與檢查清單：[`brand/版本與發布.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/版本與發布.md)；每一版的改變：[`NEWS.md`](NEWS.md)。
 - app 固定用某一版：`Remotes: jiewenTsai/kitDesign@vX.Y.Z`、`Imports: kitDesign (>= X.Y.Z)`。
 - 頁首可以同時寫出兩個版本：`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 · kitDesign 0.2.0」。
-- kitJoin、kitsUI 換成 kitDesign 時的名稱對照：[`brand/遷移對照.md`](brand/遷移對照.md)。
+- kitJoin、kitsUI 換成 kitDesign 時的名稱對照：[`brand/遷移對照.md`](https://github.com/jiewenTsai/kitDesign/blob/main/brand/遷移對照.md)。
 
 ## 開發
 
@@ -207,7 +210,10 @@ options(kitDesign.brand = kit_brand(
 - 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.3.0.tar.gz`；
   畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）；
   示範品牌：`Rscript tools/check_gallery.R <資料夾> 7551 demo`。
-- GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）。
+- GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）；
+  `.github/workflows/pkgdown.yaml`（網站，放到 `gh-pages` 分支）。
+- 網站：`pkgdown::build_site()` 建到 `docs/`（不進 git）；設定在 `_pkgdown.yml`、`pkgdown/extra.css`，
+  網站才有的文章在 `vignettes/articles/`（不會當成 vignette 打包）。
 
 ## 授權
 

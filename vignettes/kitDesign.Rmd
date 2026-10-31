@@ -147,3 +147,22 @@ kit_checklist(
 )
 kit_code("scores <- kits::kits_subj(X, item, persons = persons, method = \"WLE\", se = TRUE)")
 ```
+
+## 不是 KIT 的計畫：換品牌
+
+標誌與顏色不是寫死的。在 app 開始時設定一次品牌，`kit_page()`、主題、圖的色階都會跟著換；
+字型、框、陰影、元件照設計語言不變。不設定時就是 KIT。
+
+```{r}
+options(kitDesign.brand = kit_brand(
+  "示範實驗室",
+  logo = system.file("logo.svg", package = "kitScore"),   # 頁首的標誌（SVG 或 PNG）
+  colors = list(accent = "#9cc0ff", primary = "#1f4fa3")
+))
+```
+
+```{r, eval = TRUE}
+kit_brand("示範實驗室", colors = list(accent = "#9cc0ff", primary = "#1f4fa3"))
+```
+
+可以換哪些顏色、各用在哪裡：`?kit_brand`。看換了以後的樣子：`kit_gallery(brand = "demo")`。

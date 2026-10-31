@@ -323,7 +323,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 滑過的說明框：白底、`nb-ink` 框、圓體。
   - 圖例：沒有框；超過 4 項，或最長的一項超過 20 欄（中文字算 2 欄），放在圖的下面、橫排、靠左；
     其他放右邊。圖寬小於 600px（手機）時一律放到下面。`legend = "keep"` 不動位置。
-  - 色階：熱圖類換成 `kit_chart_sequential()`（白 → `bg-new` → `nb-green`，值越大越深）；
+  - 色階：熱圖類換成 `kit_chart_sequential()`（極淡萊姆 → `bg-new` → `nb-green`，值越大越深；最小值不用白色，0% 和沒有資料的空格才分得開）；
     `colorscale = FALSE` 保留原來的色階。色條的字、外框照上面的字級與顏色。
   - 工具列：沒有 plotly 的標誌；只有「下載成 PNG」、放大、縮小、回到原來的範圍；繁體中文。
   - 邊界：上下左右一樣小；軸、圖例、色條放不下時自動加寬，軸標題與圖例離卡片的邊至少 16px，不會切到字。
@@ -658,7 +658,7 @@ ui <- kit_page(
 | `chart-sky` | `#56b4e9` | 圖的類別色第 5 個。 |
 | `chart-vermillion` | `#d55e00` | 圖的類別色第 6 個；超過 6 類從頭再取。 |
 | `chart-neutral` | `#7f7f7f` | 圖裡不分類別的中性色：參考線、帶子、沒有判斷的點。 |
-| `chart-sequential` | `#ffffff` → `#e8f0a0` → `#006835` | 連續數值的色階（熱圖、色條）：白 → 淡萊姆（`bg-new`，在 0.2）→ KIT 綠（`nb-green`），中間在 Lab 空間內插。`kit_chart_sequential()`。 |
+| `chart-sequential` | `#f3f7d3` → `#e8f0a0` → `#006835` | 連續數值的色階（熱圖、色條）：極淡萊姆（不用白色：白色留給沒有資料的格子）→ 淡萊姆（`bg-new`，在 0.2）→ KIT 綠（`nb-green`），中間在 Lab 空間內插。`kit_chart_sequential()`。 |
 
 ### 字級（基準 17px）
 

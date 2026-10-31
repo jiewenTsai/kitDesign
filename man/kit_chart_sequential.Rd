@@ -7,11 +7,11 @@
 kit_chart_sequential()
 }
 \value{
-plotly 的 colorscale：\code{list(list(0, "#FFFFFF"), ..., list(1, "#006835"))}。
+plotly 的 colorscale：\code{list(list(0, "#F3F7D3"), ..., list(1, "#006835"))}。
 }
 \description{
-白 → 淡萊姆（\code{bg-new}）→ KIT 綠（\code{nb-green}）：值越大越深。用在熱圖、色條
-（例如作答設計圖的通過比例）。\code{\link[=kit_plotly_style]{kit_plotly_style()}} 預設把熱圖換成這個色階。
+極淡萊姆 → 淡萊姆（\code{bg-new}）→ KIT 綠（\code{nb-green}）：值越大越深。用在熱圖、色條
+（例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。\code{\link[=kit_plotly_style]{kit_plotly_style()}} 預設把熱圖換成這個色階。
 }
 \examples{
 kit_chart_sequential()

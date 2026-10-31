@@ -27,9 +27,10 @@ KIT_PLOTLY_DEFAULT_COLORS <- c(
   "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"
 )
 
-# 連續數值的色階：白 -> 淡萊姆（bg-new）-> KIT 綠（nb-green），中間在 Lab 空間內插
+# 連續數值的色階：極淡萊姆 -> 淡萊姆（bg-new）-> KIT 綠（nb-green），中間在 Lab 空間內插。
+# 0 不是白色：沒有施測的空格（NA）是白底，和「0%」分得開
 KIT_CHART_SEQUENTIAL <- list(
-  list(0, "#FFFFFF"), list(0.2, "#E8F0A0"), list(0.4, "#B3CC83"),
+  list(0, "#F3F7D3"), list(0.2, "#E8F0A0"), list(0.4, "#B3CC83"),
   list(0.6, "#7FAA68"), list(0.8, "#4B884D"), list(1, "#006835")
 )
 
@@ -46,10 +47,10 @@ KIT_PLOTLY_NOT_XY <- c(
 
 #' 連續數值的色階（Chart）
 #'
-#' 白 → 淡萊姆（`bg-new`）→ KIT 綠（`nb-green`）：值越大越深。用在熱圖、色條
-#' （例如作答設計圖的通過比例）。[kit_plotly_style()] 預設把熱圖換成這個色階。
+#' 極淡萊姆 → 淡萊姆（`bg-new`）→ KIT 綠（`nb-green`）：值越大越深。用在熱圖、色條
+#' （例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。[kit_plotly_style()] 預設把熱圖換成這個色階。
 #'
-#' @return plotly 的 colorscale：`list(list(0, "#FFFFFF"), ..., list(1, "#006835"))`。
+#' @return plotly 的 colorscale：`list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`。
 #' @seealso [kit_plotly_style()]、[kit_chart_colors()]
 #' @examples
 #' kit_chart_sequential()
@@ -76,7 +77,7 @@ kit_chart_sequential <- function() KIT_CHART_SEQUENTIAL
 #'   Okabe–Ito 同一個位置的顏色；**kits 或 kitsUI 指定的顏色不動**（kitsUI 的角色色、
 #'   類別換色都保留）。
 #' - **色階**（`colorscale = TRUE`）：熱圖類（heatmap、contour、histogram2d）換成
-#'   [kit_chart_sequential()]（白 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
+#'   [kit_chart_sequential()]（極淡萊姆 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
 #' - **滑過的說明框**：白底、`nb-ink` 框、app 的字型。
 #' - **圖例**：app 的字型、沒有框。位置見 `legend`。
 #' - **工具列**：沒有 plotly 的標誌；只留「下載成 PNG」（白底、2 倍解析度）、放大、縮小、

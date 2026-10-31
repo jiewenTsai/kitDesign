@@ -14,7 +14,7 @@ minor：新的函式與選項，舊的 app 不用改。
   和 kits、kitsUI 一起用的順序：kits 的 `plot()` → kitsUI 換色 → kitsUI 換中文 → `kit_plotly_style()`。
 * `kit_plotly_fonts()`：plotly 圖附上 Google Fonts 的圓體（`data-external`，存成單一 HTML 時
   不把字型檔塞進去）；下載的 HTML 也是 app 的字型。`kit_plotly_style()` 預設已經附上。
-* `kit_chart_sequential()`：連續數值的色階（白 → `bg-new` → `nb-green`）。
+* `kit_chart_sequential()`：連續數值的色階（極淡萊姆 `#f3f7d3` → `bg-new` → `nb-green`）。最小值不是白色，0% 和沒有施測的空格（白底）看得出來不同。
 * plotly 與 htmlwidgets 是 Suggests：沒有用到 `kit_plotly_style()` 的 app 不用裝；沒有 plotly 時
   `kit_plotly_style()` 停下來，說要裝什麼。
 * 元件樣張的「圖」分頁換成兩張套好樣子的 plotly 圖（各世代的線圖、題目 × 波次的熱圖）。

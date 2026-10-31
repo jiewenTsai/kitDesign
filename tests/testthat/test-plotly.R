@@ -133,9 +133,11 @@ test_that("heatmap colour scales become the KIT scale only when colorscale = TRU
   expect_equal(sc$marker$colorbar$tickfont$color, "#5a5a5a")
 })
 
-test_that("kit_chart_sequential() runs from white through bg-new to nb-green", {
+test_that("kit_chart_sequential() runs from a faint lime through bg-new to nb-green", {
   s <- kit_chart_sequential()
-  expect_equal(s[[1]], list(0, "#FFFFFF"))
+  # 0 不是白色：沒有資料的空格（白底）和 0% 要分得開
+  expect_equal(s[[1]], list(0, "#F3F7D3"))
+  expect_false(toupper(s[[1]][[2]]) %in% c("#FFFFFF", "WHITE"))
   expect_equal(s[[2]], list(0.2, "#E8F0A0"))
   expect_equal(s[[length(s)]], list(1, "#006835"))
   pos <- vapply(s, function(x) x[[1]], numeric(1))

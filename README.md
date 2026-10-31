@@ -150,7 +150,7 @@ kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖�
 | `kit_static_table()`、`kit_preview_table()`、`kit_table_scroll()` | 資料表、預覽表、左右捲的框 |
 | `kit_rows_note()`、`kit_dims()`、`kit_num()` | 「共 3,418 列 × 25 欄，以下前 10 列。」、千分位 |
 | `kit_chart_colors()`、`kit_chart_neutral()` | 圖的類別色（Okabe–Ito）與中性色 |
-| `kit_chart_sequential()` | 連續數值的色階（白 → 淡萊姆 → KIT 綠），熱圖用 |
+| `kit_chart_sequential()` | 連續數值的色階（極淡萊姆 → 淡萊姆 → KIT 綠；0% 和沒有資料的白格分得開），熱圖用 |
 | `kit_plotly_style()` | plotly 圖套上 KIT 的樣子：字型、軸線、格線、白底、靠左的粗體標題、圖例、色階、滑過的說明框、精簡的工具列（plotly 是 Suggests） |
 | `kit_plotly_fonts()` | plotly 圖附上 app 的字型（下載的單一 HTML 檔用；`kit_plotly_style()` 預設已經附上） |
 

@@ -56,7 +56,7 @@ KIT 設計語言：框裡面不再有框）。軸的標題與刻度放不下時�
 Okabe–Ito 同一個位置的顏色；\strong{kits 或 kitsUI 指定的顏色不動}（kitsUI 的角色色、
 類別換色都保留）。
 \item \strong{色階}（\code{colorscale = TRUE}）：熱圖類（heatmap、contour、histogram2d）換成
-\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}（白 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
+\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}（極淡萊姆 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
 \item \strong{滑過的說明框}：白底、\code{nb-ink} 框、app 的字型。
 \item \strong{圖例}：app 的字型、沒有框。位置見 \code{legend}。
 \item \strong{工具列}：沒有 plotly 的標誌；只留「下載成 PNG」（白底、2 倍解析度）、放大、縮小、

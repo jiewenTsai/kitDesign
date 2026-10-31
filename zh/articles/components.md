@@ -129,10 +129,9 @@ tags$div(
 )
 ```
 
-[ 下載
-CSV](https://jiewentsai.github.io/kitDesign/zh/articles/session/test/dataobj/mock-session-dl_csv/%E7%AC%AC%E4%B8%80%E6%B3%A2%20%E8%B3%87%E6%96%99.csv?w=&nonce=test)
-[
-下載作答檔（.csv.gz）](https://jiewentsai.github.io/kitDesign/zh/articles/session/test/dataobj/mock-session-dl_gz/kits_long.csv.gz?w=&nonce=test)
+下載 CSV
+
+下載作答檔（.csv.gz）
 
 ### 狀態框（StatusBox）
 

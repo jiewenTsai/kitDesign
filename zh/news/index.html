@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,13 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.2" id="kitdesign-052-2026-11-01">kitDesign 0.5.2 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-052-2026-11-01"></a></h2>
+<div class="section level3">
+<h3 id="修正-0-5-2">修正<a class="anchor" aria-label="anchor" href="#%E4%BF%AE%E6%AD%A3-0-5-2"></a></h3>
+<ul><li>Firefox 裝了某些外掛（例如 Google PDF Viewer 這類「線上檢視文件」的外掛）時，下載還是 Not Found： 外掛會攔截頁面上的下載連結，自己把頁面導到下載網址。現在 <code><a href="../reference/kit_download_button.html">kit_download_button()</a></code> 是 <code>&lt;button data-kit-href data-kit-download&gt;</code>，不是 <code>&lt;a href download&gt;</code>：按鈕上沒有連結，外掛攔不到； 按下去由 <code>kit.js</code> 在背景拿檔案再存檔（存檔的連結不放進頁面，外掛也看不到）。 畫面不變；app 的測試若讀按鈕的 <code>href</code>、<code>download</code> 屬性，改讀 <code>data-kit-href</code>、<code>data-kit-download</code>。</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="kitdesign-051-2026-11-01">kitDesign 0.5.1 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-051-2026-11-01"></a></h2>
 <div class="section level3">

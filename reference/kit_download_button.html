@@ -15,7 +15,7 @@ you never get a stale file."><link rel="preconnect" href="https://fonts.googleap
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,7 +113,7 @@ Defaults to <code>getOption("kitDesign.app", "kit")</code>: the app sets it once
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>&lt;a class="btn btn-default kit-download" download="檔名"&gt;</code> (<code>download</code> holds the file
+    <p><code>&lt;button type="button" class="btn btn-default kit-download" data-kit-href="網址" data-kit-download="檔名"&gt;</code> (<code>data-kit-href</code> is the download URL, <code>data-kit-download</code> the file
 name).</p>
     </div>
     <div class="section level2">
@@ -123,6 +123,10 @@ reactives). If writing fails: the error goes to the log ("<app> 下載失敗（�
 download failed (file name): …"), this session shows a red notification (which does not
 disappear on its own), and the response is 500 with the same sentence. Messages from
 <code><a href="kit_abort.html">kit_abort()</a></code> are shown to the user as written; other errors do not expose internal messages.</app></app></p>
+<p>The button is a <code>&lt;button&gt;</code>, not a link: the URL and the file name are in <code>data-kit-href</code> and
+<code>data-kit-download</code>, and <code>kit.js</code> (loaded by <code><a href="use_kit.html">use_kit()</a></code>) fetches the file in the background and
+saves it, so the page never leaves. Browser extensions that take over links on the page (some
+"document viewer" add-ons do, and the download then fails with "Not Found") find nothing to take.</p>
 <p><code>Content-Type</code> follows the extension: <code>.csv</code>, <code>.zip</code>, and <code>.html</code> get their own MIME types;
 everything else (<code>.sav</code>, <code>.csv.gz</code>) is <code>application/octet-stream</code>, so browsers that add an
 extension based on MIME type don't add an extra one.</p>

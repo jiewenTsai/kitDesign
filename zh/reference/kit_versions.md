@@ -28,5 +28,5 @@ kit_versions(package = NULL)
 ``` r
 kit_versions()
 #> kitDesign 
-#>   "0.5.1" 
+#>   "0.5.2" 
 ```

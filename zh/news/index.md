@@ -1,5 +1,19 @@
 # Changelog
 
+## kitDesign 0.5.2 (2026-11-01)
+
+### 修正
+
+- Firefox 裝了某些外掛（例如 Google PDF Viewer
+  這類「線上檢視文件」的外掛）時，下載還是 Not Found：
+  外掛會攔截頁面上的下載連結，自己把頁面導到下載網址。現在
+  [`kit_download_button()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_download_button.md)
+  是 `<button data-kit-href data-kit-download>`，不是
+  `<a href download>`：按鈕上沒有連結，外掛攔不到； 按下去由 `kit.js`
+  在背景拿檔案再存檔（存檔的連結不放進頁面，外掛也看不到）。
+  畫面不變；app 的測試若讀按鈕的 `href`、`download` 屬性，改讀
+  `data-kit-href`、`data-kit-download`。
+
 ## kitDesign 0.5.1 (2026-11-01)
 
 ### 修正

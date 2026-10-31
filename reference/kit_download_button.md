@@ -59,8 +59,9 @@ kit_download_button(
 
 ## Value
 
-`<a class="btn btn-default kit-download" download="檔名">` (`download`
-holds the file name).
+`<button type="button" class="btn btn-default kit-download" data-kit-href="網址" data-kit-download="檔名">`
+(`data-kit-href` is the download URL, `data-kit-download` the file
+name).
 
 ## Details
 
@@ -72,6 +73,14 @@ and the response is 500 with the same sentence. Messages from
 [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)
 are shown to the user as written; other errors do not expose internal
 messages.
+
+The button is a `<button>`, not a link: the URL and the file name are in
+`data-kit-href` and `data-kit-download`, and `kit.js` (loaded by
+[`use_kit()`](https://jiewentsai.github.io/kitDesign/reference/use_kit.md))
+fetches the file in the background and saves it, so the page never
+leaves. Browser extensions that take over links on the page (some
+"document viewer" add-ons do, and the download then fails with "Not
+Found") find nothing to take.
 
 `Content-Type` follows the extension: `.csv`, `.zip`, and `.html` get
 their own MIME types; everything else (`.sav`, `.csv.gz`) is

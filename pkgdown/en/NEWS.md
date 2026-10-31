@@ -2,11 +2,10 @@
 
 ## 修正
 
-* Firefox: clicking a download button showed the "leave page" warning (`kit_unload_guard()`); choosing
-  "Leave Page" really left the page, the connection closed, and the download was Not Found. The warning
-  is now skipped after a download click until the page gets focus again or 2 minutes pass (Firefox fires
-  it when the server starts sending the file, which takes seconds for a plot). Chrome and Safari never
-  showed it.
+* Firefox: clicking a download button showed the "leave page" warning; choosing Leave Page really left
+  the page, the connection closed, and the download was Not Found. Downloads no longer leave the page:
+  `kit.js` fetches the file in the background and saves it (in every browser). While downloading the
+  button is dimmed and cannot be clicked again (`.kit-downloading`).
 
 # kitDesign 0.5.0 (2026-11-01)
 

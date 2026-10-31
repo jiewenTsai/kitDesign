@@ -67,8 +67,10 @@ KIT 的 R
 - **R 程式碼的字串只能用 ASCII**（R CMD check 的規定），中文寫成
   `\uXXXX`。寫的時候直接寫中文， 改完跑
   `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`：它會換成
-  `\uXXXX`，並在上一行留一行 「`# 原文：…`」。註解、roxygen
-  說明、測試可以直接寫中文。
+  `\uXXXX`，並在上一行留一行 「`# 原文：…`」。註解、測試可以直接寫中文。
+- **函式說明（roxygen）用英文**：R 裡的 `?函式`
+  與英文網站都讀它。kitDesign 的中文說明另外放在
+  `pkgdown/zh/man/`（中文網站用），改了英文說明，中文那一頁要跟著改。
 - Windows 上 R 4.2 起才全面用 UTF-8：中文檔名、中文欄名要求 R 4.2
   以上（kitverse 會檢查）。
 

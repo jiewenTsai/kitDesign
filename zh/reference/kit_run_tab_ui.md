@@ -221,7 +221,7 @@ if (interactive()) {
         progress = "正在疊加資料…",
         run = function() data.frame(wave = seq_len(input$n)),
         done = function(res) kit_done_status(paste0("疊加完成：", nrow(res), " 列。")),
-        details = function(res) kit_detail("結果預覽", kit_static_table(res)),
+        details_ui = function(res) kit_detail("結果預覽", kit_static_table(res)),
         code = function() "stacked <- dplyr::bind_rows(t1, t2, .id = \"wave\")"
       )
       list(state = tab$state)

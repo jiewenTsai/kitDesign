@@ -1,7 +1,7 @@
 # htmlDependency for the logo files (inst/logo/): the header SVG and tab icon are fetched by URL
 
 htmlDependency for the logo files (inst/logo/): the header SVG and tab
-icon are fetched by URL.
+icon are fetched by URL
 
 ## Usage
 

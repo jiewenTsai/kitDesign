@@ -55,7 +55,7 @@ kit_code_blocks(list(
 #>   <button type="button" class="btn btn-sm btn-outline-secondary kit-copy">複製</button>
 #> </div>
 #> <pre><code>joined &lt;- merge(t1, t2, by = "id", all.x = TRUE)</code></pre>
-kit_code_blocks(c("kits 版" = "fit <- kits::kits_calibrate(resp)"))  # "kits version"
+kit_code_blocks(c("kits 版" = "fit <- kits::kits_calibrate(resp)"))
 #> <p class="kit-hint">以下程式碼依你目前的設定產生，是簡化的示範。</p>
 #> <div class="kit-code-head">
 #>   <strong>kits 版</strong>

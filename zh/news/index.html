@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,15 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.1" id="kitdesign-051-2026-11-01">kitDesign 0.5.1 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-051-2026-11-01"></a></h2>
+<div class="section level3">
+<h3 id="修正-0-5-1">修正<a class="anchor" aria-label="anchor" href="#%E4%BF%AE%E6%AD%A3-0-5-1"></a></h3>
+<ul><li>Firefox：按下載按鈕時會跳出「離開前提醒」，按「離開」後頁面真的離開、連線斷掉，下載變成 Not Found。現在下載不離開頁面：<code>kit.js</code> 在背景用 <code>fetch()</code> 拿檔案，再直接存檔（所有瀏覽器都一樣）。 下載中按鈕變淡、不能重複按（<code>.kit-downloading</code>）。</li>
+<li>
+<code><a href="../reference/kitDesign-package.html">?kitDesign</a></code> 與所有函式的說明改成英文（R 裡的說明、英文網站）。中文說明放在 <code>pkgdown/zh/man/</code>，中文網站照用。</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="kitdesign-050-2026-11-01">kitDesign 0.5.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-050-2026-11-01"></a></h2>
 <p>minor：版本行可以寫 app 的名稱；現有的 app 不用改，畫面也不會變。</p>

@@ -1,7 +1,7 @@
 # "還差" ("Still needed"): the sentence shown when there are not enough files
 
 "還差" ("Still needed"): the sentence shown when there are not enough
-files.
+files
 
 ## Usage
 

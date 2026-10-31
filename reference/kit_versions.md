@@ -28,6 +28,6 @@ A named character vector, for example
 
 ``` r
 kit_versions()
-#>    kitDesign 
-#> "0.5.0.9000" 
+#> kitDesign 
+#>   "0.5.1" 
 ```

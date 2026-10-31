@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -233,8 +233,11 @@ API。</li>
 的規定），中文寫成 <code>\uXXXX</code>。寫的時候直接寫中文， 改完跑
 <code>LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R</code>：它會換成
 <code>\uXXXX</code>，並在上一行留一行
-「<code># 原文：…</code>」。註解、roxygen
-說明、測試可以直接寫中文。</li>
+「<code># 原文：…</code>」。註解、測試可以直接寫中文。</li>
+<li>
+<strong>函式說明（roxygen）用英文</strong>：R 裡的
+<code>?函式</code> 與英文網站都讀它。kitDesign 的中文說明另外放在
+<code>pkgdown/zh/man/</code>（中文網站用），改了英文說明，中文那一頁要跟著改。</li>
 <li>Windows 上 R 4.2 起才全面用 UTF-8：中文檔名、中文欄名要求 R 4.2
 以上（kitverse 會檢查）。</li>
 </ul>

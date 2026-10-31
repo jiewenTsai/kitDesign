@@ -28,45 +28,44 @@ kit_header(
 
 - title:
 
-  The tool name (the header h1, also the browser tab title), e.g. "KIT
-  資料串接工具" ("KIT data join tool").
+  The tool name (the header's h1, also the browser tab title), for
+  example "KIT 資料串接工具" ("KIT data join tool").
 
 - subtitle:
 
-  The subtitle (bold), e.g. the database name "臺灣幼兒發展調查資料庫"
-  (the KIT database).
+  The subtitle (bold), for example the database name
+  "臺灣幼兒發展調查資料庫" (the KIT database).
 
 - tagline:
 
-  A phrase after the subtitle (e.g. "跨波次資料處理", "cross-wave data
-  processing"); `NULL` shows nothing.
+  A phrase after the subtitle (for example "跨波次資料處理", "cross-wave
+  data processing"); `NULL` shows nothing.
 
 - version, date:
 
-  Version and date for the header's version line, usually read from the
-  app's own DESCRIPTION: `kit_app_description("kitJoin")`.
+  The version and date on the header's version line, usually read from
+  the app's own DESCRIPTION: `kit_app_description("kitJoin")`.
 
 - meta_extra:
 
-  Text appended to the version line (e.g. "kits 0.25.0").
+  Text added after the version line (for example "kits 0.25.0").
 
 - logo:
 
   Whether the header shows the brand logo (KIT's is the bean plus the
-  KIT wordmark): `TRUE` (the logo file is served by an htmlDependency;
-  for use in Shiny), `"inline"` (the logo is written into the page, for
-  a standalone HTML file without Shiny, such as a user manual), or
-  `FALSE`.
+  KIT wordmark): `TRUE` (the logo file comes from an htmlDependency; use
+  in Shiny), `"inline"` (the logo is written into the page, for single
+  HTML files without Shiny, such as user manuals), or `FALSE`.
 
 - show_kitdesign:
 
-  Whether to append the kitDesign version to the version line
-  ("kitDesign 0.1.0"), so both versions are visible when reporting a
-  problem.
+  Whether to add the kitDesign version after the version line
+  ("kitDesign 0.1.0"), so both versions are visible when someone reports
+  a problem.
 
 - brand:
 
-  The brand: logo, tab icon, colors
+  The brand: logo, tab icon, and colors
   ([`kit_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_brand.md)).
   Defaults to
   [`kit_current_brand()`](https://jiewentsai.github.io/kitDesign/reference/kit_current_brand.md):
@@ -98,7 +97,7 @@ kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", taglin
            version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #> <div class="kit-header mb-4">
 #>   <div class="kit-header-row">
-#>     <img src="kitDesign-logo-0.5.0.9000/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
+#>     <img src="kitDesign-logo-0.5.1/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
 #>     <div>
 #>       <h1>KIT 資料串接工具</h1>
 #>       <p>

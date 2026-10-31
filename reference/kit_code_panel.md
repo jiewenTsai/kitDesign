@@ -37,7 +37,7 @@ kit_code_panel(output_id, title = "用 R 怎麼做", open = FALSE)
 ## Examples
 
 ``` r
-kit_details_row(kit_detail("預覽", "…"), kit_code_panel("code"))  # "Preview"
+kit_details_row(kit_detail("預覽", "…"), kit_code_panel("code"))
 #> <div class="kit-details">
 #>   <details class="kit-detail">
 #>     <summary>預覽</summary>

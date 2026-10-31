@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,8 +241,14 @@ check rule); write Chinese as <code>\uXXXX</code>. Write Chinese
 directly while coding, then run
 <code>LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R</code>: it
 converts to <code>\uXXXX</code> and leaves a line
-“<code># 原文：…</code>” (“original text: …”) above it. Comments,
-roxygen docs, and tests can use Chinese directly.</li>
+“<code># 原文：…</code>” (“original text: …”) above it. Comments and
+tests can use Chinese directly.</li>
+<li>
+<strong>Function help (roxygen) is in English</strong>:
+<code>?function</code> in R and the English website both read it.
+kitDesign’s Chinese help is kept in <code>pkgdown/zh/man/</code> (for
+the Chinese website); when the English help changes, update the Chinese
+page too.</li>
 <li>On Windows, R uses UTF-8 throughout only from R 4.2: Chinese file
 names and Chinese column names require R 4.2 or later (kitverse checks
 this).</li>

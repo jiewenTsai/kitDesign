@@ -66,7 +66,7 @@ holds the file name).
 
 The file is written only when the user clicks download (`content(file)`,
 which can read reactives). If writing fails: the error goes to the log
-(" 下載失敗（檔名）：…", "\<app\> download failed (file name): …"), this
+(" 下載失敗（檔名）：…", " download failed (file name): …"), this
 session shows a red notification (which does not disappear on its own),
 and the response is 500 with the same sentence. Messages from
 [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md)

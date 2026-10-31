@@ -75,7 +75,11 @@ language](https://jiewentsai.github.io/kitDesign/articles/design-language.md).
   Chinese as `\uXXXX`. Write Chinese directly while coding, then run
   `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`: it converts to
   `\uXXXX` and leaves a line “`# 原文：…`” (“original text: …”) above
-  it. Comments, roxygen docs, and tests can use Chinese directly.
+  it. Comments and tests can use Chinese directly.
+- **Function help (roxygen) is in English**: `?function` in R and the
+  English website both read it. kitDesign’s Chinese help is kept in
+  `pkgdown/zh/man/` (for the Chinese website); when the English help
+  changes, update the Chinese page too.
 - On Windows, R uses UTF-8 throughout only from R 4.2: Chinese file
   names and Chinese column names require R 4.2 or later (kitverse checks
   this).

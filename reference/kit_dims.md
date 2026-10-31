@@ -1,6 +1,6 @@
 # Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns")
 
-Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns").
+Dimension text: "5 列 × 7 欄" ("5 rows × 7 columns")
 
 ## Usage
 

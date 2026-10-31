@@ -37,7 +37,7 @@ kit_brand(
 - logo_alt:
 
   Alt text for the logo; when `NULL`, "KIT 標誌" ("KIT logo") for KIT,
-  or " 標誌" ("\<name\> logo").
+  or " 標誌" (" logo").
 
 - colors:
 
@@ -79,9 +79,9 @@ follows KIT:
 | `accent_light` | `--nb-bg-new` | `#e8f0a0` | light main color: new columns in diagrams, light end of the color scale |
 | `primary` | `--nb-green` | `#006835` | links, checkboxes, progress bars, dark end of the color scale |
 | `primary_hover` | `--nb-green-hover` | `#004d27` | link hover |
-| `success` | `--nb-mint` | `#b9f0a8` | \[done\] |
-| `warning` | `--nb-yellow` | `#ffde59` | \[done, but take note\] |
-| `danger` | `--nb-salmon` | `#ff9b8f` | \[stopped\], danger button |
+| `success` | `--nb-mint` | `#b9f0a8` | 【完成】 (done) |
+| `warning` | `--nb-yellow` | `#ffde59` | 【完成，但請注意】 (done, but take note) |
+| `danger` | `--nb-salmon` | `#ff9b8f` | 【停下來】 (stopped), danger button |
 | `info` | `--nb-sky` | `#a8dcff` | info callout |
 
 If only `accent` is given, `accent_light` is derived from it (mixed with

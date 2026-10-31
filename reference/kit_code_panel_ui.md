@@ -59,7 +59,7 @@ kit_code_panel_server(
 
 [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md),
 [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md)
-(low level)
+(low-level)
 
 ## Examples
 

@@ -1,7 +1,7 @@
 # Put wide tables in here: they scroll sideways in their own box and do not break the layout
 
 Put wide tables in here: they scroll sideways in their own box and do
-not break the layout.
+not break the layout
 
 ## Usage
 

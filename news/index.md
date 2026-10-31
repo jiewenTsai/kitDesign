@@ -1,6 +1,6 @@
 # Changelog
 
-## kitDesign (development version)
+## kitDesign 0.5.1 (2026-11-01)
 
 ### 修正
 
@@ -10,6 +10,10 @@
   `kit.js` fetches the file in the background and saves it (in every
   browser). While downloading the button is dimmed and cannot be clicked
   again (`.kit-downloading`).
+- [`?kitDesign`](https://jiewentsai.github.io/kitDesign/reference/kitDesign-package.md)
+  and every function’s help are now in English (help in R, the English
+  website). The Chinese help is kept in `pkgdown/zh/man/` for the
+  Chinese website.
 
 ## kitDesign 0.5.0 (2026-11-01)
 

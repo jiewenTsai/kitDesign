@@ -1,7 +1,7 @@
 # Open a collapsible section (for example, open the advanced settings after applying a preset)
 
 Open a collapsible section (for example, open the advanced settings
-after applying a preset).
+after applying a preset)
 
 ## Usage
 

@@ -1,7 +1,7 @@
 # One group in the tab bar (for [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md))
 
 One group in the tab bar (for
-[`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md)).
+[`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md))
 
 ## Usage
 

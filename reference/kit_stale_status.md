@@ -1,7 +1,7 @@
 # Old result no longer valid after files or settings change (【要重新執行】, "Run again")
 
 Old result no longer valid after files or settings change
-(【要重新執行】, "Run again").
+(【要重新執行】, "Run again")
 
 ## Usage
 

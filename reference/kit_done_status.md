@@ -23,17 +23,17 @@ kit_done_status(
 
 - warnings:
 
-  Things that need attention (a character vector, or a list of strings
-  and tags). Listed first.
+  Things to watch out for (a character vector, or a list of strings and
+  tags). Listed first.
 
 - notes:
 
-  Extra notes (small gray text).
+  Additional notes (small gray text).
 
 - points:
 
-  Key points of the result (listed after `warnings`; they do not turn
-  the status into "take note").
+  Key results (listed after `warnings`; they do not turn the status into
+  "請注意", "please note").
 
 ## Value
 

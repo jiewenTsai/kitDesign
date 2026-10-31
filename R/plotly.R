@@ -99,8 +99,8 @@ kit_chart_sequential <- function(brand = kit_current_brand()) {
 #'   (#d9d4c5), ticks outside; no frame on four sides (`mirror = FALSE`, and the black frame kits
 #'   draws around each small chart is removed; KIT design language: no frames inside frames). When
 #'   axis titles and ticks do not fit, the margins widen automatically (`automargin`).
-#' - **Background**: white (the chart sits in a white card); downloaded PNGs also have a white
-#'   background.
+#' - **Background**: white (the chart sits in a white card); downloaded PNGs and SVGs also have a
+#'   white background.
 #' - **Colors**: `colorway` is Okabe–Ito ([kit_chart_colors()]). plotly's own default colors are
 #'   replaced with the Okabe–Ito color in the same position; **colors set by kits or kitsUI stay
 #'   unchanged** (kitsUI's role colors and category recoloring are kept).
@@ -109,9 +109,13 @@ kit_chart_sequential <- function(brand = kit_current_brand()) {
 #'   text and outline always get the new look.
 #' - **Hover box**: white background, `nb-ink` border, the app's typeface.
 #' - **Legend**: the app's typeface, no border. For position, see `legend`.
-#' - **Toolbar**: no plotly logo; only "download as PNG" (white background, 2x resolution), zoom
-#'   in, zoom out, and reset to the original range remain; interface text is Traditional Chinese
-#'   (`zh-TW`).
+#' - **Toolbar**: no plotly logo; only "download PNG", "download SVG", zoom in, zoom out, and reset
+#'   to the original range remain; interface text is Traditional Chinese (`zh-TW`). The PNG is
+#'   always 2100 pixels wide (7 inches at 300 dpi; the aspect ratio is the one on screen) and the
+#'   file says 300 dpi, so it is 7 inches wide when inserted in Word. The SVG is a vector image for
+#'   journals that want 600 dpi or more, EPS or PDF; its text uses the fonts on the computer that
+#'   opens it (the rounded typeface is a web font). Both are made in the browser, not by R, and
+#'   also work in a downloaded HTML file.
 #' - **Margins**: equally small on all sides; plotly widens them automatically when axes, legend,
 #'   or color bar do not fit, so no text is cut off.
 #'
@@ -140,7 +144,8 @@ kit_chart_sequential <- function(brand = kit_current_brand()) {
 #'   when `FALSE`, the original color scale is kept.
 #' @param fonts When `TRUE` (default), attaches the rounded typeface from Google Fonts
 #'   ([kit_plotly_fonts()]), so a downloaded single HTML file also uses the app's typeface.
-#' @param filename The file name (without extension) for the toolbar's "download as PNG".
+#' @param filename The file name (without extension) for the toolbar's "download PNG" and
+#'   "download SVG".
 #' @param font_size Body text size (px); the other sizes are derived from it.
 #' @param brand The brand ([kit_brand()]): the heatmap color scale comes from it
 #'   ([kit_chart_sequential()]). Defaults to [kit_current_brand()] (KIT when not set). Text, axis
@@ -547,7 +552,80 @@ kit_recolor_defaults <- function(x) {
   x
 }
 
-#' Toolbar: no logo; only download PNG (white background), zoom in, zoom out, and reset to the
+# 工具列的兩個下載（瀏覽器端，不經過 R）：
+#   PNG：寬度一律 2100 px（7 吋、300 dpi；長寬比照畫面），檔案裡寫 300 dpi（pHYs），
+#        Word 插進去預設就是 7 吋寬，投稿系統讀到的也是 300 dpi。
+#   SVG：向量圖；文字只記字型名稱，用電腦裡有的字型顯示。
+# 存檔用一個不放進頁面的 <a download>（和 kit.js 的下載一樣，外掛看不到）。
+# 下載的單一 HTML 檔裡也有這兩顆按鈕：程式寫在 config 裡，不靠 kit.js。
+KIT_PLOTLY_PNG_WIDTH <- 2100
+KIT_PLOTLY_PNG_DPI <- 300
+KIT_PLOTLY_SAVE_JS <- "function(gd) {
+  var FMT = '%s', WIDTH = %d, DPI = %d;
+  var o = gd._context.toImageButtonOptions || {}, name = (o.filename || 'plot') + '.' + FMT;
+  var w = gd._fullLayout.width, h = gd._fullLayout.height;
+  var opts = {format: FMT, width: w, height: h};
+  if (FMT === 'png') opts.scale = WIDTH / w;
+  function crc32(b) {
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < b.length; i++) {
+      c ^= b[i];
+      for (var k = 0; k < 8; k++) c = (c & 1) ? (c >>> 1) ^ 0xEDB88320 : c >>> 1;
+    }
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  // PNG pHYs chunk (pixels per metre) right after IHDR; drop any existing one
+  function withDpi(png) {
+    var ppm = Math.round(DPI / 0.0254), d = new Uint8Array(21), v = new DataView(d.buffer);
+    v.setUint32(0, 9); d.set([112, 72, 89, 115], 4); v.setUint32(8, ppm); v.setUint32(12, ppm);
+    d[16] = 1; v.setUint32(17, crc32(d.subarray(4, 17)));
+    var parts = [png.subarray(0, 8)], dv = new DataView(png.buffer), p = 8;
+    while (p + 8 <= png.length) {
+      var end = p + 12 + dv.getUint32(p);
+      var type = String.fromCharCode(png[p + 4], png[p + 5], png[p + 6], png[p + 7]);
+      if (type !== 'pHYs') parts.push(png.subarray(p, end));
+      if (type === 'IHDR') parts.push(d);
+      p = end;
+    }
+    return parts;
+  }
+  Plotly.toImage(gd, opts)
+    .then(function(url) { return fetch(url); })
+    .then(function(r) { return r.arrayBuffer(); })
+    .then(function(buf) {
+      var bytes = new Uint8Array(buf);
+      var blob = new Blob(FMT === 'png' ? withDpi(bytes) : [bytes],
+                          {type: FMT === 'png' ? 'image/png' : 'image/svg+xml'});
+      var href = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = href;
+      a.download = name;
+      a.click();
+      setTimeout(function() { URL.revokeObjectURL(href); }, 60000);
+    })
+    .catch(function(e) { if (window.console) console.error(e); });
+}"
+
+#' A toolbar button that saves the chart as PNG (2100 px wide, 300 dpi) or SVG
+#' @noRd
+kit_plotly_save_button <- function(format = c("png", "svg")) {
+  format <- match.arg(format)
+  title <- switch(format,
+    # 原文：下載 PNG（7 吋寬、300 dpi）
+    png = "\u4e0b\u8f09 PNG\uff087 \u540b\u5bec\u3001300 dpi\uff09",
+    # 原文：下載 SVG 向量圖（文字用電腦裡有的字型）
+    svg = "\u4e0b\u8f09 SVG \u5411\u91cf\u5716\uff08\u6587\u5b57\u7528\u96fb\u8166\u88e1\u6709\u7684\u5b57\u578b\uff09")
+  icon <- switch(format,
+    png = "Plotly.Icons.camera",
+    svg = "(Plotly.Icons.drawopenpath || Plotly.Icons.disk)")
+  list(
+    name = paste0("kit_save_", format),
+    title = title,
+    icon = htmlwidgets::JS(icon),
+    click = htmlwidgets::JS(sprintf(KIT_PLOTLY_SAVE_JS, format, KIT_PLOTLY_PNG_WIDTH, KIT_PLOTLY_PNG_DPI))
+  )
+}
+
+#' Toolbar: no logo; download PNG (300 dpi), download SVG, zoom in, zoom out, and reset to the
 #' original range; Traditional Chinese
 #' @noRd
 kit_plotly_config <- function(p, xy, filename) {
@@ -557,10 +635,12 @@ kit_plotly_config <- function(p, xy, filename) {
   cfg <- p$x$config %||% list()
   cfg$modeBarButtonsToAdd <- NULL
   cfg$modeBarButtonsToRemove <- NULL
-  buttons <- if (xy) c("toImage", "zoomIn2d", "zoomOut2d", "resetScale2d") else "toImage"
-  cfg$modeBarButtons <- list(as.list(buttons))
+  save <- list(kit_plotly_save_button("png"), kit_plotly_save_button("svg"))
+  zoom <- if (xy) list("zoomIn2d", "zoomOut2d", "resetScale2d") else list()
+  cfg$modeBarButtons <- list(c(save, zoom))
   cfg$displaylogo <- FALSE
-  cfg$toImageButtonOptions <- list(format = "png", filename = filename, scale = 2)
+  # 檔名給上面兩顆按鈕用（plotly 自己的「下載成 PNG」已經拿掉）
+  cfg$toImageButtonOptions <- list(format = "png", filename = filename)
   p$x$config <- cfg
   p
 }

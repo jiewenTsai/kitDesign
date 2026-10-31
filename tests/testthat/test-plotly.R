@@ -149,9 +149,20 @@ test_that("config: no logo, a short modebar, PNG on white, zh-TW", {
   out <- kit_plotly_style(two_panels(), filename = "wright")
   cfg <- out$x$config
   expect_false(cfg$displaylogo)
-  expect_equal(cfg$modeBarButtons, list(list("toImage", "zoomIn2d", "zoomOut2d", "resetScale2d")))
+  bar <- cfg$modeBarButtons[[1]]
+  expect_length(cfg$modeBarButtons, 1)
+  expect_equal(bar[3:5], list("zoomIn2d", "zoomOut2d", "resetScale2d"))
+  expect_equal(vapply(bar[1:2], `[[`, "", "name"), c("kit_save_png", "kit_save_svg"))
+  expect_equal(bar[[1]]$title, "下載 PNG（7 吋寬、300 dpi）")
+  expect_match(bar[[2]]$title, "^下載 SVG")
+  for (b in bar[1:2]) {
+    expect_s3_class(b$click, "JS_EVAL")
+    expect_s3_class(b$icon, "JS_EVAL")
+  }
+  expect_match(bar[[1]]$click, "var FMT = 'png', WIDTH = 2100, DPI = 300;", fixed = TRUE)
+  expect_match(bar[[2]]$click, "var FMT = 'svg'", fixed = TRUE)
   expect_null(cfg$modeBarButtonsToAdd)
-  expect_equal(cfg$toImageButtonOptions, list(format = "png", filename = "wright", scale = 2))
+  expect_equal(cfg$toImageButtonOptions, list(format = "png", filename = "wright"))
   expect_equal(cfg$locale, "zh-TW")
   deps <- vapply(out$dependencies, function(d) d$name, "")
   expect_true("plotly-locale-zh-TW" %in% deps)
@@ -159,7 +170,8 @@ test_that("config: no logo, a short modebar, PNG on white, zh-TW", {
   expect_equal(out$x$layout$paper_bgcolor, "#FFFFFF")
   # 沒有 x、y 軸的圖：只留下載
   pie <- kit_plotly_style(plotly::plot_ly(labels = c("a", "b"), values = 1:2, type = "pie"))
-  expect_equal(pie$x$config$modeBarButtons, list(list("toImage")))
+  expect_equal(vapply(pie$x$config$modeBarButtons[[1]], `[[`, "", "name"),
+               c("kit_save_png", "kit_save_svg"))
 })
 
 test_that("legend: the rule, the opt-out, and the browser-side data", {

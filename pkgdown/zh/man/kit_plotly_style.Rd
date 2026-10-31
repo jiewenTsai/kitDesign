@@ -30,7 +30,7 @@ kit_plotly_style(
 \item{fonts}{\code{TRUE}（預設）時附上 Google Fonts 的圓體（\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}），
 下載的單一 HTML 檔也是 app 的字型。}
 
-\item{filename}{工具列「下載成 PNG」的檔名（不含副檔名）。}
+\item{filename}{工具列「下載 PNG」、「下載 SVG」的檔名（不含副檔名）。}
 
 \item{font_size}{內文字級（px）；其他字級跟著它算。}
 
@@ -55,7 +55,7 @@ plotly 圖（\code{plotly_build()} 過的）。
 軸線 \code{nb-ink} 1.5px、格線 \code{line-soft}（#e3ded2）、零線 \code{line}（#d9d4c5）、
 刻度朝外；不畫四邊的框（\code{mirror = FALSE}，並拿掉 kits 畫在每個小圖外面的黑框；
 KIT 設計語言：框裡面不再有框）。軸的標題與刻度放不下時自動加寬邊界（\code{automargin}）。
-\item \strong{底色}：白（圖放在白色卡片裡）；下載的 PNG 也是白底。
+\item \strong{底色}：白（圖放在白色卡片裡）；下載的 PNG、SVG 也是白底。
 \item \strong{顏色}：\code{colorway} 是 Okabe–Ito（\code{\link[=kit_chart_colors]{kit_chart_colors()}}）。plotly 自己給的預設色換成
 Okabe–Ito 同一個位置的顏色；\strong{kits 或 kitsUI 指定的顏色不動}（kitsUI 的角色色、
 類別換色都保留）。
@@ -63,8 +63,10 @@ Okabe–Ito 同一個位置的顏色；\strong{kits 或 kitsUI 指定的顏色�
 \code{\link[=kit_chart_sequential]{kit_chart_sequential()}}（極淡萊姆 → 淡萊姆 → KIT 綠）；色條的字、外框一律換樣子。
 \item \strong{滑過的說明框}：白底、\code{nb-ink} 框、app 的字型。
 \item \strong{圖例}：app 的字型、沒有框。位置見 \code{legend}。
-\item \strong{工具列}：沒有 plotly 的標誌；只留「下載成 PNG」（白底、2 倍解析度）、放大、縮小、
-回到原來的範圍；介面文字是繁體中文（\code{zh-TW}）。
+\item \strong{工具列}：沒有 plotly 的標誌；只留「下載 PNG」、「下載 SVG」、放大、縮小、
+回到原來的範圍；介面文字是繁體中文（\code{zh-TW}）。PNG 一律 2100 像素寬（7 吋、300 dpi；長寬比照畫面），
+檔案裡寫 300 dpi，插進 Word 預設就是 7 吋寬。SVG 是向量圖，給要 600 dpi 以上、EPS 或 PDF 的期刊；
+文字用打開它的電腦裡有的字型（圓體是網頁字型）。兩個都在瀏覽器裡做，不經過 R；下載的 HTML 檔裡也能用。
 \item \strong{邊界}：上下左右一樣小，軸、圖例、色條放不下時 plotly 自動加寬；不會切到字。
 }
 

@@ -34,7 +34,8 @@ when \code{FALSE}, the original color scale is kept.}
 \item{fonts}{When \code{TRUE} (default), attaches the rounded typeface from Google Fonts
 (\code{\link[=kit_plotly_fonts]{kit_plotly_fonts()}}), so a downloaded single HTML file also uses the app's typeface.}
 
-\item{filename}{The file name (without extension) for the toolbar's "download as PNG".}
+\item{filename}{The file name (without extension) for the toolbar's "download PNG" and
+"download SVG".}
 
 \item{font_size}{Body text size (px); the other sizes are derived from it.}
 
@@ -64,8 +65,8 @@ Wright map): axis line \code{nb-ink} 1.5px, grid lines \code{line-soft} (#e3ded2
 (#d9d4c5), ticks outside; no frame on four sides (\code{mirror = FALSE}, and the black frame kits
 draws around each small chart is removed; KIT design language: no frames inside frames). When
 axis titles and ticks do not fit, the margins widen automatically (\code{automargin}).
-\item \strong{Background}: white (the chart sits in a white card); downloaded PNGs also have a white
-background.
+\item \strong{Background}: white (the chart sits in a white card); downloaded PNGs and SVGs also have a
+white background.
 \item \strong{Colors}: \code{colorway} is Okabe–Ito (\code{\link[=kit_chart_colors]{kit_chart_colors()}}). plotly's own default colors are
 replaced with the Okabe–Ito color in the same position; \strong{colors set by kits or kitsUI stay
 unchanged} (kitsUI's role colors and category recoloring are kept).
@@ -74,9 +75,13 @@ switch to \code{\link[=kit_chart_sequential]{kit_chart_sequential()}} (very ligh
 text and outline always get the new look.
 \item \strong{Hover box}: white background, \code{nb-ink} border, the app's typeface.
 \item \strong{Legend}: the app's typeface, no border. For position, see \code{legend}.
-\item \strong{Toolbar}: no plotly logo; only "download as PNG" (white background, 2x resolution), zoom
-in, zoom out, and reset to the original range remain; interface text is Traditional Chinese
-(\code{zh-TW}).
+\item \strong{Toolbar}: no plotly logo; only "download PNG", "download SVG", zoom in, zoom out, and reset
+to the original range remain; interface text is Traditional Chinese (\code{zh-TW}). The PNG is
+always 2100 pixels wide (7 inches at 300 dpi; the aspect ratio is the one on screen) and the
+file says 300 dpi, so it is 7 inches wide when inserted in Word. The SVG is a vector image for
+journals that want 600 dpi or more, EPS or PDF; its text uses the fonts on the computer that
+opens it (the rounded typeface is a web font). Both are made in the browser, not by R, and
+also work in a downloaded HTML file.
 \item \strong{Margins}: equally small on all sides; plotly widens them automatically when axes, legend,
 or color bar do not fit, so no text is cut off.
 }

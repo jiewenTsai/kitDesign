@@ -10,7 +10,8 @@ kit_plotly_style(
   colorscale = TRUE,
   fonts = TRUE,
   filename = "kit-chart",
-  font_size = 15
+  font_size = 15,
+  brand = kit_current_brand()
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ kit_plotly_style(
 \item{filename}{工具列「下載成 PNG」的檔名（不含副檔名）。}
 
 \item{font_size}{內文字級（px）；其他字級跟著它算。}
+
+\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）：熱圖的色階從它來（\code{\link[=kit_chart_sequential]{kit_chart_sequential()}}）。
+預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。字、軸線、底色維持設計語言的墨色與白色。}
 }
 \value{
 plotly 圖（\code{plotly_build()} 過的）。

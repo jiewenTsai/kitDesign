@@ -33,6 +33,19 @@ remotes::install_local(upgrade = "always")
 
 - 頁面在 `R/app.R`，每個分頁一個模組（`R/page_*.R`）。
 - 元件與規則：kitDesign 的 `kit_gallery()` 與 `brand/KIT設計語言.md`。
+- 不是 KIT 的計畫：換標誌與顏色，其他照設計語言。標誌檔放在 `inst/`，在 `R/app.R` 的
+  `kit_page()` 加上 `brand =`：
+
+  ```r
+  kitDesign::kit_page(
+    "{{title}}", "{{subtitle}}",
+    brand = kitDesign::kit_brand(
+      "我的研究室", logo = system.file("logo.svg", package = "{{package}}"),
+      colors = list(accent = "#9cc0ff", primary = "#1f4fa3")
+    ),
+    ...
+  )
+  ```
 - 升級 kitDesign：改 DESCRIPTION 的 `Remotes: jiewenTsai/kitDesign@vX.Y.Z` 與
   `Imports: kitDesign (>= X.Y.Z)`，跑測試，再重新產生 `manifest.json`。
 - 測試：`testthat::test_local()`。

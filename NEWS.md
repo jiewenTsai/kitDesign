@@ -1,3 +1,35 @@
+# kitDesign 0.3.0 (2026-10-31)
+
+minor：新的函式與選項，舊的 app 不用改；KIT 的畫面一模一樣。
+
+## 元件
+
+* `kit_brand()`：品牌物件（S3），標誌與顏色不再寫死，不是 KIT 的計畫也能用。
+  `kit_brand(name, logo, mark, logo_alt, colors)`：`logo` 是頁首的標誌、`mark` 是瀏覽器分頁的
+  圖示（SVG 或 PNG；檔案在建立時讀進來）；`colors` 用設計語言的名稱換顏色：
+  `ink`、`page`、`card`、`accent`（`--nb-lime`）、`accent_light`（`--nb-bg-new`）、
+  `primary`（`--nb-green`）、`primary_hover`（`--nb-green-hover`）、`success`（`--nb-mint`）、
+  `warning`（`--nb-yellow`）、`danger`（`--nb-salmon`）、`info`（`--nb-sky`）。
+  不認得的名稱會停下來，列出可以用的名稱。不給參數就是 KIT。
+* `kit_current_brand()`：`options(kitDesign.brand = kit_brand(...))` 設定一次，所有函式都用它；
+  沒有設定時是 KIT。
+* `kit_page()`、`kit_header()`、`kit_theme()`、`kit_colors()`、`kit_chart_sequential()`、
+  `kit_plotly_style()` 多一個 `brand =` 參數（預設 `kit_current_brand()`）：
+  - 頁首的標誌、替代文字、分頁圖示從品牌來；自己的標誌檔在 Shiny 裡由一個只有這些檔的
+    htmlDependency 提供，`logo = "inline"` 時寫成 data URI。
+  - 顏色和 KIT 不同時，頁首多一小段 `<style>html:root { --nb-…: … }</style>`；bslib 主題的
+    `primary`、`link-color`、`body-bg`、`border-color` 也換。KIT 的品牌不放這一段。
+  - 熱圖的色階從品牌來（淡端是 `accent_light` 的極淡色，中間在 Lab 空間內插到 `primary`）；
+    類別色（Okabe–Ito）不換，維持色盲友善。
+* `kit_gallery(brand = "demo")`：用藍色系的示範品牌看所有元件；`tools/check_gallery.R` 的第三個參數
+  `demo` 也是。示範的標誌在 `inst/examples/brand/`。
+* `kit_new_app()` 的 README 多一個 `brand =` 的例子。
+
+## 樣式
+
+* `inst/www/` 的 CSS 不再寫死 KIT 的品牌色：`kit-base.css` 與 `kit-brite.css` 改用 `--nb-*` 變數；
+  `kit-brite.css` 的 `:root` 多兩個變數：`--nb-green-hover`、`--nb-bg-new`。KIT 的值不變，畫面不變。
+
 # kitDesign 0.2.0 (2026-10-31)
 
 minor：新的函式與選項，舊的 app 不用改。

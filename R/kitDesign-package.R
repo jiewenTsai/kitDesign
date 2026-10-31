@@ -24,12 +24,20 @@
 #' 原始碼在 `system.file("examples/gallery", package = "kitDesign")`。
 #'
 #' @param ... 傳給 [shiny::runApp()] 的參數（例如 `port = 7551`、`launch.browser = FALSE`）。
+#' @param brand 用哪個品牌看：`NULL`（預設）是現在的品牌（[kit_current_brand()]，通常是 KIT）；
+#'   `"demo"` 是一個藍色系的示範品牌（看換品牌以後的樣子）；或一個 [kit_brand()]。
 #' @return [shiny::runApp()] 的結果（app 關掉時）。
 #' @examples
 #' if (interactive()) kit_gallery()
+#' if (interactive()) kit_gallery(brand = "demo")
 #' @export
-kit_gallery <- function(...) {
+kit_gallery <- function(..., brand = NULL) {
   dir <- system.file("examples", "gallery", package = "kitDesign")
   if (!nzchar(dir)) stop("Could not find the gallery app. Try re-installing kitDesign.", call. = FALSE)
+  if (identical(brand, "demo")) brand <- kit_brand_demo()
+  if (!is.null(brand)) {
+    old <- options(kitDesign.brand = kit_check_brand(brand))
+    on.exit(options(old), add = TRUE)
+  }
   shiny::runApp(dir, ...)
 }

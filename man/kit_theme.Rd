@@ -4,7 +4,10 @@
 \alias{kit_theme}
 \title{KIT 的 bslib 主題}
 \usage{
-kit_theme()
+kit_theme(brand = kit_current_brand())
+}
+\arguments{
+\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）；預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。}
 }
 \value{
 \code{\link[bslib:bs_theme]{bslib::bs_theme()}} 物件。
@@ -17,11 +20,16 @@ Chiron GoRound TC，程式碼用 JetBrains Mono。兩種字型都由瀏覽器向
 }
 \details{
 通常不用自己呼叫：\code{\link[=kit_page]{kit_page()}} 已經用了它。
+
+顏色從品牌來（\code{\link[=kit_brand]{kit_brand()}}）：\code{primary}、\code{success}、\code{navbar-bg}、\code{link-color} 是品牌的
+\code{primary}，\code{link-hover-color} 是 \code{primary_hover}，\code{body-bg} 是 \code{page}，\code{border-color} 是 \code{ink}。
+\code{info}、\code{warning}、\code{danger}、\code{secondary} 是 Bootstrap 自己用的深色，不跟著品牌換
+（提示框、狀態框的底色在 CSS 的 \verb{--nb-*} 變數裡，跟著品牌換）。
 }
 \examples{
 theme <- kit_theme()
 bslib::theme_bootswatch(theme)
 }
 \seealso{
-\code{\link[=kit_page]{kit_page()}}、\code{\link[=use_kit]{use_kit()}}
+\code{\link[=kit_page]{kit_page()}}、\code{\link[=use_kit]{use_kit()}}、\code{\link[=kit_brand]{kit_brand()}}
 }

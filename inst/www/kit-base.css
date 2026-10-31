@@ -1,18 +1,18 @@
 /* kitDesign：KIT Shiny app 的基本樣式
  *
- * 從 kitJoin 的 kit_css() 與 kit_css_guide() 搬過來（值已經代入 kit_colors()），
- * 再加上 kitsUI 的 kit_css() 才有的程式碼框規則。後面的 kit-brite.css 會蓋過這裡的
+ * 從 kitJoin 的 kit_css() 與 kit_css_guide() 搬過來，再加上 kitsUI 的 kit_css() 才有的
+ * 程式碼框規則。品牌色用 kit-brite.css 的 --nb-* 變數（kit_brand() 可以換）。後面的 kit-brite.css 會蓋過這裡的
  * 一部分設定（例如頁首的漸層、說明框的底色），兩個檔案的順序不能換：
  *   kit-base.css → kit-brite.css → kit-design.css
  */
 
 .kit-header {
-  background: linear-gradient(135deg, #006835 0%, #3a8f45 100%);
+  background: linear-gradient(135deg, var(--nb-green) 0%, color-mix(in srgb, var(--nb-green) 78%, white) 100%);
   color: #fff;
   padding: 1.25rem 1.5rem;
   border-radius: 0.5rem;
-  border-bottom: 4px solid #c6d033;
-  box-shadow: 0 2px 8px rgba(45, 117, 53, 0.2);
+  border-bottom: 4px solid var(--nb-lime);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--nb-green) 20%, transparent);
 }
 .kit-header h1 {
   margin: 0;
@@ -25,11 +25,11 @@
   font-size: 0.95rem;
 }
 .kit-subtitle {
-  color: #e8f0a0;
+  color: var(--nb-bg-new);
   font-weight: 400;
 }
 .nav-tabs .nav-link.active {
-  border-bottom: 3px solid #006835;
+  border-bottom: 3px solid var(--nb-green);
   font-weight: 500;
 }
 .nav-tabs .nav-link {
@@ -113,8 +113,8 @@
   letter-spacing: 0.02em;
 }
 .kit-guide {
-  background: #f1f7ee;
-  border-left: 4px solid #006835;
+  background: color-mix(in srgb, var(--nb-green) 6%, white);
+  border-left: 4px solid var(--nb-green);
   border-radius: 0.375rem;
   padding: 0.9rem 1.1rem;
   margin: 1rem 0;
@@ -131,7 +131,7 @@
 .kit-example summary,
 .kit-status details summary {
   cursor: pointer;
-  color: #006835;
+  color: var(--nb-green);
   font-size: 0.85rem;
 }
 /* 可收合的一整段（標題和 h5 一樣大，預設收起來） */
@@ -161,7 +161,7 @@
 }
 .kit-fold-box details > summary {
   cursor: pointer;
-  color: #006835;
+  color: var(--nb-green);
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
@@ -286,7 +286,7 @@
   text-decoration: underline;
 }
 .kit-callout a {
-  color: #006835;
+  color: var(--nb-green);
 }
 /* 連到 kitJoin 等外部網站的按鈕：維持按鈕的顏色，不加底線、不轉大寫 */
 a.btn.kit-ext-btn,
@@ -353,7 +353,7 @@ a.btn.kit-ext-btn:hover {
   content: '看步驟 ▸';
   margin-left: 0.6rem;
   font-size: 0.85rem;
-  color: #006835;
+  color: var(--nb-green);
   text-decoration: underline;
   white-space: nowrap;
 }

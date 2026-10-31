@@ -1,8 +1,9 @@
 # 元件樣張的畫面檢查：開 gallery、在 1280 與 390 寬截圖，整頁不能左右捲
 #
 # 用法（在套件根目錄）：
-#   LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R [截圖資料夾] [port]
-# 截圖資料夾預設是暫存資料夾。任何一頁 document.documentElement.scrollWidth 不等於視窗寬時，
+#   LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R [截圖資料夾] [port] [kit|demo]
+# 截圖資料夾預設是暫存資料夾。第三個參數 demo：用藍色系的示範品牌（kit_gallery(brand = "demo")）
+# 看換品牌以後的樣子；預設 kit。任何一頁 document.documentElement.scrollWidth 不等於視窗寬時，
 # 結束代碼是 1（CI 或發布前用）。危險按鈕不是鮭魚色（#ff9b8f）、墨色字，或停用的危險按鈕
 # 是鮭魚色時，結束代碼也是 1。
 # 需要：chromote（和它用的 Chrome）、processx。先把這個資料夾的原始碼裝到暫存的 library，
@@ -12,6 +13,8 @@ main <- function() {
 args <- commandArgs(trailingOnly = TRUE)
 out <- if (length(args) >= 1) args[[1]] else file.path(tempdir(), "kitdesign_gallery")
 port <- if (length(args) >= 2) as.integer(args[[2]]) else 7551L
+brand <- if (length(args) >= 3) args[[3]] else "kit"
+stopifnot(brand %in% c("kit", "demo"))
 stopifnot(file.exists("DESCRIPTION"), requireNamespace("chromote", quietly = TRUE),
           requireNamespace("processx", quietly = TRUE))
 dir.create(out, recursive = TRUE, showWarnings = FALSE)
@@ -26,7 +29,7 @@ if (status != 0) stop("R CMD INSTALL failed")
 
 # 2. 在背景開 gallery
 env <- c("current", R_LIBS = paste(c(lib, .libPaths()), collapse = .Platform$path.sep),
-         LC_ALL = "en_US.UTF-8")
+         LC_ALL = "en_US.UTF-8", KITDESIGN_GALLERY_BRAND = brand)
 log <- file.path(tempdir(), "kitdesign-gallery.log")
 app <- processx::process$new(
   file.path(R.home("bin"), "Rscript"),

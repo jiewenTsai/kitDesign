@@ -13,13 +13,20 @@
 #'
 #' 通常不用自己呼叫：[kit_page()] 已經用了它。
 #'
+#' 顏色從品牌來（[kit_brand()]）：`primary`、`success`、`navbar-bg`、`link-color` 是品牌的
+#' `primary`，`link-hover-color` 是 `primary_hover`，`body-bg` 是 `page`，`border-color` 是 `ink`。
+#' `info`、`warning`、`danger`、`secondary` 是 Bootstrap 自己用的深色，不跟著品牌換
+#' （提示框、狀態框的底色在 CSS 的 `--nb-*` 變數裡，跟著品牌換）。
+#'
+#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
 #' @return [bslib::bs_theme()] 物件。
-#' @seealso [kit_page()]、[use_kit()]
+#' @seealso [kit_page()]、[use_kit()]、[kit_brand()]
 #' @examples
 #' theme <- kit_theme()
 #' bslib::theme_bootswatch(theme)
 #' @export
-kit_theme <- function() {
+kit_theme <- function(brand = kit_current_brand()) {
+  col <- kit_check_brand(brand)$colors
   # Bootswatch Brite 從 bslib 0.11.0 起才有：太舊時先停下來，說怎麼修
   # 原文：bslib 版本太舊（ | ），這個 app 需要 0.11.0 以上。請在 R 執行 install.packages(\"bslib\")，再重新開啟。
   if (utils::packageVersion("bslib") < "0.11.0") stop("bslib \u7248\u672c\u592a\u820a\uff08", utils::packageVersion("bslib"), "\uff09\uff0c\u9019\u500b app \u9700\u8981 0.11.0 \u4ee5\u4e0a\u3002\u8acb\u5728 R \u57f7\u884c install.packages(\"bslib\")\uff0c\u518d\u91cd\u65b0\u958b\u555f\u3002", call. = FALSE)
@@ -39,9 +46,9 @@ kit_theme <- function() {
   bslib::bs_theme(
     version = 5,
     bootswatch = "brite",
-    primary = "#006835",
+    primary = col[["primary"]],
     secondary = "#616161",
-    success = "#006835",
+    success = col[["primary"]],
     info = "#2778c4",
     warning = "#d9730d",
     danger = "#d9534f",
@@ -49,15 +56,15 @@ kit_theme <- function() {
     # 全文統一用圓體；標題靠字重（700）和內文分開
     heading_font = kit_font,
     code_font = code_font,
-    "navbar-bg" = "#006835",
-    "body-bg" = "#faf7f0",
+    "navbar-bg" = col[["primary"]],
+    "body-bg" = col[["page"]],
     "headings-font-weight" = 700,
     # neo-brutalism：2px 近黑線條（Brite 預設 2px 純黑）
     "border-width" = "2px",
-    "border-color" = "#141414",
+    "border-color" = col[["ink"]],
     # 連結用 KIT 綠（萊姆色當文字太淡）
-    "link-color" = "#006835",
-    "link-hover-color" = "#004d27",
+    "link-color" = col[["primary"]],
+    "link-hover-color" = col[["primary_hover"]],
     # 內文 1rem（Brite 預設 0.875rem）；html 的基準字級在 kit-brite.css 設成 17px
     "font-size-base" = "1rem"
   )
@@ -108,8 +115,11 @@ kit_pkg_version <- function() {
 #' @param tagline 接在副標後面的一句（例如「跨波次資料處理」）；`NULL` 不顯示。
 #' @param version,date 頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
 #'   `kit_app_description("kitJoin")`。
-#' @param logo 頁首要不要放 KIT 標誌：`TRUE`（標誌檔由 htmlDependency 提供，Shiny 裡用）、
-#'   `"inline"`（標誌直接寫進頁面，給沒有 Shiny 的單一 HTML 檔，例如使用手冊）、`FALSE`。
+#' @param logo 頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：`TRUE`（標誌檔由
+#'   htmlDependency 提供，Shiny 裡用）、`"inline"`（標誌直接寫進頁面，給沒有 Shiny 的
+#'   單一 HTML 檔，例如使用手冊）、`FALSE`。
+#' @param brand 品牌：標誌、分頁圖示、顏色（[kit_brand()]）。預設是 [kit_current_brand()]：
+#'   沒有設定 `options(kitDesign.brand = )` 時是 KIT。
 #' @param meta_extra 版本行後面再接的字（例如「kits 0.25.0」）。
 #' @param show_kitdesign 版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
 #'   回報問題時兩個版本都看得到。
@@ -128,16 +138,17 @@ kit_pkg_version <- function() {
 #' @export
 kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL,
                      date = NULL, logo = TRUE, meta_extra = NULL, window_title = title,
-                     show_kitdesign = FALSE) {
+                     show_kitdesign = FALSE, brand = kit_current_brand()) {
+  brand <- kit_check_brand(brand)
   bslib::page_fluid(
     lang = "zh-Hant-TW",
-    theme = kit_theme(),
+    theme = kit_theme(brand),
     title = window_title,
     use_kit(),
     kit_header(
       title = title, subtitle = subtitle, tagline = tagline,
       version = version, date = date, meta_extra = meta_extra, logo = logo,
-      show_kitdesign = show_kitdesign
+      show_kitdesign = show_kitdesign, brand = brand
     ),
     ...
   )
@@ -219,7 +230,10 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
 #'
 #' 萊姆色塊、黑框、頁首陰影；左邊完整標誌，右邊工具名稱、一行副標、一行版本。
 #' 一個 app 只有一個，放在最上面（[kit_page()] 已經放好了）。也會設定瀏覽器分頁的
-#' 圖示（豆子標誌）。
+#' 圖示（KIT 是豆子標誌）。
+#'
+#' 標誌、分頁圖示、顏色從品牌來（[kit_brand()]）。品牌的顏色和 KIT 不同時，頁首另外放一小段
+#' `<style>`，把不同的 `--nb-*` 變數換掉；KIT 的品牌不放，頁面和以前一樣。
 #'
 #' @inheritParams kit_page
 #' @return `<div class="kit-header mb-4">`。
@@ -228,7 +242,9 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
 #'            version = "0.5.0", date = "2026-10-31")
 #' @export
 kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, date = NULL,
-                       meta_extra = NULL, logo = TRUE, show_kitdesign = FALSE) {
+                       meta_extra = NULL, logo = TRUE, show_kitdesign = FALSE,
+                       brand = kit_current_brand()) {
+  brand <- kit_check_brand(brand)
   sub_line <- if (!is.null(subtitle) || !is.null(tagline)) {
     shiny::p(
       if (!is.null(subtitle)) shiny::tags$span(class = "kit-subtitle", subtitle),
@@ -238,20 +254,25 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
     )
   }
   inline <- identical(logo, "inline")
-  src <- function(file) if (inline) kit_logo_data(file) else kit_logo_file(file)
+  src <- function(f) kit_brand_src(f, brand, inline)
+  icons <- brand$files$icons
+  logo_file <- brand$files$logo
+  css <- kit_brand_css(brand)
   header <- shiny::div(
     class = "kit-header mb-4",
-    # 分頁圖示（favicon）：向量的豆子，舊的瀏覽器用 PNG；Shiny 會把 tags$head() 搬到 <head>
+    # 分頁圖示（favicon）：KIT 是向量的豆子，舊的瀏覽器用 PNG；Shiny 會把 tags$head() 搬到 <head>
     shiny::tags$head(
-      shiny::tags$link(rel = "icon", type = "image/svg+xml", href = src("kit-mark.svg")),
-      shiny::tags$link(rel = "alternate icon", type = "image/png", href = src("kit-mark-64.png"))
+      lapply(seq_along(icons), function(i) {
+        shiny::tags$link(rel = if (i == 1) "icon" else "alternate icon", type = icons[[i]]$type,
+                         href = src(icons[[i]]))
+      }),
+      if (!is.null(css)) shiny::tags$style(css)
     ),
     shiny::div(
       class = "kit-header-row",
-      if (isTRUE(logo) || inline) {
+      if ((isTRUE(logo) || inline) && !is.null(logo_file)) {
         # 向量標誌（SVG）：放大縮小都清楚；檔案由 htmlDependency 提供（inline 時寫進頁面）
-        # 原文：KIT 標誌
-        shiny::tags$img(src = src("kit-logo.svg"), alt = "KIT \u6a19\u8a8c", class = "kit-header-logo")
+        shiny::tags$img(src = src(logo_file), alt = brand$logo_alt, class = "kit-header-logo")
       },
       shiny::div(
         shiny::h1(title),
@@ -261,7 +282,14 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
     )
   )
   if (inline) return(header)
-  htmltools::attachDependencies(header, kit_logo_dependency(), append = TRUE)
+  files <- c(list(logo_file), icons)
+  deps <- c(
+    if (any(vapply(files, function(f) isTRUE(f$builtin), logical(1)))) list(kit_logo_dependency()),
+    list(kit_brand_dependency(brand))
+  )
+  deps <- Filter(Negate(is.null), deps)
+  if (length(deps) == 0) return(header)
+  htmltools::attachDependencies(header, deps, append = TRUE)
 }
 
 #' 標誌檔寫成 data URI（kit_header(logo = "inline") 用）
@@ -353,19 +381,28 @@ kit_base64 <- function(bytes) {
 
 #' KIT 品牌色常數（供自訂 CSS 或圖表使用）
 #'
-#' 和 kitJoin、kitsUI 的 `kit_colors()` 相同的值。介面元件的顏色在 CSS 的 tokens 裡
+#' 和 kitJoin、kitsUI 的 `kit_colors()` 相同的名稱。介面元件的顏色在 CSS 的 tokens 裡
 #' （`var(--nb-lime)` 等，見 `brand/KIT設計語言.md` 的附錄）。
+#' `primary`、`accent`、`subtitle` 從品牌來（[kit_brand()] 的 `primary`、`accent`、
+#' `accent_light`），`primary_light` 是 `primary` 調淡；其他是固定的中性色與舊的提示色。
 #'
+#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
 #' @return 具名 list。
 #' @examples
 #' kit_colors()$primary
 #' @export
-kit_colors <- function() {
+kit_colors <- function(brand = kit_current_brand()) {
+  col <- kit_check_brand(brand)$colors
+  primary_light <- if (identical(col[["primary"]], KIT_BRAND_COLORS[["primary"]])) {
+    "#3a8f45"
+  } else {
+    kit_mix(col[["primary"]], "#ffffff", 0.25)
+  }
   list(
-    primary = "#006835",
-    primary_light = "#3a8f45",
-    accent = "#c6d033",
-    subtitle = "#e8f0a0",
+    primary = col[["primary"]],
+    primary_light = primary_light,
+    accent = col[["accent"]],
+    subtitle = col[["accent_light"]],
     body_bg = "#f5f5f5",
     text_muted = "#424242",
     border = "#e0e0e0",

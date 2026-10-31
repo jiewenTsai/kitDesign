@@ -4,7 +4,10 @@
 \alias{kit_chart_sequential}
 \title{連續數值的色階（Chart）}
 \usage{
-kit_chart_sequential()
+kit_chart_sequential(brand = kit_current_brand())
+}
+\arguments{
+\item{brand}{品牌（\code{\link[=kit_brand]{kit_brand()}}）；預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}（沒有設定時是 KIT）。}
 }
 \value{
 plotly 的 colorscale：\code{list(list(0, "#F3F7D3"), ..., list(1, "#006835"))}。
@@ -13,8 +16,14 @@ plotly 的 colorscale：\code{list(list(0, "#F3F7D3"), ..., list(1, "#006835"))}
 極淡萊姆 → 淡萊姆（\code{bg-new}）→ KIT 綠（\code{nb-green}）：值越大越深。用在熱圖、色條
 （例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。\code{\link[=kit_plotly_style]{kit_plotly_style()}} 預設把熱圖換成這個色階。
 }
+\details{
+色階從品牌來（\code{\link[=kit_brand]{kit_brand()}}）：0 是 \code{accent_light} 再和白色混合的極淡色，0.2 是
+\code{accent_light}，0.2 到 1 在 Lab 空間從 \code{accent_light} 內插到 \code{primary}。KIT 的品牌
+就是上面的值。類別色（\code{\link[=kit_chart_colors]{kit_chart_colors()}}，Okabe–Ito）不跟著品牌換：它們是色盲友善的。
+}
 \examples{
 kit_chart_sequential()
+kit_chart_sequential(kit_brand("Demo", colors = list(accent = "#9cc0ff", primary = "#1f4fa3")))
 }
 \seealso{
 \code{\link[=kit_plotly_style]{kit_plotly_style()}}、\code{\link[=kit_chart_colors]{kit_chart_colors()}}

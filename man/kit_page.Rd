@@ -14,7 +14,8 @@ kit_page(
   logo = TRUE,
   meta_extra = NULL,
   window_title = title,
-  show_kitdesign = FALSE
+  show_kitdesign = FALSE,
+  brand = kit_current_brand()
 )
 }
 \arguments{
@@ -29,8 +30,9 @@ kit_page(
 \item{version, date}{頁首版本行的版本與日期，通常讀 app 自己的 DESCRIPTION：
 \code{kit_app_description("kitJoin")}。}
 
-\item{logo}{頁首要不要放 KIT 標誌：\code{TRUE}（標誌檔由 htmlDependency 提供，Shiny 裡用）、
-\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
+\item{logo}{頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：\code{TRUE}（標誌檔由
+htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的
+單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
 
 \item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
 
@@ -38,6 +40,9 @@ kit_page(
 
 \item{show_kitdesign}{版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
 回報問題時兩個版本都看得到。}
+
+\item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
+沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}
 }
 \value{
 一個完整的頁面（\code{bslib::page_fluid()}）。

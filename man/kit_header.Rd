@@ -12,7 +12,8 @@ kit_header(
   date = NULL,
   meta_extra = NULL,
   logo = TRUE,
-  show_kitdesign = FALSE
+  show_kitdesign = FALSE,
+  brand = kit_current_brand()
 )
 }
 \arguments{
@@ -27,11 +28,15 @@ kit_header(
 
 \item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
 
-\item{logo}{頁首要不要放 KIT 標誌：\code{TRUE}（標誌檔由 htmlDependency 提供，Shiny 裡用）、
-\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
+\item{logo}{頁首要不要放品牌的標誌（KIT 的是豆子＋KIT 字樣）：\code{TRUE}（標誌檔由
+htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的
+單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
 
 \item{show_kitdesign}{版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
 回報問題時兩個版本都看得到。}
+
+\item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
+沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}
 }
 \value{
 \verb{<div class="kit-header mb-4">}。
@@ -39,7 +44,11 @@ kit_header(
 \description{
 萊姆色塊、黑框、頁首陰影；左邊完整標誌，右邊工具名稱、一行副標、一行版本。
 一個 app 只有一個，放在最上面（\code{\link[=kit_page]{kit_page()}} 已經放好了）。也會設定瀏覽器分頁的
-圖示（豆子標誌）。
+圖示（KIT 是豆子標誌）。
+}
+\details{
+標誌、分頁圖示、顏色從品牌來（\code{\link[=kit_brand]{kit_brand()}}）。品牌的顏色和 KIT 不同時，頁首另外放一小段
+\verb{<style>}，把不同的 \verb{--nb-*} 變數換掉；KIT 的品牌不放，頁面和以前一樣。
 }
 \examples{
 kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", tagline = "跨波次資料處理",

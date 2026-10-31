@@ -27,8 +27,9 @@ KIT_PLOTLY_DEFAULT_COLORS <- c(
   "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"
 )
 
-# 連續數值的色階：極淡萊姆 -> 淡萊姆（bg-new）-> KIT 綠（nb-green），中間在 Lab 空間內插。
-# 0 不是白色：沒有施測的空格（NA）是白底，和「0%」分得開
+# 連續數值的色階（KIT）：極淡萊姆 -> 淡萊姆（bg-new）-> KIT 綠（nb-green），中間在 Lab 空間內插。
+# 0 不是白色：沒有施測的空格（NA）是白底，和「0%」分得開。
+# 別的品牌由 kit_chart_sequential() 用同一個算法算出來（KIT 的淡端是手調的 #F3F7D3）
 KIT_CHART_SEQUENTIAL <- list(
   list(0, "#F3F7D3"), list(0.2, "#E8F0A0"), list(0.4, "#B3CC83"),
   list(0.6, "#7FAA68"), list(0.8, "#4B884D"), list(1, "#006835")
@@ -50,12 +51,31 @@ KIT_PLOTLY_NOT_XY <- c(
 #' 極淡萊姆 → 淡萊姆（`bg-new`）→ KIT 綠（`nb-green`）：值越大越深。用在熱圖、色條
 #' （例如作答設計圖的通過比例）。最小值不是白色，所以 0 和沒有資料的空格（白底）看得出來不同。[kit_plotly_style()] 預設把熱圖換成這個色階。
 #'
+#' 色階從品牌來（[kit_brand()]）：0 是 `accent_light` 再和白色混合的極淡色，0.2 是
+#' `accent_light`，0.2 到 1 在 Lab 空間從 `accent_light` 內插到 `primary`。KIT 的品牌
+#' 就是上面的值。類別色（[kit_chart_colors()]，Okabe–Ito）不跟著品牌換：它們是色盲友善的。
+#'
+#' @param brand 品牌（[kit_brand()]）；預設是 [kit_current_brand()]（沒有設定時是 KIT）。
 #' @return plotly 的 colorscale：`list(list(0, "#F3F7D3"), ..., list(1, "#006835"))`。
 #' @seealso [kit_plotly_style()]、[kit_chart_colors()]
 #' @examples
 #' kit_chart_sequential()
+#' kit_chart_sequential(kit_brand("Demo", colors = list(accent = "#9cc0ff", primary = "#1f4fa3")))
 #' @export
-kit_chart_sequential <- function() KIT_CHART_SEQUENTIAL
+kit_chart_sequential <- function(brand = kit_current_brand()) {
+  col <- kit_check_brand(brand)$colors
+  light <- col[["accent_light"]]
+  if (identical(light, KIT_BRAND_COLORS[["accent_light"]]) &&
+      identical(col[["primary"]], KIT_BRAND_COLORS[["primary"]])) {
+    return(KIT_CHART_SEQUENTIAL)
+  }
+  faint <- if (identical(light, KIT_BRAND_COLORS[["accent_light"]])) "#F3F7D3" else
+    toupper(kit_mix(light, "#ffffff", 0.55))
+  ramp <- grDevices::colorRamp(c(light, col[["primary"]]), space = "Lab")
+  mid <- grDevices::rgb(ramp(c(0.25, 0.5, 0.75)), maxColorValue = 255)
+  stops <- c(faint, toupper(light), mid, toupper(col[["primary"]]))
+  lapply(seq_along(stops), function(i) list(c(0, 0.2, 0.4, 0.6, 0.8, 1)[i], stops[[i]]))
+}
 
 #' plotly 圖套上 KIT 的樣子（Chart）
 #'
@@ -105,6 +125,8 @@ kit_chart_sequential <- function() KIT_CHART_SEQUENTIAL
 #'   下載的單一 HTML 檔也是 app 的字型。
 #' @param filename 工具列「下載成 PNG」的檔名（不含副檔名）。
 #' @param font_size 內文字級（px）；其他字級跟著它算。
+#' @param brand 品牌（[kit_brand()]）：熱圖的色階從它來（[kit_chart_sequential()]）。
+#'   預設是 [kit_current_brand()]（沒有設定時是 KIT）。字、軸線、底色維持設計語言的墨色與白色。
 #' @return plotly 圖（`plotly_build()` 過的）。
 #' @seealso [kit_plotly_fonts()]、[kit_chart_colors()]、[kit_chart_sequential()]
 #' @examples
@@ -119,8 +141,9 @@ kit_chart_sequential <- function() KIT_CHART_SEQUENTIAL
 #' @export
 kit_plotly_style <- function(p, legend = c("auto", "bottom", "right", "keep"),
                              colorscale = TRUE, fonts = TRUE, filename = "kit-chart",
-                             font_size = 15) {
+                             font_size = 15, brand = kit_current_brand()) {
   kit_need_plotly("kit_plotly_style()")
+  sequential <- kit_chart_sequential(brand)
   legend <- match.arg(legend)
   if (!inherits(p, "plotly")) {
     # 原文：p 要是 plotly 圖（例如 kits 的 plot() 或 plotly::plot_ly() 畫的圖）。
@@ -203,7 +226,7 @@ kit_plotly_style <- function(p, legend = c("auto", "bottom", "right", "keep"),
     tr <- kit_recolor_defaults(tr)
     heat <- isTRUE((tr$type %||% "") %in% KIT_PLOTLY_HEAT)
     if (heat && colorscale) {
-      tr$colorscale <- KIT_CHART_SEQUENTIAL
+      tr$colorscale <- sequential
       tr$autocolorscale <- FALSE
     }
     if (!is.null(tr$colorbar) || (heat && !isFALSE(tr$showscale))) {

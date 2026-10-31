@@ -5,6 +5,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 每個元件都照「[KIT 設計語言](brand/KIT設計語言.md)」做：看得清楚、按得放心、結果先說。
 
 - 主題：Bootswatch Brite（bslib 0.11.0 以上）＋ KIT 的顏色、圓體 Chiron GoRound TC、等寬 JetBrains Mono。
+- 品牌：標誌與顏色不寫死。預設是 KIT；別的計畫用 `kit_brand()` 換成自己的標誌與配色。
 - 樣式：克制的 neo-brutalism（2px 黑框、硬陰影、平塗色塊配黑字），內文 17px、內容最寬 1140px。
 - 元件：頁首、步驟分頁、頁面說明、按鈕、狀態框、提示框、細節列、用 R 怎麼做、步驟卡、檢查清單、還差什麼、下一步、圖解、資料表、圖（plotly 的樣子）。
 - server 端的小工具：停用主要按鈕並寫還差什麼、執行完捲到狀態框、分頁打 ✓、通知、千分位、白話錯誤。
@@ -16,7 +17,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-只依賴 shiny、bslib（>= 0.11.0）、htmltools。用 `kit_plotly_style()` 時另外要 plotly。
+只依賴 shiny、bslib（>= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 `kit_plotly_style()` 時另外要 plotly。
 
 bslib 太舊（0.11.0 以前沒有 Brite 主題）時 `kit_theme()` 會停下來，說要裝新版。
 安裝 app 時用 `pak::pkg_install("<帳號>/<app>")` 或
@@ -78,6 +79,25 @@ p <- kit_chart_zh(kit_chart_categorical(p))   # kitsUI：換色、換中文（�
 kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖例、工具列
 ```
 
+## 換成別的品牌
+
+不是 KIT 的計畫也可以用：換標誌與顏色，其他（字型、框、陰影、元件）照設計語言。
+在 app 開始時設定一次，所有函式都用它：
+
+```r
+options(kitDesign.brand = kit_brand(
+  "示範實驗室",
+  logo = "logo.svg",                     # 頁首的標誌（SVG 或 PNG）
+  mark = "mark.svg",                     # 瀏覽器分頁的小圖示（方形；沒有給時用 logo）
+  colors = list(accent = "#9cc0ff", primary = "#1f4fa3", page = "#f5f7fa")
+))
+```
+
+或只給一頁：`kit_page(..., brand = kit_brand(...))`。顏色的名稱（`ink`、`page`、`card`、
+`accent`、`accent_light`、`primary`、`primary_hover`、`success`、`warning`、`danger`、`info`）
+和 CSS 變數（`--nb-*`）的對照見 `?kit_brand`。沒有給的照 KIT；`kit_brand()` 不給參數就是 KIT。
+看換了以後的樣子：`kit_gallery(brand = "demo")`。
+
 ## 元件一覽
 
 ### 設定
@@ -89,8 +109,9 @@ kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖�
 | `use_kit()` | 樣式與小程式（htmltools dependency；自己組頁面時用） |
 | `kit_header()`、`kit_app_meta()` | 頁首、版本行 |
 | `kit_app_description()` | 讀 app 的 DESCRIPTION 的 Version、Date |
-| `kit_logo_uri()`、`kit_colors()` | 標誌（data URI）、品牌色 |
-| `kit_gallery()` | 元件樣張 app |
+| `kit_brand()`、`kit_current_brand()` | 品牌：標誌、分頁圖示、顏色（預設 KIT；`options(kitDesign.brand = )`） |
+| `kit_logo_uri()`、`kit_colors()` | KIT 標誌（data URI）、品牌色 |
+| `kit_gallery()` | 元件樣張 app（`brand = "demo"`：看別的品牌） |
 | `kit_new_app()` | 開一個新的 KIT app 套件骨架 |
 | `kit_versions()` | kitDesign 與 app 的版本（回報問題用） |
 
@@ -183,8 +204,9 @@ kit_plotly_style(p)                     # 最後：KIT 的字型、軸線、圖�
 - R 程式碼只能用 ASCII（`R CMD check` 的規定）。字串直接寫中文，改完在套件根目錄跑
   `LC_ALL=en_US.UTF-8 Rscript tools/escape_non_ascii.R`：中文換成 `\uXXXX`，上面加一行「# 原文：…」註解。
 - 樣式在 `inst/www/`：`kit-base.css` → `kit-brite.css` → `kit-design.css`（順序不能換）；小程式在 `inst/www/kit.js`。
-- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.2.0.tar.gz`；
-  畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）。
+- 檢查：`LC_ALL=en_US.UTF-8 R CMD build . && LC_ALL=en_US.UTF-8 R CMD check --no-manual kitDesign_0.3.0.tar.gz`；
+  畫面：`LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R`（1280 與 390 寬截圖，整頁不能左右捲；危險按鈕是鮭魚色）；
+  示範品牌：`Rscript tools/check_gallery.R <資料夾> 7551 demo`。
 - GitHub Actions：`.github/workflows/R-CMD-check.yaml`（push 與 pull request）。
 
 ## 授權

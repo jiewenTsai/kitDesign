@@ -6,9 +6,17 @@
 # 有狀態的元件用模組：步驟分頁（kit_step_tabs_*）、主要按鈕＋還差（kit_run_gate_*）、
 # 步驟卡（kit_stepcards_*）、用 R 怎麼做（kit_code_panel_*）。
 # 狀態框、檢查清單、程式碼是值物件（kit_status、kit_checklist、kit_code），直接放進頁面。
+#
+# 品牌：照 options(kitDesign.brand = ) 畫；看藍色系的示範品牌用 kit_gallery(brand = "demo")，
+# 或設定環境變數 KITDESIGN_GALLERY_BRAND=demo（tools/check_gallery.R 用）。
 
 library(shiny)
 library(kitDesign)
+
+if (identical(Sys.getenv("KITDESIGN_GALLERY_BRAND"), "demo")) {
+  options(kitDesign.brand = kitDesign:::kit_brand_demo())
+}
+brand <- kit_current_brand()
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
@@ -251,13 +259,13 @@ chart_ui <- tagList(
     class = "kit-inline",
     lapply(names(kit_chart_colors()), function(nm) {
       tags$div(
-        tags$div(style = paste0("width:4rem;height:2rem;border:2px solid #141414;border-radius:8px;",
+        tags$div(style = paste0("width:4rem;height:2rem;border:2px solid var(--nb-ink);border-radius:8px;",
                                 "background:", kit_chart_colors()[[nm]])),
         tags$small(class = "kit-hint", nm)
       )
     }),
     tags$div(
-      tags$div(style = paste0("width:4rem;height:2rem;border:2px solid #141414;border-radius:8px;",
+      tags$div(style = paste0("width:4rem;height:2rem;border:2px solid var(--nb-ink);border-radius:8px;",
                               "background:", kit_chart_neutral())),
       tags$small(class = "kit-hint", "neutral")
     )
@@ -272,7 +280,7 @@ chart_ui <- tagList(
 
 ver <- kit_app_description("kitDesign")
 ui <- kit_page(
-  "KIT 元件樣張", "kitDesign",
+  paste(brand$name, "元件樣張"), "kitDesign",
   tagline = "KIT 研究工具共用的介面",
   version = ver$version, date = ver$date, show_kitdesign = TRUE,
   # 模組：分組的步驟分頁

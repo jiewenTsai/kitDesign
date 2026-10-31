@@ -1,6 +1,6 @@
 Package: kitDesign
 Title: Shared 'Shiny' User Interface Components for KIT Research Tools
-Version: 0.2.0
+Version: 0.3.0
 Date: 2026-10-31
 Authors@R: person("KIT", "Join Tool", email = "joinkit@example.com", role = c("aut", "cre"))
 Description: The shared user interface layer of the KIT research tools built
@@ -14,7 +14,8 @@ Description: The shared user interface layer of the KIT research tools built
     for status boxes, checklists and code, 'shiny' modules for the stateful
     pieces (step cards, step tabs, run gate, code panel) and a scaffold for
     new apps. Load it with one call to kit_page() and build the page from
-    kit_*() components.
+    kit_*() components. The logo and the colour palette come from a brand
+    object (kit_brand()), so projects other than KIT can use their own.
 License: MIT + file LICENSE
 URL: https://github.com/jiewenTsai/kitDesign
 BugReports: https://github.com/jiewenTsai/kitDesign/issues
@@ -22,6 +23,7 @@ Encoding: UTF-8
 Depends: R (>= 4.1.0)
 Imports:
     bslib (>= 0.11.0),
+    grDevices,
     htmltools,
     shiny,
     utils

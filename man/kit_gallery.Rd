@@ -4,10 +4,13 @@
 \alias{kit_gallery}
 \title{元件樣張 app}
 \usage{
-kit_gallery(...)
+kit_gallery(..., brand = NULL)
 }
 \arguments{
 \item{...}{傳給 \code{\link[shiny:runApp]{shiny::runApp()}} 的參數（例如 \code{port = 7551}、\code{launch.browser = FALSE}）。}
+
+\item{brand}{用哪個品牌看：\code{NULL}（預設）是現在的品牌（\code{\link[=kit_current_brand]{kit_current_brand()}}，通常是 KIT）；
+\code{"demo"} 是一個藍色系的示範品牌（看換品牌以後的樣子）；或一個 \code{\link[=kit_brand]{kit_brand()}}。}
 }
 \value{
 \code{\link[shiny:runApp]{shiny::runApp()}} 的結果（app 關掉時）。
@@ -18,4 +21,5 @@ kit_gallery(...)
 }
 \examples{
 if (interactive()) kit_gallery()
+if (interactive()) kit_gallery(brand = "demo")
 }

@@ -7,6 +7,7 @@
  * - 主角與配角：每一頁的主要動作（.btn-primary）、結果的狀態框、小節標題、資料表與圖是主角；
  *   「這一頁做什麼」、提示小字、次要按鈕（下載、全選…）是配角，變小、變淡、不加框。
  * - 給 40、50 歲的使用者：內文 17px，內容最寬 1140px 置中。
+ * - 品牌色只寫在下面的 :root；別的品牌（kit_brand()）由頁首的 <style> 換掉這些變數。
  */
 :root {
   --nb-ink: #141414;
@@ -14,6 +15,8 @@
   --nb-card: #ffffff;
   --nb-lime: #c6d033;     /* KIT 點綴色，當主要色塊 */
   --nb-green: #006835;    /* KIT 主色＝標誌的深綠，用在連結與小標籤 */
+  --nb-green-hover: #004d27; /* 連結滑過（Bootstrap 的 link-hover-color 也是它） */
+  --nb-bg-new: #e8f0a0;   /* 淡萊姆：圖解裡新加的欄 */
   --nb-sky: #a8dcff;
   --nb-yellow: #ffde59;
   --nb-salmon: #ff9b8f;
@@ -661,7 +664,7 @@ body > .container-fluid { padding-top: 1rem; }
 .shiny-file-input-progress .progress-bar::after { content: "上傳完成"; font-size: 0.8rem; color: #fff; }
 .shiny-file-input-progress.active .progress-bar::after { content: "上傳中…"; color: var(--nb-ink); }
 /* 27 圖解裡新加的欄用淡萊姆（天藍是「資訊」的顏色） */
-.kit-dg-table .kit-dg-added { background: #e8f0a0; }
+.kit-dg-table .kit-dg-added { background: var(--nb-bg-new); }
 /* 28 步驟卡裡的表頭淡一點（黑表頭留給主要資料表） */
 .kit-stepbody .table > thead > tr > th { background: #f3f0e6; color: var(--nb-ink); border-bottom: 2px solid var(--nb-ink); }
 /* 30 換頁列一行對齊 */

@@ -604,6 +604,29 @@ ui <- kit_page(
 - 版本規則與發布步驟見 [版本與發布.md](版本與發布.md)；kitJoin、kitsUI 的舊名字見 [遷移對照.md](遷移對照.md)。
 - 要新的元件或改樣式時，改 kitDesign（`inst/www/kit-design.css` 與 `R/`），不要在 app 裡另外寫 CSS；只用本系統的 tokens（顏色、`sp-*`、字級），寫之前先看有沒有現成的元件可以用。
 
+### 換成別的品牌
+
+kitDesign 預設是 KIT（萊姆頁首、KIT 綠、豆子標誌）。不是 KIT 的計畫也可以用：換**標誌**與**顏色**，
+其他（字型、框、陰影、間距、元件、文案規則）照這份設計語言。kitDesign 0.3.0 起：
+
+```r
+options(kitDesign.brand = kit_brand(
+  "示範實驗室",
+  logo = "logo.svg",     # 頁首的完整標誌（SVG 或 PNG）
+  mark = "mark.svg",     # 瀏覽器分頁的圖示（方形；沒有給時用 logo）
+  colors = list(accent = "#9cc0ff", primary = "#1f4fa3", page = "#f5f7fa")
+))
+```
+
+- 設定一次，`kit_page()`、`kit_header()`、`kit_theme()`、`kit_colors()`、`kit_chart_sequential()`、
+  `kit_plotly_style()` 都用它；只給一頁時用 `kit_page(..., brand = )`。
+- 可以換的顏色是下面附錄裡有 `--nb-*` 變數的幾個（對照見附錄「顏色」表下面的說明）；沒有給的照 KIT。
+  只給 `accent` 時 `accent_light` 自動算（和白色混合）；只給 `primary` 時 `primary_hover` 自動算（加深）。
+- 換顏色時照樣守這份文件的規則：色塊上的字一律 `ink`，所以 `accent` 與四個狀態色上面放 `ink`
+  要有 4.5:1；`primary` 是連結文字，在 `page` 上也要 4.5:1。四個狀態色最好不換，換的話意思不能變。
+- 灰色（`text-hint`、`line` 等）、焦點框、圖的類別色（Okabe–Ito）不跟著品牌換。
+- 看換了以後的樣子：`kit_gallery(brand = "demo")`（藍色系的示範品牌）。
+
 ## 作者的決定（2026-10-31）
 
 1. **工具名稱**：維持「KIT」。TDCYP 只是測試用資料。
@@ -669,6 +692,14 @@ ui <- kit_page(
 | `chart-vermillion` | `#d55e00` | 圖的類別色第 6 個；超過 6 類從頭再取。 |
 | `chart-neutral` | `#7f7f7f` | 圖裡不分類別的中性色：參考線、帶子、沒有判斷的點。 |
 | `chart-sequential` | `#f3f7d3` → `#e8f0a0` → `#006835` | 連續數值的色階（熱圖、色條）：極淡萊姆（不用白色：白色留給沒有資料的格子）→ 淡萊姆（`bg-new`，在 0.2）→ KIT 綠（`nb-green`），中間在 Lab 空間內插。`kit_chart_sequential()`。 |
+
+**品牌可以換的顏色**（`kit_brand(colors = )` 的名稱 → token → CSS 變數）：
+`ink` → `nb-ink`（`--nb-ink`）、`page` → `nb-page`（`--nb-page`）、`card` → `nb-card`（`--nb-card`）、
+`accent` → `nb-lime`（`--nb-lime`）、`accent_light` → `bg-new`（`--nb-bg-new`）、
+`primary` → `nb-green`（`--nb-green`）、`primary_hover` → `nb-green-hover`（`--nb-green-hover`）、
+`success` → `nb-mint`、`warning` → `nb-yellow`、`danger` → `nb-salmon`、`info` → `nb-sky`（都是 `--` 加上名稱）。
+表裡的值是 KIT 的；別的品牌換掉這幾個，`chart-sequential` 跟著 `accent_light` 與 `primary` 算。
+其他 token 不跟著品牌換。
 
 ### 字級（基準 17px）
 

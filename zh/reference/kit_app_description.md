@@ -46,7 +46,7 @@ kit_app_description(package = NULL, path = NULL)
 ``` r
 kit_app_description("kitDesign")
 #> $version
-#> [1] "0.5.0"
+#> [1] "0.5.0.9000"
 #> 
 #> $date
 #> [1] "2026-11-01"

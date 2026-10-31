@@ -1,5 +1,15 @@
 # Changelog
 
+## kitDesign (development version)
+
+### 修正
+
+- Firefox: clicking a download button showed the “leave page” warning
+  ([`kit_unload_guard()`](https://jiewentsai.github.io/kitDesign/reference/kit_unload_guard.md));
+  choosing “Leave Page” really left the page, the connection closed, and
+  the download was Not Found. The warning is now skipped for 2 seconds
+  after a download click (Chrome and Safari never showed it).
+
 ## kitDesign 0.5.0 (2026-11-01)
 
 minor: the version line can show the app’s name; existing apps need no

@@ -32,5 +32,5 @@ A relative URL, e.g. `"kitDesign-logo-0.1.0/kit-logo.svg"`.
 
 ``` r
 kit_logo_file("kit-logo.svg")
-#> [1] "kitDesign-logo-0.5.0/kit-logo.svg"
+#> [1] "kitDesign-logo-0.5.0.9000/kit-logo.svg"
 ```

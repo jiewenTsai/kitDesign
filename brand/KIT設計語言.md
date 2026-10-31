@@ -1,15 +1,16 @@
-# KIT 設計語言（v1.0）
+# KIT 設計語言（v1.1）
 
 > **看得清楚、按得放心、結果先說。**
 
 KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的設計語言。新的 app 照這份做，使用者學會一個工具，其他工具也會用。
 
 - **配套**：
+  - 實作：R 套件 **kitDesign**（`kit_page()`、元件、模組、`inst/www/` 的 CSS）。這份文件就在 kitDesign 的 `brand/`，以這一份為準。
   - 設計系統（即時樣張、tokens、標誌）：https://claude.ai/artifact/GFN5Q5ie9jAHKwmsBaxb2M （私人，要分享才看得到）
-  - [_brand.yml](_brand.yml)：顏色、字型等設計變數
-  - `R/kit_theme.R`、`R/kit_brite.R`、`R/ui_helpers.R`：實作，kitJoin 與 kitsUI 共用同一份
-  - [specimen/](specimen/)：舊的元件樣張頁
-- **狀態**：v1.0（2026-10-31）。把 v0.2 第 9 節「設計審查後的補充」併進正文，並逐項對照 `kit_brite.R` 現在的實作；規格和程式不同時照程式寫，差異列在最後一節。v0.2 原文留在 [KIT設計語言_v0.2.md](KIT設計語言_v0.2.md)。
+  - [_brand.yml](_brand.yml)：顏色、字型等設計變數；[logo/](logo/)：標誌（SVG、PNG）
+  - 所有元件的樣子：`kitDesign::kit_gallery()`
+- **狀態**：v1.1（2026-10-31）。v1.0 把 v0.2 的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0 的圖（`kit_plotly_style()`）、
+  危險按鈕、熱圖色階、步驟卡的「前面只選、後面再細修」，以及「作者的決定」6–9。規格和程式不同時照程式寫，差異列在最後一節。
 
 ---
 
@@ -300,17 +301,15 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 顏色：`kit_chart_colors()`（類別色）、`kit_chart_neutral()`（中性色）、`kit_chart_sequential()`（連續數值的色階）。
   - 樣子：`kit_plotly_style(p)`（plotly 是 Suggests，app 自己要 `Imports: plotly`）；下載的單一 HTML 檔要 app 的字型：
     `kit_plotly_fonts(p)`（`kit_plotly_style()` 預設已經附上）。
-  - kitsUI 的 `kit_chart.R`：`kit_chart_categorical()`（替 kits 畫好的圖換類別色）、`kit_chart_role()`（角色色）、
-    `kit_chart_zh()`（標題、軸、圖例換中文）。
+  - kitsUI 的 `kit_chart.R`：`kit_chart_categorical()`（替 kits 畫好的圖換類別色）、`kit_chart_role()`（角色色）。
 - **和 kits 一起用的順序**：kits 的 `plot()` → kitsUI 換色（`kit_chart_categorical()`、`kit_chart_role()`）→
-  kitsUI 換中文（`kit_chart_zh()`）→ `kit_plotly_style()`。
+  `kit_plotly_style()`。kits 畫的是什麼就是什麼，app 只套顏色與樣子。
   - 換色和 `kit_plotly_style()` 的順序可以對調：它不動 kits 或 kitsUI 指定的顏色。
-  - 換中文要在前面：`kit_plotly_style()` 把標題加上 `<b>`，之後 `kit_chart_zh()` 就認不得英文標題。
   - 畫面上和下載的 HTML 用同一個 reactive（套一次），兩邊一樣。
 
   ```r
   p <- plot(x$item, type = "category", items = shown)          # kits
-  p <- kit_chart_zh(kit_chart_categorical(p))                   # kitsUI
+  p <- kit_chart_categorical(p)                                 # kitsUI
   kitDesign::kit_plotly_style(p, filename = "item_category")    # 最後
   ```
 - **長相**（`kit_plotly_style()` 做的事）：
@@ -335,7 +334,9 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 連續的值（通過比例等）用 `chart-sequential`。
 - **規則**：
   - 圖上方的標題就寫它回答的問題。
-  - 圖內標籤可以是英文（kits 的原文）或換好的中文；圖下面一行 `hint` 中文，說明怎麼讀。
+  - 圖上的字照 kits 的原文（英文），不翻譯：畫面、下載的圖和在 R 裡跑 kits 得到的圖一樣，可以直接放進論文。
+    使用者自己輸入的標籤（題號、領域、世代、波次、量尺名稱）照輸入的樣子顯示，中文也一樣。
+  - 圖下面一行 `hint` 中文，說明怎麼讀；做決定要看的圖例（例如連結圖的 Kept、Dropped），在說明裡寫出中文意思。
   - 圖和下面的說明之間至少留 1.2rem，說明不能壓到 x 軸。
   - 下載這張圖用小按鈕（HTML 用 `htmlwidgets::saveWidget()`；工具列另外可以存 PNG）。
 - **不要**：用 plotly 的預設色或預設的工具列；在 app 裡另外改 plotly 的字型與軸線；在一張圖裡回答兩個問題。
@@ -379,7 +380,8 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 
 一頁裡有好幾步、而且有先後時用步驟卡：一次只打開一步，做完的收成一行。
 
-- **R**：`kit_steps(...)`（kitJoin 的「kits 作答檔」第 1–3 步）。
+- **R**：模組 `kit_stepcards_ui()`／`kit_stepcards_server(id, titles, summaries, checks)`；低階 `kit_step_card()`、
+  `kit_step_head()`、`kit_step_body()`（kitJoin 的「kits 作答檔」第 1–3 步）。`kit_steps()` 是頁面說明裡的步驟清單，不是步驟卡。
 - **三種狀態**：
   - **現在這一步**：白底、`bw-frame` 框、`shadow-card`；圓形編號 `nb-lime`。
   - **做完的**：
@@ -391,6 +393,10 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 主要按鈕在所有步驟下面，只有一個；上面一行「還差：…」（見 ReadyLine）。
   - 卡片裡的表不加外框、淡表頭；手機上改成一列一塊（見 FileTable）。
   - 「改」的可以按範圍至少 32px，`aria-label` 寫「改第 N 步：標題」；現在這一步加 `aria-current="step"`。
+- **前面只選、後面再細修**：前面的步驟只做最少的選擇（例如第 2 步只選「哪些欄是題目」）；細的設定放在後面的表裡改
+  （例如第 3 步的題目表設定領域與計分）。前面那一步的說明要寫「之後在第 N 步還能改」，使用者才不會以為一次要設好。
+- **要改的表直接打開**：這一步的主角是一張要改的表（例如題目表）時，表直接顯示、不收在細節列裡；
+  旁邊放「下載這張表」的小按鈕，任何時候都能下載。
 - **不要**：一次打開好幾步；卡片裡再放卡片。
 
 ### 檢查清單（Checklist）
@@ -605,6 +611,10 @@ ui <- kit_page(
 3. **表格欄名**：函式的輸出與資料本身維持英文欄名；套件自己整理的摘要表可以用中文；下載的檔案維持原欄名。
 4. **kitJoin 的分頁**：分成三組、不編號（準備 · 做出資料（選一個）· 其他工具）。
 5. **表格寬度**：跟著內容，不拉滿整頁。
+6. **圖上的字**：照 kits 的原文（英文），不翻譯；使用者輸入的標籤照原樣（可以是中文）。app 只套顏色與 `kit_plotly_style()`。
+7. **危險按鈕**：鮭紅色（`nb-salmon`）、黑字。
+8. **熱圖色階**：最小值是極淡萊姆、不是白色，0% 和沒有資料的格子分得開。
+9. **kits 作答檔**：第 2 步只選題目欄；領域、計分在第 3 步的題目表設定；預設領域是題組名去掉結尾的 `_`、`.`、`-`。
 
 ## 和程式還不一致的地方
 
@@ -612,9 +622,9 @@ ui <- kit_page(
 
 - **建議的選項**：v0.2 提議用薄荷底按鈕，程式沒有做；現在只有「放第一個、文字寫（建議）」。
 - **次要按鈕**：v0.2 第 9 節提議 2px 框加 2px 陰影；程式的 `kit_button(kind = "secondary")` 是小按鈕（1.5px、沒有陰影、0.85rem、字重 500）。帶陰影的白按鈕只有 `actionButton()` 的預設樣子。
-- **字級**：規格是六級；`kit_brite.R` 裡還有 0.85、0.88、0.9、0.92、1.08rem 這些值，狀態框第一行是 1.08rem。
+- **字級**：規格是六級；`inst/www/kit-brite.css` 裡還有 0.85、0.88、0.9、0.92、1.08rem 這些值，狀態框第一行是 1.08rem。
 - **字重 500**：規格說只用 400 與 700，但小按鈕和「沒問題」的檢查項目用 500。
-- **舊的灰色**：`#4d4d4d`、`#6b6b6b`、`#9a9a9a`、`#c9c3b6` 還在 `kit_brite.R` 的一些規則裡（大部分被後面的規則蓋掉）；還不能做的分頁底色是 `#ece8dc`，不是 `bg-disabled`。
+- **舊的灰色**：`#4d4d4d`、`#6b6b6b`、`#9a9a9a`、`#c9c3b6` 還在 `inst/www/kit-brite.css` 的一些規則裡（大部分被後面的規則蓋掉）；還不能做的分頁底色是 `#ece8dc`，不是 `bg-disabled`。
 
 ## 附錄：tokens
 

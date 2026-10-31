@@ -1,0 +1,10 @@
+test_that("按「開始計算」以後是【完成】，改了設定變成【要重新執行】", {
+  shiny::testServer(page_calc_server, args = list(goto = function(tab) NULL), {
+    session$setInputs(n = 5)
+    session$setInputs(`run-run` = 1)
+    expect_equal(session$returned$state(), "success")
+    expect_equal(nrow(session$returned$result()), 5)
+    session$setInputs(n = 6)
+    expect_equal(session$returned$state(), "stale")
+  })
+})

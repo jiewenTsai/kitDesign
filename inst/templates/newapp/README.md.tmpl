@@ -1,0 +1,25 @@
+# {{package}}
+
+{{title}}（{{subtitle}}）：用 [kitDesign](https://github.com/jiewenTsai/kitDesign) 做的 KIT Shiny app。
+
+## 執行
+
+```r
+# 本機（在這個資料夾）
+shiny::runApp()
+
+# 或安裝成套件
+remotes::install_local()
+{{package}}::run_app()
+```
+
+雲端版（Posit Connect Cloud）以 `app.R` 為 primary file；部署前用
+`rsconnect::writeManifest()` 產生 `manifest.json`。
+
+## 開發
+
+- 頁面在 `R/app.R`，每個分頁一個模組（`R/page_*.R`）。
+- 元件與規則：kitDesign 的 `kit_gallery()` 與 `brand/KIT設計語言.md`。
+- 升級 kitDesign：改 DESCRIPTION 的 `Remotes: jiewenTsai/kitDesign@vX.Y.Z` 與
+  `Imports: kitDesign (>= X.Y.Z)`，跑測試，再重新產生 `manifest.json`。
+- 測試：`testthat::test_local()`。

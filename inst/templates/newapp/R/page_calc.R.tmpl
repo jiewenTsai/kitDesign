@@ -1,0 +1,85 @@
+# 範例分頁：照 KIT 設計語言的頁面骨架
+#   這一頁做什麼 → 設定 → 還差＋主要按鈕 → 狀態框 → 結果表 → 細節列（用 R 怎麼做）→ 下一步
+# 換成你自己的內容；結構照著留。
+
+page_calc_ui <- function(id) {
+  ns <- shiny::NS(id)
+  shiny::tagList(
+    kitDesign::kit_tab_guide(
+      goal = "選一個數字，算出 1 到它的平方。",
+      steps = c("輸入要算到多少", "按「開始計算」", "看狀態框與結果"),
+      output = "一張表：數字和它的平方。"
+    ),
+    shiny::numericInput(ns("n"), "要算到多少（1–20）", value = NA, min = 1, max = 20),
+    kitDesign::kit_run_gate_ui(ns("run"), "開始計算"),
+    shiny::uiOutput(ns("status")),
+    shiny::uiOutput(ns("result")),
+    kitDesign::kit_details_row(kitDesign::kit_code_panel_ui(ns("code"))),
+    shiny::uiOutput(ns("next_step"))
+  )
+}
+
+page_calc_server <- function(id, goto) {
+  shiny::moduleServer(id, function(input, output, session) {
+    # 還差什麼：空的時候才能按「開始計算」
+    missing <- shiny::reactive({
+      n <- input$n
+      if (is.null(n) || is.na(n)) return("輸入要算到多少")
+      if (n < 1 || n > 20) return("數字要在 1 到 20 之間")
+      character(0)
+    })
+    run <- kitDesign::kit_run_gate_server("run", missing)
+
+    status <- shiny::reactiveVal(kitDesign::kit_status())
+    result <- shiny::reactiveVal(NULL)
+    shiny::observeEvent(run(), {
+      st <- tryCatch({
+        n <- as.integer(input$n)
+        df <- data.frame(n = seq_len(n), square = seq_len(n)^2)
+        result(df)
+        kitDesign::kit_done_status(paste0("計算完成：共 ", nrow(df), " 列。"))
+      }, error = function(e) kitDesign::kit_error_status(e, "計算"))
+      status(st)
+      kitDesign::kit_scroll_to("status")
+    }, ignoreInit = TRUE)
+    # 設定改了：舊的結果失效
+    shiny::observeEvent(input$n, {
+      if (!is.null(result())) {
+        result(NULL)
+        status(kitDesign::kit_stale_status("開始計算"))
+      }
+    }, ignoreInit = TRUE)
+
+    output$status <- shiny::renderUI(status())
+    output$result <- shiny::renderUI({
+      df <- result()
+      if (is.null(df)) return(NULL)
+      shiny::tagList(
+        shiny::h4("結果"),
+        shiny::p(class = "kit-hint", kitDesign::kit_rows_note(nrow(df), ncol(df), shown_rows = 10)),
+        kitDesign::kit_table_scroll(kitDesign::kit_static_table(utils::head(df, 10)))
+      )
+    })
+    kitDesign::kit_code_panel_server("code", function() {
+      shiny::req(input$n)
+      list(
+        tidy = paste0("tibble::tibble(n = 1:", input$n, ") |>\n  dplyr::mutate(square = n^2)"),
+        base = paste0("df <- data.frame(n = 1:", input$n, ")\ndf$square <- df$n^2")
+      )
+    })
+    output$next_step <- shiny::renderUI({
+      if (!status()$state %in% c("success", "warning")) return(NULL)
+      kitDesign::kit_next_step("算好了。", session$ns("go_result"), "下一步：結果")
+    })
+    shiny::observeEvent(input$go_result, goto("result"))
+
+    list(state = shiny::reactive(status()$state), result = shiny::reactive(result()))
+  })
+}
+
+page_result_ui <- function() {
+  shiny::tagList(
+    kitDesign::kit_tab_guide("看上一頁的結果。", c("回「① 計算」可以改設定"), "（範例）"),
+    shiny::p("這裡放第二頁的內容。")
+  )
+}

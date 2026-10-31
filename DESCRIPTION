@@ -1,0 +1,35 @@
+Package: kitDesign
+Title: Shared 'Shiny' User Interface Components for KIT Research Tools
+Version: 0.1.0
+Date: 2026-10-31
+Authors@R: person("KIT", "Join Tool", email = "joinkit@example.com", role = c("aut", "cre"))
+Description: The shared user interface layer of the KIT research tools built
+    with 'shiny': a 'bslib' theme based on Bootswatch Brite, the KIT style
+    sheets and logos, a page wrapper with the KIT header, and documented
+    components (page guide, buttons, callouts, status boxes, details rows,
+    code panels, step cards, checklists, step tabs, diagrams and tables),
+    plus a few server-side helpers (run gate, scroll to result, tab states,
+    notifications, number formatting, user-facing errors), value objects
+    for status boxes, checklists and code, 'shiny' modules for the stateful
+    pieces (step cards, step tabs, run gate, code panel) and a scaffold for
+    new apps. Load it with one call to kit_page() and build the page from
+    kit_*() components.
+License: MIT + file LICENSE
+URL: https://github.com/jiewenTsai/kitDesign
+BugReports: https://github.com/jiewenTsai/kitDesign/issues
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Imports:
+    bslib (>= 0.11.0),
+    htmltools,
+    shiny,
+    utils
+Suggests:
+    knitr,
+    pkgload,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0

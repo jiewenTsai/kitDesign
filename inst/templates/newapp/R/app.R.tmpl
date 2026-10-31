@@ -1,0 +1,44 @@
+# {{title}}：頁面、伺服器、啟動
+#
+# 用 kitDesign 組頁面：kit_page()（主題、頁首）＋ 步驟分頁模組；
+# 每個分頁是一個模組（R/page_*.R）。設計規則見 kitDesign 的 brand/KIT設計語言.md。
+
+#' 頁面
+#' @param request Shiny 的 request（書籤用）
+#' @export
+app_ui <- function(request) {
+  ver <- kitDesign::kit_app_description("{{package}}")
+  kitDesign::kit_page(
+    "{{title}}", "{{subtitle}}",
+    version = ver$version, date = ver$date, show_kitdesign = TRUE,
+    kitDesign::kit_step_tabs_ui(
+      "nav",
+      shiny::tabPanel("① 計算", value = "calc", page_calc_ui("calc")),
+      shiny::tabPanel("② 結果", value = "result", page_result_ui())
+    )
+  )
+}
+
+#' 伺服器
+#' @param input,output,session Shiny 的參數
+#' @export
+app_server <- function(input, output, session) {
+  goto <- function(tab) nav$select(tab)
+  calc <- page_calc_server("calc", goto)
+  # 步驟分頁：做完打 ✓；還不能做的灰色，滑過時說明原因
+  nav <- kitDesign::kit_step_tabs_server(
+    "nav",
+    states = shiny::reactive({
+      st <- calc$state()
+      c(calc = st, result = if (st %in% c("success", "warning")) "ready" else "locked")
+    }),
+    tips = c(result = "先在「① 計算」按「開始計算」")
+  )
+}
+
+#' 啟動 {{title}}
+#' @param ... 傳給 [shiny::shinyApp()] 的參數
+#' @export
+run_app <- function(...) {
+  shiny::shinyApp(app_ui, app_server, ...)
+}

@@ -1,0 +1,19 @@
+Package: {{package}}
+Title: {{title}}
+Version: 0.0.1
+Date: {{date}}
+Authors@R: person("KIT", "Team", email = "kit@example.com", role = c("aut", "cre"))
+Description: {{title}}: a KIT Shiny application built with 'kitDesign'.
+    Launch it with run_app().
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Imports:
+    kitDesign (>= {{version}}),
+    shiny,
+    utils
+Remotes:
+    jiewenTsai/kitDesign@v{{version}}
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

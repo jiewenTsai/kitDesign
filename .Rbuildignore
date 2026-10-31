@@ -1,0 +1,16 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.claude$
+^\.Rhistory$
+^LICENSE\.md$
+^README\.md$
+^brand$
+^tests/testthat/_problems$
+^.*\.tar\.gz$
+^kitDesign\.Rcheck$
+^tools$
+^\.github$
+^doc$
+^Meta$

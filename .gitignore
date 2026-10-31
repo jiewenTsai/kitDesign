@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+*.tar.gz
+kitDesign.Rcheck/
+tests/testthat/_problems/
+testthat-problems.rds
+/doc/
+/Meta/

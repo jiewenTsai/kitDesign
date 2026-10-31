@@ -1,0 +1,121 @@
+# KIT 工具（kitJoin、kitsUI）的品牌設定
+#
+# 設計語言見 KIT設計語言.md；實作是兩個套件共用的 R/kit_theme.R 與 R/kit_brite.R
+# （kitJoin 0.5.0、kitsUI 0.4.0）。目的是把散在程式裡的顏色、字型集中成一份，
+# 讓 Shiny（bslib）、Quarto 報告、使用手冊都讀同一份設定。
+# 規格：https://posit-dev.github.io/brand-yml/
+
+meta:
+  name:
+    short: KIT
+    full: 臺灣幼兒發展調查資料庫（Kids in Taiwan）
+  link:
+    home: https://kitwaves.hdfs.ntnu.edu.tw/
+    github: https://github.com/jiewenTsai
+
+# 標誌：KIT 的豆子（作者提供）。頁首與 favicon 用只有豆子的版本
+logo:
+  images:
+    mark: logo/kit-mark.png
+    full: logo/kit-logo.png
+  small: mark
+  medium: mark
+  large: full
+
+color:
+  palette:
+    # 主色＝標誌的深綠（設計審查 2026-10-31：原本 #2d7535，和標誌並排像配錯色）
+    kit-green: "#006835"
+    kit-green-light: "#3a8f45"
+    # 點綴色：頁首下緣的線
+    kit-lime: "#c6d033"
+    kit-lime-pale: "#e8f0a0"
+    # 資訊（藍色提示框）
+    kit-blue: "#2778c4"
+    kit-blue-pale: "#eef5fc"
+    kit-blue-border: "#c9dcf0"
+    # 提醒（橘色提示框，kitsUI 的 .kit-callout-warn）
+    kit-orange: "#d9730d"
+    kit-orange-pale: "#fff1e0"
+    kit-orange-border: "#f3c58f"
+    kit-orange-text: "#5c2b00"
+    # 錯誤
+    kit-red: "#d9534f"
+    # 雲端版警示條（kitsUI 的 .kit-cloud-banner）
+    kit-amber: "#b38600"
+    kit-amber-pale: "#fff8e1"
+    # 灰階
+    kit-ink: "#222222"
+    kit-gray-800: "#424242"
+    kit-gray-600: "#616161"
+    kit-gray-300: "#e0e0e0"
+    kit-gray-100: "#f5f5f5"
+    white: "#ffffff"
+
+    # neo-brutalism（KIT 設計語言 v0.1）：墨、紙、卡與四種狀態色
+    nb-ink: "#141414"
+    nb-paper: "#faf7f0"
+    nb-card: "#ffffff"
+    nb-mint: "#b9f0a8"
+    nb-sky: "#a8dcff"
+    nb-yellow: "#ffde59"
+    nb-salmon: "#ff9b8f"
+    # 標誌的顏色（不用在介面上，只是記下來）
+    logo-green: "#006835"
+    logo-bean: "#aad05f"
+    logo-leaf: "#fff57f"
+    # 圖表類別色（色盲友善，Okabe–Ito）
+    chart-1: "#0072B2"
+    chart-2: "#E69F00"
+    chart-3: "#009E73"
+    chart-4: "#CC79A7"
+    chart-5: "#56B4E9"
+    chart-6: "#D55E00"
+
+  foreground: nb-ink
+  background: nb-paper
+  primary: kit-green
+  secondary: kit-gray-600
+  success: kit-green
+  info: kit-blue
+  # Bootstrap 的 warning（.text-warning 等文字用）用橘色；「要注意」的狀態框底色另用 nb-yellow（kit_css_brite()）
+  warning: kit-orange
+  danger: kit-red
+  light: nb-paper
+  dark: "#263238"
+
+typography:
+  fonts:
+    - family: Chiron GoRound TC
+      source: google
+      weight: [400, 500, 700, 900]
+    - family: JetBrains Mono
+      source: google
+      weight: [400, 700]
+  base:
+    family: Chiron GoRound TC
+    weight: 400
+    size: 17px
+    line-height: 1.65
+  headings:
+    family: Chiron GoRound TC
+    weight: 700
+  monospace:
+    family: JetBrains Mono
+    # 中文註解在 JetBrains Mono 裡沒有字，退回圓體（kit_theme() 的 font_collection 也是這樣）
+    size: 0.875em
+  link:
+    color: kit-green
+
+defaults:
+  bootstrap:
+    defaults:
+      navbar-bg: $brand-kit-green
+      body-bg: $brand-nb-paper
+      border-width: 2px
+      border-color: $brand-nb-ink
+      font-size-base: 1rem
+  shiny:
+    theme:
+      # Bootswatch Brite（bslib >= 0.11.0）；neo-brutalism 的細節在 kit_css_brite()
+      preset: brite

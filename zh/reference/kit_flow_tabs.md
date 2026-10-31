@@ -46,21 +46,21 @@ kit_flow_tabs(
 )
 #> <div class="kit-flow-tabs" data-kit-aside="manual">
 #>   <div class="tabbable">
-#>     <ul class="nav nav-tabs shiny-tab-input" id="flow" data-tabsetid="3626">
+#>     <ul class="nav nav-tabs shiny-tab-input" id="flow" data-tabsetid="2956">
 #>       <li class="active">
-#>         <a href="#tab-3626-1" data-toggle="tab" data-bs-toggle="tab" data-value="data">① 資料</a>
+#>         <a href="#tab-2956-1" data-toggle="tab" data-bs-toggle="tab" data-value="data">① 資料</a>
 #>       </li>
 #>       <li>
-#>         <a href="#tab-3626-2" data-toggle="tab" data-bs-toggle="tab" data-value="items">② 題目校準</a>
+#>         <a href="#tab-2956-2" data-toggle="tab" data-bs-toggle="tab" data-value="items">② 題目校準</a>
 #>       </li>
 #>       <li>
-#>         <a href="#tab-3626-3" data-toggle="tab" data-bs-toggle="tab" data-value="manual">使用手冊</a>
+#>         <a href="#tab-2956-3" data-toggle="tab" data-bs-toggle="tab" data-value="manual">使用手冊</a>
 #>       </li>
 #>     </ul>
-#>     <div class="tab-content" data-tabsetid="3626">
-#>       <div class="tab-pane active" data-value="data" id="tab-3626-1"></div>
-#>       <div class="tab-pane" data-value="items" id="tab-3626-2"></div>
-#>       <div class="tab-pane" data-value="manual" id="tab-3626-3"></div>
+#>     <div class="tab-content" data-tabsetid="2956">
+#>       <div class="tab-pane active" data-value="data" id="tab-2956-1"></div>
+#>       <div class="tab-pane" data-value="items" id="tab-2956-2"></div>
+#>       <div class="tab-pane" data-value="manual" id="tab-2956-3"></div>
 #>     </div>
 #>   </div>
 #> </div>

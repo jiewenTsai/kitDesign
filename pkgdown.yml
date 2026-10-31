@@ -1,0 +1,14 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  articles/brand: brand.html
+  articles/charts: charts.html
+  articles/components: components.html
+  articles/design-language: design-language.html
+  kitDesign: kitDesign.html
+  articles/release: release.html
+last_built: 2026-10-31T11:54Z
+urls:
+  reference: https://jiewentsai.github.io/kitDesign/reference
+  article: https://jiewentsai.github.io/kitDesign/articles

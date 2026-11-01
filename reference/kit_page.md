@@ -62,7 +62,9 @@ kit_page(
 
 - meta_extra:
 
-  Text added after the version line (for example "kits 0.25.0").
+  Another main package on the version line, after the app and before the
+  date (for example "kits v0.25.0": kitsUI is the interface, kits the
+  computation underneath).
 
 - window_title:
 
@@ -70,9 +72,9 @@ kit_page(
 
 - show_kitdesign:
 
-  Whether to add the kitDesign version after the version line
-  ("kitDesign 0.1.0"), so both versions are visible when someone reports
-  a problem.
+  Whether to add the kitDesign version ("kitDesign v0.1.0") before the
+  date. Usually not needed: kitDesign is the template, not one of the
+  app's main packages.
 
 - brand:
 

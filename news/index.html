@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,13 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.1" id="kitdesign-071-2026-11-02">kitDesign 0.7.1 (2026-11-02)<a class="anchor" aria-label="anchor" href="#kitdesign-071-2026-11-02"></a></h2>
+<p>patch: the order and format of the header’s version line.</p>
+<ul><li>The version line lists the packages first and the date last: the app, <code>meta_extra</code> (another main package), kitDesign when <code>show_kitdesign = TRUE</code>, then the date. kitsUI’s header becomes “kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02”.</li>
+<li>The kitDesign version also gets a “v” (“kitDesign v0.7.1”), like the others.</li>
+<li>Docs: kitDesign is only the template and an app’s header usually does not list it (<code>show_kitdesign = FALSE</code>); the new-app template (<code><a href="../reference/kit_new_app.html">kit_new_app()</a></code>) and the vignette no longer turn it on. The gallery’s header is now “kitDesign v0.7.1 · date”.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="kitdesign-070-2026-11-01">kitDesign 0.7.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-070-2026-11-01"></a></h2>
 <p>minor: a new interactive table and scope bar (for kitItemBank); purely additive, apps need no changes, and existing components look and behave exactly as before.</p>

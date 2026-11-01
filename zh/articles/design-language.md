@@ -860,10 +860,11 @@ app：`kit_new_app(path, title, subtitle)`（頁首、步驟分頁、照頁面�
 - 所有元件的樣子：[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_gallery.md)。
 - 工具名稱維持「KIT ×× 工具」，用其他資料（例如 TDCYP）測試時也不改名。
 - 版本行永遠在頁首，讀 app 自己的 DESCRIPTION 的 Version 與
-  Date（[`kit_app_description()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_description.md)），最前面是
-  app 的套件名稱（`package =`，例如「kitJoin v0.6.0 ·
-  2026-10-31」）；`show_kitdesign = TRUE` 時後面接 kitDesign
-  的版本，回報問題時兩個版本都看得到。
+  Date（[`kit_app_description()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_description.md)），先列主要套件、最後才是日期，每個版本前面都有
+  v：最前面是 app 的套件名稱（`package =`，例如「kitJoin v0.7.5 ·
+  2026-11-02」）；介面套著底層計算套件時接著列那個套件（`meta_extra =`，例如「kitsUI
+  v0.8.3 · kits v0.25.2 · 2026-11-02」）。kitDesign
+  只是模板，不列（`show_kitdesign = FALSE`）。
 - 版本規則與發布步驟見
   [版本與發布.md](https://jiewentsai.github.io/kitDesign/zh/articles/release.md)；kitJoin、kitsUI
   的舊名字見

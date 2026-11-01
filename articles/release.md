@@ -72,10 +72,18 @@ guide](https://jiewentsai.github.io/kitDesign/articles/package-guide.md).
 
 ## When reporting a problem
 
-The version line in the header shows the app’s name and both versions
-(`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)`): “kitJoin
-v0.6.0 · 2026-10-31 · kitDesign 0.5.0”. In R, use
-`kit_versions("kitJoin")`.
+The version line in the header lists the main packages first and the
+date last, each version with a “v”:
+
+- A usual app lists only itself: `kit_page(..., package = "kitJoin")` →
+  “kitJoin v0.7.5 · 2026-11-02”.
+- An interface over a computation package lists both: kitsUI is the
+  interface, kits the computation,
+  `meta_extra = paste0("kits v", packageVersion("kits"))` → “kitsUI
+  v0.8.3 · kits v0.25.2 · 2026-11-02”.
+- kitDesign is only the template and is not listed (leave
+  `show_kitdesign = FALSE`). For its version, use
+  `kit_versions("kitJoin")` in R.
 
 ## Pre-release checklist
 

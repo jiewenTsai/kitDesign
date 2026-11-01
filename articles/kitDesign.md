@@ -24,7 +24,7 @@ library(kitDesign)
 ver <- kit_app_description("kitScore")
 ui <- kit_page(
   "KIT 計分工具", "臺灣幼兒發展調查資料庫",   # "KIT Scoring Tool", "Kids in Taiwan"
-  version = ver$version, date = ver$date, package = "kitScore", show_kitdesign = TRUE,
+  version = ver$version, date = ver$date, package = "kitScore",
   tabs_ui   # step 2
 )
 ```

@@ -1146,9 +1146,12 @@ Which function to use for each component:
 - The version line is always in the header and reads Version and Date
   from the app’s own DESCRIPTION
   ([`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md)),
-  starting with the app’s package name (`package =`, e.g. “kitJoin
-  v0.6.0 · 2026-10-31”); with `show_kitdesign = TRUE` the kitDesign
-  version follows, so both versions are visible when reporting problems.
+  listing the main packages first and the date last, each version with a
+  “v”: the app’s package name (`package =`, e.g. “kitJoin v0.7.5 ·
+  2026-11-02”), then, for an interface over a computation package, that
+  package (`meta_extra =`, e.g. “kitsUI v0.8.3 · kits v0.25.2 ·
+  2026-11-02”). kitDesign is only the template and is not listed
+  (`show_kitdesign = FALSE`).
 - Versioning rules and release steps:
   [release.md](https://jiewentsai.github.io/kitDesign/articles/release.md);
   old names in kitJoin and kitsUI:

@@ -1,8 +1,8 @@
 # 版本：kitDesign 與 app 自己的
 
 回報問題時，兩個版本都要寫。頁首的版本行可以接上 kitDesign 的版本：
-`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · 2026-10-31 ·
-kitDesign 0.1.0」。
+`kit_page(..., show_kitdesign = TRUE)` →「v0.5.0 · kitDesign v0.1.0 ·
+2026-10-31」。
 
 ## Usage
 
@@ -28,5 +28,5 @@ kit_versions(package = NULL)
 ``` r
 kit_versions()
 #> kitDesign 
-#>   "0.7.0" 
+#>   "0.7.1" 
 ```

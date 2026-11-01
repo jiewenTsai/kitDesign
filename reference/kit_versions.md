@@ -2,8 +2,8 @@
 
 When reporting a problem, include both versions. The header's version
 line can include the kitDesign version:
-`kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · 2026-10-31 ·
-kitDesign 0.1.0".
+`kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · kitDesign v0.1.0 ·
+2026-10-31".
 
 ## Usage
 
@@ -29,5 +29,5 @@ A named character vector, for example
 ``` r
 kit_versions()
 #> kitDesign 
-#>   "0.7.0" 
+#>   "0.7.1" 
 ```

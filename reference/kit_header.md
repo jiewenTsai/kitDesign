@@ -48,7 +48,9 @@ kit_header(
 
 - meta_extra:
 
-  Text added after the version line (for example "kits 0.25.0").
+  Another main package on the version line, after the app and before the
+  date (for example "kits v0.25.0": kitsUI is the interface, kits the
+  computation underneath).
 
 - logo:
 
@@ -59,9 +61,9 @@ kit_header(
 
 - show_kitdesign:
 
-  Whether to add the kitDesign version after the version line
-  ("kitDesign 0.1.0"), so both versions are visible when someone reports
-  a problem.
+  Whether to add the kitDesign version ("kitDesign v0.1.0") before the
+  date. Usually not needed: kitDesign is the template, not one of the
+  app's main packages.
 
 - brand:
 
@@ -97,7 +99,7 @@ kit_header("KIT 資料串接工具", "臺灣幼兒發展調查資料庫", taglin
            version = "0.6.0", date = "2026-10-31", package = "kitJoin")
 #> <div class="kit-header mb-4">
 #>   <div class="kit-header-row">
-#>     <img src="kitDesign-logo-0.7.0/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
+#>     <img src="kitDesign-logo-0.7.1/kit-logo.svg" alt="KIT 標誌" class="kit-header-logo"/>
 #>     <div>
 #>       <h1>KIT 資料串接工具</h1>
 #>       <p>

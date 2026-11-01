@@ -61,10 +61,15 @@ app、統計計算）見[套件開發須知](https://jiewentsai.github.io/kitDes
 
 ## 回報問題時
 
-頁首的版本行寫出 app
-的名稱與兩個版本（`kit_page(..., package = "kitJoin", show_kitdesign = TRUE)`）：
-「kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0」。在 R 裡用
-`kit_versions("kitJoin")`。
+頁首的版本行先列主要套件、最後才是日期，每個版本前面都有 v：
+
+- 一般的 app 只寫自己：`kit_page(..., package = "kitJoin")` →「kitJoin
+  v0.7.5 · 2026-11-02」。
+- 介面套著底層計算套件時兩個都列：kitsUI 是介面、kits
+  是計算，`meta_extra = paste0("kits v", packageVersion("kits"))` →
+  「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」。
+- kitDesign 只是模板，不列（`show_kitdesign` 保持 `FALSE`）。要查
+  kitDesign 的版本，在 R 裡用 `kit_versions("kitJoin")`。
 
 ## 發布前的檢查清單
 

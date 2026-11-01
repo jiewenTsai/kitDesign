@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -185,10 +185,17 @@ tag，不跟著 main 跑）</li>
 <div class="section level2">
 <h2 id="回報問題時">回報問題時<a class="anchor" aria-label="anchor" href="#%E5%9B%9E%E5%A0%B1%E5%95%8F%E9%A1%8C%E6%99%82"></a>
 </h2>
-<p>頁首的版本行寫出 app
-的名稱與兩個版本（<code>kit_page(..., package = "kitJoin", show_kitdesign = TRUE)</code>）：
-「kitJoin v0.6.0 · 2026-10-31 · kitDesign 0.5.0」。在 R 裡用
-<code>kit_versions("kitJoin")</code>。</p>
+<p>頁首的版本行先列主要套件、最後才是日期，每個版本前面都有 v：</p>
+<ul>
+<li>一般的 app 只寫自己：<code>kit_page(..., package = "kitJoin")</code>
+→「kitJoin v0.7.5 · 2026-11-02」。</li>
+<li>介面套著底層計算套件時兩個都列：kitsUI 是介面、kits
+是計算，<code>meta_extra = paste0("kits v", packageVersion("kits"))</code>
+→ 「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」。</li>
+<li>kitDesign 只是模板，不列（<code>show_kitdesign</code> 保持
+<code>FALSE</code>）。要查 kitDesign 的版本，在 R 裡用
+<code>kit_versions("kitJoin")</code>。</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="發布前的檢查清單">發布前的檢查清單<a class="anchor" aria-label="anchor" href="#%E7%99%BC%E5%B8%83%E5%89%8D%E7%9A%84%E6%AA%A2%E6%9F%A5%E6%B8%85%E5%96%AE"></a>

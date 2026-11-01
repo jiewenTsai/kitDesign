@@ -58,7 +58,8 @@ kit_page(
 
 - meta_extra:
 
-  版本行後面再接的字（例如「kits 0.25.0」）。
+  版本行上的另一個主要套件，放在 app 後面、日期前面（例如「kits
+  v0.25.0」：kitsUI 是介面，kits 是底下的計算）。
 
 - window_title:
 
@@ -66,8 +67,8 @@ kit_page(
 
 - show_kitdesign:
 
-  版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
-  回報問題時兩個版本都看得到。
+  要不要在日期前面加 kitDesign 的版本（「kitDesign
+  v0.1.0」）。通常不用： kitDesign 是模板，不是 app 的主要套件。
 
 - brand:
 

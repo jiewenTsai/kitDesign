@@ -1,7 +1,10 @@
 # The version line in the header, e.g. "kitJoin v0.6.0 · 2026-10-31"
 
 The version line always sits in the header; it is needed when reporting
-problems.
+problems. The packages come first, then the date: the app, `extra`
+(another main package, such as kits for kitsUI: "kitsUI v0.8.3 · kits
+v0.25.2 · 2026-11-02"), then kitDesign when `show_kitdesign = TRUE`.
+Every version is written with "v".
 
 ## Usage
 
@@ -27,12 +30,15 @@ kit_app_meta(
 
 - extra:
 
-  Text to append (e.g. `paste("kits", utils::packageVersion("kits"))`).
+  Text placed after the app and before the date: another main package
+  (e.g. `paste0("kits v", utils::packageVersion("kits"))`).
 
 - show_kitdesign:
 
-  Whether to append "kitDesign 0.1.0"
+  Whether to add "kitDesign v0.1.0"
   ([`kit_versions()`](https://jiewentsai.github.io/kitDesign/reference/kit_versions.md)).
+  Usually not needed: kitDesign is the template, not one of the app's
+  main packages.
 
 - package:
 

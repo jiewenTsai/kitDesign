@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1926,10 +1926,12 @@ scrolling, run again, result details, How to do it in R</td>
 when testing with other data (for example TDCYP).</li>
 <li>The version line is always in the header and reads Version and Date
 from the app’s own DESCRIPTION (<code><a href="../reference/kit_app_description.html">kit_app_description()</a></code>),
-starting with the app’s package name (<code>package =</code>,
-e.g. “kitJoin v0.6.0 · 2026-10-31”); with
-<code>show_kitdesign = TRUE</code> the kitDesign version follows, so
-both versions are visible when reporting problems.</li>
+listing the main packages first and the date last, each version with a
+“v”: the app’s package name (<code>package =</code>, e.g. “kitJoin
+v0.7.5 · 2026-11-02”), then, for an interface over a computation
+package, that package (<code>meta_extra =</code>, e.g. “kitsUI v0.8.3 ·
+kits v0.25.2 · 2026-11-02”). kitDesign is only the template and is not
+listed (<code>show_kitdesign = FALSE</code>).</li>
 <li>Versioning rules and release steps: <a href="release.html">release.md</a>; old names in kitJoin and kitsUI: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/brand/en/migration.md" class="external-link">migration.md</a>.</li>
 <li>For new components or style changes, change kitDesign
 (<code>inst/www/kit-design.css</code> and <code>R/</code>); do not write

@@ -50,9 +50,9 @@ Search order:
 ``` r
 kit_app_description("kitDesign")
 #> $version
-#> [1] "0.7.0"
+#> [1] "0.7.1"
 #> 
 #> $date
-#> [1] "2026-11-01"
+#> [1] "2026-11-02"
 #> 
 ```

@@ -1,5 +1,21 @@
 # Changelog
 
+## kitDesign 0.7.1 (2026-11-02)
+
+patch: the order and format of the header’s version line.
+
+- The version line lists the packages first and the date last: the app,
+  `meta_extra` (another main package), kitDesign when
+  `show_kitdesign = TRUE`, then the date. kitsUI’s header becomes
+  “kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02”.
+- The kitDesign version also gets a “v” (“kitDesign v0.7.1”), like the
+  others.
+- Docs: kitDesign is only the template and an app’s header usually does
+  not list it (`show_kitdesign = FALSE`); the new-app template
+  ([`kit_new_app()`](https://jiewentsai.github.io/kitDesign/reference/kit_new_app.md))
+  and the vignette no longer turn it on. The gallery’s header is now
+  “kitDesign v0.7.1 · date”.
+
 ## kitDesign 0.7.0 (2026-11-01)
 
 minor: a new interactive table and scope bar (for kitItemBank); purely

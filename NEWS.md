@@ -35,6 +35,15 @@ minor：新的互動資料表與範圍選擇列（給 kitItemBank）；純粹加
   打開後有時還是細細一條。畫面不變。
 * `tools/check_gallery.R`：比的是 `clientWidth`（視窗寬減掉直捲軸），有直捲軸的系統上不會誤報「左右捲」。
 
+# kitDesign 0.6.1 (2026-11-01)
+
+## 修正
+
+* 收起來的 `<details>`（`kit_detail()` 等）裡面的東西不排版（`display: none`）。新的 Chrome、Firefox
+  收起來時只是看不到，裡面的元素還有寬高，Shiny 就以為裡面的圖看得到，在 76px 寬的框裡畫 plotly：
+  圖畫壞（打開後擠成一條），還跳「axis scaling」的錯，連帶擋住同一頁其他畫面的更新（kitsUI 按「用這一回合的
+  固定檔開始下一回合」後 ① 沒有更新）。現在收起來時 Shiny 知道它藏著，打開才畫，寬度也對。
+
 # kitDesign 0.6.0 (2026-11-01)
 
 minor：圖的工具列可以下載投稿用的圖；app 不用改。

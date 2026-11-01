@@ -35,12 +35,12 @@ kit_page(
 htmlDependency 提供，Shiny 裡用）、\code{"inline"}（標誌直接寫進頁面，給沒有 Shiny 的
 單一 HTML 檔，例如使用手冊）、\code{FALSE}。}
 
-\item{meta_extra}{版本行後面再接的字（例如「kits 0.25.0」）。}
+\item{meta_extra}{版本行上的另一個主要套件，放在 app 後面、日期前面（例如「kits v0.25.0」：kitsUI 是介面，kits 是底下的計算）。}
 
 \item{window_title}{瀏覽器分頁的標題（預設和 \code{title} 一樣）。}
 
-\item{show_kitdesign}{版本行後面要不要接 kitDesign 的版本（「kitDesign 0.1.0」），
-回報問題時兩個版本都看得到。}
+\item{show_kitdesign}{要不要在日期前面加 kitDesign 的版本（「kitDesign v0.1.0」）。通常不用：
+kitDesign 是模板，不是 app 的主要套件。}
 
 \item{brand}{品牌：標誌、分頁圖示、顏色（\code{\link[=kit_brand]{kit_brand()}}）。預設是 \code{\link[=kit_current_brand]{kit_current_brand()}}：
 沒有設定 \code{options(kitDesign.brand = )} 時是 KIT。}

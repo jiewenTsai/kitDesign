@@ -16,7 +16,7 @@ A named character vector, for example \code{c(kitDesign = "0.1.0", kitJoin = "0.
 \description{
 When reporting a problem, include both versions. The header's version line can include the
 kitDesign version:
-\code{kit_page(..., show_kitdesign = TRUE)} → "v0.5.0 · 2026-10-31 · kitDesign 0.1.0".
+\code{kit_page(..., show_kitdesign = TRUE)} → "v0.5.0 · kitDesign v0.1.0 · 2026-10-31".
 }
 \examples{
 kit_versions()

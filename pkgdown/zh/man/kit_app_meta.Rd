@@ -17,9 +17,9 @@ kit_app_meta(
 
 \item{date}{日期；\code{NULL} 或 \code{NA} 不顯示。}
 
-\item{extra}{後面再接的字（例如 \code{paste("kits", utils::packageVersion("kits"))}）。}
+\item{extra}{放在 app 後面、日期前面的字：另一個主要套件（例如 \code{paste0("kits v", utils::packageVersion("kits"))}）。}
 
-\item{show_kitdesign}{後面要不要接「kitDesign 0.1.0」（\code{\link[=kit_versions]{kit_versions()}}）。}
+\item{show_kitdesign}{要不要在日期前面加「kitDesign v0.1.0」（\code{\link[=kit_versions]{kit_versions()}}）。通常不用：kitDesign 是模板，不是 app 的主要套件。}
 
 \item{package}{app 的套件名稱，寫在版本前面（「kitJoin v0.6.0」）；\code{NULL} 不寫。}
 }
@@ -27,7 +27,7 @@ kit_app_meta(
 \verb{<div class="kit-app-meta">}；三樣都沒有時是 \code{NULL}。
 }
 \description{
-版本行永遠在頁首，回報問題時用得到。
+版本行永遠在頁首，回報問題時用得到。先列套件、最後才是日期：app、\code{extra}（另一個主要套件，例如 kitsUI 的 kits：「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」）、\code{show_kitdesign = TRUE} 時的 kitDesign。每個版本前面都有 v。
 }
 \examples{
 kit_app_meta("0.5.0", "2026-10-31")

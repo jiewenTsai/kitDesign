@@ -655,7 +655,7 @@ ui <- kit_page(
 
 - 所有元件的樣子：`kit_gallery()`。
 - 工具名稱維持「KIT ×× 工具」，用其他資料（例如 TDCYP）測試時也不改名。
-- 版本行永遠在頁首，讀 app 自己的 DESCRIPTION 的 Version 與 Date（`kit_app_description()`），最前面是 app 的套件名稱（`package = `，例如「kitJoin v0.6.0 · 2026-10-31」）；`show_kitdesign = TRUE` 時後面接 kitDesign 的版本，回報問題時兩個版本都看得到。
+- 版本行永遠在頁首，讀 app 自己的 DESCRIPTION 的 Version 與 Date（`kit_app_description()`），先列主要套件、最後才是日期，每個版本前面都有 v：最前面是 app 的套件名稱（`package = `，例如「kitJoin v0.7.5 · 2026-11-02」）；介面套著底層計算套件時接著列那個套件（`meta_extra = `，例如「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」）。kitDesign 只是模板，不列（`show_kitdesign = FALSE`）。
 - 版本規則與發布步驟見 [版本與發布.md](版本與發布.md)；kitJoin、kitsUI 的舊名字見 [遷移對照.md](遷移對照.md)。
 - 要新的元件或改樣式時，改 kitDesign（`inst/www/kit-design.css` 與 `R/`），不要在 app 裡另外寫 CSS；只用本系統的 tokens（顏色、`sp-*`、字級），寫之前先看有沒有現成的元件可以用。
 

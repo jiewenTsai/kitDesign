@@ -69,13 +69,13 @@ test_that("kit_app_meta() puts the package name before the version", {
                ">kitJoin \u00b7 2026-10-31<", fixed = TRUE)
   expect_match(html(kit_app_meta("0.6.0", package = NULL)), ">v0.6.0<", fixed = TRUE)
   expect_match(html(kit_page("KIT", NULL, version = "0.5.0", date = "2026-10-31", package = "kitsUI",
-                             meta_extra = "kits 0.25.2")),
-               "kitsUI v0.5.0 \u00b7 2026-10-31 \u00b7 kits 0.25.2", fixed = TRUE)
+                             meta_extra = "kits v0.25.2")),
+               "kitsUI v0.5.0 \u00b7 kits v0.25.2 \u00b7 2026-10-31", fixed = TRUE)
 })
 
-test_that("kit_app_meta() joins version, date and extra parts", {
-  expect_match(html(kit_app_meta("0.4.0", "2026-10-31", "kits 0.25.0")),
-               "v0.4.0 · 2026-10-31 · kits 0.25.0", fixed = TRUE)
+test_that("kit_app_meta() lists the packages first and the date last", {
+  expect_match(html(kit_app_meta("0.4.0", "2026-10-31", "kits v0.25.0")),
+               "v0.4.0 · kits v0.25.0 · 2026-10-31", fixed = TRUE)
   expect_match(html(kit_app_meta(NA, "2026-10-31")), ">2026-10-31<", fixed = TRUE)
   expect_null(kit_app_meta())
 })
@@ -145,9 +145,9 @@ test_that("kit_versions() and the header can show the kitDesign version", {
   on.exit(setwd(old), add = TRUE)
   expect_equal(kit_versions("kitFake")[["kitFake"]], "0.5.0")
   meta <- html(kit_app_meta("0.5.0", "2026-10-31", show_kitdesign = TRUE))
-  expect_match(meta, paste0("v0.5.0 · 2026-10-31 · kitDesign ", v[["kitDesign"]]), fixed = TRUE)
+  expect_match(meta, paste0("v0.5.0 · kitDesign v", v[["kitDesign"]], " · 2026-10-31"), fixed = TRUE)
   expect_match(html(kit_page("KIT", NULL, version = "1.0.0", show_kitdesign = TRUE)),
-               "v1.0.0 · kitDesign ", fixed = TRUE)
+               "v1.0.0 · kitDesign v", fixed = TRUE)
   expect_false(grepl("· kitDesign", html(kit_header("KIT", version = "1.0.0")), fixed = TRUE))
 })
 

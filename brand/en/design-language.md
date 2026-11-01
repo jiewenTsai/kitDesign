@@ -654,7 +654,7 @@ Which function to use for each component:
 
 - What every component looks like: `kit_gallery()`.
 - The tool name stays "KIT ×× 工具" ("KIT ×× tool"); do not rename it when testing with other data (for example TDCYP).
-- The version line is always in the header and reads Version and Date from the app's own DESCRIPTION (`kit_app_description()`), starting with the app's package name (`package = `, e.g. "kitJoin v0.6.0 · 2026-10-31"); with `show_kitdesign = TRUE` the kitDesign version follows, so both versions are visible when reporting problems.
+- The version line is always in the header and reads Version and Date from the app's own DESCRIPTION (`kit_app_description()`), listing the main packages first and the date last, each version with a "v": the app's package name (`package = `, e.g. "kitJoin v0.7.5 · 2026-11-02"), then, for an interface over a computation package, that package (`meta_extra = `, e.g. "kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02"). kitDesign is only the template and is not listed (`show_kitdesign = FALSE`).
 - Versioning rules and release steps: [release.md](release.md); old names in kitJoin and kitsUI: [migration.md](migration.md).
 - For new components or style changes, change kitDesign (`inst/www/kit-design.css` and `R/`); do not write separate CSS in the app. Use only this system's tokens (colors, `sp-*`, type sizes), and check for an existing component before writing a new one.
 

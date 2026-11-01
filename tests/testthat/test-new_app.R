@@ -37,7 +37,9 @@ test_that("kit_new_app() scaffolds a package that loads and passes its own test"
   ns <- asNamespace("kitDemo")
   page <- html(ns$app_ui(NULL))
   expect_match(page, "KIT 示範工具", fixed = TRUE)
-  expect_match(page, "kitDesign ", fixed = TRUE)
+  # 版本行只列 app 自己（kitDesign 是模板，不列）
+  expect_match(page, ">kitDemo v0.0.1 \u00b7 ", fixed = TRUE)
+  expect_false(grepl("kitDesign v", page, fixed = TRUE))
 })
 
 test_that("kit_new_app() does not touch a non-empty folder and checks its arguments", {

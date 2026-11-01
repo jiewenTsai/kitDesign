@@ -319,7 +319,7 @@ ver <- kit_app_description("kitDesign")
 ui <- kit_page(
   paste(brand$name, "元件樣張"), "kitDesign",
   tagline = "KIT 研究工具共用的介面",
-  version = ver$version, date = ver$date, show_kitdesign = TRUE,
+  version = ver$version, date = ver$date, package = "kitDesign",
   # 模組：分組的步驟分頁
   kit_step_tabs_ui(
     "nav",

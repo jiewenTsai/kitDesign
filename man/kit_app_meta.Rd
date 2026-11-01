@@ -17,9 +17,11 @@ kit_app_meta(
 
 \item{date}{The date; \code{NULL} or \code{NA} shows nothing.}
 
-\item{extra}{Text to append (e.g. \code{paste("kits", utils::packageVersion("kits"))}).}
+\item{extra}{Text placed after the app and before the date: another main package
+(e.g. \code{paste0("kits v", utils::packageVersion("kits"))}).}
 
-\item{show_kitdesign}{Whether to append "kitDesign 0.1.0" (\code{\link[=kit_versions]{kit_versions()}}).}
+\item{show_kitdesign}{Whether to add "kitDesign v0.1.0" (\code{\link[=kit_versions]{kit_versions()}}). Usually not
+needed: kitDesign is the template, not one of the app's main packages.}
 
 \item{package}{The app's package name, written before the version ("kitJoin v0.6.0"); \code{NULL}
 writes no name.}
@@ -28,7 +30,10 @@ writes no name.}
 \verb{<div class="kit-app-meta">}; \code{NULL} when all three are missing.
 }
 \description{
-The version line always sits in the header; it is needed when reporting problems.
+The version line always sits in the header; it is needed when reporting problems. The packages
+come first, then the date: the app, \code{extra} (another main package, such as kits for kitsUI:
+"kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02"), then kitDesign when \code{show_kitdesign = TRUE}.
+Every version is written with "v".
 }
 \examples{
 kit_app_meta("0.5.0", "2026-10-31")

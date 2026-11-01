@@ -136,9 +136,10 @@ kit_pkg_version <- function() {
 #'   written into the page, for single HTML files without Shiny, such as user manuals), or `FALSE`.
 #' @param brand The brand: logo, tab icon, and colors ([kit_brand()]). Defaults to
 #'   [kit_current_brand()]: KIT when `options(kitDesign.brand = )` is not set.
-#' @param meta_extra Text added after the version line (for example "kits 0.25.0").
-#' @param show_kitdesign Whether to add the kitDesign version after the version line
-#'   ("kitDesign 0.1.0"), so both versions are visible when someone reports a problem.
+#' @param meta_extra Another main package on the version line, after the app and before the date
+#'   (for example "kits v0.25.0": kitsUI is the interface, kits the computation underneath).
+#' @param show_kitdesign Whether to add the kitDesign version ("kitDesign v0.1.0") before the date.
+#'   Usually not needed: kitDesign is the template, not one of the app's main packages.
 #' @param window_title The browser tab title (defaults to `title`).
 #' @return A complete page (`bslib::page_fluid()`).
 #' @seealso [kit_header()], [kit_app_description()]
@@ -223,12 +224,17 @@ kit_app_description <- function(package = NULL, path = NULL) {
 
 #' The version line in the header, e.g. "kitJoin v0.6.0 · 2026-10-31"
 #'
-#' The version line always sits in the header; it is needed when reporting problems.
+#' The version line always sits in the header; it is needed when reporting problems. The packages
+#' come first, then the date: the app, `extra` (another main package, such as kits for kitsUI:
+#' "kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02"), then kitDesign when `show_kitdesign = TRUE`.
+#' Every version is written with "v".
 #'
 #' @param version The version ("v" is added in front); `NULL` or `NA` shows nothing.
 #' @param date The date; `NULL` or `NA` shows nothing.
-#' @param extra Text to append (e.g. `paste("kits", utils::packageVersion("kits"))`).
-#' @param show_kitdesign Whether to append "kitDesign 0.1.0" ([kit_versions()]).
+#' @param extra Text placed after the app and before the date: another main package
+#'   (e.g. `paste0("kits v", utils::packageVersion("kits"))`).
+#' @param show_kitdesign Whether to add "kitDesign v0.1.0" ([kit_versions()]). Usually not
+#'   needed: kitDesign is the template, not one of the app's main packages.
 #' @param package The app's package name, written before the version ("kitJoin v0.6.0"); `NULL`
 #'   writes no name.
 #' @return `<div class="kit-app-meta">`; `NULL` when all three are missing.
@@ -241,11 +247,12 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
   ok <- function(x) !is.null(x) && length(x) == 1 && !is.na(x) && nzchar(x)
   # 套件名稱和版本是同一段：「kitJoin v0.6.0」（沒有版本時只寫名稱）
   app <- paste(c(if (ok(package)) package, if (ok(version)) paste0("v", version)), collapse = " ")
+  # 先列套件（app、extra、kitDesign），日期放最後：「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」
   parts <- c(
     if (nzchar(app)) app,
-    if (ok(date)) date,
     unlist(extra),
-    if (isTRUE(show_kitdesign)) paste("kitDesign", kit_versions()[["kitDesign"]])
+    if (isTRUE(show_kitdesign)) paste0("kitDesign v", kit_versions()[["kitDesign"]]),
+    if (ok(date)) date
   )
   if (length(parts) == 0) return(NULL)
   # 原文： · 
@@ -449,7 +456,7 @@ kit_colors <- function(brand = kit_current_brand()) {
 #'
 #' When reporting a problem, include both versions. The header's version line can include the
 #' kitDesign version:
-#' `kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · 2026-10-31 · kitDesign 0.1.0".
+#' `kit_page(..., show_kitdesign = TRUE)` → "v0.5.0 · kitDesign v0.1.0 · 2026-10-31".
 #'
 #' @param package The app's package name (for example `"kitJoin"`); with `NULL`, only kitDesign.
 #'   Versions are read the same way as [kit_app_description()].

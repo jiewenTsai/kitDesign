@@ -1,3 +1,13 @@
+# kitDesign 0.7.1 (2026-11-02)
+
+patch：頁首版本行的順序與寫法。
+
+* 版本行先列套件、最後才是日期：app、`meta_extra`（另一個主要套件）、`show_kitdesign = TRUE` 時的 kitDesign，
+  然後是日期。kitsUI 的頁首變成「kitsUI v0.8.3 · kits v0.25.2 · 2026-11-02」。
+* kitDesign 的版本也加上 v（「kitDesign v0.7.1」），和其他版本一樣。
+* 文件：kitDesign 只是模板，app 的頁首通常不列（`show_kitdesign = FALSE`）；新 app 範本（`kit_new_app()`）
+  與 vignette 不再打開它。元件樣張的頁首改成「kitDesign v0.7.1 · 日期」。
+
 # kitDesign 0.7.0 (2026-11-01)
 
 minor：新的互動資料表與範圍選擇列（給 kitItemBank）；純粹加東西，app 不用改，現有元件的樣子與行為都不變。

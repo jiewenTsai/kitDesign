@@ -30,14 +30,15 @@ processing"); \code{NULL} shows nothing.}
 \item{version, date}{The version and date on the header's version line, usually read from the
 app's own DESCRIPTION: \code{kit_app_description("kitJoin")}.}
 
-\item{meta_extra}{Text added after the version line (for example "kits 0.25.0").}
+\item{meta_extra}{Another main package on the version line, after the app and before the date
+(for example "kits v0.25.0": kitsUI is the interface, kits the computation underneath).}
 
 \item{logo}{Whether the header shows the brand logo (KIT's is the bean plus the KIT wordmark):
 \code{TRUE} (the logo file comes from an htmlDependency; use in Shiny), \code{"inline"} (the logo is
 written into the page, for single HTML files without Shiny, such as user manuals), or \code{FALSE}.}
 
-\item{show_kitdesign}{Whether to add the kitDesign version after the version line
-("kitDesign 0.1.0"), so both versions are visible when someone reports a problem.}
+\item{show_kitdesign}{Whether to add the kitDesign version ("kitDesign v0.1.0") before the date.
+Usually not needed: kitDesign is the template, not one of the app's main packages.}
 
 \item{brand}{The brand: logo, tab icon, and colors (\code{\link[=kit_brand]{kit_brand()}}). Defaults to
 \code{\link[=kit_current_brand]{kit_current_brand()}}: KIT when \code{options(kitDesign.brand = )} is not set.}

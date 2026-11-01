@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,8 +111,9 @@ app）共用的設計語言。新的 app
 </ul>
 </li>
 <li>
-<strong>狀態</strong>：v1.1（2026-10-31）。v1.0 把 v0.2
-的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0
+<strong>狀態</strong>：v1.2（2026-11-01）。v1.2 加上 kitDesign 0.7.0
+的互動資料表（<code><a href="../reference/kit_dt.html">kit_dt()</a></code>）與範圍選擇列（ScopeBar，<code><a href="../reference/kit_scope_bar.html">kit_scope_bar()</a></code>）。
+v1.0 把 v0.2 的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0
 的圖（<code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code>）、
 危險按鈕、熱圖色階、步驟卡的「前面只選、後面再細修」，以及「作者的決定」6–9。規格和程式不同時照程式寫，差異列在最後一節。</li>
 </ul>
@@ -522,6 +523,49 @@ DESCRIPTION 的 Version、Date。</li>
 </ul>
 </div>
 <div class="section level3">
+<h3 id="範圍選擇列scopebar">範圍選擇列（ScopeBar）<a class="anchor" aria-label="anchor" href="#%E7%AF%84%E5%9C%8D%E9%81%B8%E6%93%87%E5%88%97scopebar"></a>
+</h3>
+<p>範圍選擇列是整個 app 共用的一個選擇（例如 kitItemBank
+用哪一份題庫）：每一個分頁都照它做，所以放在分頁列正下方，不放在某一頁裡。</p>
+<ul>
+<li>
+<strong>R</strong>：<code>kit_scope_bar(input, line = NULL, actions = NULL, panel = NULL)</code>：<code>input</code>
+是 <code>radioButtons(..., inline = TRUE)</code>（2–5 個選項）或
+<code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectInput()</a></code>；<code>line</code> 是一行
+hint；<code>actions</code> 是右邊的小按鈕；<code>panel</code>
+是選了以後要確認的內容。</li>
+<li>
+<strong>長相</strong>：
+<ul>
+<li>不加框、沒有陰影；下面一條 <code>line</code>
+淡線（1.5px），和頁面分開；上下留
+<code>sp-3</code>／<code>sp-4</code>。</li>
+<li>第一行：組名（粗體）＋一排單選圓鈕。</li>
+<li>第二行：<code>hint</code>
+小字說現在用的是哪一份、多大（「目前：TDCYP 題庫 · 37 題 · 4
+個波次」），重點用 <code>nb-ink</code> 粗體； 還沒做完的事用
+<code>text-todo</code>
+粗體（<code>.kit-scopebar-todo</code>，「還差：上傳題庫檔」）。</li>
+<li>小按鈕（下載、新增、上傳）在第二行的右邊；手機上接在 hint
+下面、靠左。</li>
+<li>選了要確認的選項（例如「上傳自己的題庫」）時，下面打開確認區（<code>.kit-scopebar-panel</code>）：檢查清單＋一排按鈕（<code>.kit-buttons</code>），最寬
+46rem。</li>
+</ul>
+</li>
+<li>
+<strong>規則</strong>：
+<ul>
+<li>一個 app
+最多一條；只放會影響每一個分頁的選擇。只影響一頁的設定放在那一頁的設定區。</li>
+<li>換了範圍，用到舊範圍的結果要變成【要重新執行】（見狀態流）。</li>
+<li>換範圍要花時間或會丟掉東西時，先在確認區說清楚，按了才換。</li>
+</ul>
+</li>
+<li>
+<strong>不要</strong>：做成分頁或卡片；放主要按鈕（萊姆色）；一條裡放兩組選擇。</li>
+</ul>
+</div>
+<div class="section level3">
 <h3 id="頁面說明這一頁做什麼pageguide">頁面說明（這一頁做什麼）（PageGuide）<a class="anchor" aria-label="anchor" href="#%E9%A0%81%E9%9D%A2%E8%AA%AA%E6%98%8E%E9%80%99%E4%B8%80%E9%A0%81%E5%81%9A%E4%BB%80%E9%BA%BCpageguide"></a>
 </h3>
 <p>「這一頁做什麼」是每個分頁最上面的一行說明，預設收起，第一次用的人打開看步驟。</p>
@@ -799,7 +843,21 @@ warnings
 <p>資料表是結果的主角之一：白底、黑表頭、寬度跟著內容；長表只顯示前幾列。</p>
 <ul>
 <li>
-<strong>R</strong>：<code>kit_static_table(df)</code>（整數自動加千分位）、<code>kit_preview_table(df, priority_cols, n)</code>、<code>kit_rows_note(nrow, ncol, shown_rows)</code>。</li>
+<strong>R</strong>：<code>kit_static_table(df)</code>（整數自動加千分位）、<code>kit_preview_table(df, priority_cols, n)</code>、<code>kit_rows_note(nrow, ncol, shown_rows)</code>；
+要搜尋、換頁、點選的表用
+<code>kit_dt(df, selection, page_length, search, wrap_cols, min_widths)</code>（放在
+<code><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">DT::renderDT()</a></code> 裡）。</li>
+<li>
+<strong>哪一種</strong>：
+<ul>
+<li>
+<strong>結果的表</strong>（狀態框下面的重點、預覽、小比較）：<code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>。短、只看不點，完整的請下載。</li>
+<li>
+<strong>要操作的表</strong>（題目清單、搜尋結果、要挑出幾列再做事）：<code><a href="../reference/kit_dt.html">kit_dt()</a></code>。可以排序、換頁、點選；列數多也不用全部畫出來。</li>
+<li>不要為了「看起來比較厲害」把結果的表換成
+<code><a href="../reference/kit_dt.html">kit_dt()</a></code>：搜尋框、換頁按鈕都是要多看懂的東西。</li>
+</ul>
+</li>
 <li>
 <strong>長相</strong>：
 <ul>
@@ -825,7 +883,30 @@ warnings
 </ul>
 </li>
 <li>
-<strong>不要</strong>：拉滿整頁；一次顯示幾百列。</li>
+<strong>互動資料表（<code><a href="../reference/kit_dt.html">kit_dt()</a></code>）</strong>：
+<ul>
+<li>和上面一樣的框、黑表頭、斑馬紋、列之間的線、<code>small</code>
+字級；數字欄自動靠右、等寬數字。字比結果的表密一點（列高較小）。</li>
+<li>點表頭排序（白色的 ▲▼）；<code>selection</code> 不是
+<code>"none"</code> 時，滑過的列
+<code>bg-soft-hover</code>、游標是手指；<strong>選到的列是
+<code>bg-new</code> 淡萊姆，左邊一條 4px
+<code>nb-green</code></strong>，不是藍色。</li>
+<li>下面一行 <code>hint</code>：「共 37 列，第 1–20
+列」；右邊是換頁按鈕，長得像小按鈕（白底、<code>bw-line</code> 框、≥
+36px），目前這一頁
+<code>nb-lime</code>、不能按的照停用的樣子。手機只留「上一頁」、目前這一頁、「下一頁」。</li>
+<li>搜尋框（<code>search = TRUE</code>）在表的左上，白底
+<code>bw-frame</code> 框；通常不開，頁面自己的條件放在表的上面。</li>
+<li>長文字的欄（題目文字）用 <code>wrap_cols</code>
+換行，其他欄不換行；寬度跟著內容，太寬時表在自己的框裡左右捲，整頁不左右捲。</li>
+<li>表頭、換頁按鈕可以用鍵盤（Tab）到，焦點是 <code>focus</code>
+藍框。文字都是中文（上一頁、下一頁、沒有符合的資料）。</li>
+</ul>
+</li>
+<li>
+<strong>不要</strong>：拉滿整頁；一次顯示幾百列；用 DataTables
+預設的藍色選取、灰色換頁。</li>
 </ul>
 </div>
 <div class="section level3">
@@ -1223,6 +1304,7 @@ server 用 <code>kit_run_gate(session, output, missing, link)</code>
 固定的部分與狀態流都做好了，分頁只寫自己的設定、執行與結果）：</p>
 <pre><code>頁首（一個 app 一個）
 步驟分頁（目前的萊姆色、做完的打 ✓、還不能做的灰色）
+（範圍選擇列：全 app 共用的選擇，有的 app 才有）
 這一頁做什麼：一句話                                      看步驟 ▸
 設定（左 1/3）               │ 設定摘要與預覽（右 2/3）
 進階設定 ▸
@@ -1401,25 +1483,32 @@ app 可以慢慢換）。</li>
 </td>
 </tr>
 <tr class="odd">
+<td>範圍選擇列（ScopeBar）</td>
+<td>
+<code>kit_scope_bar(input, line, actions, panel)</code>；確認區裡的一排按鈕
+<code>.kit-buttons</code>
+</td>
+</tr>
+<tr class="even">
 <td>頁面說明（PageGuide）</td>
 <td>
 <code><a href="../reference/kit_tab_guide.html">kit_tab_guide()</a></code>、<code><a href="../reference/kit_steps.html">kit_steps()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>按鈕（Button）</td>
 <td>
 <code>kit_button(id, label, kind)</code>、<code><a href="../reference/kit_btn_class.html">kit_btn_class()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>下載按鈕（DownloadButton）</td>
 <td>
 <code>kit_download_button(session, id, label, filename, content)</code>；測試
 <code><a href="../reference/kit_test_download.html">kit_test_download()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>狀態框（StatusBox）</td>
 <td>值物件
 <code><a href="../reference/kit_status.html">kit_status()</a></code>、<code><a href="../reference/kit_done_status.html">kit_done_status()</a></code>、<code><a href="../reference/kit_error_status.html">kit_error_status()</a></code>、<code><a href="../reference/kit_stale_status.html">kit_stale_status()</a></code>（直接放進頁面）；低階畫法
@@ -1427,7 +1516,7 @@ app 可以慢慢換）。</li>
 <code><a href="../reference/kit_abort.html">kit_abort()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>提示框（Callout）</td>
 <td>
 <code>kit_callout(..., warn = )</code>；雲端版橫幅
@@ -1435,13 +1524,13 @@ app 可以慢慢換）。</li>
 <code><a href="../reference/kit_cloud_footer.html">kit_cloud_footer()</a></code>、判斷 <code><a href="../reference/kit_is_cloud.html">kit_is_cloud()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>資料表（DataTable）</td>
 <td>
-<code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>、<code><a href="../reference/kit_preview_table.html">kit_preview_table()</a></code>、<code><a href="../reference/kit_rows_note.html">kit_rows_note()</a></code>、<code><a href="../reference/kit_table_scroll.html">kit_table_scroll()</a></code>、<code><a href="../reference/kit_num.html">kit_num()</a></code>、<code><a href="../reference/kit_dims.html">kit_dims()</a></code>
-</td>
+<code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>、<code><a href="../reference/kit_preview_table.html">kit_preview_table()</a></code>、<code><a href="../reference/kit_rows_note.html">kit_rows_note()</a></code>、<code><a href="../reference/kit_table_scroll.html">kit_table_scroll()</a></code>、<code><a href="../reference/kit_num.html">kit_num()</a></code>、<code><a href="../reference/kit_dims.html">kit_dims()</a></code>；互動資料表
+<code><a href="../reference/kit_dt.html">kit_dt()</a></code>（DT）</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>圖（Chart）</td>
 <td>
 <code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code>（plotly
@@ -1449,13 +1538,13 @@ app 可以慢慢換）。</li>
 <code><a href="../reference/kit_chart_colors.html">kit_chart_colors()</a></code>、<code><a href="../reference/kit_chart_neutral.html">kit_chart_neutral()</a></code>、<code><a href="../reference/kit_chart_sequential.html">kit_chart_sequential()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>細節列（Details）</td>
 <td>
 <code><a href="../reference/kit_details_row.html">kit_details_row()</a></code>、<code><a href="../reference/kit_detail.html">kit_detail()</a></code>、<code><a href="../reference/kit_advanced.html">kit_advanced()</a></code>、<code><a href="../reference/kit_settings_line.html">kit_settings_line()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>用 R 怎麼做（CodePanel）</td>
 <td>模組
 <code><a href="../reference/kit_code_panel_ui.html">kit_code_panel_ui()</a></code>／<code><a href="../reference/kit_code_panel_ui.html">kit_code_panel_server()</a></code>；值物件
@@ -1464,47 +1553,47 @@ app 可以慢慢換）。</li>
 <code><a href="../reference/kit_code_panel.html">kit_code_panel()</a></code>、<code><a href="../reference/kit_render_code_panel.html">kit_render_code_panel()</a></code>、<code><a href="../reference/kit_code_blocks.html">kit_code_blocks()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>步驟卡（StepCard）</td>
 <td>模組
 <code><a href="../reference/kit_stepcards_ui.html">kit_stepcards_ui()</a></code>／<code>kit_stepcards_server(id, titles, summaries, checks)</code>；低階
 <code><a href="../reference/kit_step_card.html">kit_step_card()</a></code>、<code><a href="../reference/kit_step_head.html">kit_step_head()</a></code>、<code><a href="../reference/kit_step_body.html">kit_step_body()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>檢查清單（Checklist）</td>
 <td>值物件
 <code><a href="../reference/kit_checklist.html">kit_checklist()</a></code>、<code>kit_check(state, title, why, actions)</code>；單一問題
 <code><a href="../reference/kit_problems.html">kit_problems()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>還差什麼（ReadyLine）</td>
 <td>模組
 <code><a href="../reference/kit_run_gate_ui.html">kit_run_gate_ui()</a></code>／<code>kit_run_gate_server(id, missing, link)</code>；低階
 <code><a href="../reference/kit_ready_line.html">kit_ready_line()</a></code>、<code><a href="../reference/kit_run_gate.html">kit_run_gate()</a></code>、<code><a href="../reference/kit_need_files.html">kit_need_files()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>下一步（NextStep）</td>
 <td>
 <code><a href="../reference/kit_next_step.html">kit_next_step()</a></code>；連到別的 app
 <code><a href="../reference/kit_app_link.html">kit_app_link()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>圖解（Diagram）</td>
 <td>
 <code><a href="../reference/kit_diagram.html">kit_diagram()</a></code>、<code><a href="../reference/kit_dg_table.html">kit_dg_table()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>捲到結果、打開收合、離開前提醒</td>
 <td>
 <code><a href="../reference/kit_scroll_to.html">kit_scroll_to()</a></code>、<code><a href="../reference/kit_open_details.html">kit_open_details()</a></code>、<code><a href="../reference/kit_unload_guard.html">kit_unload_guard()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>頁面骨架＋狀態流（RunTab）</td>
 <td>
 <code>kit_run_tab_ui(id, run_label, guide, ...)</code>／<code>kit_run_tab_server(input, output, session, run_label, run, done, ...)</code>：還差、設定摘要、執行、狀態框、通知、捲動、要重新執行、結果的細節、用
@@ -1726,7 +1815,7 @@ nb-ink。</td>
 <tr class="even">
 <td><code>line</code></td>
 <td><code>#d9d4c5</code></td>
-<td>淡線：「這一頁做什麼」下緣、進階設定左邊的線、手機檔案表的分隔。只當線，不當文字。</td>
+<td>淡線：「這一頁做什麼」下緣、範圍選擇列下緣、進階設定左邊的線、手機檔案表的分隔。只當線，不當文字。</td>
 </tr>
 <tr class="odd">
 <td><code>line-soft</code></td>
@@ -1768,7 +1857,7 @@ nb-ink。</td>
 <tr class="even">
 <td><code>bg-new</code></td>
 <td><code>#e8f0a0</code></td>
-<td>圖解裡新加的欄（淡萊姆）；不用天藍，天藍是「資訊」。</td>
+<td>圖解裡新加的欄、互動資料表選到的列（淡萊姆）；不用天藍，天藍是「資訊」。</td>
 </tr>
 <tr class="odd">
 <td><code>focus</code></td>

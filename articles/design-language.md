@@ -25,8 +25,13 @@ learn one tool, they can use the others.
     the logo (SVG, PNG)
   - What every component looks like:
     [`kitDesign::kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md)
-- **Status**: v1.1 (2026-10-31). v1.0 merged v0.2’s “additions after
-  design review” into the main text; v1.1 adds kitDesign 0.2.0’s charts
+- **Status**: v1.2 (2026-11-01). v1.2 adds kitDesign 0.7.0’s interactive
+  table
+  ([`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md))
+  and the scope bar (ScopeBar,
+  [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/reference/kit_scope_bar.md)).
+  v1.0 merged v0.2’s “additions after design review” into the main text;
+  v1.1 adds kitDesign 0.2.0’s charts
   ([`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)),
   the danger button, the heatmap color scale, the step card rule “choose
   first, refine later”, and “Author’s decisions” 6–9. Where the spec and
@@ -296,6 +301,42 @@ not-yet-available ones are gray.
 - **Don’t**: wrap the tabs in another big frame; use numbers that imply
   every step is required when the steps are actually alternatives.
 
+### Scope bar (ScopeBar)
+
+The scope bar is one choice shared by the whole app (for example which
+item bank kitItemBank uses). Every tab depends on it, so it sits right
+under the tab bar, not inside one page.
+
+- **R**:
+  `kit_scope_bar(input, line = NULL, actions = NULL, panel = NULL)`:
+  `input` is `radioButtons(..., inline = TRUE)` (2–5 choices) or
+  [`selectInput()`](https://rdrr.io/pkg/shiny/man/selectInput.html);
+  `line` is one hint line; `actions` are small buttons on the right;
+  `panel` is what must be confirmed after choosing.
+- **Appearance**:
+  - No frame, no shadow; a faint `line` rule (1.5px) below separates it
+    from the page; `sp-3`/`sp-4` above and below.
+  - First row: the group name (bold) and a row of radio buttons.
+  - Second row: `hint` text saying what is in use and how big it is
+    (「目前：TDCYP 題庫 · 37 題 · 4 個波次」 (“In use: TDCYP item bank ·
+    37 items · 4 waves”)), key words in bold `nb-ink`; something still
+    to do in bold `text-todo` (`.kit-scopebar-todo`,
+    「還差：上傳題庫檔」 (“Still needed: upload the item bank file”)).
+  - Small buttons (download, new, upload) on the right of the second
+    row; on a phone they follow the hint, left-aligned.
+  - When the choice needs confirming (for example “upload your own item
+    bank”), a confirmation area opens below (`.kit-scopebar-panel`): a
+    checklist and a row of buttons (`.kit-buttons`), at most 46rem wide.
+- **Rules**:
+  - At most one per app, and only for a choice that affects every tab.
+    Settings for one page stay in that page’s settings.
+  - When the scope changes, results that used the old scope become
+    【要重新執行】 (“run again”; see State flow).
+  - When changing the scope takes time or loses something, say so in the
+    confirmation area first, and change only when the button is pressed.
+- **Don’t**: make it a tab or a card; put a primary (lime) button in it;
+  put two choices in one bar.
+
 ### Page guide (“What this page does”) (PageGuide)
 
 “這一頁做什麼” (“What this page does”) is a one-line explanation at the
@@ -503,7 +544,24 @@ rows.
 
 - **R**: `kit_static_table(df)` (integers get thousands separators
   automatically), `kit_preview_table(df, priority_cols, n)`,
-  `kit_rows_note(nrow, ncol, shown_rows)`.
+  `kit_rows_note(nrow, ncol, shown_rows)`; for tables people search,
+  page through and click,
+  `kit_dt(df, selection, page_length, search, wrap_cols, min_widths)`
+  (inside
+  [`DT::renderDT()`](https://rdrr.io/pkg/DT/man/dataTableOutput.html)).
+- **Which one**:
+  - **Result tables** (the key table under the status box, previews,
+    small comparisons):
+    [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md).
+    Short, read-only; the full table is downloadable.
+  - **Tables to work with** (item lists, search results, picking rows to
+    act on):
+    [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md).
+    Sortable, paged, selectable; long tables are not drawn all at once.
+  - Don’t swap a result table for
+    [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+    to make it look more capable: the search box and page buttons are
+    more things to understand.
 - **Appearance**:
   - White background, `bw-frame` outer frame, `nb-ink` header row with
     white text.
@@ -522,7 +580,31 @@ rows.
     downloaded files keep the original column names.
   - Tables inside step cards have no outer frame and use a `bg-stripe`
     (pale) header row, not the black one.
-- **Don’t**: stretch to full page width; show hundreds of rows at once.
+- **Interactive table
+  ([`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md))**:
+  - Same frame, black header, zebra stripes, row lines and `small` size
+    as above; numeric columns are right-aligned with tabular figures
+    automatically. Rows are a little denser than in result tables.
+  - Click a header to sort (white ▲▼). When `selection` is not `"none"`,
+    the hovered row is `bg-soft-hover` with a pointer cursor; **a
+    selected row is `bg-new` pale lime with a 4px `nb-green` bar on the
+    left**, not blue.
+  - One `hint` line below: 「共 37 列，第 1–20 列」 (“37 rows, rows
+    1–20”); on the right, page buttons that look like small buttons
+    (white, `bw-line` frame, ≥ 36px), the current page `nb-lime`,
+    unavailable ones in the disabled look. On a phone only 「上一頁」
+    (previous), the current page and 「下一頁」 (next) remain.
+  - The search box (`search = TRUE`) sits above the table on the left,
+    white with a `bw-frame` frame; usually off, with the page’s own
+    conditions above the table.
+  - Long text columns (item text) wrap via `wrap_cols`; other columns do
+    not wrap. Width follows content; a table that is too wide scrolls
+    sideways inside its own box, and the page never scrolls sideways.
+  - Headers and page buttons are reachable with the keyboard (Tab) and
+    show the `focus` blue ring. All text is Chinese (上一頁, 下一頁,
+    沒有符合的資料).
+- **Don’t**: stretch to full page width; show hundreds of rows at once;
+  use DataTables’ default blue selection or gray page buttons.
 
 ### Chart
 
@@ -872,6 +954,7 @@ own settings, run, and results):
 
     Header (one per app)
     Step tabs (current is lime, finished get ✓, not yet available are gray)
+    (Scope bar: an app-wide choice, only in apps that have one)
     What this page does: one sentence                         See steps ▸
     Settings (left 1/3)          │ Settings summary and preview (right 2/3)
     Advanced settings ▸
@@ -1038,12 +1121,13 @@ Which function to use for each component:
 |----|----|
 | Header | Already included by [`kit_page()`](https://jiewentsai.github.io/kitDesign/reference/kit_page.md); on its own [`kit_header()`](https://jiewentsai.github.io/kitDesign/reference/kit_header.md), [`kit_app_meta()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_meta.md); version and date [`kit_app_description()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_description.md) |
 | Step tabs (NavTabs) | Module `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`; low level: [`kit_navgroups()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroups.md) + [`kit_navgroup()`](https://jiewentsai.github.io/kitDesign/reference/kit_navgroup.md), `kit_flow_tabs(aside = )`, [`kit_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_states.md), [`kit_watch_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_watch_tab_states.md) |
+| Scope bar (ScopeBar) | `kit_scope_bar(input, line, actions, panel)`; a row of buttons in the confirmation area: `.kit-buttons` |
 | Page guide (PageGuide) | [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md), [`kit_steps()`](https://jiewentsai.github.io/kitDesign/reference/kit_steps.md) |
 | Button | `kit_button(id, label, kind)`, [`kit_btn_class()`](https://jiewentsai.github.io/kitDesign/reference/kit_btn_class.md) |
 | Download button (DownloadButton) | `kit_download_button(session, id, label, filename, content)`; tests [`kit_test_download()`](https://jiewentsai.github.io/kitDesign/reference/kit_test_download.md) |
 | Status box (StatusBox) | Value objects [`kit_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_status.md), [`kit_done_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_done_status.md), [`kit_error_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_error_status.md), [`kit_stale_status()`](https://jiewentsai.github.io/kitDesign/reference/kit_stale_status.md) (place directly in the page); low-level rendering [`kit_status_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_status_ui.md); notifications [`kit_notify()`](https://jiewentsai.github.io/kitDesign/reference/kit_notify.md); plain-language errors [`kit_abort()`](https://jiewentsai.github.io/kitDesign/reference/kit_abort.md) |
 | Callout | `kit_callout(..., warn = )`; cloud-version banner [`kit_cloud_banner()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_banner.md), usage notes [`kit_cloud_footer()`](https://jiewentsai.github.io/kitDesign/reference/kit_cloud_footer.md), detection [`kit_is_cloud()`](https://jiewentsai.github.io/kitDesign/reference/kit_is_cloud.md) |
-| Data table (DataTable) | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md), [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md), [`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md), [`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/reference/kit_table_scroll.md), [`kit_num()`](https://jiewentsai.github.io/kitDesign/reference/kit_num.md), [`kit_dims()`](https://jiewentsai.github.io/kitDesign/reference/kit_dims.md) |
+| Data table (DataTable) | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md), [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md), [`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md), [`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/reference/kit_table_scroll.md), [`kit_num()`](https://jiewentsai.github.io/kitDesign/reference/kit_num.md), [`kit_dims()`](https://jiewentsai.github.io/kitDesign/reference/kit_dims.md); interactive table [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md) (DT) |
 | Chart | [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md) (look of plotly charts), [`kit_plotly_fonts()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_fonts.md); colors [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md), [`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md), [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md) |
 | Details row (Details) | [`kit_details_row()`](https://jiewentsai.github.io/kitDesign/reference/kit_details_row.md), [`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md), [`kit_advanced()`](https://jiewentsai.github.io/kitDesign/reference/kit_advanced.md), [`kit_settings_line()`](https://jiewentsai.github.io/kitDesign/reference/kit_settings_line.md) |
 | How to do it in R (CodePanel) | Module [`kit_code_panel_ui()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md)／[`kit_code_panel_server()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel_ui.md); value object `kit_code(code, label)`; wrapping [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md), line width [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md); low level [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md), [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md), [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md) |
@@ -1186,7 +1270,7 @@ In code, the CSS variable is `--` plus the name, for example
 | `text-todo` | `#8a4a00` | The “還差：…” (“Still needed: …”) line above the primary button, reminder text in per-item tables (bold). 6.4:1 on paper. |
 | `text-decide` | `#a14a00` | The ! mark for “needs a decision” in checklists. About 6.0:1 on white. |
 | `text-stop` | `#8a2a00` | Single problems in tables or lists (.kit-problems). 8.1:1 on paper. |
-| `line` | `#d9d4c5` | Faint line: the bottom edge of “What this page does”, the left rule of advanced settings, dividers in the phone file table. Lines only, never text. |
+| `line` | `#d9d4c5` | Faint line: the bottom edge of “What this page does”, the bottom edge of the scope bar, the left rule of advanced settings, dividers in the phone file table. Lines only, never text. |
 | `line-soft` | `#e3ded2` | Faintest line: between checklist rows, top edge of the composite item ID block. |
 | `border-disabled` | `#8a8a8a` | Disabled frames: not-yet-available or finished step cards, disabled buttons, not-yet-available tabs. 3.2:1 on paper (the threshold for frames and graphics is 3:1). |
 | `bg-disabled` | `#e8e4d8` | Background of disabled buttons (do not use opacity); not-yet-available tabs use the similar \#ece8dc. |
@@ -1194,7 +1278,7 @@ In code, the CSS variable is `--` plus the name, for example
 | `bg-soft-hover` | `#f1eee4` | Background of secondary buttons on hover. |
 | `bg-code` | `#fffdf5` | Background of code frames (with a 2px nb-ink frame, no shadow). |
 | `bg-guess` | `#fffbe6` | Cells guessed from column names (pale yellow), reminding users to check them. |
-| `bg-new` | `#e8f0a0` | Newly added columns in diagrams (pale lime); not sky blue, which means “information”. |
+| `bg-new` | `#e8f0a0` | Newly added columns in diagrams, selected rows in interactive tables (pale lime); not sky blue, which means “information”. |
 | `focus` | `#0044ff` | Keyboard focus: 3px outline, offset 3px outward. Visible against black frames; 6.0:1 on paper. |
 | `logo-bean` | `#aad05f` | Logo and illustrations only. Not for buttons or backgrounds (only 1.05:1 against lime). |
 | `logo-leaf` | `#fff57f` | Logo and illustrations only. Not for any interface component (too close to the “needs attention” yellow). |

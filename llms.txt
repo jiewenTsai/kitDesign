@@ -42,7 +42,9 @@ remotes::install_github("jiewenTsai/kitDesign")
 Depends only on shiny, bslib (\>= 0.11.0), and htmltools (plus grDevices
 and utils, which ship with R).
 [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/reference/kit_plotly_style.md)
-also needs plotly.
+also needs plotly, and
+[`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+needs DT.
 
 If bslib is too old (the Brite theme does not exist before 0.11.0),
 [`kit_theme()`](https://jiewentsai.github.io/kitDesign/reference/kit_theme.md)
@@ -223,6 +225,7 @@ idle/success/warning/error/stale); all have
 | [`kit_next_step()`](https://jiewentsai.github.io/kitDesign/reference/kit_next_step.md), [`kit_app_link()`](https://jiewentsai.github.io/kitDesign/reference/kit_app_link.md) | Next step, link to another app |
 | [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_card.md), [`kit_step_head()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_head.md), [`kit_step_body()`](https://jiewentsai.github.io/kitDesign/reference/kit_step_body.md) | Step card (current, done, not available yet) |
 | [`kit_problems()`](https://jiewentsai.github.io/kitDesign/reference/kit_problems.md) | A single problem inside a step card (“還差：…” (“Still needed: …”)) |
+| [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/reference/kit_scope_bar.md) | Scope bar: an app-wide choice (for example which item bank) right under the tab bar: radio buttons, a hint line, small buttons, an area to confirm |
 
 ### Results
 
@@ -233,6 +236,7 @@ idle/success/warning/error/stale); all have
 | [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_panel.md), [`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_blocks.md), [`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/reference/kit_render_code_panel.md) | Low-level functions for “How to do it in R” |
 | [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_wrap.md), [`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/reference/kit_code_cols.md) | Wraps code to at most 70 columns per line; columns per line (a Chinese character counts as 2) |
 | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md), [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md), [`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/reference/kit_table_scroll.md) | Data table, preview table, horizontally scrolling box |
+| [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md) | Interactive table (DT) with the same look, for tables people search, page through and click; selected rows are light lime, text in Chinese (DT is in Suggests) |
 | [`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/reference/kit_rows_note.md), [`kit_dims()`](https://jiewentsai.github.io/kitDesign/reference/kit_dims.md), [`kit_num()`](https://jiewentsai.github.io/kitDesign/reference/kit_num.md) | “共 3,418 列 × 25 欄，以下前 10 列。” (“3,418 rows × 25 columns; first 10 rows below.”), thousands separators |
 | [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_colors.md), [`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_neutral.md) | Chart categorical colors (Okabe–Ito) and neutral colors |
 | [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/reference/kit_chart_sequential.md) | Color scale for continuous values (very light lime → light lime → KIT green; 0% stays distinct from blank no-data cells), for heatmaps |
@@ -377,6 +381,14 @@ Switch to another project’s logo and colors.
 - [`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_send_tab_states.md)
   : Send tab states to the browser
 
+## Scope bar (ScopeBar)
+
+One choice shared by the whole app (for example which item bank), right
+under the tab bar.
+
+- [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/reference/kit_scope_bar.md)
+  : Scope bar: an app-wide choice under the tab bar
+
 ## Page guide (PageGuide)
 
 - [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md)
@@ -467,6 +479,9 @@ browser.
 - [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md)
   : Small table (put directly inside renderUI(); no separate output
   needed)
+
+- [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+  : Interactive table (DT) with the KIT look
 
 - [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md)
   :

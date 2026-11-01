@@ -35,7 +35,9 @@ remotes::install_github("jiewenTsai/kitDesign")
 只依賴 shiny、bslib（\>= 0.11.0）、htmltools（和 R 內建的
 grDevices、utils）。用
 [`kit_plotly_style()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_plotly_style.md)
-時另外要 plotly。
+時另外要 plotly，用
+[`kit_dt()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dt.md)
+時要 DT。
 
 bslib 太舊（0.11.0 以前沒有 Brite 主題）時
 [`kit_theme()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_theme.md)
@@ -202,6 +204,7 @@ KIT；[`kit_brand()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_br
 | [`kit_next_step()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_next_step.md)、[`kit_app_link()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_app_link.md) | 下一步、連到別的 app |
 | [`kit_step_card()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_step_card.md)、[`kit_step_head()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_step_head.md)、[`kit_step_body()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_step_body.md) | 步驟卡（現在、做完、還不能做） |
 | [`kit_problems()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_problems.md) | 步驟卡裡的單一問題（「還差：…」） |
+| [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_scope_bar.md) | 範圍選擇列：全 app 共用的選擇（例如用哪一份題庫），放在分頁列正下方：單選圓鈕、一行 hint、小按鈕、要確認的內容 |
 
 ### 結果
 
@@ -212,6 +215,7 @@ KIT；[`kit_brand()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_br
 | [`kit_code_panel()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_code_panel.md)、[`kit_code_blocks()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_code_blocks.md)、[`kit_render_code_panel()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_render_code_panel.md) | 用 R 怎麼做的低階函式 |
 | [`kit_code_wrap()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_code_wrap.md)、[`kit_code_cols()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_code_cols.md) | 程式碼換行成每行最多 70 欄；每行幾欄（中文字算 2 欄） |
 | [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_static_table.md)、[`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_preview_table.md)、[`kit_table_scroll()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_table_scroll.md) | 資料表、預覽表、左右捲的框 |
+| [`kit_dt()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dt.md) | 互動資料表（DT），樣子一樣，給要搜尋、換頁、點選的表；選到的列是淡萊姆、文字是中文（DT 是 Suggests） |
 | [`kit_rows_note()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_rows_note.md)、[`kit_dims()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dims.md)、[`kit_num()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_num.md) | 「共 3,418 列 × 25 欄，以下前 10 列。」、千分位 |
 | [`kit_chart_colors()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_chart_colors.md)、[`kit_chart_neutral()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_chart_neutral.md) | 圖的類別色（Okabe–Ito）與中性色 |
 | [`kit_chart_sequential()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_chart_sequential.md) | 連續數值的色階（極淡萊姆 → 淡萊姆 → KIT 綠；0% 和沒有資料的白格分得開），熱圖用 |
@@ -344,6 +348,13 @@ MIT © KIT
 - [`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_send_tab_states.md)
   : 把分頁狀態送到瀏覽器
 
+## 範圍選擇列（ScopeBar）
+
+全 app 共用的一個選擇（例如用哪一份題庫），放在分頁列正下方。
+
+- [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_scope_bar.md)
+  : 範圍選擇列：分頁列下面、全 app 共用的選擇
+
 ## 頁面說明（PageGuide）
 
 - [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_tab_guide.md)
@@ -431,6 +442,9 @@ MIT © KIT
 
 - [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_static_table.md)
   : 小表格（直接放在 renderUI() 裡，不用另開 output）
+
+- [`kit_dt()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dt.md)
+  : 互動資料表（DT），KIT 的樣子
 
 - [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_preview_table.md)
   :

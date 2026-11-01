@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,10 +71,10 @@
 
 
 
-<link href="components_files/kitDesign-0.6.1/kit-base.css" rel="stylesheet">
-<link href="components_files/kitDesign-0.6.1/kit-brite.css" rel="stylesheet">
-<link href="components_files/kitDesign-0.6.1/kit-design.css" rel="stylesheet">
-<script src="components_files/kitDesign-0.6.1/kit.js"></script><link href="components_files/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="components_files/kitDesign-0.7.0/kit-base.css" rel="stylesheet">
+<link href="components_files/kitDesign-0.7.0/kit-brite.css" rel="stylesheet">
+<link href="components_files/kitDesign-0.7.0/kit-design.css" rel="stylesheet">
+<script src="components_files/kitDesign-0.7.0/kit.js"></script><link href="components_files/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="components_files/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <link href="components_files/selectize-0.15.2/css/selectize.bootstrap3.css" rel="stylesheet">
 <script src="components_files/selectize-0.15.2/js/selectize.min.js"></script><script src="components_files/selectize-0.15.2/accessibility/js/selectize-plugin-a11y.min.js"></script><div class="row">
@@ -168,11 +168,52 @@
 </div>
 </div>
 <div class="section level3">
+<h3 id="範圍選擇列scopebar">範圍選擇列（ScopeBar）<a class="anchor" aria-label="anchor" href="#%E7%AF%84%E5%9C%8D%E9%81%B8%E6%93%87%E5%88%97scopebar"></a>
+</h3>
+<p>全 app
+共用的一個選擇（例如用哪一份題庫），放在分頁列正下方：單選圓鈕、一行
+hint、右邊的小按鈕；
+要確認的選項打開下面的確認區（<code>panel</code>）。</p>
+<div class="kit-live">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_scope_bar.html">kit_scope_bar</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html" class="external-link">radioButtons</a></span><span class="op">(</span><span class="st">"bank"</span>, <span class="st">"題庫"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TDCYP 題庫（建議）"</span> <span class="op">=</span> <span class="st">"tdcyp"</span>, <span class="st">"上傳自己的題庫"</span> <span class="op">=</span> <span class="st">"own"</span><span class="op">)</span>,</span>
+<span>               inline <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  line <span class="op">=</span> <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span><span class="st">"目前："</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">strong</span><span class="op">(</span><span class="st">"TDCYP 題庫"</span><span class="op">)</span>, <span class="st">" · 37 題 · 4 個波次"</span><span class="op">)</span>,</span>
+<span>  actions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/kit_button.html">kit_button</a></span><span class="op">(</span><span class="st">"bank_dl"</span>, <span class="st">"下載題庫"</span><span class="op">)</span>, <span class="fu"><a href="../reference/kit_button.html">kit_button</a></span><span class="op">(</span><span class="st">"bank_new"</span>, <span class="st">"新增題庫"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="kit-scopebar">
+<div id="bank" class="form-group shiny-input-radiogroup shiny-input-container shiny-input-container-inline" role="radiogroup" aria-labelledby="bank-label">
+<label class="control-label" id="bank-label" for="bank">題庫</label>
+<div class="shiny-options-group">
+<label class="radio-inline">
+<input type="radio" name="bank" value="tdcyp" checked><span>TDCYP 題庫（建議）</span>
+</label>
+<label class="radio-inline">
+<input type="radio" name="bank" value="own"><span>上傳自己的題庫</span>
+</label>
+</div>
+</div>
+<div class="kit-scopebar-line">
+<span>
+目前：
+<strong>TDCYP 題庫</strong>
+ · 37 題 · 4 個波次
+</span>
+<div class="kit-scopebar-actions">
+<button class="btn btn-default action-button btn-sm btn-outline-secondary" id="bank_dl" type="button"><span class="action-label">下載題庫</span></button>
+<button class="btn btn-default action-button btn-sm btn-outline-secondary" id="bank_new" type="button"><span class="action-label">新增題庫</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
 <h3 id="頁面說明這一頁做什麼pageguide">頁面說明：這一頁做什麼（PageGuide）<a class="anchor" aria-label="anchor" href="#%E9%A0%81%E9%9D%A2%E8%AA%AA%E6%98%8E%E9%80%99%E4%B8%80%E9%A0%81%E5%81%9A%E4%BB%80%E9%BA%BCpageguide"></a>
 </h3>
 <p>每一頁最上面一句話，旁邊「看步驟 ▸」；步驟與會得到什麼預設收起。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_tab_guide.html">kit_tab_guide</a></span><span class="op">(</span></span>
 <span>  goal <span class="op">=</span> <span class="st">"把兩個波次的檔案依 ID 接成一張寬資料。"</span>,</span>
 <span>  steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"選 ID 欄"</span>, <span class="st">"選要保留哪些人"</span>, <span class="st">"按「執行串接」"</span>, <span class="st">"看狀態框與結果"</span><span class="op">)</span>,</span>
@@ -205,7 +246,7 @@
 <p>一頁只有一個主要按鈕（萊姆色）。小按鈕給下載、全選；危險按鈕是鮭魚色。停用的按鈕是灰的，
 上面一定寫「還差：…」。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
 <span>  style <span class="op">=</span> <span class="st">"display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem;"</span>,</span>
 <span>  <span class="fu"><a href="../reference/kit_button.html">kit_button</a></span><span class="op">(</span><span class="st">"run"</span>, <span class="st">"開始校準"</span>, <span class="st">"primary"</span><span class="op">)</span>,</span>
@@ -229,7 +270,7 @@
 裡，檔案在按下載時才寫。這裡用測試用的 session
 畫出來，所以按了沒有作用。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/shiny/man/MockShinySession.html" class="external-link">MockShinySession</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
 <span>  class <span class="op">=</span> <span class="st">"kit-downloads"</span>,</span>
@@ -257,7 +298,7 @@
 <p>按了主要按鈕以後第一眼看的框，只有四種：【完成】【完成，但請注意】【停下來】【要重新執行】。
 第一行是一句結論，下面最多 3 點，其他收起來。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_done_status.html">kit_done_status</a></span><span class="op">(</span><span class="st">"串接完成：結果共 3,389 列 × 2,058 欄。"</span>,</span>
 <span>                points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"688 人每個檔案都有資料。"</span>, <span class="st">"第 1 波 3,389 人，第 2 波 3,102 人。"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="alert alert-success kit-status" role="alert">
@@ -273,7 +314,7 @@
 </div>
 </div>
 <div class="kit-live">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_done_status.html">kit_done_status</a></span><span class="op">(</span></span>
 <span>  <span class="st">"串接完成：結果共 3,389 列 × 2,058 欄。"</span>,</span>
 <span>  warnings <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"有 12 人的 ID 重複，只留第一筆。"</span>, <span class="st">"第 3 波沒有 sex 欄。"</span><span class="op">)</span></span>
@@ -291,7 +332,7 @@
 </div>
 </div>
 <div class="kit-live">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_error_status.html">kit_error_status</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">simpleError</a></span><span class="op">(</span><span class="st">"object 'subj_id' not found"</span><span class="op">)</span>, <span class="st">"串接"</span><span class="op">)</span></span></code></pre></div>
 <div class="alert alert-danger kit-status" role="alert">
 <div class="kit-status-line">
@@ -307,7 +348,7 @@
 </div>
 </div>
 <div class="kit-live">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_stale_status.html">kit_stale_status</a></span><span class="op">(</span><span class="st">"執行串接"</span><span class="op">)</span></span></code></pre></div>
 <div class="alert alert-warning kit-status" role="alert">
 <div class="kit-status-line">
@@ -323,17 +364,17 @@
 </h3>
 <p>資訊是天藍色，要注意是黃色。提示框不是結果，所以沒有陰影。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_callout.html">kit_callout</a></span><span class="op">(</span><span class="st">"外部連結不適用：這一回合只有一個世代，這不是錯誤。"</span><span class="op">)</span></span></code></pre></div>
 <div class="kit-callout">外部連結不適用：這一回合只有一個世代，這不是錯誤。</div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_callout.html">kit_callout</a></span><span class="op">(</span><span class="st">"資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。"</span>, warn <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="kit-callout kit-callout-warn">資料裡有疑似遺漏值代碼，建議先到「遺漏值處理」。</div>
 </div>
 <p>雲端版（<code><a href="../reference/kit_is_cloud.html">kit_is_cloud()</a></code>）：頁首下面一行黃色的橫幅，頁面最下面是灰色小字的使用須知。
 文字是 app 的：每一段的段名與內文、參考連結。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_cloud_banner.html">kit_cloud_banner</a></span><span class="op">(</span><span class="st">"此為雲端版：上傳的資料會傳送至位於美國的 Posit 伺服器。"</span>,</span>
 <span>                 <span class="va">tags</span><span class="op">$</span><span class="fu">a</span><span class="op">(</span>href <span class="op">=</span> <span class="st">"#kit-cloud-terms"</span>, <span class="st">"〈雲端版使用須知〉"</span><span class="op">)</span>, <span class="st">"。"</span><span class="op">)</span></span></code></pre></div>
 <div class="alert alert-warning kit-cloud-banner" role="alert">
@@ -341,7 +382,7 @@
 <a href="#kit-cloud-terms">〈雲端版使用須知〉</a>
 。
 </div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_cloud_footer.html">kit_cloud_footer</a></span><span class="op">(</span></span>
 <span>  sections <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"一、資料傳輸與儲存"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"本雲端版部署於 Posit Connect Cloud，主機位於美國。"</span>,</span>
@@ -372,7 +413,7 @@
 </h3>
 <p>表格寬度跟著內容；太寬時在自己的框裡左右捲。上面一行小字寫共幾列幾欄。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">waves</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  id <span class="op">=</span> <span class="fl">101</span><span class="op">:</span><span class="fl">105</span>, cohort <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M03"</span>, <span class="st">"M36"</span>, <span class="st">"M03"</span>, <span class="st">"M36"</span>, <span class="st">"M03"</span><span class="op">)</span>, wave_m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">12</span>, <span class="fl">3</span>, <span class="fl">6</span><span class="op">)</span>,</span>
 <span>  income <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32000</span>, <span class="fl">45500</span>, <span class="fl">28750</span>, <span class="fl">51200</span>, <span class="fl">39900</span><span class="op">)</span></span>
@@ -425,6 +466,16 @@
 </table>
 </div>
 </div>
+<p>要搜尋、換頁、點選的表（題目清單、搜尋結果）用
+<code><a href="../reference/kit_dt.html">kit_dt()</a></code>，放在 <code><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">DT::renderDT()</a></code> 裡（app 要
+<code>Imports: DT</code>）。
+樣子一樣；選到的列是淡萊姆，換頁按鈕是小按鈕，文字是中文。樣子見
+<code><a href="../reference/kit_gallery.html">kit_gallery()</a></code> 的「互動表與範圍」。</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">output</span><span class="op">$</span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">renderDT</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/kit_dt.html">kit_dt</a></span><span class="op">(</span><span class="va">items</span>, selection <span class="op">=</span> <span class="st">"multiple"</span>, search <span class="op">=</span> <span class="cn">TRUE</span>, wrap_cols <span class="op">=</span> <span class="st">"label"</span>, page_length <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co"># 選到哪幾列：input$items_rows_selected</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="圖chart">圖（Chart）<a class="anchor" aria-label="anchor" href="#%E5%9C%96chart"></a>
@@ -434,7 +485,7 @@
 前後對照與用法見<a href="charts.html">「圖」</a>。類別色用色盲友善的
 Okabe–Ito：</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">swatch</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">col</span>, <span class="va">name</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
 <span>    <span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"width: 4rem; height: 2rem; border: 2px solid var(--nb-ink); "</span>,</span>
@@ -482,7 +533,7 @@ Okabe–Ito：</p>
 </h3>
 <p>結果下面一排收起來的細節：紀錄、檢查表、用 R 怎麼做。要看再打開。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_details_row.html">kit_details_row</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/kit_detail.html">kit_detail</a></span><span class="op">(</span><span class="st">"這一回合的紀錄"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">p</span><span class="op">(</span><span class="st">"2026-10-31 14:02 串接 2 個檔案。"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/kit_detail.html">kit_detail</a></span><span class="op">(</span><span class="st">"用 R 怎麼做"</span>, <span class="fu"><a href="../reference/kit_code.html">kit_code</a></span><span class="op">(</span><span class="st">"joined &lt;- dplyr::left_join(t1, t2, by = \"subj_id\")"</span><span class="op">)</span><span class="op">)</span></span>
@@ -503,7 +554,7 @@ Okabe–Ito：</p>
 </div>
 <p>進階設定（預設收起）與設定摘要：</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/kit_advanced.html">kit_advanced</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/checkboxInput.html" class="external-link">checkboxInput</a></span><span class="op">(</span><span class="st">"trim"</span>, <span class="st">"比對前去掉 ID 前後的空白"</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/kit_settings_line.html">kit_settings_line</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2 個檔案"</span>, <span class="st">"ID：subj_id"</span>, <span class="st">"向後追蹤樣本"</span><span class="op">)</span><span class="op">)</span></span>
@@ -526,7 +577,7 @@ Okabe–Ito：</p>
 <p>一個版本的程式碼：每行最多 70
 欄（太長自動換行），旁邊有「複製」。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_code.html">kit_code</a></span><span class="op">(</span></span>
 <span>  <span class="st">"scores &lt;- kits::kits_subj(X, item, persons = persons, method = \"WLE\", se = TRUE, theta_range = c(-6, 6))"</span>,</span>
 <span>  <span class="st">"kits 版"</span></span>
@@ -544,7 +595,7 @@ Okabe–Ito：</p>
 </h3>
 <p>一次做一步：現在這一步有框和陰影，做完的收成一行摘要（「改」可以回去），還不能做的是灰的。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/kit_step_card.html">kit_step_card</a></span><span class="op">(</span><span class="fu"><a href="../reference/kit_step_head.html">kit_step_head</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"每個檔案是哪個世代、哪個波次"</span>, <span class="st">"done"</span>,</span>
 <span>                              summary <span class="op">=</span> <span class="st">"2 個檔案 · 世代 TDCYP"</span>, edit_id <span class="op">=</span> <span class="st">"edit1"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -585,7 +636,7 @@ Okabe–Ito：</p>
 </h3>
 <p>轉換前要看的事：! 要決定（旁邊有按鈕）、✓ 沒問題、i 提醒。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_checklist.html">kit_checklist</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/kit_check.html">kit_check</a></span><span class="op">(</span><span class="st">"todo"</span>, <span class="st">"有 3 題的分數從 1 開始"</span>, <span class="st">"kits 要的分數是 0、1、2…。可以全部減 1，或照原樣。"</span>,</span>
 <span>            actions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/kit_button.html">kit_button</a></span><span class="op">(</span><span class="st">"shift"</span>, <span class="st">"全部減 1（建議）"</span><span class="op">)</span>, <span class="fu"><a href="../reference/kit_button.html">kit_button</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"照原樣"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -627,7 +678,7 @@ Okabe–Ito：</p>
 </h3>
 <p>主要按鈕還不能按時，上面一行寫還差什麼，旁邊一個連結帶使用者去補。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html" class="external-link">tagList</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/kit_ready_line.html">kit_ready_line</a></span><span class="op">(</span><span class="st">"至少要 2 個波次的檔案，目前只有 1 個"</span>,</span>
 <span>                 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html" class="external-link">actionLink</a></span><span class="op">(</span><span class="st">"goto_upload"</span>, <span class="st">"到「檔案上傳」加入檔案 →"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -646,7 +697,7 @@ Okabe–Ito：</p>
 </h3>
 <p>做完一頁，最下面告訴使用者接著去哪裡。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_next_step.html">kit_next_step</a></span><span class="op">(</span><span class="st">"串接好了。接著把資料轉成 kits 作答檔。"</span>, <span class="st">"next"</span>, <span class="st">"下一步：轉成作答檔"</span><span class="op">)</span></span></code></pre></div>
 <div class="kit-next">
 <div class="kit-hint">串接好了。接著把資料轉成 kits 作答檔。</div>
@@ -660,7 +711,7 @@ Okabe–Ito：</p>
 <p>處理前的小表 →
 處理後的小表。新加的欄是淡萊姆色，欄名後面寫「（新）」。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_diagram.html">kit_diagram</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/kit_dg_table.html">kit_dg_table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="st">"第 1 波（t1）"</span><span class="op">)</span>,</span>
 <span>       <span class="fu"><a href="../reference/kit_dg_table.html">kit_dg_table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span>, <span class="st">"第 2 波（t2）"</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -752,7 +803,7 @@ wave
 【要重新執行】、結果的細節與「用 R 怎麼做」。下面是還沒有 server
 時的樣子（設定摘要、狀態框、 結果都是空的，主要按鈕停用）。</p>
 <div class="kit-live">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kit_run_tab_ui.html">kit_run_tab_ui</a></span><span class="op">(</span></span>
 <span>  <span class="st">"stack"</span>, <span class="st">"執行疊加"</span>,</span>
 <span>  guide <span class="op">=</span> <span class="fu"><a href="../reference/kit_tab_guide.html">kit_tab_guide</a></span><span class="op">(</span><span class="st">"把各波資料上下疊起來：每個人在每一波各佔一列。"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"按「執行疊加」"</span>, <span class="st">"看狀態框與預覽"</span><span class="op">)</span>, <span class="st">"一張長格式的資料。"</span><span class="op">)</span>,</span>
@@ -795,7 +846,7 @@ wave
 </div>
 </div>
 <p>server（在分頁的 <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">moduleServer()</a></code> 裡）：</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kit_run_tab_ui.html">kit_run_tab_server</a></span><span class="op">(</span></span>
 <span>  <span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span>, <span class="st">"執行疊加"</span>,</span>
 <span>  ready <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu"><a href="../reference/kit_need_files.html">kit_need_files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">files</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span>,       <span class="co"># 還差：…（停用主要按鈕）</span></span>

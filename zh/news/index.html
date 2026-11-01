@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,37 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.0" id="kitdesign-070-2026-11-01">kitDesign 0.7.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-070-2026-11-01"></a></h2>
+<p>minor：新的互動資料表與範圍選擇列（給 kitItemBank）；純粹加東西，app 不用改，現有元件的樣子與行為都不變。</p>
+<div class="section level3">
+<h3 id="元件-0-7-0">元件<a class="anchor" aria-label="anchor" href="#%E5%85%83%E4%BB%B6-0-7-0"></a></h3>
+<ul><li>
+<code>kit_dt(df, selection, page_length, search, wrap_cols, min_widths, ordering, options, ...)</code>：互動資料表 （DT），放在 <code><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">DT::renderDT()</a></code> 裡，給要搜尋、換頁、點選的表（題目清單、搜尋結果）。和 <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code> 同一個樣子：2px 框、黑表頭白字、斑馬紋、列之間的線、<code>small</code> 字級、數字欄自動靠右（等寬數字）。 選到的列是淡萊姆、左邊一條 KIT 綠，不是藍色；可以點選的表滑過時變淡、游標是手指。 文字是中文（「共 37 列，第 1–20 列」「上一頁」「下一頁」「沒有符合的資料」）；換頁按鈕長得像小按鈕 （≥ 36px、目前這一頁萊姆色），手機上只留上一頁、目前這一頁、下一頁。<code>page_length = 0</code> 是全部顯示、不分頁； <code>wrap_cols</code> 的欄換行，其他欄不換行。寬的表在自己的框裡左右捲，手機上整頁不左右捲。 表頭與換頁按鈕可以用鍵盤到，焦點是藍框。DT 是 Suggests：用到的 app 要 <code>Imports: DT</code>。</li>
+<li>
+<code>kit_scope_bar(input, line, actions, panel)</code>：範圍選擇列。全 app 共用的一個選擇（例如用哪一份題庫）， 放在分頁列正下方、不加框：單選圓鈕、一行 hint、右邊的小按鈕，以及選了以後要確認的內容。</li>
+<li>新的 CSS class（只作用在新的 class 上，不碰現有的元件）：
+<ul><li>
+<code>table.kit-dt</code>、<code>.kit-dt-selectable</code>、<code>.kit-dt-nowrap</code>、<code>.kit-dt-wrap</code>，以及 <code><a href="../reference/kit_dt.html">kit_dt()</a></code> 包在表外面的 <code>.kit-dt-box</code>、<code>.kit-dt-top</code>、<code>.kit-dt-scroll</code>、<code>.kit-dt-foot</code>；</li>
+<li>
+<code>.kit-scopebar</code>、<code>.kit-scopebar-line</code>、<code>.kit-scopebar-actions</code>、<code>.kit-scopebar-todo</code>、<code>.kit-scopebar-panel</code>；</li>
+<li>
+<code>.kit-buttons</code>：一排按鈕（一般按鈕＋小按鈕），間距 <code>sp-2</code>，放不下就換行。</li>
+</ul></li>
+<li>設計語言 v1.2：資料表（DataTable）加上「結果的表用 <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>、要操作的表用 <code><a href="../reference/kit_dt.html">kit_dt()</a></code>」； 新的一節「範圍選擇列（ScopeBar）」。</li>
+<li>元件樣張（<code><a href="../reference/kit_gallery.html">kit_gallery()</a></code>）多了「互動表與範圍」分頁。</li>
+</ul></div>
+<div class="section level3">
+<h3 id="看得到的改變-0-7-0">看得到的改變<a class="anchor" aria-label="anchor" href="#%E7%9C%8B%E5%BE%97%E5%88%B0%E7%9A%84%E6%94%B9%E8%AE%8A-0-7-0"></a></h3>
+<ul><li>沒有：現有的元件、函式、頁面一模一樣（<code>tools/check_gallery.R</code> 每個分頁的截圖和 0.6.0 比過：只有版本行不同）。</li>
+</ul></div>
+<div class="section level3">
+<h3 id="修正-0-7-0">修正<a class="anchor" aria-label="anchor" href="#%E4%BF%AE%E6%AD%A3-0-7-0"></a></h3>
+<ul><li>收合區塊（<code><a href="../reference/kit_detail.html">kit_detail()</a></code>、<code><a href="../reference/kit_advanced.html">kit_advanced()</a></code> 等所有 <code>&lt;details&gt;</code>）裡的 htmlwidget（plotly、DT、visNetwork）： 打開時，<code>kit.js</code> 先通知 Shiny 裡面的 output 看得到了，等版面排好（下一個畫面）再讓圖重新量大小， 300ms 後再量一次（接住打開以後才畫好的 output）。以前是同一刻就量，收起來時已經畫成細細一條的圖， 打開後有時還是細細一條。畫面不變。</li>
+<li>
+<code>tools/check_gallery.R</code>：比的是 <code>clientWidth</code>（視窗寬減掉直捲軸），有直捲軸的系統上不會誤報「左右捲」。</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.1" id="kitdesign-061-2026-11-01">kitDesign 0.6.1 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-061-2026-11-01"></a></h2>
 <div class="section level3">

@@ -71,6 +71,14 @@ Switch to another project’s logo and colors.
 - [`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/reference/kit_send_tab_states.md)
   : Send tab states to the browser
 
+## Scope bar (ScopeBar)
+
+One choice shared by the whole app (for example which item bank), right
+under the tab bar.
+
+- [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/reference/kit_scope_bar.md)
+  : Scope bar: an app-wide choice under the tab bar
+
 ## Page guide (PageGuide)
 
 - [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/reference/kit_tab_guide.md)
@@ -161,6 +169,9 @@ browser.
 - [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md)
   : Small table (put directly inside renderUI(); no separate output
   needed)
+
+- [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+  : Interactive table (DT) with the KIT look
 
 - [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_preview_table.md)
   :

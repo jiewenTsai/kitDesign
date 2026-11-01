@@ -71,6 +71,13 @@
 - [`kit_send_tab_states()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_send_tab_states.md)
   : 把分頁狀態送到瀏覽器
 
+## 範圍選擇列（ScopeBar）
+
+全 app 共用的一個選擇（例如用哪一份題庫），放在分頁列正下方。
+
+- [`kit_scope_bar()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_scope_bar.md)
+  : 範圍選擇列：分頁列下面、全 app 共用的選擇
+
 ## 頁面說明（PageGuide）
 
 - [`kit_tab_guide()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_tab_guide.md)
@@ -158,6 +165,9 @@
 
 - [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_static_table.md)
   : 小表格（直接放在 renderUI() 裡，不用另開 output）
+
+- [`kit_dt()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dt.md)
+  : 互動資料表（DT），KIT 的樣子
 
 - [`kit_preview_table()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_preview_table.md)
   :

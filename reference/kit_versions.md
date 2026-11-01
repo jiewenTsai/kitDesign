@@ -29,5 +29,5 @@ A named character vector, for example
 ``` r
 kit_versions()
 #> kitDesign 
-#>   "0.6.1" 
+#>   "0.7.0" 
 ```

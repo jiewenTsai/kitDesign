@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jiewenTsai/kitDesign"</span><span class="op">)</span></span></code></pre></div>
-<p>只依賴 shiny、bslib（&gt;= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 <code><a href="reference/kit_plotly_style.html">kit_plotly_style()</a></code> 時另外要 plotly。</p>
+<p>只依賴 shiny、bslib（&gt;= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 <code><a href="reference/kit_plotly_style.html">kit_plotly_style()</a></code> 時另外要 plotly，用 <code><a href="reference/kit_dt.html">kit_dt()</a></code> 時要 DT。</p>
 <p>bslib 太舊（0.11.0 以前沒有 Brite 主題）時 <code><a href="reference/kit_theme.html">kit_theme()</a></code> 會停下來，說要裝新版。 安裝 app 時用 <code>pak::pkg_install("&lt;帳號&gt;/&lt;app&gt;")</code> 或 <code>remotes::install_github("&lt;帳號&gt;/&lt;app&gt;", upgrade = "always")</code>，太舊的套件會一起升級。</p>
 </div>
 <div class="section level2">
@@ -445,6 +445,10 @@
 <td><code><a href="reference/kit_problems.html">kit_problems()</a></code></td>
 <td>步驟卡裡的單一問題（「還差：…」）</td>
 </tr>
+<tr>
+<td><code><a href="reference/kit_scope_bar.html">kit_scope_bar()</a></code></td>
+<td>範圍選擇列：全 app 共用的選擇（例如用哪一份題庫），放在分頁列正下方：單選圓鈕、一行 hint、小按鈕、要確認的內容</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -488,6 +492,10 @@
 <code><a href="reference/kit_static_table.html">kit_static_table()</a></code>、<code><a href="reference/kit_preview_table.html">kit_preview_table()</a></code>、<code><a href="reference/kit_table_scroll.html">kit_table_scroll()</a></code>
 </td>
 <td>資料表、預覽表、左右捲的框</td>
+</tr>
+<tr>
+<td><code><a href="reference/kit_dt.html">kit_dt()</a></code></td>
+<td>互動資料表（DT），樣子一樣，給要搜尋、換頁、點選的表；選到的列是淡萊姆、文字是中文（DT 是 Suggests）</td>
 </tr>
 <tr>
 <td>

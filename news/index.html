@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,37 @@
       <small>Source: <a href="https://github.com/jiewenTsai/kitDesign/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.0" id="kitdesign-070-2026-11-01">kitDesign 0.7.0 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-070-2026-11-01"></a></h2>
+<p>minor: a new interactive table and scope bar (for kitItemBank); purely additive, apps need no changes, and existing components look and behave exactly as before.</p>
+<div class="section level3">
+<h3 id="元件-0-7-0">元件<a class="anchor" aria-label="anchor" href="#%E5%85%83%E4%BB%B6-0-7-0"></a></h3>
+<ul><li>
+<code>kit_dt(df, selection, page_length, search, wrap_cols, min_widths, ordering, options, ...)</code>: an interactive table (DT) for <code><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">DT::renderDT()</a></code>, for tables people search, page through and click (item lists, search results). Same look as <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>: 2px frame, black header with white text, zebra stripes, row lines, <code>small</code> type, numeric columns right-aligned automatically (tabular figures). Selected rows are pale lime with a KIT-green bar on the left, not blue; selectable tables lighten the hovered row and show a pointer. Text is Chinese (「共 37 列，第 1–20 列」, 「上一頁」, 「下一頁」, 「沒有符合的資料」); page buttons look like small buttons (≥ 36px, the current page lime), and on a phone only previous, current and next remain. <code>page_length = 0</code> shows all rows without paging; <code>wrap_cols</code> columns wrap, the others do not. Wide tables scroll sideways inside their own box; the page never scrolls sideways on a phone. Headers and page buttons are keyboard reachable with a blue focus ring. DT is in Suggests: apps that use it need <code>Imports: DT</code>.</li>
+<li>
+<code>kit_scope_bar(input, line, actions, panel)</code>: the scope bar. One choice shared by the whole app (for example which item bank), right under the tab bar, without a frame: radio buttons, a hint line, small buttons on the right, and what must be confirmed after choosing.</li>
+<li>New CSS classes (rules apply only to the new classes and never touch existing components):
+<ul><li>
+<code>table.kit-dt</code>, <code>.kit-dt-selectable</code>, <code>.kit-dt-nowrap</code>, <code>.kit-dt-wrap</code>, and the <code>.kit-dt-box</code>, <code>.kit-dt-top</code>, <code>.kit-dt-scroll</code>, <code>.kit-dt-foot</code> wrappers <code><a href="../reference/kit_dt.html">kit_dt()</a></code> puts around the table;</li>
+<li>
+<code>.kit-scopebar</code>, <code>.kit-scopebar-line</code>, <code>.kit-scopebar-actions</code>, <code>.kit-scopebar-todo</code>, <code>.kit-scopebar-panel</code>;</li>
+<li>
+<code>.kit-buttons</code>: a row of buttons (regular and small), <code>sp-2</code> apart, wrapping when there is no room.</li>
+</ul></li>
+<li>Design language v1.2: Data table (DataTable) adds “result tables use <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>, tables to work with use <code><a href="../reference/kit_dt.html">kit_dt()</a></code>”; a new section “Scope bar (ScopeBar)”.</li>
+<li>The gallery (<code><a href="../reference/kit_gallery.html">kit_gallery()</a></code>) has a new tab 「互動表與範圍」 (interactive table and scope).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="看得到的改變-0-7-0">看得到的改變<a class="anchor" aria-label="anchor" href="#%E7%9C%8B%E5%BE%97%E5%88%B0%E7%9A%84%E6%94%B9%E8%AE%8A-0-7-0"></a></h3>
+<ul><li>None: existing components, functions and pages are identical (every tab of the <code>tools/check_gallery.R</code> screenshots was compared with 0.6.0: only the version line differs).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="修正-0-7-0">修正<a class="anchor" aria-label="anchor" href="#%E4%BF%AE%E6%AD%A3-0-7-0"></a></h3>
+<ul><li>htmlwidgets (plotly, DT, visNetwork) inside collapsed sections (<code><a href="../reference/kit_detail.html">kit_detail()</a></code>, <code><a href="../reference/kit_advanced.html">kit_advanced()</a></code> and every other <code>&lt;details&gt;</code>): on opening, <code>kit.js</code> first tells Shiny the outputs inside are visible, then resizes the widgets on the next frame (after layout) and once more 300ms later (for outputs that arrive after opening). Before, the resize ran in the same moment, so a chart drawn as a thin sliver while collapsed could stay thin after opening. No visual change.</li>
+<li>
+<code>tools/check_gallery.R</code> compares against <code>clientWidth</code> (window width minus the vertical scrollbar), so systems with a visible vertical scrollbar no longer report a false “scrolls sideways”.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="kitdesign-051-2026-11-01">kitDesign 0.5.1 (2026-11-01)<a class="anchor" aria-label="anchor" href="#kitdesign-051-2026-11-01"></a></h2>
 <div class="section level3">

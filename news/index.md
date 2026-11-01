@@ -1,5 +1,76 @@
 # Changelog
 
+## kitDesign 0.7.0 (2026-11-01)
+
+minor: a new interactive table and scope bar (for kitItemBank); purely
+additive, apps need no changes, and existing components look and behave
+exactly as before.
+
+### 元件
+
+- `kit_dt(df, selection, page_length, search, wrap_cols, min_widths, ordering, options, ...)`:
+  an interactive table (DT) for
+  [`DT::renderDT()`](https://rdrr.io/pkg/DT/man/dataTableOutput.html),
+  for tables people search, page through and click (item lists, search
+  results). Same look as
+  [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md):
+  2px frame, black header with white text, zebra stripes, row lines,
+  `small` type, numeric columns right-aligned automatically (tabular
+  figures). Selected rows are pale lime with a KIT-green bar on the
+  left, not blue; selectable tables lighten the hovered row and show a
+  pointer. Text is Chinese (「共 37 列，第 1–20 列」, 「上一頁」,
+  「下一頁」, 「沒有符合的資料」); page buttons look like small buttons
+  (≥ 36px, the current page lime), and on a phone only previous, current
+  and next remain. `page_length = 0` shows all rows without paging;
+  `wrap_cols` columns wrap, the others do not. Wide tables scroll
+  sideways inside their own box; the page never scrolls sideways on a
+  phone. Headers and page buttons are keyboard reachable with a blue
+  focus ring. DT is in Suggests: apps that use it need `Imports: DT`.
+- `kit_scope_bar(input, line, actions, panel)`: the scope bar. One
+  choice shared by the whole app (for example which item bank), right
+  under the tab bar, without a frame: radio buttons, a hint line, small
+  buttons on the right, and what must be confirmed after choosing.
+- New CSS classes (rules apply only to the new classes and never touch
+  existing components):
+  - `table.kit-dt`, `.kit-dt-selectable`, `.kit-dt-nowrap`,
+    `.kit-dt-wrap`, and the `.kit-dt-box`, `.kit-dt-top`,
+    `.kit-dt-scroll`, `.kit-dt-foot` wrappers
+    [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+    puts around the table;
+  - `.kit-scopebar`, `.kit-scopebar-line`, `.kit-scopebar-actions`,
+    `.kit-scopebar-todo`, `.kit-scopebar-panel`;
+  - `.kit-buttons`: a row of buttons (regular and small), `sp-2` apart,
+    wrapping when there is no room.
+- Design language v1.2: Data table (DataTable) adds “result tables use
+  [`kit_static_table()`](https://jiewentsai.github.io/kitDesign/reference/kit_static_table.md),
+  tables to work with use
+  [`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)”;
+  a new section “Scope bar (ScopeBar)”.
+- The gallery
+  ([`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md))
+  has a new tab 「互動表與範圍」 (interactive table and scope).
+
+### 看得到的改變
+
+- None: existing components, functions and pages are identical (every
+  tab of the `tools/check_gallery.R` screenshots was compared with
+  0.6.0: only the version line differs).
+
+### 修正
+
+- htmlwidgets (plotly, DT, visNetwork) inside collapsed sections
+  ([`kit_detail()`](https://jiewentsai.github.io/kitDesign/reference/kit_detail.md),
+  [`kit_advanced()`](https://jiewentsai.github.io/kitDesign/reference/kit_advanced.md)
+  and every other `<details>`): on opening, `kit.js` first tells Shiny
+  the outputs inside are visible, then resizes the widgets on the next
+  frame (after layout) and once more 300ms later (for outputs that
+  arrive after opening). Before, the resize ran in the same moment, so a
+  chart drawn as a thin sliver while collapsed could stay thin after
+  opening. No visual change.
+- `tools/check_gallery.R` compares against `clientWidth` (window width
+  minus the vertical scrollbar), so systems with a visible vertical
+  scrollbar no longer report a false “scrolls sideways”.
+
 ## kitDesign 0.5.1 (2026-11-01)
 
 ### 修正

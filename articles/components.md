@@ -63,6 +63,33 @@ kit_navgroups(list(
 
 - [使用手冊](#)
 
+### Scope bar (ScopeBar)
+
+One choice shared by the whole app (for example which item bank), right
+under the tab bar: radio buttons, a hint line, small buttons on the
+right; a choice that needs confirming opens the confirmation area below
+(`panel`).
+
+``` r
+
+kit_scope_bar(
+  radioButtons("bank", "題庫", c("TDCYP 題庫（建議）" = "tdcyp", "上傳自己的題庫" = "own"),  # "Item bank": "TDCYP (recommended)", "Upload your own"
+               inline = TRUE),
+  line = tags$span("目前：", tags$strong("TDCYP 題庫"), " · 37 題 · 4 個波次"),  # "In use: TDCYP item bank · 37 items · 4 waves"
+  actions = list(kit_button("bank_dl", "下載題庫"), kit_button("bank_new", "新增題庫"))  # "Download", "New item bank"
+)
+```
+
+題庫
+
+TDCYP 題庫（建議） 上傳自己的題庫
+
+目前： **TDCYP 題庫** · 37 題 · 4 個波次
+
+下載題庫
+
+新增題庫
+
 ### Page guide: what this page does (PageGuide)
 
 One sentence at the top of each page, with “看步驟 ▸” (“See steps ▸”)
@@ -293,6 +320,24 @@ tagList(
 | 103 | M03    | 12     | 28,750 |
 | 104 | M36    | 3      | 51,200 |
 | 105 | M03    | 6      | 39,900 |
+
+For tables people search, page through and click (item lists, search
+results), use
+[`kit_dt()`](https://jiewentsai.github.io/kitDesign/reference/kit_dt.md)
+inside
+[`DT::renderDT()`](https://rdrr.io/pkg/DT/man/dataTableOutput.html) (the
+app needs `Imports: DT`). Same look; selected rows are pale lime, page
+buttons are small buttons, the text is Chinese. See it in
+[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/reference/kit_gallery.md),
+tab 「互動表與範圍」.
+
+``` r
+
+output$items <- DT::renderDT(
+  kit_dt(items, selection = "multiple", search = TRUE, wrap_cols = "label", page_length = 20)
+)
+# selected rows: input$items_rows_selected
+```
 
 ### Chart
 

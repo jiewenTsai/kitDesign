@@ -60,6 +60,32 @@ kit_navgroups(list(
 
 - [使用手冊](#)
 
+### 範圍選擇列（ScopeBar）
+
+全 app
+共用的一個選擇（例如用哪一份題庫），放在分頁列正下方：單選圓鈕、一行
+hint、右邊的小按鈕； 要確認的選項打開下面的確認區（`panel`）。
+
+``` r
+
+kit_scope_bar(
+  radioButtons("bank", "題庫", c("TDCYP 題庫（建議）" = "tdcyp", "上傳自己的題庫" = "own"),
+               inline = TRUE),
+  line = tags$span("目前：", tags$strong("TDCYP 題庫"), " · 37 題 · 4 個波次"),
+  actions = list(kit_button("bank_dl", "下載題庫"), kit_button("bank_new", "新增題庫"))
+)
+```
+
+題庫
+
+TDCYP 題庫（建議） 上傳自己的題庫
+
+目前： **TDCYP 題庫** · 37 題 · 4 個波次
+
+下載題庫
+
+新增題庫
+
 ### 頁面說明：這一頁做什麼（PageGuide）
 
 每一頁最上面一句話，旁邊「看步驟 ▸」；步驟與會得到什麼預設收起。
@@ -261,6 +287,22 @@ tagList(
 | 103 | M03    | 12     | 28,750 |
 | 104 | M36    | 3      | 51,200 |
 | 105 | M03    | 6      | 39,900 |
+
+要搜尋、換頁、點選的表（題目清單、搜尋結果）用
+[`kit_dt()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_dt.md)，放在
+[`DT::renderDT()`](https://rdrr.io/pkg/DT/man/dataTableOutput.html)
+裡（app 要 `Imports: DT`）。
+樣子一樣；選到的列是淡萊姆，換頁按鈕是小按鈕，文字是中文。樣子見
+[`kit_gallery()`](https://jiewentsai.github.io/kitDesign/zh/reference/kit_gallery.md)
+的「互動表與範圍」。
+
+``` r
+
+output$items <- DT::renderDT(
+  kit_dt(items, selection = "multiple", search = TRUE, wrap_cols = "label", page_length = 20)
+)
+# 選到哪幾列：input$items_rows_selected
+```
 
 ### 圖（Chart）
 

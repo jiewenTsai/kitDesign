@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kitDesign</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,11 +115,13 @@ the logo (SVG, PNG)</li>
 </ul>
 </li>
 <li>
-<strong>Status</strong>: v1.1 (2026-10-31). v1.0 merged v0.2’s
-“additions after design review” into the main text; v1.1 adds kitDesign
-0.2.0’s charts (<code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code>), the danger button, the
-heatmap color scale, the step card rule “choose first, refine later”,
-and “Author’s decisions” 6–9. Where the spec and the code differ, this
+<strong>Status</strong>: v1.2 (2026-11-01). v1.2 adds kitDesign
+0.7.0’s interactive table (<code><a href="../reference/kit_dt.html">kit_dt()</a></code>) and the scope bar
+(ScopeBar, <code><a href="../reference/kit_scope_bar.html">kit_scope_bar()</a></code>). v1.0 merged v0.2’s “additions
+after design review” into the main text; v1.1 adds kitDesign 0.2.0’s
+charts (<code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code>), the danger button, the heatmap
+color scale, the step card rule “choose first, refine later”, and
+“Author’s decisions” 6–9. Where the spec and the code differ, this
 document follows the code; the differences are listed in the last
 section.</li>
 </ul>
@@ -600,6 +602,58 @@ alternatives.</li>
 </ul>
 </div>
 <div class="section level3">
+<h3 id="scope-bar-scopebar">Scope bar (ScopeBar)<a class="anchor" aria-label="anchor" href="#scope-bar-scopebar"></a>
+</h3>
+<p>The scope bar is one choice shared by the whole app (for example
+which item bank kitItemBank uses). Every tab depends on it, so it sits
+right under the tab bar, not inside one page.</p>
+<ul>
+<li>
+<strong>R</strong>:
+<code>kit_scope_bar(input, line = NULL, actions = NULL, panel = NULL)</code>:
+<code>input</code> is <code>radioButtons(..., inline = TRUE)</code> (2–5
+choices) or <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html" class="external-link">selectInput()</a></code>; <code>line</code> is one hint
+line; <code>actions</code> are small buttons on the right;
+<code>panel</code> is what must be confirmed after choosing.</li>
+<li>
+<strong>Appearance</strong>:
+<ul>
+<li>No frame, no shadow; a faint <code>line</code> rule (1.5px) below
+separates it from the page; <code>sp-3</code>/<code>sp-4</code> above
+and below.</li>
+<li>First row: the group name (bold) and a row of radio buttons.</li>
+<li>Second row: <code>hint</code> text saying what is in use and how big
+it is (「目前：TDCYP 題庫 · 37 題 · 4 個波次」 (“In use: TDCYP item bank
+· 37 items · 4 waves”)), key words in bold <code>nb-ink</code>;
+something still to do in bold <code>text-todo</code>
+(<code>.kit-scopebar-todo</code>, 「還差：上傳題庫檔」 (“Still needed:
+upload the item bank file”)).</li>
+<li>Small buttons (download, new, upload) on the right of the second
+row; on a phone they follow the hint, left-aligned.</li>
+<li>When the choice needs confirming (for example “upload your own item
+bank”), a confirmation area opens below
+(<code>.kit-scopebar-panel</code>): a checklist and a row of buttons
+(<code>.kit-buttons</code>), at most 46rem wide.</li>
+</ul>
+</li>
+<li>
+<strong>Rules</strong>:
+<ul>
+<li>At most one per app, and only for a choice that affects every tab.
+Settings for one page stay in that page’s settings.</li>
+<li>When the scope changes, results that used the old scope become
+【要重新執行】 (“run again”; see State flow).</li>
+<li>When changing the scope takes time or loses something, say so in the
+confirmation area first, and change only when the button is
+pressed.</li>
+</ul>
+</li>
+<li>
+<strong>Don’t</strong>: make it a tab or a card; put a primary
+(lime) button in it; put two choices in one bar.</li>
+</ul>
+</div>
+<div class="section level3">
 <h3 id="page-guide-what-this-page-does-pageguide">Page guide (“What this page does”) (PageGuide)<a class="anchor" aria-label="anchor" href="#page-guide-what-this-page-does-pageguide"></a>
 </h3>
 <p>“這一頁做什麼” (“What this page does”) is a one-line explanation at
@@ -940,7 +994,26 @@ rows.</p>
 <strong>R</strong>: <code>kit_static_table(df)</code> (integers get
 thousands separators automatically),
 <code>kit_preview_table(df, priority_cols, n)</code>,
-<code>kit_rows_note(nrow, ncol, shown_rows)</code>.</li>
+<code>kit_rows_note(nrow, ncol, shown_rows)</code>; for tables people
+search, page through and click,
+<code>kit_dt(df, selection, page_length, search, wrap_cols, min_widths)</code>
+(inside <code><a href="https://rdrr.io/pkg/DT/man/dataTableOutput.html" class="external-link">DT::renderDT()</a></code>).</li>
+<li>
+<strong>Which one</strong>:
+<ul>
+<li>
+<strong>Result tables</strong> (the key table under the status box,
+previews, small comparisons): <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>. Short,
+read-only; the full table is downloadable.</li>
+<li>
+<strong>Tables to work with</strong> (item lists, search results,
+picking rows to act on): <code><a href="../reference/kit_dt.html">kit_dt()</a></code>. Sortable, paged,
+selectable; long tables are not drawn all at once.</li>
+<li>Don’t swap a result table for <code><a href="../reference/kit_dt.html">kit_dt()</a></code> to make it look
+more capable: the search box and page buttons are more things to
+understand.</li>
+</ul>
+</li>
 <li>
 <strong>Appearance</strong>:
 <ul>
@@ -970,8 +1043,39 @@ Chinese; downloaded files keep the original column names.</li>
 </ul>
 </li>
 <li>
+<strong>Interactive table (<code><a href="../reference/kit_dt.html">kit_dt()</a></code>)</strong>:
+<ul>
+<li>Same frame, black header, zebra stripes, row lines and
+<code>small</code> size as above; numeric columns are right-aligned with
+tabular figures automatically. Rows are a little denser than in result
+tables.</li>
+<li>Click a header to sort (white ▲▼). When <code>selection</code> is
+not <code>"none"</code>, the hovered row is <code>bg-soft-hover</code>
+with a pointer cursor; <strong>a selected row is <code>bg-new</code>
+pale lime with a 4px <code>nb-green</code> bar on the left</strong>, not
+blue.</li>
+<li>One <code>hint</code> line below: 「共 37 列，第 1–20 列」 (“37
+rows, rows 1–20”); on the right, page buttons that look like small
+buttons (white, <code>bw-line</code> frame, ≥ 36px), the current page
+<code>nb-lime</code>, unavailable ones in the disabled look. On a phone
+only 「上一頁」 (previous), the current page and 「下一頁」 (next)
+remain.</li>
+<li>The search box (<code>search = TRUE</code>) sits above the table on
+the left, white with a <code>bw-frame</code> frame; usually off, with
+the page’s own conditions above the table.</li>
+<li>Long text columns (item text) wrap via <code>wrap_cols</code>; other
+columns do not wrap. Width follows content; a table that is too wide
+scrolls sideways inside its own box, and the page never scrolls
+sideways.</li>
+<li>Headers and page buttons are reachable with the keyboard (Tab) and
+show the <code>focus</code> blue ring. All text is Chinese (上一頁,
+下一頁, 沒有符合的資料).</li>
+</ul>
+</li>
+<li>
 <strong>Don’t</strong>: stretch to full page width; show hundreds of
-rows at once.</li>
+rows at once; use DataTables’ default blue selection or gray page
+buttons.</li>
 </ul>
 </div>
 <div class="section level3">
@@ -1462,6 +1566,7 @@ handle the fixed parts and the state flow; the tab only writes its own
 settings, run, and results):</p>
 <pre><code>Header (one per app)
 Step tabs (current is lime, finished get ✓, not yet available are gray)
+(Scope bar: an app-wide choice, only in apps that have one)
 What this page does: one sentence                         See steps ▸
 Settings (left 1/3)          │ Settings summary and preview (right 2/3)
 Advanced settings ▸
@@ -1683,26 +1788,33 @@ low level: <code><a href="../reference/kit_navgroups.html">kit_navgroups()</a></
 </td>
 </tr>
 <tr class="odd">
+<td>Scope bar (ScopeBar)</td>
+<td>
+<code>kit_scope_bar(input, line, actions, panel)</code>; a row of
+buttons in the confirmation area: <code>.kit-buttons</code>
+</td>
+</tr>
+<tr class="even">
 <td>Page guide (PageGuide)</td>
 <td>
 <code><a href="../reference/kit_tab_guide.html">kit_tab_guide()</a></code>, <code><a href="../reference/kit_steps.html">kit_steps()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Button</td>
 <td>
 <code>kit_button(id, label, kind)</code>,
 <code><a href="../reference/kit_btn_class.html">kit_btn_class()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Download button (DownloadButton)</td>
 <td>
 <code>kit_download_button(session, id, label, filename, content)</code>;
 tests <code><a href="../reference/kit_test_download.html">kit_test_download()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Status box (StatusBox)</td>
 <td>Value objects <code><a href="../reference/kit_status.html">kit_status()</a></code>,
 <code><a href="../reference/kit_done_status.html">kit_done_status()</a></code>, <code><a href="../reference/kit_error_status.html">kit_error_status()</a></code>,
@@ -1712,7 +1824,7 @@ rendering <code><a href="../reference/kit_status_ui.html">kit_status_ui()</a></c
 <code><a href="../reference/kit_abort.html">kit_abort()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Callout</td>
 <td>
 <code>kit_callout(..., warn = )</code>; cloud-version banner
@@ -1721,15 +1833,15 @@ rendering <code><a href="../reference/kit_status_ui.html">kit_status_ui()</a></c
 <code><a href="../reference/kit_is_cloud.html">kit_is_cloud()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Data table (DataTable)</td>
 <td>
 <code><a href="../reference/kit_static_table.html">kit_static_table()</a></code>, <code><a href="../reference/kit_preview_table.html">kit_preview_table()</a></code>,
 <code><a href="../reference/kit_rows_note.html">kit_rows_note()</a></code>, <code><a href="../reference/kit_table_scroll.html">kit_table_scroll()</a></code>,
-<code><a href="../reference/kit_num.html">kit_num()</a></code>, <code><a href="../reference/kit_dims.html">kit_dims()</a></code>
-</td>
+<code><a href="../reference/kit_num.html">kit_num()</a></code>, <code><a href="../reference/kit_dims.html">kit_dims()</a></code>; interactive table
+<code><a href="../reference/kit_dt.html">kit_dt()</a></code> (DT)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Chart</td>
 <td>
 <code><a href="../reference/kit_plotly_style.html">kit_plotly_style()</a></code> (look of plotly charts),
@@ -1738,14 +1850,14 @@ rendering <code><a href="../reference/kit_status_ui.html">kit_status_ui()</a></c
 <code><a href="../reference/kit_chart_sequential.html">kit_chart_sequential()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Details row (Details)</td>
 <td>
 <code><a href="../reference/kit_details_row.html">kit_details_row()</a></code>, <code><a href="../reference/kit_detail.html">kit_detail()</a></code>,
 <code><a href="../reference/kit_advanced.html">kit_advanced()</a></code>, <code><a href="../reference/kit_settings_line.html">kit_settings_line()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>How to do it in R (CodePanel)</td>
 <td>Module
 <code><a href="../reference/kit_code_panel_ui.html">kit_code_panel_ui()</a></code>／<code><a href="../reference/kit_code_panel_ui.html">kit_code_panel_server()</a></code>;
@@ -1756,7 +1868,7 @@ low level <code><a href="../reference/kit_code_panel.html">kit_code_panel()</a><
 <code><a href="../reference/kit_code_blocks.html">kit_code_blocks()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Step card (StepCard)</td>
 <td>Module
 <code><a href="../reference/kit_stepcards_ui.html">kit_stepcards_ui()</a></code>／<code>kit_stepcards_server(id, titles, summaries, checks)</code>;
@@ -1764,14 +1876,14 @@ low level <code><a href="../reference/kit_step_card.html">kit_step_card()</a></c
 <code><a href="../reference/kit_step_body.html">kit_step_body()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Checklist</td>
 <td>Value objects <code><a href="../reference/kit_checklist.html">kit_checklist()</a></code>,
 <code>kit_check(state, title, why, actions)</code>; single problems
 <code><a href="../reference/kit_problems.html">kit_problems()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Ready line (ReadyLine)</td>
 <td>Module
 <code><a href="../reference/kit_run_gate_ui.html">kit_run_gate_ui()</a></code>／<code>kit_run_gate_server(id, missing, link)</code>;
@@ -1779,27 +1891,27 @@ low level <code><a href="../reference/kit_ready_line.html">kit_ready_line()</a><
 <code><a href="../reference/kit_need_files.html">kit_need_files()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Next step (NextStep)</td>
 <td>
 <code><a href="../reference/kit_next_step.html">kit_next_step()</a></code>; link to another app
 <code><a href="../reference/kit_app_link.html">kit_app_link()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Diagram</td>
 <td>
 <code><a href="../reference/kit_diagram.html">kit_diagram()</a></code>, <code><a href="../reference/kit_dg_table.html">kit_dg_table()</a></code>
 </td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Scroll to results, open collapsibles, warn before leaving</td>
 <td>
 <code><a href="../reference/kit_scroll_to.html">kit_scroll_to()</a></code>, <code><a href="../reference/kit_open_details.html">kit_open_details()</a></code>,
 <code><a href="../reference/kit_unload_guard.html">kit_unload_guard()</a></code>
 </td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Page skeleton + state flow (RunTab)</td>
 <td>
 <code>kit_run_tab_ui(id, run_label, guide, ...)</code>／<code>kit_run_tab_server(input, output, session, run_label, run, done, ...)</code>:
@@ -2053,9 +2165,9 @@ paper.</td>
 <tr class="even">
 <td><code>line</code></td>
 <td><code>#d9d4c5</code></td>
-<td>Faint line: the bottom edge of “What this page does”, the left rule
-of advanced settings, dividers in the phone file table. Lines only,
-never text.</td>
+<td>Faint line: the bottom edge of “What this page does”, the bottom
+edge of the scope bar, the left rule of advanced settings, dividers in
+the phone file table. Lines only, never text.</td>
 </tr>
 <tr class="odd">
 <td><code>line-soft</code></td>
@@ -2101,8 +2213,8 @@ check them.</td>
 <tr class="even">
 <td><code>bg-new</code></td>
 <td><code>#e8f0a0</code></td>
-<td>Newly added columns in diagrams (pale lime); not sky blue, which
-means “information”.</td>
+<td>Newly added columns in diagrams, selected rows in interactive tables
+(pale lime); not sky blue, which means “information”.</td>
 </tr>
 <tr class="odd">
 <td><code>focus</code></td>

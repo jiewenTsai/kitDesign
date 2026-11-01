@@ -1,4 +1,4 @@
-# KIT Design Language (v1.1)
+# KIT Design Language (v1.2)
 English | [繁體中文](../KIT設計語言.md)
 
 > **Easy to see, safe to click, results first.**
@@ -10,7 +10,8 @@ The design language shared by the KIT research tools (kitJoin, kitsUI, and futur
   - Design system (live samples, tokens, logo): https://claude.ai/artifact/GFN5Q5ie9jAHKwmsBaxb2M (private; visible only when shared)
   - [_brand.yml](../_brand.yml): design variables such as colors and fonts; [logo/](../logo/): the logo (SVG, PNG)
   - What every component looks like: `kitDesign::kit_gallery()`
-- **Status**: v1.1 (2026-10-31). v1.0 merged v0.2's "additions after design review" into the main text; v1.1 adds kitDesign 0.2.0's charts (`kit_plotly_style()`),
+- **Status**: v1.2 (2026-11-01). v1.2 adds kitDesign 0.7.0's interactive table (`kit_dt()`) and the scope bar (ScopeBar, `kit_scope_bar()`).
+  v1.0 merged v0.2's "additions after design review" into the main text; v1.1 adds kitDesign 0.2.0's charts (`kit_plotly_style()`),
   the danger button, the heatmap color scale, the step card rule "choose first, refine later", and "Author's decisions" 6–9. Where the spec and the code differ, this document follows the code; the differences are listed in the last section.
 
 ---
@@ -182,6 +183,24 @@ Step tabs are the main navigation inside a tool: a row of clickable blocks; the 
   - At ≤ 768px the tabs stay in one row and scroll sideways; they do not wrap.
 - **Don't**: wrap the tabs in another big frame; use numbers that imply every step is required when the steps are actually alternatives.
 
+### Scope bar (ScopeBar)
+
+The scope bar is one choice shared by the whole app (for example which item bank kitItemBank uses). Every tab depends on it, so it sits right under the tab bar, not inside one page.
+
+- **R**: `kit_scope_bar(input, line = NULL, actions = NULL, panel = NULL)`: `input` is `radioButtons(..., inline = TRUE)` (2–5 choices) or `selectInput()`; `line` is one hint line; `actions` are small buttons on the right; `panel` is what must be confirmed after choosing.
+- **Appearance**:
+  - No frame, no shadow; a faint `line` rule (1.5px) below separates it from the page; `sp-3`/`sp-4` above and below.
+  - First row: the group name (bold) and a row of radio buttons.
+  - Second row: `hint` text saying what is in use and how big it is (「目前：TDCYP 題庫 · 37 題 · 4 個波次」 ("In use: TDCYP item bank · 37 items · 4 waves")), key words in bold `nb-ink`;
+    something still to do in bold `text-todo` (`.kit-scopebar-todo`, 「還差：上傳題庫檔」 ("Still needed: upload the item bank file")).
+  - Small buttons (download, new, upload) on the right of the second row; on a phone they follow the hint, left-aligned.
+  - When the choice needs confirming (for example "upload your own item bank"), a confirmation area opens below (`.kit-scopebar-panel`): a checklist and a row of buttons (`.kit-buttons`), at most 46rem wide.
+- **Rules**:
+  - At most one per app, and only for a choice that affects every tab. Settings for one page stay in that page's settings.
+  - When the scope changes, results that used the old scope become 【要重新執行】 ("run again"; see State flow).
+  - When changing the scope takes time or loses something, say so in the confirmation area first, and change only when the button is pressed.
+- **Don't**: make it a tab or a card; put a primary (lime) button in it; put two choices in one bar.
+
 ### Page guide ("What this page does") (PageGuide)
 
 "這一頁做什麼" ("What this page does") is a one-line explanation at the top of each tab, collapsed by default; first-time users open it to see the steps.
@@ -298,7 +317,12 @@ A callout is a reminder you should know before clicking; it is not a result, so 
 
 The data table is one of the leads of the results: white background, black header row, width follows content; long tables show only the first rows.
 
-- **R**: `kit_static_table(df)` (integers get thousands separators automatically), `kit_preview_table(df, priority_cols, n)`, `kit_rows_note(nrow, ncol, shown_rows)`.
+- **R**: `kit_static_table(df)` (integers get thousands separators automatically), `kit_preview_table(df, priority_cols, n)`, `kit_rows_note(nrow, ncol, shown_rows)`;
+  for tables people search, page through and click, `kit_dt(df, selection, page_length, search, wrap_cols, min_widths)` (inside `DT::renderDT()`).
+- **Which one**:
+  - **Result tables** (the key table under the status box, previews, small comparisons): `kit_static_table()`. Short, read-only; the full table is downloadable.
+  - **Tables to work with** (item lists, search results, picking rows to act on): `kit_dt()`. Sortable, paged, selectable; long tables are not drawn all at once.
+  - Don't swap a result table for `kit_dt()` to make it look more capable: the search box and page buttons are more things to understand.
 - **Appearance**:
   - White background, `bw-frame` outer frame, `nb-ink` header row with white text.
   - Thin `bw-line` lines between rows, `bg-stripe` zebra stripes, `small` size.
@@ -308,7 +332,14 @@ The data table is one of the leads of the results: white background, black heade
   - Width follows content, up to the layout width; when wider, it scrolls sideways inside `.kit-table-scroll` and does not break the layout.
   - **Column names**: function output and the data itself keep English names; summary tables the app builds itself may use Chinese; downloaded files keep the original column names.
   - Tables inside step cards have no outer frame and use a `bg-stripe` (pale) header row, not the black one.
-- **Don't**: stretch to full page width; show hundreds of rows at once.
+- **Interactive table (`kit_dt()`)**:
+  - Same frame, black header, zebra stripes, row lines and `small` size as above; numeric columns are right-aligned with tabular figures automatically. Rows are a little denser than in result tables.
+  - Click a header to sort (white ▲▼). When `selection` is not `"none"`, the hovered row is `bg-soft-hover` with a pointer cursor; **a selected row is `bg-new` pale lime with a 4px `nb-green` bar on the left**, not blue.
+  - One `hint` line below: 「共 37 列，第 1–20 列」 ("37 rows, rows 1–20"); on the right, page buttons that look like small buttons (white, `bw-line` frame, ≥ 36px), the current page `nb-lime`, unavailable ones in the disabled look. On a phone only 「上一頁」 (previous), the current page and 「下一頁」 (next) remain.
+  - The search box (`search = TRUE`) sits above the table on the left, white with a `bw-frame` frame; usually off, with the page's own conditions above the table.
+  - Long text columns (item text) wrap via `wrap_cols`; other columns do not wrap. Width follows content; a table that is too wide scrolls sideways inside its own box, and the page never scrolls sideways.
+  - Headers and page buttons are reachable with the keyboard (Tab) and show the `focus` blue ring. All text is Chinese (上一頁, 下一頁, 沒有符合的資料).
+- **Don't**: stretch to full page width; show hundreds of rows at once; use DataTables' default blue selection or gray page buttons.
 
 ### Chart
 
@@ -495,6 +526,7 @@ which handle the fixed parts and the state flow; the tab only writes its own set
 ```
 Header (one per app)
 Step tabs (current is lime, finished get ✓, not yet available are gray)
+(Scope bar: an app-wide choice, only in apps that have one)
 What this page does: one sentence                         See steps ▸
 Settings (left 1/3)          │ Settings summary and preview (right 2/3)
 Advanced settings ▸
@@ -602,12 +634,13 @@ Which function to use for each component:
 |---|---|
 | Header | Already included by `kit_page()`; on its own `kit_header()`, `kit_app_meta()`; version and date `kit_app_description()` |
 | Step tabs (NavTabs) | Module `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`; low level: `kit_navgroups()` + `kit_navgroup()`, `kit_flow_tabs(aside = )`, `kit_tab_states()`, `kit_watch_tab_states()` |
+| Scope bar (ScopeBar) | `kit_scope_bar(input, line, actions, panel)`; a row of buttons in the confirmation area: `.kit-buttons` |
 | Page guide (PageGuide) | `kit_tab_guide()`, `kit_steps()` |
 | Button | `kit_button(id, label, kind)`, `kit_btn_class()` |
 | Download button (DownloadButton) | `kit_download_button(session, id, label, filename, content)`; tests `kit_test_download()` |
 | Status box (StatusBox) | Value objects `kit_status()`, `kit_done_status()`, `kit_error_status()`, `kit_stale_status()` (place directly in the page); low-level rendering `kit_status_ui()`; notifications `kit_notify()`; plain-language errors `kit_abort()` |
 | Callout | `kit_callout(..., warn = )`; cloud-version banner `kit_cloud_banner()`, usage notes `kit_cloud_footer()`, detection `kit_is_cloud()` |
-| Data table (DataTable) | `kit_static_table()`, `kit_preview_table()`, `kit_rows_note()`, `kit_table_scroll()`, `kit_num()`, `kit_dims()` |
+| Data table (DataTable) | `kit_static_table()`, `kit_preview_table()`, `kit_rows_note()`, `kit_table_scroll()`, `kit_num()`, `kit_dims()`; interactive table `kit_dt()` (DT) |
 | Chart | `kit_plotly_style()` (look of plotly charts), `kit_plotly_fonts()`; colors `kit_chart_colors()`, `kit_chart_neutral()`, `kit_chart_sequential()` |
 | Details row (Details) | `kit_details_row()`, `kit_detail()`, `kit_advanced()`, `kit_settings_line()` |
 | How to do it in R (CodePanel) | Module `kit_code_panel_ui()`／`kit_code_panel_server()`; value object `kit_code(code, label)`; wrapping `kit_code_wrap()`, line width `kit_code_cols()`; low level `kit_code_panel()`, `kit_render_code_panel()`, `kit_code_blocks()` |
@@ -693,7 +726,7 @@ In code, the CSS variable is `--` plus the name, for example `var(--nb-lime)`, `
 | `text-todo` | `#8a4a00` | The "還差：…" ("Still needed: …") line above the primary button, reminder text in per-item tables (bold). 6.4:1 on paper. |
 | `text-decide` | `#a14a00` | The ! mark for "needs a decision" in checklists. About 6.0:1 on white. |
 | `text-stop` | `#8a2a00` | Single problems in tables or lists (.kit-problems). 8.1:1 on paper. |
-| `line` | `#d9d4c5` | Faint line: the bottom edge of "What this page does", the left rule of advanced settings, dividers in the phone file table. Lines only, never text. |
+| `line` | `#d9d4c5` | Faint line: the bottom edge of "What this page does", the bottom edge of the scope bar, the left rule of advanced settings, dividers in the phone file table. Lines only, never text. |
 | `line-soft` | `#e3ded2` | Faintest line: between checklist rows, top edge of the composite item ID block. |
 | `border-disabled` | `#8a8a8a` | Disabled frames: not-yet-available or finished step cards, disabled buttons, not-yet-available tabs. 3.2:1 on paper (the threshold for frames and graphics is 3:1). |
 | `bg-disabled` | `#e8e4d8` | Background of disabled buttons (do not use opacity); not-yet-available tabs use the similar #ece8dc. |
@@ -701,7 +734,7 @@ In code, the CSS variable is `--` plus the name, for example `var(--nb-lime)`, `
 | `bg-soft-hover` | `#f1eee4` | Background of secondary buttons on hover. |
 | `bg-code` | `#fffdf5` | Background of code frames (with a 2px nb-ink frame, no shadow). |
 | `bg-guess` | `#fffbe6` | Cells guessed from column names (pale yellow), reminding users to check them. |
-| `bg-new` | `#e8f0a0` | Newly added columns in diagrams (pale lime); not sky blue, which means "information". |
+| `bg-new` | `#e8f0a0` | Newly added columns in diagrams, selected rows in interactive tables (pale lime); not sky blue, which means "information". |
 | `focus` | `#0044ff` | Keyboard focus: 3px outline, offset 3px outward. Visible against black frames; 6.0:1 on paper. |
 | `logo-bean` | `#aad05f` | Logo and illustrations only. Not for buttons or backgrounds (only 1.05:1 against lime). |
 | `logo-leaf` | `#fff57f` | Logo and illustrations only. Not for any interface component (too close to the "needs attention" yellow). |

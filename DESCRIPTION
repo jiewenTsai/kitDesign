@@ -1,6 +1,6 @@
 Package: kitDesign
 Title: Shared 'Shiny' User Interface Components for KIT Research Tools
-Version: 0.6.0
+Version: 0.7.0
 Date: 2026-11-01
 Authors@R: person("Jie-Wen", "Tsai", email = "tsai.jiewen@gmail.com", role = c("aut", "cre"))
 Description: The shared user interface layer of the KIT research tools built
@@ -29,6 +29,7 @@ Imports:
     shiny,
     utils
 Suggests:
+    DT,
     htmlwidgets,
     knitr,
     pkgload,

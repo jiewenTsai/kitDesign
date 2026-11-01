@@ -21,7 +21,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的 KIT Shiny app）共用的�
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-只依賴 shiny、bslib（>= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 `kit_plotly_style()` 時另外要 plotly。
+只依賴 shiny、bslib（>= 0.11.0）、htmltools（和 R 內建的 grDevices、utils）。用 `kit_plotly_style()` 時另外要 plotly，用 `kit_dt()` 時要 DT。
 
 bslib 太舊（0.11.0 以前沒有 Brite 主題）時 `kit_theme()` 會停下來，說要裝新版。
 安裝 app 時用 `pak::pkg_install("<帳號>/<app>")` 或
@@ -173,6 +173,7 @@ options(kitDesign.brand = kit_brand(
 | `kit_next_step()`、`kit_app_link()` | 下一步、連到別的 app |
 | `kit_step_card()`、`kit_step_head()`、`kit_step_body()` | 步驟卡（現在、做完、還不能做） |
 | `kit_problems()` | 步驟卡裡的單一問題（「還差：…」） |
+| `kit_scope_bar()` | 範圍選擇列：全 app 共用的選擇（例如用哪一份題庫），放在分頁列正下方：單選圓鈕、一行 hint、小按鈕、要確認的內容 |
 
 ### 結果
 
@@ -183,6 +184,7 @@ options(kitDesign.brand = kit_brand(
 | `kit_code_panel()`、`kit_code_blocks()`、`kit_render_code_panel()` | 用 R 怎麼做的低階函式 |
 | `kit_code_wrap()`、`kit_code_cols()` | 程式碼換行成每行最多 70 欄；每行幾欄（中文字算 2 欄） |
 | `kit_static_table()`、`kit_preview_table()`、`kit_table_scroll()` | 資料表、預覽表、左右捲的框 |
+| `kit_dt()` | 互動資料表（DT），樣子一樣，給要搜尋、換頁、點選的表；選到的列是淡萊姆、文字是中文（DT 是 Suggests） |
 | `kit_rows_note()`、`kit_dims()`、`kit_num()` | 「共 3,418 列 × 25 欄，以下前 10 列。」、千分位 |
 | `kit_chart_colors()`、`kit_chart_neutral()` | 圖的類別色（Okabe–Ito）與中性色 |
 | `kit_chart_sequential()` | 連續數值的色階（極淡萊姆 → 淡萊姆 → KIT 綠；0% 和沒有資料的白格分得開），熱圖用 |

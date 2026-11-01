@@ -131,6 +131,10 @@ reference:
       - kit_tab_states
       - kit_watch_tab_states
       - kit_send_tab_states
+  - title: 範圍選擇列（ScopeBar）
+    desc: 全 app 共用的一個選擇（例如用哪一份題庫），放在分頁列正下方。
+    contents:
+      - kit_scope_bar
   - title: 頁面說明（PageGuide）
     contents:
       - kit_tab_guide
@@ -166,6 +170,7 @@ reference:
   - title: 資料表（DataTable）
     contents:
       - kit_static_table
+      - kit_dt
       - kit_preview_table
       - kit_rows_note
       - kit_table_scroll

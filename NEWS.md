@@ -1,3 +1,40 @@
+# kitDesign 0.7.0 (2026-11-01)
+
+minor：新的互動資料表與範圍選擇列（給 kitItemBank）；純粹加東西，app 不用改，現有元件的樣子與行為都不變。
+
+## 元件
+
+* `kit_dt(df, selection, page_length, search, wrap_cols, min_widths, ordering, options, ...)`：互動資料表
+  （DT），放在 `DT::renderDT()` 裡，給要搜尋、換頁、點選的表（題目清單、搜尋結果）。和 `kit_static_table()`
+  同一個樣子：2px 框、黑表頭白字、斑馬紋、列之間的線、`small` 字級、數字欄自動靠右（等寬數字）。
+  選到的列是淡萊姆、左邊一條 KIT 綠，不是藍色；可以點選的表滑過時變淡、游標是手指。
+  文字是中文（「共 37 列，第 1–20 列」「上一頁」「下一頁」「沒有符合的資料」）；換頁按鈕長得像小按鈕
+  （≥ 36px、目前這一頁萊姆色），手機上只留上一頁、目前這一頁、下一頁。`page_length = 0` 是全部顯示、不分頁；
+  `wrap_cols` 的欄換行，其他欄不換行。寬的表在自己的框裡左右捲，手機上整頁不左右捲。
+  表頭與換頁按鈕可以用鍵盤到，焦點是藍框。DT 是 Suggests：用到的 app 要 `Imports: DT`。
+* `kit_scope_bar(input, line, actions, panel)`：範圍選擇列。全 app 共用的一個選擇（例如用哪一份題庫），
+  放在分頁列正下方、不加框：單選圓鈕、一行 hint、右邊的小按鈕，以及選了以後要確認的內容。
+* 新的 CSS class（只作用在新的 class 上，不碰現有的元件）：
+  * `table.kit-dt`、`.kit-dt-selectable`、`.kit-dt-nowrap`、`.kit-dt-wrap`，以及 `kit_dt()` 包在表外面的
+    `.kit-dt-box`、`.kit-dt-top`、`.kit-dt-scroll`、`.kit-dt-foot`；
+  * `.kit-scopebar`、`.kit-scopebar-line`、`.kit-scopebar-actions`、`.kit-scopebar-todo`、`.kit-scopebar-panel`；
+  * `.kit-buttons`：一排按鈕（一般按鈕＋小按鈕），間距 `sp-2`，放不下就換行。
+* 設計語言 v1.2：資料表（DataTable）加上「結果的表用 `kit_static_table()`、要操作的表用 `kit_dt()`」；
+  新的一節「範圍選擇列（ScopeBar）」。
+* 元件樣張（`kit_gallery()`）多了「互動表與範圍」分頁。
+
+## 看得到的改變
+
+* 沒有：現有的元件、函式、頁面一模一樣（`tools/check_gallery.R` 每個分頁的截圖和 0.6.0 比過：只有版本行不同）。
+
+## 修正
+
+* 收合區塊（`kit_detail()`、`kit_advanced()` 等所有 `<details>`）裡的 htmlwidget（plotly、DT、visNetwork）：
+  打開時，`kit.js` 先通知 Shiny 裡面的 output 看得到了，等版面排好（下一個畫面）再讓圖重新量大小，
+  300ms 後再量一次（接住打開以後才畫好的 output）。以前是同一刻就量，收起來時已經畫成細細一條的圖，
+  打開後有時還是細細一條。畫面不變。
+* `tools/check_gallery.R`：比的是 `clientWidth`（視窗寬減掉直捲軸），有直捲軸的系統上不會誤報「左右捲」。
+
 # kitDesign 0.6.0 (2026-11-01)
 
 minor：圖的工具列可以下載投稿用的圖；app 不用改。

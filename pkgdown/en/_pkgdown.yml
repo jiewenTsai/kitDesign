@@ -132,6 +132,10 @@ reference:
       - kit_tab_states
       - kit_watch_tab_states
       - kit_send_tab_states
+  - title: Scope bar (ScopeBar)
+    desc: One choice shared by the whole app (for example which item bank), right under the tab bar.
+    contents:
+      - kit_scope_bar
   - title: Page guide (PageGuide)
     contents:
       - kit_tab_guide
@@ -167,6 +171,7 @@ reference:
   - title: Data table (DataTable)
     contents:
       - kit_static_table
+      - kit_dt
       - kit_preview_table
       - kit_rows_note
       - kit_table_scroll

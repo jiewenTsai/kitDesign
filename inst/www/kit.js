@@ -18,12 +18,21 @@
 (function() {
   var $ = window.jQuery;
 
-  // 1. 收合區塊
+  // 1. 收合區塊（所有的 <details>：kit_detail()、kit_advanced()、用 R 怎麼做…）
+  //    toggle 不會往上傳，所以在 document 用 capture 接。打開時：
+  //    a. 'shown'：Shiny 重新算裡面 output 看不看得到，收起來時暫停的 output 這時才畫；
+  //    b. 下一個畫面（版面排好以後）發一次 window resize：htmlwidgets（plotly、DT、visNetwork）
+  //       照新的大小重畫。收起來時已經畫過的圖（量到 0 寬或很窄）不會一直是細細一條。
+  //       300ms 後再發一次，接住打開以後才從伺服器回來的 output。
+  function resizeWidgets() { window.dispatchEvent(new Event('resize')); }
   document.addEventListener('toggle', function(e) {
     var d = e.target;
     if (!d || d.tagName !== 'DETAILS' || !$) return;
     $(d).trigger(d.open ? 'shown' : 'hidden');
-    if (d.open) window.dispatchEvent(new Event('resize'));
+    if (!d.open) return;
+    var raf = window.requestAnimationFrame || function(f) { return setTimeout(f, 16); };
+    raf(resizeWidgets);
+    setTimeout(resizeWidgets, 300);
   }, true);
 
   function cssEscape(s) {

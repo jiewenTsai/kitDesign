@@ -1,4 +1,4 @@
-# KIT 設計語言（v1.1）
+# KIT 設計語言（v1.2）
 [English](en/design-language.md) | 繁體中文
 
 > **看得清楚、按得放心、結果先說。**
@@ -10,7 +10,8 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 設計系統（即時樣張、tokens、標誌）：https://claude.ai/artifact/GFN5Q5ie9jAHKwmsBaxb2M （私人，要分享才看得到）
   - [_brand.yml](_brand.yml)：顏色、字型等設計變數；[logo/](logo/)：標誌（SVG、PNG）
   - 所有元件的樣子：`kitDesign::kit_gallery()`
-- **狀態**：v1.1（2026-10-31）。v1.0 把 v0.2 的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0 的圖（`kit_plotly_style()`）、
+- **狀態**：v1.2（2026-11-01）。v1.2 加上 kitDesign 0.7.0 的互動資料表（`kit_dt()`）與範圍選擇列（ScopeBar，`kit_scope_bar()`）。
+  v1.0 把 v0.2 的「設計審查後的補充」併進正文；v1.1 加上 kitDesign 0.2.0 的圖（`kit_plotly_style()`）、
   危險按鈕、熱圖色階、步驟卡的「前面只選、後面再細修」，以及「作者的決定」6–9。規格和程式不同時照程式寫，差異列在最後一節。
 
 ---
@@ -182,6 +183,24 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - ≤ 768px 時一排左右滑，不換行。
 - **不要**：在分頁外面再加大框；用編號暗示每一步都要做，其實是擇一。
 
+### 範圍選擇列（ScopeBar）
+
+範圍選擇列是整個 app 共用的一個選擇（例如 kitItemBank 用哪一份題庫）：每一個分頁都照它做，所以放在分頁列正下方，不放在某一頁裡。
+
+- **R**：`kit_scope_bar(input, line = NULL, actions = NULL, panel = NULL)`：`input` 是 `radioButtons(..., inline = TRUE)`（2–5 個選項）或 `selectInput()`；`line` 是一行 hint；`actions` 是右邊的小按鈕；`panel` 是選了以後要確認的內容。
+- **長相**：
+  - 不加框、沒有陰影；下面一條 `line` 淡線（1.5px），和頁面分開；上下留 `sp-3`／`sp-4`。
+  - 第一行：組名（粗體）＋一排單選圓鈕。
+  - 第二行：`hint` 小字說現在用的是哪一份、多大（「目前：TDCYP 題庫 · 37 題 · 4 個波次」），重點用 `nb-ink` 粗體；
+    還沒做完的事用 `text-todo` 粗體（`.kit-scopebar-todo`，「還差：上傳題庫檔」）。
+  - 小按鈕（下載、新增、上傳）在第二行的右邊；手機上接在 hint 下面、靠左。
+  - 選了要確認的選項（例如「上傳自己的題庫」）時，下面打開確認區（`.kit-scopebar-panel`）：檢查清單＋一排按鈕（`.kit-buttons`），最寬 46rem。
+- **規則**：
+  - 一個 app 最多一條；只放會影響每一個分頁的選擇。只影響一頁的設定放在那一頁的設定區。
+  - 換了範圍，用到舊範圍的結果要變成【要重新執行】（見狀態流）。
+  - 換範圍要花時間或會丟掉東西時，先在確認區說清楚，按了才換。
+- **不要**：做成分頁或卡片；放主要按鈕（萊姆色）；一條裡放兩組選擇。
+
 ### 頁面說明（這一頁做什麼）（PageGuide）
 
 「這一頁做什麼」是每個分頁最上面的一行說明，預設收起，第一次用的人打開看步驟。
@@ -298,7 +317,12 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 
 資料表是結果的主角之一：白底、黑表頭、寬度跟著內容；長表只顯示前幾列。
 
-- **R**：`kit_static_table(df)`（整數自動加千分位）、`kit_preview_table(df, priority_cols, n)`、`kit_rows_note(nrow, ncol, shown_rows)`。
+- **R**：`kit_static_table(df)`（整數自動加千分位）、`kit_preview_table(df, priority_cols, n)`、`kit_rows_note(nrow, ncol, shown_rows)`；
+  要搜尋、換頁、點選的表用 `kit_dt(df, selection, page_length, search, wrap_cols, min_widths)`（放在 `DT::renderDT()` 裡）。
+- **哪一種**：
+  - **結果的表**（狀態框下面的重點、預覽、小比較）：`kit_static_table()`。短、只看不點，完整的請下載。
+  - **要操作的表**（題目清單、搜尋結果、要挑出幾列再做事）：`kit_dt()`。可以排序、換頁、點選；列數多也不用全部畫出來。
+  - 不要為了「看起來比較厲害」把結果的表換成 `kit_dt()`：搜尋框、換頁按鈕都是要多看懂的東西。
 - **長相**：
   - 白底、`bw-frame` 外框、`nb-ink` 表頭白字。
   - 列之間 `bw-line` 細線、斑馬紋 `bg-stripe`、`small` 字級。
@@ -308,7 +332,14 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
   - 寬度跟著內容，最寬到版面寬度；超過時在 `.kit-table-scroll` 裡左右捲，不撐破版面。
   - **欄名**：函式的輸出與資料本身維持英文；app 自己整理的摘要表可以用中文；下載的檔案維持原欄名。
   - 步驟卡裡的表不加外框，表頭用 `bg-stripe`（淡），不用黑表頭。
-- **不要**：拉滿整頁；一次顯示幾百列。
+- **互動資料表（`kit_dt()`）**：
+  - 和上面一樣的框、黑表頭、斑馬紋、列之間的線、`small` 字級；數字欄自動靠右、等寬數字。字比結果的表密一點（列高較小）。
+  - 點表頭排序（白色的 ▲▼）；`selection` 不是 `"none"` 時，滑過的列 `bg-soft-hover`、游標是手指；**選到的列是 `bg-new` 淡萊姆，左邊一條 4px `nb-green`**，不是藍色。
+  - 下面一行 `hint`：「共 37 列，第 1–20 列」；右邊是換頁按鈕，長得像小按鈕（白底、`bw-line` 框、≥ 36px），目前這一頁 `nb-lime`、不能按的照停用的樣子。手機只留「上一頁」、目前這一頁、「下一頁」。
+  - 搜尋框（`search = TRUE`）在表的左上，白底 `bw-frame` 框；通常不開，頁面自己的條件放在表的上面。
+  - 長文字的欄（題目文字）用 `wrap_cols` 換行，其他欄不換行；寬度跟著內容，太寬時表在自己的框裡左右捲，整頁不左右捲。
+  - 表頭、換頁按鈕可以用鍵盤（Tab）到，焦點是 `focus` 藍框。文字都是中文（上一頁、下一頁、沒有符合的資料）。
+- **不要**：拉滿整頁；一次顯示幾百列；用 DataTables 預設的藍色選取、灰色換頁。
 
 ### 圖（Chart）
 
@@ -496,6 +527,7 @@ KIT 研究工具（kitJoin、kitsUI，以及之後的新 Shiny app）共用的�
 ```
 頁首（一個 app 一個）
 步驟分頁（目前的萊姆色、做完的打 ✓、還不能做的灰色）
+（範圍選擇列：全 app 共用的選擇，有的 app 才有）
 這一頁做什麼：一句話                                      看步驟 ▸
 設定（左 1/3）               │ 設定摘要與預覽（右 2/3）
 進階設定 ▸
@@ -603,12 +635,13 @@ ui <- kit_page(
 |---|---|
 | 頁首（Header） | `kit_page()` 已經放了；單獨用 `kit_header()`、`kit_app_meta()`；版本日期 `kit_app_description()` |
 | 步驟分頁（NavTabs） | 模組 `kit_step_tabs_ui(id, ..., groups = )`／`kit_step_tabs_server(id, states, tips)`；低階：`kit_navgroups()`＋`kit_navgroup()`、`kit_flow_tabs(aside = )`、`kit_tab_states()`、`kit_watch_tab_states()` |
+| 範圍選擇列（ScopeBar） | `kit_scope_bar(input, line, actions, panel)`；確認區裡的一排按鈕 `.kit-buttons` |
 | 頁面說明（PageGuide） | `kit_tab_guide()`、`kit_steps()` |
 | 按鈕（Button） | `kit_button(id, label, kind)`、`kit_btn_class()` |
 | 下載按鈕（DownloadButton） | `kit_download_button(session, id, label, filename, content)`；測試 `kit_test_download()` |
 | 狀態框（StatusBox） | 值物件 `kit_status()`、`kit_done_status()`、`kit_error_status()`、`kit_stale_status()`（直接放進頁面）；低階畫法 `kit_status_ui()`；通知 `kit_notify()`；白話錯誤 `kit_abort()` |
 | 提示框（Callout） | `kit_callout(..., warn = )`；雲端版橫幅 `kit_cloud_banner()`、使用須知 `kit_cloud_footer()`、判斷 `kit_is_cloud()` |
-| 資料表（DataTable） | `kit_static_table()`、`kit_preview_table()`、`kit_rows_note()`、`kit_table_scroll()`、`kit_num()`、`kit_dims()` |
+| 資料表（DataTable） | `kit_static_table()`、`kit_preview_table()`、`kit_rows_note()`、`kit_table_scroll()`、`kit_num()`、`kit_dims()`；互動資料表 `kit_dt()`（DT） |
 | 圖（Chart） | `kit_plotly_style()`（plotly 圖的樣子）、`kit_plotly_fonts()`；顏色 `kit_chart_colors()`、`kit_chart_neutral()`、`kit_chart_sequential()` |
 | 細節列（Details） | `kit_details_row()`、`kit_detail()`、`kit_advanced()`、`kit_settings_line()` |
 | 用 R 怎麼做（CodePanel） | 模組 `kit_code_panel_ui()`／`kit_code_panel_server()`；值物件 `kit_code(code, label)`；換行 `kit_code_wrap()`、行寬 `kit_code_cols()`；低階 `kit_code_panel()`、`kit_render_code_panel()`、`kit_code_blocks()` |
@@ -694,7 +727,7 @@ options(kitDesign.brand = kit_brand(
 | `text-todo` | `#8a4a00` | 主要按鈕上面「還差：…」那一行、逐題表的提醒字（粗體）。在紙上 6.4:1。 |
 | `text-decide` | `#a14a00` | 檢查清單「要決定」的 ! 記號。白底約 6.0:1。 |
 | `text-stop` | `#8a2a00` | 表格或清單裡的單一問題（.kit-problems）。在紙上 8.1:1。 |
-| `line` | `#d9d4c5` | 淡線：「這一頁做什麼」下緣、進階設定左邊的線、手機檔案表的分隔。只當線，不當文字。 |
+| `line` | `#d9d4c5` | 淡線：「這一頁做什麼」下緣、範圍選擇列下緣、進階設定左邊的線、手機檔案表的分隔。只當線，不當文字。 |
 | `line-soft` | `#e3ded2` | 最淡的線：檢查清單列之間、合成題號區塊上緣。 |
 | `border-disabled` | `#8a8a8a` | 停用的框：還不能做或做完的步驟卡、停用的按鈕、還不能做的分頁。在紙上 3.2:1（框和圖形的門檻是 3:1）。 |
 | `bg-disabled` | `#e8e4d8` | 停用按鈕的底色（不要用 opacity）；還不能做的分頁底色用相近的 #ece8dc。 |
@@ -702,7 +735,7 @@ options(kitDesign.brand = kit_brand(
 | `bg-soft-hover` | `#f1eee4` | 小按鈕滑過時的底色。 |
 | `bg-code` | `#fffdf5` | 程式碼框的底色（加 2px nb-ink 框，沒有陰影）。 |
 | `bg-guess` | `#fffbe6` | 照欄名猜出來的格子（淡黃），提醒使用者看一遍。 |
-| `bg-new` | `#e8f0a0` | 圖解裡新加的欄（淡萊姆）；不用天藍，天藍是「資訊」。 |
+| `bg-new` | `#e8f0a0` | 圖解裡新加的欄、互動資料表選到的列（淡萊姆）；不用天藍，天藍是「資訊」。 |
 | `focus` | `#0044ff` | 鍵盤焦點：3px 外框、外推 3px。黑框上看得到，紙上 6.0:1。 |
 | `logo-bean` | `#aad05f` | 只用在標誌與插圖。不要當按鈕或底色（和萊姆只差 1.05:1）。 |
 | `logo-leaf` | `#fff57f` | 只用在標誌與插圖。不要用在任何介面元件（和「要注意」的黃太像）。 |

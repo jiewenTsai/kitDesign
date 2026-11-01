@@ -6,6 +6,7 @@
 # 有狀態的元件用模組：步驟分頁（kit_step_tabs_*）、主要按鈕＋還差（kit_run_gate_*）、
 # 步驟卡（kit_stepcards_*）、用 R 怎麼做（kit_code_panel_*）。
 # 狀態框、檢查清單、程式碼是值物件（kit_status、kit_checklist、kit_code），直接放進頁面。
+# 互動資料表（kit_dt()）要 DT 套件（Suggests）；沒有裝時，那個位置寫一句怎麼裝。
 #
 # 品牌：照 options(kitDesign.brand = ) 畫；看藍色系的示範品牌用 kit_gallery(brand = "demo")，
 # 或設定環境變數 KITDESIGN_GALLERY_BRAND=demo（tools/check_gallery.R 用）。
@@ -24,7 +25,7 @@ brand <- kit_current_brand()
 groups <- list(
   kit_navgroup("頁面", c(page = "頁面骨架", status = "狀態框與按鈕")),
   kit_navgroup("步驟", c(steps = "步驟卡", checklist = "檢查清單", flow = "流程分頁")),
-  kit_navgroup("參考", c(code = "程式碼與表格", chart = "圖"), tools = TRUE)
+  kit_navgroup("參考", c(code = "程式碼與表格", table = "互動表與範圍", chart = "圖"), tools = TRUE)
 )
 
 # 例子用的資料
@@ -38,6 +39,17 @@ waves <- data.frame(
 wide <- as.data.frame(matrix(rep(0:3, length.out = 3 * 30), nrow = 3,
                              dimnames = list(NULL, sprintf("w1d5_%02d", 1:30))))
 wide <- cbind(subj_id = c("A0001", "A0002", "A0003"), wide)
+
+# 題目表（互動資料表的例子）：37 題，可以搜尋、點選
+item_bank <- data.frame(
+  itemID = sprintf("lana%02d", 1:37),
+  label = rep(c("睡眠時間（平日晚上幾點睡、早上幾點起床，含午睡）", "午睡",
+                "會自己穿脫衣服、扣釦子", "能說出自己的名字"), length.out = 37),
+  wave_m = rep(c(3, 6, 12, 36), length.out = 37),
+  n = 3389 - (0:36) * 61,
+  p = round(seq(0.95, 0.05, length.out = 37), 2),
+  stringsAsFactors = FALSE
+)
 
 # 很長的程式碼：括號裡的逗號後面會自動換行（kit_code_wrap()）；
 # 最後一行的長路徑斷不開，在程式碼框裡左右捲（框不能撐破版面）
@@ -239,6 +251,31 @@ code_ui <- tagList(
   )
 )
 
+# DT 是 Suggests：沒有裝時，表的位置寫一句怎麼裝
+has_dt <- requireNamespace("DT", quietly = TRUE)
+
+table_ui <- tagList(
+  # 範圍選擇列：全 app 共用的選擇，放在分頁列正下方（這裡放在這一頁的最上面當例子）
+  kit_scope_bar(
+    radioButtons("bank", "題庫", c("TDCYP 題庫（建議）" = "tdcyp", "上傳自己的題庫" = "own"),
+                 inline = TRUE),
+    line = uiOutput("bank_line", inline = TRUE),
+    actions = list(kit_button("bank_dl", "下載題庫"), kit_button("bank_new", "新增題庫")),
+    panel = uiOutput("bank_panel")
+  ),
+  kit_tab_guide("要搜尋、換頁、點選的表用 kit_dt()；短的結果表照樣用 kit_static_table()。",
+                c("在搜尋框打「午睡」", "點一下表裡的列（可以選很多列）", "換到下一頁"),
+                "選到的題目（淡萊姆）。"),
+  h4("題目表"),
+  tags$p(class = "kit-hint", "點一下列就選起來，再點一次取消；題目文字太長時換行。"),
+  if (has_dt) {
+    DT::DTOutput("items_dt")
+  } else {
+    kit_callout("這個例子要 DT 套件：install.packages(\"DT\")", warn = TRUE)
+  },
+  tags$p(class = "kit-hint", textOutput("items_selected", inline = TRUE))
+)
+
 # plotly 是 Suggests：沒有裝時，圖的位置寫一句怎麼裝
 has_plotly <- requireNamespace("plotly", quietly = TRUE)
 chart_output <- function(id, height) {
@@ -292,6 +329,7 @@ ui <- kit_page(
     tabPanel("檢查清單", value = "checklist", checklist_ui),
     tabPanel("流程分頁", value = "flow", flow_ui),
     tabPanel("程式碼與表格", value = "code", code_ui),
+    tabPanel("互動表與範圍", value = "table", table_ui),
     tabPanel("圖", value = "chart", chart_ui),
     groups = groups, selected = "page"
   )
@@ -391,6 +429,43 @@ server <- function(input, output, session) {
     tips = "先做「② 題目校準」"
   )
   output$flow_selected <- renderText(paste0("現在的分頁：", flow$selected() %||% ""))
+
+  # 互動表與範圍 ----
+  output$bank_line <- renderUI({
+    if (identical(input$bank, "own")) {
+      tags$span(class = "kit-scopebar-todo", "還差：上傳題庫檔，並看下面的檢查")
+    } else {
+      tags$span("目前：", tags$strong("TDCYP 題庫"), " · 37 題 · 4 個波次")
+    }
+  })
+  output$bank_panel <- renderUI({
+    if (!identical(input$bank, "own")) return(NULL)
+    tagList(
+      kit_checklist(
+        kit_check("todo", "還沒有上傳題庫檔", "題庫檔是 .csv：一題一列，要有 itemID 與 label 兩欄。"),
+        kit_check("ok", "範例檔可以下載，照它的欄位填")
+      ),
+      tags$div(class = "kit-buttons",
+               actionButton("bank_use", "對，用這份題庫"),
+               kit_button("bank_example", "下載範例檔"),
+               kit_button("bank_cancel", "不換了", "danger"))
+    )
+  })
+  observeEvent(input$bank_cancel, updateRadioButtons(session, "bank", selected = "tdcyp"))
+  if (has_dt) {
+    output$items_dt <- DT::renderDT(kit_dt(item_bank, search = TRUE,
+                                           # 一開始選了第 2、3 題（淡萊姆）
+                                           selection = list(mode = "multiple", selected = c(2, 3)),
+                                           wrap_cols = "label", page_length = 10))
+  }
+  output$items_selected <- renderText({
+    s <- input$items_dt_rows_selected
+    if (length(s) == 0) {
+      "還沒有選題目。"
+    } else {
+      paste0("選了 ", length(s), " 題：", paste(item_bank$itemID[sort(s)], collapse = "、"))
+    }
+  })
 
   # 程式碼與表格、圖 ----
   output$preview <- renderTable(kit_preview_table(waves, n = 10), striped = TRUE, spacing = "s", na = "")

@@ -3,7 +3,7 @@
 # 用法（在套件根目錄）：
 #   LC_ALL=en_US.UTF-8 Rscript tools/check_gallery.R [截圖資料夾] [port] [kit|demo]
 # 截圖資料夾預設是暫存資料夾。第三個參數 demo：用藍色系的示範品牌（kit_gallery(brand = "demo")）
-# 看換品牌以後的樣子；預設 kit。任何一頁 document.documentElement.scrollWidth 不等於視窗寬時，
+# 看換品牌以後的樣子；預設 kit。任何一頁 document.documentElement.scrollWidth 大於 clientWidth（視窗寬減掉直捲軸）時，
 # 結束代碼是 1（CI 或發布前用）。危險按鈕不是鮭魚色（#ff9b8f）、墨色字，或停用的危險按鈕
 # 是鮭魚色時，結束代碼也是 1。
 # 需要：chromote（和它用的 Chrome）、processx。先把這個資料夾的原始碼裝到暫存的 library，
@@ -53,7 +53,7 @@ for (i in 1:60) {
 
 # 3. 截圖與量寬度
 js <- function(b, code) b$Runtime$evaluate(code, awaitPromise = TRUE, returnByValue = TRUE)$result$value
-tabs <- c("page", "status", "steps", "checklist", "flow", "code", "chart")
+tabs <- c("page", "status", "steps", "checklist", "flow", "code", "table", "chart")
 sizes <- list(list(w = 1280, h = 900, mobile = FALSE), list(w = 390, h = 844, mobile = TRUE))
 rows <- list()
 colors <- list()
@@ -82,6 +82,11 @@ for (sz in sizes) {
           bg("demo_danger_off") == "rgb(232, 228, 216)"
       )
     }
+    if (tab == "table") {
+      # 範圍選擇列換成「上傳自己的題庫」（打開確認區）；互動表一開始選了兩列（淡萊姆）
+      js(b, "document.querySelector('input[name=\"bank\"][value=\"own\"]').click(); true")
+      Sys.sleep(3)
+    }
     if (tab == "steps") {
       js(b, "document.getElementById('cards-ok1').click(); true")
       Sys.sleep(1.5)
@@ -91,8 +96,11 @@ for (sz in sizes) {
     Sys.sleep(2)
     sw <- js(b, "document.documentElement.scrollWidth")
     vw <- js(b, "window.innerWidth")
+    # clientWidth：視窗寬減掉直的捲軸（有的系統捲軸佔 15px，scrollWidth 會比視窗寬小）
+    cw <- js(b, "document.documentElement.clientWidth")
     rows[[length(rows) + 1]] <- data.frame(width = sz$w, tab = tab, scrollWidth = sw,
-                                           viewport = vw, ok = sw == sz$w && vw == sz$w)
+                                           clientWidth = cw, viewport = vw,
+                                           ok = sw <= cw && vw == sz$w)
     js(b, "window.scrollTo(0, 0); true")
     b$screenshot(file.path(out, sprintf("%d_%d_%s.png", sz$w, i, tab)), selector = "html",
                  scale = 1, show = FALSE)

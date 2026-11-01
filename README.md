@@ -21,7 +21,7 @@ Every component follows the [KIT design language](https://github.com/jiewenTsai/
 remotes::install_github("jiewenTsai/kitDesign")
 ```
 
-Depends only on shiny, bslib (>= 0.11.0), and htmltools (plus grDevices and utils, which ship with R). `kit_plotly_style()` also needs plotly.
+Depends only on shiny, bslib (>= 0.11.0), and htmltools (plus grDevices and utils, which ship with R). `kit_plotly_style()` also needs plotly, and `kit_dt()` needs DT.
 
 If bslib is too old (the Brite theme does not exist before 0.11.0), `kit_theme()` stops and tells you to install a newer version.
 When installing an app, use `pak::pkg_install("<account>/<app>")` or
@@ -174,6 +174,7 @@ all have `htmltools::as.tags()`, `format()`, and `print()`.
 | `kit_next_step()`, `kit_app_link()` | Next step, link to another app |
 | `kit_step_card()`, `kit_step_head()`, `kit_step_body()` | Step card (current, done, not available yet) |
 | `kit_problems()` | A single problem inside a step card ("還差：…" ("Still needed: ...")) |
+| `kit_scope_bar()` | Scope bar: an app-wide choice (for example which item bank) right under the tab bar: radio buttons, a hint line, small buttons, an area to confirm |
 
 ### Results
 
@@ -184,6 +185,7 @@ all have `htmltools::as.tags()`, `format()`, and `print()`.
 | `kit_code_panel()`, `kit_code_blocks()`, `kit_render_code_panel()` | Low-level functions for "How to do it in R" |
 | `kit_code_wrap()`, `kit_code_cols()` | Wraps code to at most 70 columns per line; columns per line (a Chinese character counts as 2) |
 | `kit_static_table()`, `kit_preview_table()`, `kit_table_scroll()` | Data table, preview table, horizontally scrolling box |
+| `kit_dt()` | Interactive table (DT) with the same look, for tables people search, page through and click; selected rows are light lime, text in Chinese (DT is in Suggests) |
 | `kit_rows_note()`, `kit_dims()`, `kit_num()` | "共 3,418 列 × 25 欄，以下前 10 列。" ("3,418 rows × 25 columns; first 10 rows below."), thousands separators |
 | `kit_chart_colors()`, `kit_chart_neutral()` | Chart categorical colors (Okabe–Ito) and neutral colors |
 | `kit_chart_sequential()` | Color scale for continuous values (very light lime → light lime → KIT green; 0% stays distinct from blank no-data cells), for heatmaps |

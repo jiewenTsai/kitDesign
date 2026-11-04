@@ -53,7 +53,7 @@ development (EUD) or AI-assisted EUD, so the standard is an application, not a p
    | Layer | Quantity |
    |---|---|
    | Engine equivalence | One comparison per function, on fixed data, against TAM, mirt, dexter or psychotools (or a hand formula when no engine exists) |
-   | Metamorphic relations | Three relations per function |
+   | Metamorphic relations | Three relations per function; a fourth only when the three leave one of the function's error types uncovered |
    | Report snapshot | The whole report of one fixed demo scenario, run twice and compared byte for byte |
    | Unit tests | As the package needs; not counted toward adequacy |
 
@@ -84,6 +84,8 @@ inst/validation/
   validation.md         the report (template: kitDesign/inst/templates/validation.md)
   engine.R              engine equivalence, reproducible (simulated or demo data only)
   metamorphic.R         metamorphic relations, reproducible
+  snapshot.R            the report snapshot: MD5 of every file of the fixed scenario
+  reference/            stored values of an engine that is not always installed, with the script that made them
   results/              CSV results written by the scripts
 ```
 

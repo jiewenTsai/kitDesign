@@ -140,6 +140,8 @@ kit_pkg_version <- function() {
 #'   (for example "kits v0.25.0": kitsUI is the interface, kits the computation underneath).
 #' @param show_kitdesign Whether to add the kitDesign version ("kitDesign v0.1.0") before the date.
 #'   Usually not needed: kitDesign is the template, not one of the app's main packages.
+#' @param validation Whether the version line ends with a link "驗證報告" to the app's validation
+#'   report on GitHub ([kit_validation_url()]); needs `package`.
 #' @param window_title The browser tab title (defaults to `title`).
 #' @return A complete page (`bslib::page_fluid()`).
 #' @seealso [kit_header()], [kit_app_description()]
@@ -155,7 +157,8 @@ kit_pkg_version <- function() {
 #' @export
 kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL,
                      date = NULL, logo = TRUE, meta_extra = NULL, window_title = title,
-                     show_kitdesign = FALSE, brand = kit_current_brand(), package = NULL) {
+                     show_kitdesign = FALSE, brand = kit_current_brand(), package = NULL,
+                     validation = FALSE) {
   brand <- kit_check_brand(brand)
   bslib::page_fluid(
     lang = "zh-Hant-TW",
@@ -165,7 +168,7 @@ kit_page <- function(title, subtitle = NULL, ..., tagline = NULL, version = NULL
     kit_header(
       title = title, subtitle = subtitle, tagline = tagline,
       version = version, date = date, meta_extra = meta_extra, logo = logo,
-      show_kitdesign = show_kitdesign, brand = brand, package = package
+      show_kitdesign = show_kitdesign, brand = brand, package = package, validation = validation
     ),
     ...
   )
@@ -237,13 +240,15 @@ kit_app_description <- function(package = NULL, path = NULL) {
 #'   needed: kitDesign is the template, not one of the app's main packages.
 #' @param package The app's package name, written before the version ("kitJoin v0.6.0"); `NULL`
 #'   writes no name.
+#' @param validation Whether to add a link "驗證報告" to the package's validation report after the
+#'   date ([kit_validation_url()]); needs `package`.
 #' @return `<div class="kit-app-meta">`; `NULL` when all three are missing.
 #' @examples
 #' kit_app_meta("0.5.0", "2026-10-31")
 #' kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin")
 #' @export
 kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesign = FALSE,
-                         package = NULL) {
+                         package = NULL, validation = FALSE) {
   ok <- function(x) !is.null(x) && length(x) == 1 && !is.na(x) && nzchar(x)
   # 套件名稱和版本是同一段：「kitJoin v0.6.0」（沒有版本時只寫名稱）
   app <- paste(c(if (ok(package)) package, if (ok(version)) paste0("v", version)), collapse = " ")
@@ -256,7 +261,12 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
   )
   if (length(parts) == 0) return(NULL)
   # 原文： · 
-  shiny::div(class = "kit-app-meta", paste(parts, collapse = " \u00b7 "))
+  line <- paste(parts, collapse = " \u00b7 ")
+  if (!isTRUE(validation) || !ok(package)) return(shiny::div(class = "kit-app-meta", line))
+  # 原文： · 
+  # 同一行、沒有多的空白：「kitsUI v0.8.8 · kits v0.26.1 · 2026-11-04 · 驗證報告」
+  link <- as.character(kit_validation_link(package))
+  shiny::div(class = "kit-app-meta", shiny::HTML(paste0(htmltools::htmlEscape(line), " \u00b7 ", link)))
 }
 
 #' KIT header
@@ -277,7 +287,7 @@ kit_app_meta <- function(version = NULL, date = NULL, extra = NULL, show_kitdesi
 #' @export
 kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, date = NULL,
                        meta_extra = NULL, logo = TRUE, show_kitdesign = FALSE,
-                       brand = kit_current_brand(), package = NULL) {
+                       brand = kit_current_brand(), package = NULL, validation = FALSE) {
   brand <- kit_check_brand(brand)
   sub_line <- if (!is.null(subtitle) || !is.null(tagline)) {
     shiny::p(
@@ -311,7 +321,8 @@ kit_header <- function(title, subtitle = NULL, tagline = NULL, version = NULL, d
       shiny::div(
         shiny::h1(title),
         sub_line,
-        kit_app_meta(version, date, meta_extra, show_kitdesign = show_kitdesign, package = package)
+        kit_app_meta(version, date, meta_extra, show_kitdesign = show_kitdesign, package = package,
+                     validation = validation)
       )
     )
   )

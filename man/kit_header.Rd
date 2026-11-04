@@ -14,7 +14,8 @@ kit_header(
   logo = TRUE,
   show_kitdesign = FALSE,
   brand = kit_current_brand(),
-  package = NULL
+  package = NULL,
+  validation = FALSE
 )
 }
 \arguments{
@@ -46,6 +47,9 @@ Usually not needed: kitDesign is the template, not one of the app's main package
 \item{package}{The app's package name, written at the start of the version line:
 "kitJoin v0.6.0 · 2026-10-31". Anyone reporting a problem can see at once which app and which
 version. \code{NULL} (the default) writes no name, as before.}
+
+\item{validation}{Whether the version line ends with a link "驗證報告" to the app's validation
+report on GitHub (\code{\link[=kit_validation_url]{kit_validation_url()}}); needs \code{package}.}
 }
 \value{
 \verb{<div class="kit-header mb-4">}.

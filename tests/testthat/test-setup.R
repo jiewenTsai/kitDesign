@@ -213,3 +213,35 @@ test_that("kit_header(logo = \"inline\") writes the logo into the page, with no 
   expect_false(grepl("kitDesign-logo-", x))
   expect_length(htmltools::htmlDependencies(kit_header("KIT 工具")), 1)
 })
+
+test_that("kit_app_meta(validation = TRUE) ends the version line with the report link", {
+  meta <- html(kit_app_meta("0.6.0", "2026-10-31", package = "kitJoin", validation = TRUE))
+  # 空白在畫面上併成一個
+  expect_match(gsub("\\s+", " ", meta), "kitJoin v0.6.0 · 2026-10-31 · <a href=\"https://github.com/",
+               fixed = TRUE)
+  expect_match(meta, "/inst/validation/validation.md\" target=\"_blank\"", fixed = TRUE)
+  # 沒有套件名稱時沒有連結
+  expect_false(grepl("<a", html(kit_app_meta("0.6.0", validation = TRUE)), fixed = TRUE))
+  expect_match(html(kit_page("T", package = "kitJoin", version = "0.6.0", validation = TRUE)),
+               "kit-validation-link", fixed = TRUE)
+})
+
+test_that("kit_validation() finds the standard; use_kit_validation() writes the template once", {
+  path <- kit_validation("kitDesign", "criteria", open = FALSE)
+  expect_true(file.exists(path))
+  expect_match(paste(readLines(path, encoding = "UTF-8"), collapse = "\n"), "The six rules")
+  expect_true(is.na(kit_validation("stats", open = FALSE)))
+  expect_equal(kit_validation_url("kitDesign"),
+               "https://github.com/jiewenTsai/kitDesign/blob/main/inst/validation/validation.md")
+  pkg <- tempfile("mypkg")
+  dir.create(pkg)
+  on.exit(unlink(pkg, recursive = TRUE), add = TRUE)
+  writeLines(c("Package: mypkg", "Version: 0.1.0"), file.path(pkg, "DESCRIPTION"))
+  out <- suppressMessages(use_kit_validation(pkg))
+  text <- readLines(out, encoding = "UTF-8")
+  expect_equal(text[1], "# mypkg validation report")
+  expect_match(paste(text, collapse = "\n"), "mypkg 0.1.0", fixed = TRUE)
+  writeLines("kept", out)
+  expect_message(use_kit_validation(pkg), "Already there")
+  expect_equal(readLines(out), "kept")
+})

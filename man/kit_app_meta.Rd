@@ -9,7 +9,8 @@ kit_app_meta(
   date = NULL,
   extra = NULL,
   show_kitdesign = FALSE,
-  package = NULL
+  package = NULL,
+  validation = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ needed: kitDesign is the template, not one of the app's main packages.}
 
 \item{package}{The app's package name, written before the version ("kitJoin v0.6.0"); \code{NULL}
 writes no name.}
+
+\item{validation}{Whether to add a link "驗證報告" to the package's validation report after the
+date (\code{\link[=kit_validation_url]{kit_validation_url()}}); needs \code{package}.}
 }
 \value{
 \verb{<div class="kit-app-meta">}; \code{NULL} when all three are missing.

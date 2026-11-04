@@ -1,3 +1,14 @@
+# kitDesign 0.8.0
+
+* The KIT validation standard: `inst/validation/criteria.md` (bounded checks by output and error
+  type, a fixed quantity per layer, acceptance criteria before generation, a regression test for
+  every fault, mutation testing, four metrics). Every KIT package keeps a report in
+  `inst/validation/validation.md`.
+* `kit_validation()` opens a package's report (or the standard); `kit_validation_url()` gives its
+  GitHub address; `use_kit_validation()` adds the report template to a new package.
+* `kit_page(validation = TRUE)` (and `kit_header()`, `kit_app_meta()`) end the version line with a
+  link "驗證報告" to the app's report.
+
 # kitDesign 0.7.1 (2026-11-02)
 
 patch：頁首版本行的順序與寫法。
